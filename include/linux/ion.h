@@ -22,8 +22,11 @@
 #include <linux/types.h>
 
 struct ion_handle;
+<<<<<<< HEAD
 typedef struct ion_handle *ion_user_handle_t;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /**
  * enum ion_heap_types - list of all possible types of heaps
  * @ION_HEAP_TYPE_SYSTEM:	 memory allocated via vmalloc
@@ -40,7 +43,11 @@ enum ion_heap_type {
 	ION_HEAP_TYPE_CHUNK,
 	ION_HEAP_TYPE_CUSTOM, /* must be last so device specific heaps always
 				 are at the end of this enum */
+<<<<<<< HEAD
 	ION_NUM_HEAPS,
+=======
+	ION_NUM_HEAPS=16,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 #define ION_HEAP_SYSTEM_MASK		(1 << ION_HEAP_TYPE_SYSTEM)
@@ -60,6 +67,7 @@ enum ion_heap_type {
 #define ION_FLAG_CACHED_NEEDS_SYNC 2	/* mappings of this buffer will created
 					   at mmap time, if this is set
 					   caches must be managed manually */
+<<<<<<< HEAD
 #define ION_FLAG_FREED_FROM_SHRINKER 4	/* Skip any possible
 					   heap-specific caching
 					   mechanism (e.g. page
@@ -68,6 +76,8 @@ enum ion_heap_type {
 					   from the system allocator
 					   will be returned to the
 					   system allocator. */
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #ifdef __KERNEL__
 #include <linux/err.h>
@@ -352,7 +362,11 @@ struct ion_allocation_data {
 	size_t align;
 	unsigned int heap_mask;
 	unsigned int flags;
+<<<<<<< HEAD
 	ion_user_handle_t handle;
+=======
+	struct ion_handle *handle;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /**
@@ -366,7 +380,11 @@ struct ion_allocation_data {
  * provides the file descriptor and the kernel returns the handle.
  */
 struct ion_fd_data {
+<<<<<<< HEAD
 	ion_user_handle_t handle;
+=======
+	struct ion_handle *handle;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int fd;
 };
 
@@ -375,7 +393,11 @@ struct ion_fd_data {
  * @handle:	a handle
  */
 struct ion_handle_data {
+<<<<<<< HEAD
 	ion_user_handle_t handle;
+=======
+	struct ion_handle *handle;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /**

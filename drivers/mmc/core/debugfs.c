@@ -15,7 +15,10 @@
 #include <linux/slab.h>
 #include <linux/stat.h>
 #include <linux/fault-inject.h>
+<<<<<<< HEAD
 #include <linux/uaccess.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #include <linux/mmc/card.h>
 #include <linux/mmc/host.h>
@@ -393,9 +396,12 @@ static ssize_t mmc_wr_pack_stats_read(struct file *filp, char __user *ubuf,
 	if (!card)
 		return cnt;
 
+<<<<<<< HEAD
 	if (!access_ok(VERIFY_WRITE, ubuf, cnt))
 		return cnt;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!card->wr_pack_stats.print_in_read)
 		return 0;
 
@@ -536,9 +542,12 @@ static ssize_t mmc_wr_pack_stats_write(struct file *filp,
 	if (!card)
 		return cnt;
 
+<<<<<<< HEAD
 	if (!access_ok(VERIFY_READ, ubuf, cnt))
 		return cnt;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	sscanf(ubuf, "%d", &value);
 	if (value) {
 		mmc_blk_init_packed_statistics(card);
@@ -578,9 +587,12 @@ static ssize_t mmc_bkops_stats_read(struct file *filp, char __user *ubuf,
 	if (!card)
 		return cnt;
 
+<<<<<<< HEAD
 	if (!access_ok(VERIFY_WRITE, ubuf, cnt))
 		return cnt;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	bkops_stats = &card->bkops_info.bkops_stats;
 
 	if (!bkops_stats->print_stats)
@@ -647,9 +659,12 @@ static ssize_t mmc_bkops_stats_write(struct file *filp,
 	if (!card)
 		return cnt;
 
+<<<<<<< HEAD
 	if (!access_ok(VERIFY_READ, ubuf, cnt))
 		return cnt;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	bkops_stats = &card->bkops_info.bkops_stats;
 
 	sscanf(ubuf, "%d", &value);

@@ -1,5 +1,9 @@
 snd-soc-core-objs := soc-core.o soc-dapm.o soc-jack.o soc-cache.o soc-utils.o
+<<<<<<< HEAD
 snd-soc-core-objs += soc-pcm.o soc-compress.o soc-io.o
+=======
+snd-soc-core-objs += soc-pcm.o soc-io.o
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 snd-soc-dmaengine-pcm-objs := soc-dmaengine-pcm.o
 obj-$(CONFIG_SND_SOC_DMAENGINE_PCM) += snd-soc-dmaengine-pcm.o

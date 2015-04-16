@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -788,7 +792,10 @@ static int __devinit msm_ocmem_probe(struct platform_device *pdev)
 	struct device   *dev = &pdev->dev;
 	struct clk *ocmem_core_clk = NULL;
 	struct clk *ocmem_iface_clk = NULL;
+<<<<<<< HEAD
 	int rc;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (!pdev->dev.of_node) {
 		dev_info(dev, "Missing Configuration in Device Tree\n");
@@ -831,6 +838,7 @@ static int __devinit msm_ocmem_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, ocmem_pdata);
 
+<<<<<<< HEAD
 	rc = ocmem_enable_core_clock();
 	if (rc < 0)
 		goto core_clk_fail;
@@ -851,6 +859,15 @@ static int __devinit msm_ocmem_probe(struct platform_device *pdev)
 
 	if (ocmem_debugfs_init(pdev))
 		dev_err(dev, "ocmem: No debugfs node available\n");
+=======
+	/* Parameter to be updated based on TZ */
+	/* Allow the OCMEM CSR to be programmed */
+	if (ocmem_enable_sec_program(OCMEM_SECURE_DEV_ID))
+		return -EBUSY;
+
+	if (ocmem_debugfs_init(pdev))
+		return -EBUSY;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (ocmem_core_init(pdev))
 		return -EBUSY;
@@ -874,11 +891,14 @@ static int __devinit msm_ocmem_probe(struct platform_device *pdev)
 
 	dev_dbg(dev, "initialized successfully\n");
 	return 0;
+<<<<<<< HEAD
 
 iface_clk_fail:
 	ocmem_disable_core_clock();
 core_clk_fail:
 	return rc;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int __devexit msm_ocmem_remove(struct platform_device *pdev)

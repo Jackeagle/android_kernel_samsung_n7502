@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2011-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -297,6 +301,7 @@ static int getpath(int src, int dest)
 	return CREATE_PNODE_ID(src, pnode_num);
 }
 
+<<<<<<< HEAD
 static uint64_t get_node_maxib(struct msm_bus_inode_info *info)
 {
 	int i, ctx;
@@ -312,6 +317,8 @@ static uint64_t get_node_maxib(struct msm_bus_inode_info *info)
 	return maxib;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /**
  * update_path() - Update the path with the bandwidth and clock values, as
  * requested by the client.
@@ -359,6 +366,18 @@ static int update_path(int curr, int pnode, uint64_t req_clk, uint64_t req_bw,
 		return -ENXIO;
 	}
 
+<<<<<<< HEAD
+=======
+	/**
+	 * If master supports dual configuration, check if
+	 * the configuration needs to be changed based on
+	 * incoming requests
+	 */
+	if (info->node_info->dual_conf)
+		fabdev->algo->config_master(fabdev, info,
+			req_clk, req_bw);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	info->link_info.sel_bw = &info->link_info.bw[ctx];
 	info->link_info.sel_clk = &info->link_info.clk[ctx];
 	*info->link_info.sel_bw += add_bw;
@@ -372,6 +391,7 @@ static int update_path(int curr, int pnode, uint64_t req_clk, uint64_t req_bw,
 	info->pnode[index].sel_clk = &info->pnode[index].clk[ctx &
 		cl_active_flag];
 	*info->pnode[index].sel_bw += add_bw;
+<<<<<<< HEAD
 	*info->pnode[index].sel_clk = req_clk;
 
 	/**
@@ -385,6 +405,8 @@ static int update_path(int curr, int pnode, uint64_t req_clk, uint64_t req_bw,
 		fabdev->algo->config_master(fabdev, info,
 			node_maxib, req_bw);
 	}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	info->link_info.num_tiers = info->node_info->num_tiers;
 	info->link_info.tier = info->node_info->tier;

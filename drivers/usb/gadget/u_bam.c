@@ -1281,6 +1281,7 @@ const struct file_operations gbam_stats_ops = {
 	.write = gbam_reset_stats,
 };
 
+<<<<<<< HEAD
 struct dentry *gbam_dent;
 static void gbam_debugfs_init(void)
 {
@@ -1305,6 +1306,24 @@ static void gbam_debugfs_remove(void)
 #else
 static inline void gbam_debugfs_init(void) {}
 static inline void gbam_debugfs_remove(void) {}
+=======
+static void gbam_debugfs_init(void)
+{
+	struct dentry *dent;
+	struct dentry *dfile;
+
+	dent = debugfs_create_dir("usb_rmnet", 0);
+	if (IS_ERR(dent))
+		return;
+
+	/* TODO: Implement cleanup function to remove created file */
+	dfile = debugfs_create_file("status", 0444, dent, 0, &gbam_stats_ops);
+	if (!dfile || IS_ERR(dfile))
+		debugfs_remove(dent);
+}
+#else
+static void gam_debugfs_init(void) { }
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif
 
 void gbam_disconnect(struct grmnet *gr, u8 port_num, enum transport_type trans)
@@ -1453,6 +1472,10 @@ int gbam_connect(struct grmnet *gr, u8 port_num,
 
 	d->trans = trans;
 	queue_work(gbam_wq, &port->connect_w);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return 0;
 }
 
@@ -1497,7 +1520,10 @@ int gbam_setup(unsigned int no_bam_port, unsigned int no_bam2bam_port)
 			goto free_bam_ports;
 		}
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	gbam_debugfs_init();
 	return 0;
 
@@ -1511,11 +1537,14 @@ free_bam_ports:
 	return ret;
 }
 
+<<<<<<< HEAD
 void gbam_cleanup(void)
 {
 	gbam_debugfs_remove();
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void gbam_suspend(struct grmnet *gr, u8 port_num, enum transport_type trans)
 {
 	struct gbam_port	*port;

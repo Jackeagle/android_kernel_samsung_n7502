@@ -26,8 +26,11 @@
 #define FORMAT_USPS_EPOS	0x00000000
 #define FORMAT_USRAW		0x00000001
 #define FORMAT_USPROX		0x00000002
+<<<<<<< HEAD
 #define FORMAT_USGES_SYNC	0x00000003
 #define FORMAT_USRAW_SYNC	0x00000004
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define INVALID_FORMAT		0xffffffff
 
 #define IN			0x000

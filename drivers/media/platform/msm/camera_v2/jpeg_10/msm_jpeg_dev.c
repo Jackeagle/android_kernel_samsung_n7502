@@ -228,10 +228,17 @@ fail_2:
 
 fail_1:
 	__msm_jpeg_exit(msm_jpeg_device_p);
+<<<<<<< HEAD
 	return rc;
 
 fail:
 	kfree(msm_jpeg_device_p);
+=======
+
+fail:
+	if (msm_jpeg_device_p)
+		kfree(msm_jpeg_device_p);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return rc;
 
 }

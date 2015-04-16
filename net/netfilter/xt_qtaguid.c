@@ -1415,15 +1415,23 @@ static void if_tag_stat_update(const char *ifname, uid_t uid,
 		 ifname, uid, sk, direction, proto, bytes);
 
 
+<<<<<<< HEAD
 	spin_lock_bh(&iface_stat_list_lock);
 	iface_entry = get_iface_entry(ifname);
 	if (!iface_entry) {
 		spin_unlock_bh(&iface_stat_list_lock);
+=======
+	iface_entry = get_iface_entry(ifname);
+	if (!iface_entry) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		pr_err_ratelimited("qtaguid: iface_stat: stat_update() "
 				   "%s not found\n", ifname);
 		return;
 	}
+<<<<<<< HEAD
 	spin_unlock_bh(&iface_stat_list_lock);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* It is ok to process data when an iface_entry is inactive */
 
 	MT_DEBUG("qtaguid: iface_stat: stat_update() dev=%s entry=%p\n",

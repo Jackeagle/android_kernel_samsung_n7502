@@ -147,8 +147,15 @@ struct ocmem_buf *ocmem_allocate(int client_id, unsigned long size)
 
 	do_gettimeofday(&end_time);
 
+<<<<<<< HEAD
 	if (!buffer)
 		return NULL;
+=======
+	if (!buffer){ 
+	 	pr_err("ocmem: ocmem_allocate failed...\n"); 
+		return NULL;
+	} 
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	delay = (end_time.tv_sec * USEC_PER_SEC + end_time.tv_usec)
 		 - (start_time.tv_sec * USEC_PER_SEC + start_time.tv_usec);
@@ -159,6 +166,11 @@ struct ocmem_buf *ocmem_allocate(int client_id, unsigned long size)
 		zone->min_alloc_time = delay;
 	zone->total_alloc_time += delay;
 	inc_ocmem_stat(zone, NR_SYNC_ALLOCATIONS);
+<<<<<<< HEAD
+=======
+	
+	printk("#### ocmem_allocate: client[%s], buffer[%p], addr[%ld], len[%ld], ocmem_handle[%p]\n", get_name(client_id), buffer, buffer->addr, buffer->len, buffer_to_handle(buffer)); 
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return buffer;
 }
@@ -308,6 +320,11 @@ int ocmem_free(int client_id, struct ocmem_buf *buffer)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	printk("#### ocmem_free: client[%s], buffer[%p], addr[%ld], len[%ld], ocmem_handle[%p]\n", get_name(client_id), buffer, buffer->addr, buffer->len, buffer_to_handle(buffer)); 
+	
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	do_gettimeofday(&start_time);
 
 	rc = __ocmem_free(client_id, buffer);

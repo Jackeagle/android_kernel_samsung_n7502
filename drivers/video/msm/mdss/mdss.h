@@ -66,6 +66,7 @@ struct mdss_debug_inf {
 	void (*debug_enable_clock)(int on);
 };
 
+<<<<<<< HEAD
 #define MDSS_IRQ_SUSPEND	-1
 #define MDSS_IRQ_RESUME		1
 #define MDSS_IRQ_REQ		0
@@ -79,13 +80,18 @@ struct mdss_intr {
 	spinlock_t lock;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct mdss_data_type {
 	u32 mdp_rev;
 	struct clk *mdp_clk[MDSS_MAX_CLK];
 	struct regulator *fs;
 	struct regulator *vdd_cx;
+<<<<<<< HEAD
 	bool batfet_required;
 	struct regulator *batfet;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	u32 max_mdp_clk_rate;
 
 	struct platform_device *pdev;
@@ -120,9 +126,12 @@ struct mdss_data_type {
 
 	u32 rot_block_size;
 
+<<<<<<< HEAD
 	u32 max_bw_low;
 	u32 max_bw_high;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct mdss_hw_settings *hw_settings;
 
 	struct mdss_mdp_pipe *vig_pipes;
@@ -146,6 +155,7 @@ struct mdss_data_type {
 	u32 nintf;
 
 	u32 pp_bus_hdl;
+<<<<<<< HEAD
 	struct mdss_mdp_ad *ad_off;
 	struct mdss_ad_info *ad_cfgs;
 	u32 nad_cfgs;
@@ -154,6 +164,12 @@ struct mdss_data_type {
 
 	struct mdss_intr hist_intr;
 
+=======
+	struct mdss_ad_info *ad_cfgs;
+	u32 nad_cfgs;
+	struct workqueue_struct *ad_calc_wq;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct ion_client *iclient;
 	int iommu_attached;
 	struct mdss_iommu_map_type *iommu_map;
@@ -163,8 +179,11 @@ struct mdss_data_type {
 	int current_bus_idx;
 	bool mixer_switched;
 	struct mdss_panel_cfg pan_cfg;
+<<<<<<< HEAD
 
 	int handoff_pending;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 extern struct mdss_data_type *mdss_res;
 
@@ -187,8 +206,12 @@ int mdss_register_irq(struct mdss_hw *hw);
 void mdss_enable_irq(struct mdss_hw *hw);
 void mdss_disable_irq(struct mdss_hw *hw);
 void mdss_disable_irq_nosync(struct mdss_hw *hw);
+<<<<<<< HEAD
 void mdss_bus_bandwidth_ctrl(int enable);
 
+=======
+void mdss_mdp_underrun_dump_info(void);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static inline struct ion_client *mdss_get_ionclient(void)
 {
 	if (!mdss_res)

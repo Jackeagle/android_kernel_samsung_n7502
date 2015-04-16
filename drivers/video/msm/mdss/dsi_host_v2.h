@@ -17,8 +17,11 @@
 
 #define DSI_INTR_ERROR_MASK			BIT(25)
 #define DSI_INTR_ERROR				BIT(24)
+<<<<<<< HEAD
 #define DSI_INTR_BTA_DONE_MASK			BIT(21)
 #define DSI_INTR_BTA_DONE			BIT(20)
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define DSI_INTR_VIDEO_DONE_MASK		BIT(17)
 #define DSI_INTR_VIDEO_DONE			BIT(16)
 #define DSI_INTR_CMD_MDP_DONE_MASK		BIT(9)
@@ -26,8 +29,11 @@
 #define DSI_INTR_CMD_DMA_DONE_MASK		BIT(1)
 #define DSI_INTR_CMD_DMA_DONE			BIT(0)
 
+<<<<<<< HEAD
 #define DSI_BTA_TERM				BIT(1)
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define DSI_CTRL				0x0000
 #define DSI_STATUS				0x0004
 #define DSI_FIFO_STATUS			0x0008

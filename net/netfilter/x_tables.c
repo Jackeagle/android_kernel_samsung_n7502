@@ -832,6 +832,7 @@ xt_replace_table(struct xt_table *table,
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	newinfo->initial_entries = private->initial_entries;
 	/*
 	 * Ensure contents of newinfo are visible before assigning to
@@ -839,6 +840,10 @@ xt_replace_table(struct xt_table *table,
 	 */
 	smp_wmb();
 	table->private = newinfo;
+=======
+	table->private = newinfo;
+	newinfo->initial_entries = private->initial_entries;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/*
 	 * Even though table entries have now been swapped, other CPU's

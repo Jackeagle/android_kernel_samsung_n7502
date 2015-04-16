@@ -698,16 +698,27 @@ ENTRY(__switch_to)
  UNWIND(.fnstart	)
  UNWIND(.cantunwind	)
 	add	ip, r1, #TI_CPU_SAVE
+<<<<<<< HEAD
+=======
+	ldr	r3, [r2, #TI_TP_VALUE]
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  ARM(	stmia	ip!, {r4 - sl, fp, sp, lr} )	@ Store most regs on stack
  THUMB(	stmia	ip!, {r4 - sl, fp}	   )	@ Store most regs on stack
  THUMB(	str	sp, [ip], #4		   )
  THUMB(	str	lr, [ip], #4		   )
+<<<<<<< HEAD
 	ldr	r4, [r2, #TI_TP_VALUE]
 	ldr	r5, [r2, #TI_TP_VALUE + 4]
 #ifdef CONFIG_CPU_USE_DOMAINS
 	ldr	r6, [r2, #TI_CPU_DOMAIN]
 #endif
 	switch_tls r1, r4, r5, r3, r7
+=======
+#ifdef CONFIG_CPU_USE_DOMAINS
+	ldr	r6, [r2, #TI_CPU_DOMAIN]
+#endif
+	set_tls	r3, r4, r5
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #if defined(CONFIG_CC_STACKPROTECTOR) && !defined(CONFIG_SMP)
 	ldr	r7, [r2, #TI_TASK]
 	ldr	r8, =__stack_chk_guard
@@ -755,6 +766,7 @@ ENDPROC(__switch_to)
 #endif
 	.endm
 
+<<<<<<< HEAD
 	.macro	kuser_pad, sym, size
 	.if	(. - \sym) & 3
 	.rept	4 - (. - \sym) & 3
@@ -767,6 +779,8 @@ ENDPROC(__switch_to)
 	.endm
 
 #ifdef CONFIG_KUSER_HELPERS
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.align	5
 	.globl	__kuser_helper_start
 __kuser_helper_start:
@@ -948,13 +962,26 @@ kuser_cmpxchg64_fixup:
 #error "incoherent kernel configuration"
 #endif
 
+<<<<<<< HEAD
 	kuser_pad __kuser_cmpxchg64, 64
+=======
+	/* pad to next slot */
+	.rept	(16 - (. - __kuser_cmpxchg64)/4)
+	.word	0
+	.endr
+
+	.align	5
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 __kuser_memory_barrier:				@ 0xffff0fa0
 	smp_dmb	arm
 	usr_ret	lr
 
+<<<<<<< HEAD
 	kuser_pad __kuser_memory_barrier, 32
+=======
+	.align	5
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 __kuser_cmpxchg:				@ 0xffff0fc0
 
@@ -1027,14 +1054,22 @@ kuser_cmpxchg32_fixup:
 
 #endif
 
+<<<<<<< HEAD
 	kuser_pad __kuser_cmpxchg, 32
+=======
+	.align	5
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 __kuser_get_tls:				@ 0xffff0fe0
 	ldr	r0, [pc, #(16 - 8)]	@ read TLS, set in kuser_get_tls_init
 	usr_ret	lr
 	mrc	p15, 0, r0, c13, c0, 3	@ 0xffff0fe8 hardware TLS code
+<<<<<<< HEAD
 	kuser_pad __kuser_get_tls, 16
 	.rep	3
+=======
+	.rep	4
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.word	0			@ 0xffff0ff0 software TLS value, then
 	.endr				@ pad up to __kuser_helper_version
 
@@ -1044,16 +1079,25 @@ __kuser_helper_version:				@ 0xffff0ffc
 	.globl	__kuser_helper_end
 __kuser_helper_end:
 
+<<<<<<< HEAD
 #endif
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  THUMB(	.thumb	)
 
 /*
  * Vector stubs.
  *
+<<<<<<< HEAD
  * This code is copied to 0xffff1000 so we can use branches in the
  * vectors, rather than ldr's.  Note that this code must not exceed
  * a page size.
+=======
+ * This code is copied to 0xffff0200 so we can use branches in the
+ * vectors, rather than ldr's.  Note that this code must not
+ * exceed 0x300 bytes.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * Common stub entry macro:
  *   Enter in IRQ mode, spsr = SVC/USR CPSR, lr = SVC/USR PC
@@ -1112,6 +1156,7 @@ ENDPROC(vector_\name)
 1:
 	.endm
 
+<<<<<<< HEAD
 	.section .stubs, "ax", %progbits
 __stubs_start:
 	@ This must be the first word
@@ -1123,6 +1168,10 @@ vector_rst:
  THUMB(	nop			)
 	b	vector_und
 
+=======
+	.globl	__stubs_start
+__stubs_start:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /*
  * Interrupt dispatcher
  */
@@ -1217,6 +1266,7 @@ vector_rst:
 	.align	5
 
 /*=============================================================================
+<<<<<<< HEAD
  * Address exception handler
  *-----------------------------------------------------------------------------
  * These aren't too critical.
@@ -1227,6 +1277,8 @@ vector_addrexcptn:
 	b	vector_addrexcptn
 
 /*=============================================================================
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * Undefined FIQs
  *-----------------------------------------------------------------------------
  * Enter in FIQ mode, spsr = ANY CPSR, lr = ANY PC
@@ -1239,6 +1291,7 @@ vector_addrexcptn:
 vector_fiq:
 	subs	pc, lr, #4
 
+<<<<<<< HEAD
 .krait_fixup:
 	.word	msm_krait_need_wfe_fixup
 
@@ -1255,6 +1308,49 @@ __vectors_start:
 	W(b)	vector_addrexcptn
 	W(b)	vector_irq
 	W(b)	vector_fiq
+=======
+/*=============================================================================
+ * Address exception handler
+ *-----------------------------------------------------------------------------
+ * These aren't too critical.
+ * (they're not supposed to happen, and won't happen in 32-bit data mode).
+ */
+
+vector_addrexcptn:
+	b	vector_addrexcptn
+
+/*
+ * We group all the following data together to optimise
+ * for CPUs with separate I & D caches.
+ */
+	.align	5
+
+.LCvswi:
+	.word	vector_swi
+.krait_fixup:
+	.word	msm_krait_need_wfe_fixup
+
+	.globl	__stubs_end
+__stubs_end:
+
+	.equ	stubs_offset, __vectors_start + 0x200 - __stubs_start
+
+	.globl	__vectors_start
+__vectors_start:
+ ARM(	swi	SYS_ERROR0	)
+ THUMB(	svc	#0		)
+ THUMB(	nop			)
+	W(b)	vector_und + stubs_offset
+	W(ldr)	pc, .LCvswi + stubs_offset
+	W(b)	vector_pabt + stubs_offset
+	W(b)	vector_dabt + stubs_offset
+	W(b)	vector_addrexcptn + stubs_offset
+	W(b)	vector_irq + stubs_offset
+	W(b)	vector_fiq + stubs_offset
+
+	.globl	__vectors_end
+__vectors_end:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	.data
 

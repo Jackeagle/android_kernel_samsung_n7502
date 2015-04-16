@@ -43,6 +43,12 @@ struct acpuclk_pdata {
  */
 struct acpuclk_data {
 	unsigned long (*get_rate)(int cpu);
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SEC_DEBUG_VERBOSE_SUMMARY_HTML
+	unsigned int (*get_voltage)(int cpu);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int (*set_rate)(int cpu, unsigned long rate, enum setrate_reason);
 	uint32_t switch_time_us;
 	unsigned long power_collapse_khz;
@@ -55,6 +61,19 @@ struct acpuclk_data {
  */
 unsigned long acpuclk_get_rate(int cpu);
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SEC_DEBUG_VERBOSE_SUMMARY_HTML
+/**
+  * acpuclk_get_voltage() - Get a CPU's current voltage in
+  * milivolts
+  * @cpu: CPU to query the voltage of
+  */
+unsigned int acpuclk_get_voltage(int cpu);
+#endif
+
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /**
  * acpuclk_set_rate() - Set a CPU's clock rate
  * @cpu: CPU to set rate of

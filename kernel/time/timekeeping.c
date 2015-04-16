@@ -681,6 +681,7 @@ void timekeeping_inject_sleeptime(struct timespec *delta)
  */
 static void timekeeping_resume(void)
 {
+<<<<<<< HEAD
 	struct timekeeper *tk = &timekeeper;
 	struct clocksource *clock = tk->clock;
 	unsigned long flags;
@@ -689,11 +690,18 @@ static void timekeeping_resume(void)
 	bool suspendtime_found = false;
 
 	read_persistent_clock(&ts_new);
+=======
+	unsigned long flags;
+	struct timespec ts;
+
+	read_persistent_clock(&ts);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	clocksource_resume();
 
 	write_seqlock_irqsave(&timekeeper.lock, flags);
 
+<<<<<<< HEAD
 	/*
 	 * After system resumes, we need to calculate the suspended time and
 	 * compensate it for the OS time. There are 3 sources that could be
@@ -744,6 +752,16 @@ static void timekeeping_resume(void)
 	tk->ntp_error = 0;
 	timekeeping_suspended = 0;
 	timekeeping_update(false);
+=======
+	if (timespec_compare(&ts, &timekeeping_suspend_time) > 0) {
+		ts = timespec_sub(ts, timekeeping_suspend_time);
+		__timekeeping_inject_sleeptime(&ts);
+	}
+	/* re-base the last cycle value */
+	timekeeper.clock->cycle_last = timekeeper.clock->read(timekeeper.clock);
+	timekeeper.ntp_error = 0;
+	timekeeping_suspended = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	write_sequnlock_irqrestore(&timekeeper.lock, flags);
 
 	touch_softlockup_watchdog();

@@ -5,7 +5,11 @@
  * Copyright (C) 2003-2004 Robert Schwebel, Benedikt Spranger
  * Copyright (C) 2003 Al Borchers (alborchers@steinerpoint.com)
  * Copyright (C) 2008 Nokia Corporation
+<<<<<<< HEAD
  * Copyright (c) 2011,2013 The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2011 The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -1758,6 +1762,7 @@ struct dentry *dent_rmnet_mux;
 
 static void rmnet_mux_debugfs_init(struct rmnet_mux_dev *dev)
 {
+<<<<<<< HEAD
 	struct dentry *dent_rmnet_mux_status;
 	dent_rmnet_mux = debugfs_create_dir("usb_rmnet_mux", 0);
 	if (!dent_rmnet_mux || IS_ERR(dent_rmnet_mux))
@@ -1780,6 +1785,18 @@ static void rmnet_mux_debugfs_remove(void)
 #else
 static inline void rmnet_mux_debugfs_init(struct rmnet_mux_dev *dev) {}
 static inline void rmnet_mux_debugfs_remove(void) {}
+=======
+
+	dent_rmnet_mux = debugfs_create_dir("usb_rmnet_mux", 0);
+	if (IS_ERR(dent_rmnet_mux))
+		return;
+
+	debugfs_create_file("status", 0444, dent_rmnet_mux, dev,
+			&rmnet_mux_svlte_debug_stats_ops);
+}
+#else
+static void rmnet_mux_debugfs_init(struct rmnet_mux_dev *dev) {}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif
 
 int usb_rmnet_mux_ctrl_open(struct inode *inode, struct file *fp)
@@ -2049,7 +2066,11 @@ static void rmnet_smd_sdio_cleanup(void)
 	struct rmnet_mux_dev *dev = rmux_dev;
 	struct rmnet_mux_smd_dev *smd_dev = &dev->smd_dev;
 
+<<<<<<< HEAD
 	rmnet_mux_debugfs_remove();
+=======
+	debugfs_remove_recursive(dent_rmnet_mux);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	misc_deregister(&rmnet_mux_ctrl_dev);
 	smd_close(smd_dev->smd_data.ch);
 	destroy_workqueue(dev->wq);

@@ -68,6 +68,10 @@ static const char * const iio_chan_type_name_spec[] = {
 	[IIO_ANGL] = "angl",
 	[IIO_TIMESTAMP] = "timestamp",
 	[IIO_CAPACITANCE] = "capacitance",
+<<<<<<< HEAD
+=======
+	[IIO_QUATERNION] = "quaternion",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 static const char * const iio_modifier_names[] = {
@@ -76,6 +80,10 @@ static const char * const iio_modifier_names[] = {
 	[IIO_MOD_Z] = "z",
 	[IIO_MOD_LIGHT_BOTH] = "both",
 	[IIO_MOD_LIGHT_IR] = "ir",
+<<<<<<< HEAD
+=======
+	[IIO_MOD_R]  = "r",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /* relies on pairs of these shared then separate */

@@ -65,6 +65,12 @@ js-rtc-y = rtc.o
 
 obj-$(CONFIG_TILE_SROM)		+= tile-srom.o
 obj-$(CONFIG_MSM_ROTATOR)	+= msm_rotator.o
+<<<<<<< HEAD
 obj-$(CONFIG_DIAG_CHAR)		+= diag/
 obj-$(CONFIG_MSM_ADSPRPC)       += adsprpc.o
 obj-$(CONFIG_MSM_RDBG)       += rdbg.o
+=======
+obj-$(CONFIG_MMC_GENERIC_CSDIO)	+= csdio.o
+obj-$(CONFIG_DIAG_CHAR)		+= diag/
+obj-$(CONFIG_MSM_ADSPRPC)       += adsprpc.o
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60

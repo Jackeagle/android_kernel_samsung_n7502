@@ -307,8 +307,12 @@ static struct mem_type mem_types[] = {
 		.domain    = DOMAIN_KERNEL,
 	},
 	[MT_MEMORY_DMA_READY] = {
+<<<<<<< HEAD
 		.prot_pte  = L_PTE_PRESENT | L_PTE_YOUNG | L_PTE_DIRTY |
 				L_PTE_XN,
+=======
+		.prot_pte  = L_PTE_PRESENT | L_PTE_YOUNG | L_PTE_DIRTY,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.prot_l1   = PMD_TYPE_TABLE,
 		.domain    = DOMAIN_KERNEL,
 	},
@@ -1204,7 +1208,11 @@ static void __init devicemaps_init(struct machine_desc *mdesc)
 	/*
 	 * Allocate the vector page early.
 	 */
+<<<<<<< HEAD
 	vectors = early_alloc(PAGE_SIZE * 2);
+=======
+	vectors = early_alloc(PAGE_SIZE);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	early_trap_init(vectors);
 
@@ -1249,20 +1257,28 @@ static void __init devicemaps_init(struct machine_desc *mdesc)
 	map.pfn = __phys_to_pfn(virt_to_phys(vectors));
 	map.virtual = 0xffff0000;
 	map.length = PAGE_SIZE;
+<<<<<<< HEAD
 #ifdef CONFIG_KUSER_HELPERS
 	map.type = MT_HIGH_VECTORS;
 #else
 	map.type = MT_LOW_VECTORS;
 #endif
+=======
+	map.type = MT_HIGH_VECTORS;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	create_mapping(&map);
 
 	if (!vectors_high()) {
 		map.virtual = 0;
+<<<<<<< HEAD
 		map.length = PAGE_SIZE * 2;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		map.type = MT_LOW_VECTORS;
 		create_mapping(&map);
 	}
 
+<<<<<<< HEAD
 	/* Now create a kernel read-only mapping */
 	map.pfn += 1;
 	map.virtual = 0xffff0000 + PAGE_SIZE;
@@ -1270,6 +1286,8 @@ static void __init devicemaps_init(struct machine_desc *mdesc)
 	map.type = MT_LOW_VECTORS;
 	create_mapping(&map);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/*
 	 * Ask the machine support to map in the statically mapped devices.
 	 */
@@ -1498,12 +1516,19 @@ static void __init map_lowmem(void)
 		vm->addr = (void *)(vaddr & PAGE_MASK);
 		vm->size = PAGE_ALIGN(length + (vaddr & ~PAGE_MASK));
 		vm->phys_addr = __pfn_to_phys(pfn);
+<<<<<<< HEAD
 		vm->flags = VM_LOWMEM | VM_ARM_STATIC_MAPPING;
 		vm->flags |= VM_ARM_MTYPE(type);
 		vm->caller = map_lowmem;
 		vm_area_add_early(vm);
 		mark_vmalloc_reserved_area(vm->addr, vm->size);
 		vm++;
+=======
+		vm->flags = VM_IOREMAP | VM_ARM_STATIC_MAPPING;
+		vm->flags |= VM_ARM_MTYPE(type);
+		vm->caller = map_lowmem;
+		vm_area_add_early(vm++);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 }
 

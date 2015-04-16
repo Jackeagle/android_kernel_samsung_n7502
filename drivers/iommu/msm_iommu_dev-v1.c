@@ -208,10 +208,21 @@ static int msm_iommu_parse_dt(struct platform_device *pdev,
 	ret = of_platform_populate(pdev->dev.of_node,
 				   msm_iommu_v1_ctx_match_table,
 				   NULL, &pdev->dev);
+<<<<<<< HEAD
 	if (ret)
 		pr_err("Failed to create iommu context device\n");
 
 	msm_iommu_add_drv(drvdata);
+=======
+	if (ret) {
+		pr_err("Failed to create iommu context device\n");
+		goto fail;
+	}
+
+	msm_iommu_add_drv(drvdata);
+	return 0;
+	
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 fail:
 	__put_bus_vote_client(drvdata);
 	return ret;

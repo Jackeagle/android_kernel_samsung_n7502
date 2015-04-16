@@ -1407,14 +1407,20 @@ static int tmc_etr_byte_cntr_dev_register(struct tmc_drvdata *drvdata)
 
 	ret = alloc_chrdev_region(&dev, 0, 1, drvdata->byte_cntr_node);
 	if (ret)
+<<<<<<< HEAD
 		goto err0;
 
 	cdev_init(&drvdata->byte_cntr_dev, &byte_cntr_fops);
 
+=======
+		goto dev_err0;
+	cdev_init(&drvdata->byte_cntr_dev, &byte_cntr_fops);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	drvdata->byte_cntr_dev.owner = THIS_MODULE;
 	drvdata->byte_cntr_dev.ops = &byte_cntr_fops;
 	ret = cdev_add(&drvdata->byte_cntr_dev, dev, 1);
 	if (ret)
+<<<<<<< HEAD
 		goto err1;
 
 	drvdata->byte_cntr_class = class_create(THIS_MODULE,
@@ -1424,11 +1430,19 @@ static int tmc_etr_byte_cntr_dev_register(struct tmc_drvdata *drvdata)
 		goto err2;
 	}
 
+=======
+		goto dev_err1;
+	drvdata->byte_cntr_class = class_create(THIS_MODULE,
+						drvdata->byte_cntr_node);
+	if (!drvdata->byte_cntr_class)
+		goto dev_err2;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	device = device_create(drvdata->byte_cntr_class, NULL,
 			       drvdata->byte_cntr_dev.dev, drvdata,
 			       drvdata->byte_cntr_node);
 	if (IS_ERR(device)) {
 		ret = PTR_ERR(device);
+<<<<<<< HEAD
 		goto err3;
 	}
 
@@ -1440,6 +1454,18 @@ err2:
 err1:
 	unregister_chrdev_region(drvdata->byte_cntr_dev.dev, 1);
 err0:
+=======
+		goto dev_err3;
+	}
+	return 0;
+dev_err3:
+	class_destroy(drvdata->byte_cntr_class);
+dev_err2:
+	cdev_del(&drvdata->byte_cntr_dev);
+dev_err1:
+	unregister_chrdev_region(drvdata->byte_cntr_dev.dev, 1);
+dev_err0:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return ret;
 }
 
@@ -1473,7 +1499,10 @@ static int tmc_etr_byte_cntr_init(struct platform_device *pdev,
 		dev_err(&pdev->dev, "Byte-cntr-irq not specified\n");
 		goto err;
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ret = devm_request_irq(&pdev->dev, drvdata->byte_cntr_irq,
 			tmc_etr_byte_cntr_irq,
 			IRQF_TRIGGER_RISING | IRQF_SHARED,
@@ -1482,6 +1511,7 @@ static int tmc_etr_byte_cntr_init(struct platform_device *pdev,
 		dev_err(&pdev->dev, "Request irq failed\n");
 		goto err;
 	}
+<<<<<<< HEAD
 
 	init_waitqueue_head(&drvdata->wq);
 	node_size += strlen(node_name);
@@ -1497,12 +1527,23 @@ static int tmc_etr_byte_cntr_init(struct platform_device *pdev,
 	strlcpy(drvdata->byte_cntr_node, node_name, node_size);
 	strlcat(drvdata->byte_cntr_node, "-stream", node_size);
 
+=======
+	init_waitqueue_head(&drvdata->wq);
+	node_size += strlen(node_name);
+	drvdata->byte_cntr_node = devm_kzalloc(&pdev->dev,
+				node_size, GFP_KERNEL);
+	strlcpy(drvdata->byte_cntr_node, node_name, node_size);
+	strlcat(drvdata->byte_cntr_node, "-stream", node_size);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ret = tmc_etr_byte_cntr_dev_register(drvdata);
 	if (ret) {
 		dev_err(&pdev->dev, "Byte cntr node not registered\n");
 		goto err;
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	dev_info(&pdev->dev, "Byte Counter feature enabled\n");
 	return 0;
 err:

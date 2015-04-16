@@ -1,4 +1,8 @@
+<<<<<<< HEAD
  /* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+=======
+ /* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -57,6 +61,7 @@ static void __iomem *prcgr;
 
 static int msm_sec_mi2s_rx_ch = 1;
 static int msm_pri_mi2s_tx_ch = 1;
+<<<<<<< HEAD
 static int msm_sec_mi2s_rx_bit_format = SNDRV_PCM_FORMAT_S16_LE;
 
 static inline int param_is_mask(int p)
@@ -82,6 +87,8 @@ static void param_set_mask(struct snd_pcm_hw_params *p, int n, unsigned bit)
 	}
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static void *def_msm8x10_wcd_mbhc_cal(void);
 static int msm8x10_enable_codec_ext_clk(struct snd_soc_codec *codec, int enable,
@@ -99,11 +106,14 @@ static struct wcd9xxx_mbhc_config mbhc_cfg = {
 	.insert_detect = true,
 	.swap_gnd_mic = NULL,
 	.use_int_rbias = false,
+<<<<<<< HEAD
 	.cs_enable_flags = (1 << MBHC_CS_ENABLE_POLLING |
 			    1 << MBHC_CS_ENABLE_INSERTION |
 			    1 << MBHC_CS_ENABLE_REMOVAL),
 	.do_recalibration = false,
 	.use_vddio_meas = false,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /*
@@ -163,8 +173,11 @@ static const struct snd_soc_dapm_widget msm8x10_dapm_widgets[] = {
 	SND_SOC_DAPM_MIC("Handset Mic", NULL),
 	SND_SOC_DAPM_MIC("Headset Mic", NULL),
 	SND_SOC_DAPM_MIC("Secondary Mic", NULL),
+<<<<<<< HEAD
 	SND_SOC_DAPM_MIC("Digital Mic1", NULL),
 	SND_SOC_DAPM_MIC("Digital Mic2", NULL),
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 static int msm8x10_ext_spk_power_amp_init(void)
 {
@@ -242,6 +255,7 @@ static int msm_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int msm_be_fm_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
 				struct snd_pcm_hw_params *params)
 {
@@ -258,6 +272,8 @@ static int msm_be_fm_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
 	return 0;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int msm_rx_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
 				struct snd_pcm_hw_params *params)
 {
@@ -267,8 +283,11 @@ static int msm_rx_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
 					SNDRV_PCM_HW_PARAM_CHANNELS);
 
 	pr_debug("%s(): channel:%d\n", __func__, msm_pri_mi2s_tx_ch);
+<<<<<<< HEAD
 	param_set_mask(params, SNDRV_PCM_HW_PARAM_FORMAT,
 					msm_sec_mi2s_rx_bit_format);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	rate->min = rate->max = 48000;
 	channels->min = channels->max = msm_sec_mi2s_rx_ch;
 
@@ -284,8 +303,11 @@ static int msm_tx_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
 					SNDRV_PCM_HW_PARAM_CHANNELS);
 
 	pr_debug("%s(), channel:%d\n", __func__, msm_pri_mi2s_tx_ch);
+<<<<<<< HEAD
 	param_set_mask(params, SNDRV_PCM_HW_PARAM_FORMAT,
 					msm_sec_mi2s_rx_bit_format);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	rate->min = rate->max = 48000;
 	channels->min = channels->max = msm_pri_mi2s_tx_ch;
 
@@ -590,7 +612,11 @@ static void *def_msm8x10_wcd_mbhc_cal(void)
 #undef S
 #define S(X, Y) ((WCD9XXX_MBHC_CAL_PLUG_TYPE_PTR(msm8x10_wcd_cal)->X) = (Y))
 	S(v_no_mic, 30);
+<<<<<<< HEAD
 	S(v_hs_max, 2550);
+=======
+	S(v_hs_max, 1650);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #undef S
 #define S(X, Y) ((WCD9XXX_MBHC_CAL_BTN_DET_PTR(msm8x10_wcd_cal)->X) = (Y))
 	S(c[0], 62);
@@ -804,7 +830,11 @@ static struct snd_soc_dai_link msm8x10_dai[] = {
 		.name = "MSM8X10 Compr",
 		.stream_name = "COMPR",
 		.cpu_dai_name	= "MultiMedia4",
+<<<<<<< HEAD
 		.platform_name  = "msm-compress-dsp",
+=======
+		.platform_name  = "msm-compr-dsp",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.dynamic = 1,
 		.trigger = {SND_SOC_DPCM_TRIGGER_POST,
 			 SND_SOC_DPCM_TRIGGER_POST},
@@ -954,7 +984,11 @@ static struct snd_soc_dai_link msm8x10_dai[] = {
 		.codec_dai_name = "msm-stub-rx",
 		.no_pcm = 1,
 		.be_id = MSM_BACKEND_DAI_INT_FM_RX,
+<<<<<<< HEAD
 		.be_hw_params_fixup = msm_be_fm_hw_params_fixup,
+=======
+		.be_hw_params_fixup = msm_be_hw_params_fixup,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/* this dainlink has playback support */
 		.ignore_pmdown_time = 1,
 		.ignore_suspend = 1,

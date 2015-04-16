@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2013-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -146,8 +150,13 @@ static int q6_hfi_iface_eventq_read(struct q6_hfi_device *device, void *pkt)
 	struct q6_iface_q_info *q_info;
 	unsigned long flags = 0;
 
+<<<<<<< HEAD
 	if (!device || !pkt) {
 		dprintk(VIDC_ERR, "Invalid Params\n");
+=======
+	if (!pkt) {
+		dprintk(VIDC_ERR, "Invalid Params");
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return -EINVAL;
 	}
 
@@ -546,10 +555,13 @@ static void *q6_hfi_session_init(void *device, u32 session_id,
 
 	new_session = (struct hal_session *)
 		kzalloc(sizeof(struct hal_session), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!new_session) {
 		dprintk(VIDC_ERR, "new session fail: Out of memory\n");
 		return NULL;
 	}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	new_session->session_id = (u32) session_id;
 	if (session_type == 1)
 		new_session->is_decoder = 0;
@@ -564,6 +576,7 @@ static void *q6_hfi_session_init(void *device, u32 session_id,
 		dprintk(VIDC_ERR, "session_init: failed to create packet");
 		goto err_session_init;
 	}
+<<<<<<< HEAD
 	/*
 	 * Add session id to the list entry and then send the apr pkt.
 	 * This will avoid scenarios where apr_send_pkt is taking more
@@ -573,11 +586,14 @@ static void *q6_hfi_session_init(void *device, u32 session_id,
 	mutex_lock(&dev->session_lock);
 	list_add_tail(&new_session->list, &dev->sess_head);
 	mutex_unlock(&dev->session_lock);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	rc = apr_send_pkt(dev->apr, (uint32_t *)&apr);
 	if (rc != apr.hdr.pkt_size) {
 		dprintk(VIDC_ERR, "%s: apr_send_pkt failed rc: %d",
 				__func__, rc);
+<<<<<<< HEAD
 		/* Delete the session id as the send pkt is not successful */
 		mutex_lock(&dev->session_lock);
 		list_del(&new_session->list);
@@ -586,6 +602,14 @@ static void *q6_hfi_session_init(void *device, u32 session_id,
 		goto err_session_init;
 	}
 
+=======
+		rc = -EBADE;
+		goto err_session_init;
+	}
+	mutex_lock(&dev->session_lock);
+	list_add_tail(&new_session->list, &dev->sess_head);
+	mutex_unlock(&dev->session_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return new_session;
 
 err_session_init:

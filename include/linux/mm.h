@@ -302,6 +302,7 @@ unsigned long vmalloc_to_pfn(const void *addr);
  * On nommu, vmalloc/vfree wrap through kmalloc/kfree directly, so there
  * is no special casing required.
  */
+<<<<<<< HEAD
 
 #ifdef CONFIG_MMU
 extern int is_vmalloc_addr(const void *x);
@@ -312,6 +313,18 @@ static inline int is_vmalloc_addr(const void *x)
 }
 #endif
 
+=======
+static inline int is_vmalloc_addr(const void *x)
+{
+#ifdef CONFIG_MMU
+	unsigned long addr = (unsigned long)x;
+
+	return addr >= VMALLOC_START && addr < VMALLOC_END;
+#else
+	return 0;
+#endif
+}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #ifdef CONFIG_MMU
 extern int is_vmalloc_or_module_addr(const void *x);
 #else
@@ -806,6 +819,7 @@ static inline void *page_rmapping(struct page *page)
 	return (void *)((unsigned long)page->mapping & ~PAGE_MAPPING_FLAGS);
 }
 
+<<<<<<< HEAD
 extern struct address_space *__page_file_mapping(struct page *);
 
 static inline
@@ -817,6 +831,8 @@ struct address_space *page_file_mapping(struct page *page)
 	return page->mapping;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static inline int PageAnon(struct page *page)
 {
 	return ((unsigned long)page->mapping & PAGE_MAPPING_ANON) != 0;
@@ -833,6 +849,7 @@ static inline pgoff_t page_index(struct page *page)
 	return page->index;
 }
 
+<<<<<<< HEAD
 extern pgoff_t __page_file_index(struct page *page);
 
 /*
@@ -847,6 +864,8 @@ static inline pgoff_t page_file_index(struct page *page)
 	return page->index;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /*
  * Return true if this page is mapped into pagetables.
  */
@@ -1536,6 +1555,11 @@ int vm_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
 			unsigned long pfn);
 int vm_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
 			unsigned long pfn);
+<<<<<<< HEAD
+=======
+int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long len);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 struct page *follow_page(struct vm_area_struct *, unsigned long address,
 			unsigned int foll_flags);

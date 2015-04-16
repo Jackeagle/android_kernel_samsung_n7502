@@ -11,7 +11,10 @@
 #include <linux/errno.h>
 #include <linux/smp.h>
 #include <linux/cpu.h>
+<<<<<<< HEAD
 #include <linux/ratelimit.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #include <asm/cacheflush.h>
 #include <asm/smp_plat.h>
@@ -151,6 +154,7 @@ static struct notifier_block hotplug_rtb_notifier = {
 	.notifier_call = hotplug_rtb_callback,
 };
 
+<<<<<<< HEAD
 static int hotplug_cpu_check_callback(struct notifier_block *nfb,
 				      unsigned long action, void *hcpu)
 {
@@ -174,6 +178,8 @@ static struct notifier_block hotplug_cpu_check_notifier = {
 	.priority = INT_MAX,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int msm_platform_secondary_init(unsigned int cpu)
 {
 	int ret;
@@ -194,6 +200,7 @@ int msm_platform_secondary_init(unsigned int cpu)
 
 static int __init init_hotplug(void)
 {
+<<<<<<< HEAD
 	int rc;
 
 	rc = register_hotcpu_notifier(&hotplug_rtb_notifier);
@@ -201,5 +208,8 @@ static int __init init_hotplug(void)
 		return rc;
 
 	return register_hotcpu_notifier(&hotplug_cpu_check_notifier);
+=======
+	return register_hotcpu_notifier(&hotplug_rtb_notifier);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 early_initcall(init_hotplug);

@@ -1352,6 +1352,16 @@ static int __devinit qpnp_iadc_probe(struct spmi_device *spmi)
 	schedule_delayed_work(&iadc->iadc_work,
 			round_jiffies_relative(msecs_to_jiffies
 					(QPNP_IADC_CALIB_SECONDS)));
+<<<<<<< HEAD
+=======
+
+#if defined(CONFIG_MACH_BAFFIN2_CHN_CMCC)
+	rc = qpnp_iadc_write_reg(iadc, 0x49, 0);
+	if (rc)
+		dev_err(&spmi->dev, "Failed to write rsnsn ctl %d\n", rc);
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return 0;
 fail:
 	for_each_child_of_node(node, child) {

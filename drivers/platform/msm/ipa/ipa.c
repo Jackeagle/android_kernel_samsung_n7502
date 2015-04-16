@@ -542,6 +542,7 @@ static long ipa_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			retval = -EFAULT;
 			break;
 		}
+<<<<<<< HEAD
 
 		if (((struct ipa_ioc_query_intf_tx_props *)header)->num_tx_props
 				> IPA_NUM_PROPS_MAX) {
@@ -549,6 +550,8 @@ static long ipa_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			break;
 		}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		pyld_sz = sz + ((struct ipa_ioc_query_intf_tx_props *)
 				header)->num_tx_props *
 			sizeof(struct ipa_ioc_tx_intf_prop);
@@ -577,6 +580,7 @@ static long ipa_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			retval = -EFAULT;
 			break;
 		}
+<<<<<<< HEAD
 
 		if (((struct ipa_ioc_query_intf_rx_props *)header)->num_rx_props
 				> IPA_NUM_PROPS_MAX) {
@@ -584,6 +588,8 @@ static long ipa_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			break;
 		}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		pyld_sz = sz + ((struct ipa_ioc_query_intf_rx_props *)
 				header)->num_rx_props *
 			sizeof(struct ipa_ioc_rx_intf_prop);
@@ -977,7 +983,11 @@ static int ipa_update_connections_info(struct device_node *node,
 	enum ipa_pipe_mem_type mem_type;
 
 	if (!pipe_connection || !node)
+<<<<<<< HEAD
 		return -EINVAL;
+=======
+		goto err;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	key = "qcom,src-bam-physical-address";
 	rc = of_property_read_u32(node, key, &val);

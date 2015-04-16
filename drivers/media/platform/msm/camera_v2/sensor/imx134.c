@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* Copyright (c) 2013, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -12,6 +16,7 @@
  */
 #include "msm_sensor.h"
 #define IMX134_SENSOR_NAME "imx134"
+<<<<<<< HEAD
 DEFINE_MSM_MUTEX(imx134_mut);
 
 static struct msm_sensor_ctrl_t imx134_s_ctrl;
@@ -78,6 +83,21 @@ static struct msm_sensor_power_setting imx134_power_setting[] = {
 		.delay = 0,
 	},
 };
+=======
+
+#undef CDBG
+#ifdef IMX135_DEBUG
+#define CDBG(fmt, args...) pr_err(fmt, ##args)
+#else
+#define CDBG(fmt, args...) pr_debug(fmt, ##args)
+#endif
+
+DEFINE_MSM_MUTEX(imx134_mut);
+
+struct class *camera_class;
+
+static struct msm_sensor_ctrl_t imx134_s_ctrl;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static struct v4l2_subdev_info imx134_subdev_info[] = {
 	{
@@ -98,7 +118,10 @@ static int32_t msm_imx134_i2c_probe(struct i2c_client *client,
 {
 	return msm_sensor_i2c_probe(client, id, &imx134_s_ctrl);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static struct i2c_driver imx134_i2c_driver = {
 	.id_table = imx134_i2c_id,
 	.probe  = msm_imx134_i2c_probe,
@@ -112,7 +135,11 @@ static struct msm_camera_i2c_client imx134_sensor_i2c_client = {
 };
 
 static const struct of_device_id imx134_dt_match[] = {
+<<<<<<< HEAD
 	{.compatible = "sne,imx134", .data = &imx134_s_ctrl},
+=======
+	{.compatible = "qcom,imx134", .data = &imx134_s_ctrl},
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	{}
 };
 
@@ -120,35 +147,135 @@ MODULE_DEVICE_TABLE(of, imx134_dt_match);
 
 static struct platform_driver imx134_platform_driver = {
 	.driver = {
+<<<<<<< HEAD
 		.name = "sne,imx134",
+=======
+		.name = "qcom,imx134",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.owner = THIS_MODULE,
 		.of_match_table = imx134_dt_match,
 	},
 };
 
+<<<<<<< HEAD
+=======
+extern uint16_t back_cam_fw_version;
+
+static ssize_t back_camera_type_show(struct device *dev,
+			struct device_attribute *attr, char *buf)
+{
+	char type[] = "SONY_IMX134_FIMC_IS\n";
+
+	 return snprintf(buf, sizeof(type), "%s", type);
+}
+
+static ssize_t front_camera_type_show(struct device *dev,
+			struct device_attribute *attr, char *buf)
+{
+	char cam_type[] = "S5K6B2YX\n";
+
+	 return snprintf(buf, sizeof(cam_type), "%s", cam_type);
+}
+
+
+static ssize_t back_camera_firmware_show(struct device *dev,
+			struct device_attribute *attr, char *buf)
+{
+	char cam_fw[] = "A08QSGF01AA A08QSGF01AA\n";/* PowerLogics_module, 8mega_pixel, Qualcomm_isp, Sony_sensor*/
+
+	return snprintf(buf, sizeof(cam_fw), "%s", cam_fw);
+}
+
+static ssize_t front_camera_firmware_show(struct device *dev,
+			struct device_attribute *attr, char *buf)
+{
+	char cam_fw[] = "S5K6B2YX S5K6B2YX\n";
+
+	return  snprintf(buf, sizeof(cam_fw), "%s", cam_fw);
+}
+
+static DEVICE_ATTR(rear_camtype, S_IRUGO, back_camera_type_show, NULL);
+static DEVICE_ATTR(rear_camfw, S_IRUGO, back_camera_firmware_show, NULL);
+static DEVICE_ATTR(front_camtype, S_IRUGO, front_camera_type_show, NULL);
+static DEVICE_ATTR(front_camfw, S_IRUGO, front_camera_firmware_show, NULL);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int32_t imx134_platform_probe(struct platform_device *pdev)
 {
 	int32_t rc = 0;
 	const struct of_device_id *match;
+<<<<<<< HEAD
 	match = of_match_device(imx134_dt_match, &pdev->dev);
 	rc = msm_sensor_platform_probe(pdev, match->data);
+=======
+	struct device 	*cam_dev_back;
+	struct device 	*cam_dev_front;
+	match = of_match_device(imx134_dt_match, &pdev->dev);
+	camera_class = class_create(THIS_MODULE, "camera");
+	if (IS_ERR(camera_class))
+	    pr_err("failed to create device cam_dev_rear!\n");
+
+	rc = msm_sensor_platform_probe(pdev, match->data);
+	printk("%s00:%d\n", __func__, __LINE__);
+
+	printk("%s01:%d\n", __func__, __LINE__);
+
+	cam_dev_back = device_create(camera_class, NULL,
+		1, NULL, "rear");
+	if (IS_ERR(cam_dev_back)) {
+		printk("Failed to create cam_dev_back device!\n");
+	}
+
+	if (device_create_file(cam_dev_back, &dev_attr_rear_camtype) < 0) {
+		printk("Failed to create device file!(%s)!\n",
+			dev_attr_rear_camtype.attr.name);
+	}
+	if (device_create_file(cam_dev_back, &dev_attr_rear_camfw) < 0) {
+		printk("Failed to create device file!(%s)!\n",
+			dev_attr_rear_camfw.attr.name);
+	}
+
+	cam_dev_front = device_create(camera_class, NULL,
+		2, NULL, "front");
+	if (IS_ERR(cam_dev_front)) {
+		printk("Failed to create cam_dev_front device!");
+	}
+
+	if (device_create_file(cam_dev_front, &dev_attr_front_camtype) < 0) {
+		printk("Failed to create device file!(%s)!\n",
+			dev_attr_front_camtype.attr.name);
+	}
+	if (device_create_file(cam_dev_front, &dev_attr_front_camfw) < 0) {
+		printk("Failed to create device file!(%s)!\n",
+			dev_attr_front_camfw.attr.name);
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return rc;
 }
 
 static int __init imx134_init_module(void)
 {
 	int32_t rc = 0;
+<<<<<<< HEAD
 	pr_debug("%s:%d\n", __func__, __LINE__);
+=======
+	pr_info("%s:%d\n", __func__, __LINE__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	rc = platform_driver_probe(&imx134_platform_driver,
 		imx134_platform_probe);
 	if (!rc)
 		return rc;
+<<<<<<< HEAD
 	pr_debug("%s:%d rc %d\n", __func__, __LINE__, rc);
+=======
+	pr_err("%s:%d rc %d\n", __func__, __LINE__, rc);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return i2c_add_driver(&imx134_i2c_driver);
 }
 
 static void __exit imx134_exit_module(void)
 {
+<<<<<<< HEAD
 	pr_debug("%s:%d\n", __func__, __LINE__);
 	if (imx134_s_ctrl.pdev) {
 		msm_sensor_free_sensor_data(&imx134_s_ctrl);
@@ -156,13 +283,24 @@ static void __exit imx134_exit_module(void)
 	} else {
 		i2c_del_driver(&imx134_i2c_driver);
 	}
+=======
+	pr_info("%s:%d\n", __func__, __LINE__);
+	if (imx134_s_ctrl.pdev) {
+		msm_sensor_free_sensor_data(&imx134_s_ctrl);
+		platform_driver_unregister(&imx134_platform_driver);
+	} else
+		i2c_del_driver(&imx134_i2c_driver);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return;
 }
 
 static struct msm_sensor_ctrl_t imx134_s_ctrl = {
 	.sensor_i2c_client = &imx134_sensor_i2c_client,
+<<<<<<< HEAD
 	.power_setting_array.power_setting = imx134_power_setting,
 	.power_setting_array.size = ARRAY_SIZE(imx134_power_setting),
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.msm_sensor_mutex = &imx134_mut,
 	.sensor_v4l2_subdev_info = imx134_subdev_info,
 	.sensor_v4l2_subdev_info_size = ARRAY_SIZE(imx134_subdev_info),

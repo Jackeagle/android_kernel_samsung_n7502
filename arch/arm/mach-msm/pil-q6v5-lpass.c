@@ -505,6 +505,10 @@ static int __devinit pil_lpass_driver_probe(struct platform_device *pdev)
 
 	adsp_set_state("ONLINE");
 	return 0;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 err_kobj:
 	kobject_put(lpass_status);
 err_create_kobj:

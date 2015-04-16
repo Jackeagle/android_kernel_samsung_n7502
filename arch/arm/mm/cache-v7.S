@@ -32,6 +32,7 @@ ENTRY(v7_flush_icache_all)
 	mov	pc, lr
 ENDPROC(v7_flush_icache_all)
 
+<<<<<<< HEAD
  /*
  *     v7_flush_dcache_louis()
  *
@@ -50,6 +51,8 @@ ENTRY(v7_flush_dcache_louis)
 	b	loop1				@ start flushing cache levels
 ENDPROC(v7_flush_dcache_louis)
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /*
  *	v7_flush_dcache_all()
  *
@@ -137,6 +140,7 @@ ENTRY(v7_flush_kern_cache_all)
 	mov	pc, lr
 ENDPROC(v7_flush_kern_cache_all)
 
+<<<<<<< HEAD
  /*
  *     v7_flush_kern_cache_louis(void)
  *
@@ -155,6 +159,8 @@ ENTRY(v7_flush_kern_cache_louis)
 	mov	pc, lr
 ENDPROC(v7_flush_kern_cache_louis)
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /*
  *	v7_flush_cache_all()
  *

@@ -27,6 +27,10 @@ enum iio_chan_type {
 	IIO_ANGL,
 	IIO_TIMESTAMP,
 	IIO_CAPACITANCE,
+<<<<<<< HEAD
+=======
+	IIO_QUATERNION,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 enum iio_modifier {
@@ -44,6 +48,10 @@ enum iio_modifier {
 	IIO_MOD_X_OR_Y_OR_Z,
 	IIO_MOD_LIGHT_BOTH,
 	IIO_MOD_LIGHT_IR,
+<<<<<<< HEAD
+=======
+	IIO_MOD_R,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 #define IIO_VAL_INT 1

@@ -17,6 +17,7 @@ DEFINE_MSM_MUTEX(ov9724_mut);
 
 static struct msm_sensor_ctrl_t ov9724_s_ctrl;
 
+<<<<<<< HEAD
 static struct msm_sensor_power_setting ov9724_power_setting[] = {
 	{
 		.seq_type = SENSOR_VREG,
@@ -73,6 +74,8 @@ static struct msm_sensor_power_setting ov9724_power_setting[] = {
 		.delay = 0,
 	},
 };
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static struct v4l2_subdev_info ov9724_subdev_info[] = {
 	{
@@ -88,7 +91,10 @@ static int32_t msm_ov9724_i2c_probe(struct i2c_client *client,
 {
 	return msm_sensor_i2c_probe(client, id, &ov9724_s_ctrl);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static const struct i2c_device_id ov9724_i2c_id[] = {
 	{OV9724_SENSOR_NAME, (kernel_ulong_t)&ov9724_s_ctrl},
 	{ }
@@ -108,8 +114,11 @@ static struct msm_camera_i2c_client ov9724_sensor_i2c_client = {
 
 static struct msm_sensor_ctrl_t ov9724_s_ctrl = {
 	.sensor_i2c_client = &ov9724_sensor_i2c_client,
+<<<<<<< HEAD
 	.power_setting_array.power_setting = ov9724_power_setting,
 	.power_setting_array.size = ARRAY_SIZE(ov9724_power_setting),
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.msm_sensor_mutex = &ov9724_mut,
 	.sensor_v4l2_subdev_info = ov9724_subdev_info,
 	.sensor_v4l2_subdev_info_size = ARRAY_SIZE(ov9724_subdev_info),
@@ -146,7 +155,12 @@ static int __init ov9724_init_module(void)
 
 	rc = platform_driver_probe(&ov9724_platform_driver,
 		ov9724_platform_probe);
+<<<<<<< HEAD
 	if (!rc)
+=======
+	if (!rc) {
+		pr_info("%s: probe success\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return rc;
 	return i2c_add_driver(&ov9724_i2c_driver);
 }

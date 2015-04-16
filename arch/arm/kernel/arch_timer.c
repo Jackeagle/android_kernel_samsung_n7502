@@ -357,7 +357,11 @@ static struct clocksource clocksource_counter = {
 	.rating	= 400,
 	.read	= arch_counter_read,
 	.mask	= CLOCKSOURCE_MASK(56),
+<<<<<<< HEAD
 	.flags	= CLOCK_SOURCE_IS_CONTINUOUS | CLOCK_SOURCE_SUSPEND_NONSTOP,
+=======
+	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 static u32 arch_counter_get_cntvct32(void)
@@ -480,7 +484,11 @@ static int __init arch_timer_mem_register(void)
 	if (!clk)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	clk->features = CLOCK_EVT_FEAT_ONESHOT | CLOCK_EVT_FEAT_DYNIRQ;
+=======
+	clk->features = CLOCK_EVT_FEAT_ONESHOT;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	clk->name = "arch_mem_timer";
 	clk->rating = 400;
 	clk->set_mode = arch_timer_set_mode_mem;

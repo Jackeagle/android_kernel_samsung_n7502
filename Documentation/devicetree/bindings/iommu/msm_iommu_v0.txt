@@ -14,7 +14,10 @@ Optional properties:
 - qcom,needs-alt-core-clk : boolean to enable the secondary core clock for
   access to the IOMMU configuration registers
 - Bus scaling properties: See msm_bus.txt
+<<<<<<< HEAD
 - qcom,msm-enable-remote-spinlock : boolean to enable use of remote spinlock
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 - List of sub nodes, one for each of the translation context banks supported.
     Required properties for each sub-node:

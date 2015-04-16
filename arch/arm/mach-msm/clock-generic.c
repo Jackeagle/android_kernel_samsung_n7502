@@ -14,14 +14,20 @@
 #include <linux/kernel.h>
 #include <linux/errno.h>
 #include <linux/err.h>
+<<<<<<< HEAD
 #include <linux/clk.h>
 #include <linux/io.h>
 
+=======
+
+#include <linux/clk.h>
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <mach/clk-provider.h>
 #include <mach/clock-generic.h>
 
 /* ==================== Mux clock ==================== */
 
+<<<<<<< HEAD
 int parent_to_src_sel(struct clk_src *parents, int num_parents, struct clk *p)
 {
 	int i;
@@ -29,6 +35,15 @@ int parent_to_src_sel(struct clk_src *parents, int num_parents, struct clk *p)
 	for (i = 0; i < num_parents; i++) {
 		if (parents[i].src == p)
 			return parents[i].sel;
+=======
+static int parent_to_src_sel(struct mux_clk *mux, struct clk *p)
+{
+	int i;
+
+	for (i = 0; i < mux->num_parents; i++) {
+		if (mux->parents[i].src == p)
+			return mux->parents[i].sel;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	return -EINVAL;
@@ -37,6 +52,7 @@ int parent_to_src_sel(struct clk_src *parents, int num_parents, struct clk *p)
 static int mux_set_parent(struct clk *c, struct clk *p)
 {
 	struct mux_clk *mux = to_mux_clk(c);
+<<<<<<< HEAD
 	int sel = parent_to_src_sel(mux->parents, mux->num_parents, p);
 	struct clk *old_parent;
 	int rc = 0, i;
@@ -57,6 +73,13 @@ static int mux_set_parent(struct clk *c, struct clk *p)
 		}
 	}
 
+=======
+	int sel = parent_to_src_sel(mux, p);
+	struct clk *old_parent;
+	int rc = 0;
+	unsigned long flags;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (sel < 0)
 		return sel;
 
@@ -70,7 +93,10 @@ static int mux_set_parent(struct clk *c, struct clk *p)
 
 	old_parent = c->parent;
 	c->parent = p;
+<<<<<<< HEAD
 	c->rate = clk_get_rate(p);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	__clk_post_reparent(c, old_parent, &flags);
 
 	return 0;
@@ -85,6 +111,7 @@ static long mux_round_rate(struct clk *c, unsigned long rate)
 {
 	struct mux_clk *mux = to_mux_clk(c);
 	int i;
+<<<<<<< HEAD
 	unsigned long prate, rrate = 0;
 
 	for (i = 0; i < mux->num_parents; i++) {
@@ -96,6 +123,25 @@ static long mux_round_rate(struct clk *c, unsigned long rate)
 		return -EINVAL;
 
 	return rrate;
+=======
+	unsigned long prate, max_prate = 0, rrate = ULONG_MAX;
+
+	for (i = 0; i < mux->num_parents; i++) {
+		prate = clk_round_rate(mux->parents[i].src, rate);
+		if (IS_ERR_VALUE(prate))
+			continue;
+		if (prate < rate) {
+			max_prate = max(prate, max_prate);
+			continue;
+		}
+
+		rrate = min(rrate, prate);
+	}
+	if (rrate == ULONG_MAX)
+		rrate = max_prate;
+
+	return rrate ? rrate : -EINVAL;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int mux_set_rate(struct clk *c, unsigned long rate)
@@ -147,8 +193,12 @@ static int mux_set_rate(struct clk *c, unsigned long rate)
 set_par_fail:
 	clk_set_rate(new_parent, new_par_curr_rate);
 set_rate_fail:
+<<<<<<< HEAD
 	WARN(mux->ops->set_mux_sel(mux,
 		parent_to_src_sel(mux->parents, mux->num_parents, c->parent)),
+=======
+	WARN(mux->ops->set_mux_sel(mux, parent_to_src_sel(mux, c->parent)),
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		"Set rate failed for %s. Also in bad state!\n", c->dbg_name);
 	return rc;
 }
@@ -188,8 +238,12 @@ static enum handoff mux_handoff(struct clk *c)
 	struct mux_clk *mux = to_mux_clk(c);
 
 	c->rate = clk_get_rate(c->parent);
+<<<<<<< HEAD
 	mux->safe_sel = parent_to_src_sel(mux->parents, mux->num_parents,
 							mux->safe_parent);
+=======
+	mux->safe_sel = parent_to_src_sel(mux, mux->safe_parent);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (mux->en_mask && mux->ops && mux->ops->is_enabled)
 		return mux->ops->is_enabled(mux)
@@ -218,6 +272,7 @@ struct clk_ops clk_ops_gen_mux = {
 	.get_parent = mux_get_parent,
 };
 
+<<<<<<< HEAD
 /* ==================== Divider clock ==================== */
 
 static long __div_round_rate(struct div_data *data, unsigned long rate,
@@ -242,6 +297,32 @@ static long __div_round_rate(struct div_data *data, unsigned long rate,
 			_best_prate = prate;
 		}
 
+=======
+
+/* ==================== Divider clock ==================== */
+
+static long __div_round_rate(struct clk *c, unsigned long rate, int *best_div)
+{
+	struct div_clk *d = to_div_clk(c);
+	unsigned int div, min_div, max_div;
+	unsigned long p_rrate, rrate = ULONG_MAX;
+
+	rate = max(rate, 1UL);
+
+	if (!d->ops || !d->ops->set_div)
+		min_div = max_div = d->div;
+	else {
+		min_div = max(d->min_div, 1U);
+		max_div = min(d->max_div, (unsigned int) (ULONG_MAX / rate));
+	}
+
+	for (div = min_div; div <= max_div; div++) {
+		p_rrate = clk_round_rate(c->parent, rate * div);
+		if (IS_ERR_VALUE(p_rrate))
+			break;
+
+		p_rrate /= div;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/*
 		 * Trying higher dividers is only going to ask the parent for
 		 * a higher rate. If it can't even output a rate higher than
@@ -249,6 +330,7 @@ static long __div_round_rate(struct div_data *data, unsigned long rate,
 		 * going to be able to output an even higher rate required
 		 * for a higher divider. So, stop trying higher dividers.
 		 */
+<<<<<<< HEAD
 		if (prate / div < rate)
 			break;
 
@@ -262,25 +344,57 @@ static long __div_round_rate(struct div_data *data, unsigned long rate,
 		*best_div = _best_div;
 	if (best_prate)
 		*best_prate = _best_prate;
+=======
+		if (p_rrate < rate) {
+			if (rrate == ULONG_MAX) {
+				rrate = p_rrate;
+				if (best_div)
+					*best_div = div;
+			}
+			break;
+		}
+		if (p_rrate < rrate) {
+			rrate = p_rrate;
+			if (best_div)
+				*best_div = div;
+		}
+
+		if (rrate <= rate + d->rate_margin)
+			break;
+	}
+
+	if (rrate == ULONG_MAX)
+		return -EINVAL;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return rrate;
 }
 
 static long div_round_rate(struct clk *c, unsigned long rate)
 {
+<<<<<<< HEAD
 	struct div_clk *d = to_div_clk(c);
 
 	return __div_round_rate(&d->data, rate, c->parent, NULL, NULL);
+=======
+	return __div_round_rate(c, rate, NULL);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int div_set_rate(struct clk *c, unsigned long rate)
 {
 	struct div_clk *d = to_div_clk(c);
 	int div, rc = 0;
+<<<<<<< HEAD
 	long rrate, old_prate, new_prate;
 	struct div_data *data = &d->data;
 
 	rrate = __div_round_rate(data, rate, c->parent, &div, &new_prate);
+=======
+	long rrate, old_prate;
+
+	rrate = __div_round_rate(c, rate, &div);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (rrate != rate)
 		return -EINVAL;
 
@@ -290,22 +404,38 @@ static int div_set_rate(struct clk *c, unsigned long rate)
 	 * !d->ops and return an error. __div_round_rate() ensures div ==
 	 * d->div if !d->ops.
 	 */
+<<<<<<< HEAD
 	if (div > data->div)
+=======
+	if (div > d->div)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rc = d->ops->set_div(d, div);
 	if (rc)
 		return rc;
 
 	old_prate = clk_get_rate(c->parent);
+<<<<<<< HEAD
 	rc = clk_set_rate(c->parent, new_prate);
 	if (rc)
 		goto set_rate_fail;
 
 	if (div < data->div)
+=======
+	rc = clk_set_rate(c->parent, rate * div);
+	if (rc)
+		goto set_rate_fail;
+
+	if (div < d->div)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rc = d->ops->set_div(d, div);
 	if (rc)
 		goto div_dec_fail;
 
+<<<<<<< HEAD
 	data->div = div;
+=======
+	d->div = div;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return 0;
 
@@ -313,8 +443,13 @@ div_dec_fail:
 	WARN(clk_set_rate(c->parent, old_prate),
 		"Set rate failed for %s. Also in bad state!\n", c->dbg_name);
 set_rate_fail:
+<<<<<<< HEAD
 	if (div > data->div)
 		WARN(d->ops->set_div(d, data->div),
+=======
+	if (div > d->div)
+		WARN(d->ops->set_div(d, d->div),
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			"Set rate failed for %s. Also in bad state!\n",
 			c->dbg_name);
 	return rc;
@@ -338,6 +473,7 @@ static void div_disable(struct clk *c)
 static enum handoff div_handoff(struct clk *c)
 {
 	struct div_clk *d = to_div_clk(c);
+<<<<<<< HEAD
 	unsigned int div = d->data.div;
 
 	if (d->ops && d->ops->get_div)
@@ -348,6 +484,13 @@ static enum handoff div_handoff(struct clk *c)
 	if (!d->ops || !d->ops->set_div)
 		d->data.min_div = d->data.max_div = div;
 	d->data.div = div;
+=======
+
+	if (d->ops && d->ops->get_div)
+		d->div = max(d->ops->get_div(d), 1);
+	d->div = max(d->div, 1U);
+	c->rate = clk_get_rate(c->parent) / d->div;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (d->en_mask && d->ops && d->ops->is_enabled)
 		return d->ops->is_enabled(d)
@@ -383,8 +526,17 @@ static long __slave_div_round_rate(struct clk *c, unsigned long rate,
 
 	rate = max(rate, 1UL);
 
+<<<<<<< HEAD
 	min_div = d->data.min_div;
 	max_div = d->data.max_div;
+=======
+	if (!d->ops || !d->ops->set_div)
+		min_div = max_div = d->div;
+	else {
+		min_div = d->min_div;
+		max_div = d->max_div;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	p_rate = clk_get_rate(c->parent);
 	div = p_rate / rate;
@@ -411,24 +563,37 @@ static int slave_div_set_rate(struct clk *c, unsigned long rate)
 	if (rrate != rate)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (div == d->data.div)
+=======
+	if (div == d->div)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return 0;
 
 	/*
 	 * For fixed divider clock we don't want to return an error if the
 	 * requested rate matches the achievable rate. So, don't check for
 	 * !d->ops and return an error. __slave_div_round_rate() ensures
+<<<<<<< HEAD
 	 * div == d->data.div if !d->ops.
+=======
+	 * div == d->div if !d->ops.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	 */
 	rc = d->ops->set_div(d, div);
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	d->data.div = div;
+=======
+	d->div = div;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static unsigned long slave_div_get_rate(struct clk *c)
 {
 	struct div_clk *d = to_div_clk(c);
@@ -437,11 +602,14 @@ static unsigned long slave_div_get_rate(struct clk *c)
 	return clk_get_rate(c->parent) / d->data.div;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct clk_ops clk_ops_slave_div = {
 	.enable = div_enable,
 	.disable = div_disable,
 	.round_rate = slave_div_round_rate,
 	.set_rate = slave_div_set_rate,
+<<<<<<< HEAD
 	.get_rate = slave_div_get_rate,
 	.handoff = div_handoff,
 };
@@ -728,3 +896,7 @@ struct clk_ops clk_ops_mux_div_clk = {
 	.get_parent = mux_div_clk_get_parent,
 	.handoff = mux_div_clk_handoff,
 };
+=======
+	.handoff = div_handoff,
+};
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60

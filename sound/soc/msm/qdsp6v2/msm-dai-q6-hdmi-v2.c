@@ -129,11 +129,15 @@ static int msm_dai_q6_hdmi_hw_params(struct snd_pcm_substream *substream,
 		break;
 	}
 
+<<<<<<< HEAD
 	/*refer to HDMI spec CEA-861-E: Table 28 Audio InfoFrame Data Byte 4*/
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	switch (dai_data->channels) {
 	case 2:
 		dai_data->port_config.hdmi_multi_ch.channel_allocation = 0;
 		break;
+<<<<<<< HEAD
 	case 3:
 		dai_data->port_config.hdmi_multi_ch.channel_allocation = 0x02;
 		break;
@@ -149,6 +153,11 @@ static int msm_dai_q6_hdmi_hw_params(struct snd_pcm_substream *substream,
 	case 7:
 		dai_data->port_config.hdmi_multi_ch.channel_allocation = 0x12;
 		break;
+=======
+	case 6:
+		dai_data->port_config.hdmi_multi_ch.channel_allocation = 0x0B;
+		break;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	case 8:
 		dai_data->port_config.hdmi_multi_ch.channel_allocation = 0x13;
 		break;

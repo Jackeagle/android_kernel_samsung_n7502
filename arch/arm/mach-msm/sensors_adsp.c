@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -38,7 +42,10 @@
 #include <mach/msm_bus.h>
 #include <mach/msm_bus_board.h>
 
+<<<<<<< HEAD
 #define CLASS_NAME	"ssc"
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define DRV_NAME	"sensors"
 #define DRV_VERSION	"1.00"
 
@@ -356,7 +363,10 @@ sns_ocmem_send_msg(struct sns_ocmem_hdr_s *hdr, void const *msg_ptr)
 	if (temp == NULL) {
 		pr_err("%s: allocation failure\n", __func__);
 		rv = -ENOMEM;
+<<<<<<< HEAD
 		goto out;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	hdr->dst_module = SNS_OCMEM_MODULE_ADSP;
@@ -389,7 +399,10 @@ sns_ocmem_send_msg(struct sns_ocmem_hdr_s *hdr, void const *msg_ptr)
 
 	kfree(temp);
 
+<<<<<<< HEAD
 out:
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return rv;
 }
 
@@ -877,7 +890,11 @@ static int sns_ocmem_map_send(void)
 
 	vectors = ocmem_get_vectors(SNS_OCMEM_CLIENT_ID, sns_ctl.buf);
 	if ((vectors != NULL)) {
+<<<<<<< HEAD
 		memcpy(&msg.vectors, vectors, sizeof(*vectors));
+=======
+		memcpy(&msg.vectors, vectors, sizeof(vectors));
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/* TODO: set vectors_len */
 		msg.vectors_valid = true;
 		msg.vectors_len = 0;
@@ -1077,10 +1094,38 @@ const struct file_operations sensors_adsp_fops = {
 	.unlocked_ioctl = sensors_adsp_ioctl,
 };
 
+<<<<<<< HEAD
 static int sensors_adsp_probe(struct platform_device *pdev)
 {
 	int ret = 0;
 	sns_ctl.dev_class = class_create(THIS_MODULE, CLASS_NAME);
+=======
+ struct class* get_adsp_sensor_class( void )
+{
+
+pr_err("renju %s:",__func__);
+if (sns_ctl.dev_class == NULL) {
+		sns_ctl.dev_class = class_create(THIS_MODULE, DRV_NAME);
+		if (sns_ctl.dev_class == NULL) {
+			pr_err("%s: class_create fail.\n", __func__);
+	}
+}
+
+return sns_ctl.dev_class;
+}
+
+EXPORT_SYMBOL(get_adsp_sensor_class);
+
+static int sensors_adsp_probe(struct platform_device *pdev)
+{
+	int ret = 0;
+	pr_err("renju %s:++",__func__);
+	if (sns_ctl.dev_class == NULL) {
+	sns_ctl.dev_class = class_create(THIS_MODULE, DRV_NAME);
+	}
+        //sensors_class = sns_ctl.dev_class;
+        //pr_err("pradeep %s:",__func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (sns_ctl.dev_class == NULL) {
 		pr_err("%s: class_create fail.\n", __func__);
 		goto res_err;

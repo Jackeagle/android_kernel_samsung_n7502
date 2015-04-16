@@ -57,8 +57,11 @@
 #define EDP_INTR_ACK_SHIFT	1
 #define EDP_INTR_MASK_SHIFT	2
 
+<<<<<<< HEAD
 #define EDP_MAX_LANE		4
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* isr */
 #define EDP_INTR_HPD		BIT(0)
 #define EDP_INTR_AUX_I2C_DONE	BIT(3)
@@ -139,6 +142,7 @@ struct edp_buf {
 #define EV_DPCD_CAP_READ		BIT(2)
 #define EV_DPCD_STATUS_READ		BIT(3)
 #define EV_LINK_TRAIN			BIT(4)
+<<<<<<< HEAD
 #define EV_IDLE_PATTERNS_SENT		BIT(30)
 #define EV_VIDEO_READY			BIT(31)
 
@@ -160,6 +164,10 @@ struct edp_buf {
 #define EDP_LINK_RATE_270	10	/* 2.70G = 270M * 10 */
 #define EDP_LINK_RATE_MAX	EDP_LINK_RATE_270
 
+=======
+#define EV_VIDEO_READY			BIT(31)
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct dpcd_cap {
 	char major;
 	char minor;
@@ -259,14 +267,18 @@ struct mdss_edp_drv_pdata {
 	int (*off) (struct mdss_panel_data *pdata);
 	struct platform_device *pdev;
 
+<<<<<<< HEAD
 	struct mutex emutex;
 	int clk_cnt;
 	int cont_splash;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* edp specific */
 	unsigned char *base;
 	int base_size;
 	unsigned char *mmss_cc_base;
+<<<<<<< HEAD
 	u32 mask1;
 	u32 mask2;
 
@@ -284,6 +296,14 @@ struct mdss_edp_drv_pdata {
 
 	struct edp_edid edid;
 	struct dpcd_cap dpcd;
+=======
+
+	struct mdss_panel_data panel_data;
+
+	struct edp_edid edid;
+	struct dpcd_cap dpcd;
+	int train_start;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/* regulators */
 	struct regulator *vdda_vreg;
@@ -297,6 +317,10 @@ struct mdss_edp_drv_pdata {
 
 	/* gpios */
 	int gpio_panel_en;
+<<<<<<< HEAD
+=======
+	int gpio_panel_pwm;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/* backlight */
 	struct pwm_device *bl_pwm;
@@ -311,8 +335,11 @@ struct mdss_edp_drv_pdata {
 	/* aux */
 	struct completion aux_comp;
 	struct completion train_comp;
+<<<<<<< HEAD
 	struct completion idle_comp;
 	struct completion video_comp;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct mutex aux_mutex;
 	u32 aux_cmd_busy;
 	u32 aux_cmd_i2c;
@@ -324,6 +351,11 @@ struct mdss_edp_drv_pdata {
 	char txbuf[256];
 	char rxbuf[256];
 	struct dpcd_link_status link_status;
+<<<<<<< HEAD
+=======
+	char link_rate;
+	char lane_cnt;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	char v_level;
 	char p_level;
 	/* transfer unit */
@@ -339,9 +371,18 @@ struct mdss_edp_drv_pdata {
 	u32 event_gndx;
 	u32 event_todo_list[HPD_EVENT_MAX];
 	spinlock_t event_lock;
+<<<<<<< HEAD
 	spinlock_t lock;
 };
 
+=======
+};
+
+void mdss_edp_phy_sw_reset(unsigned char *base);
+void mdss_edp_pll_configure(unsigned char *base, int rate);
+void mdss_edp_enable_mainlink(unsigned char *base, int enable);
+void mdss_edp_phy_powerup(unsigned char *base, int enable);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int mdss_edp_aux_clk_enable(struct mdss_edp_drv_pdata *edp_drv);
 void mdss_edp_aux_clk_disable(struct mdss_edp_drv_pdata *edp_drv);
 int mdss_edp_clk_enable(struct mdss_edp_drv_pdata *edp_drv);
@@ -352,14 +393,24 @@ int mdss_edp_prepare_aux_clocks(struct mdss_edp_drv_pdata *edp_drv);
 void mdss_edp_unprepare_aux_clocks(struct mdss_edp_drv_pdata *edp_drv);
 int mdss_edp_prepare_clocks(struct mdss_edp_drv_pdata *edp_drv);
 void mdss_edp_unprepare_clocks(struct mdss_edp_drv_pdata *edp_drv);
+<<<<<<< HEAD
 
 void mdss_edp_dpcd_cap_read(struct mdss_edp_drv_pdata *edp);
 int mdss_edp_dpcd_status_read(struct mdss_edp_drv_pdata *edp);
+=======
+void mdss_edp_config_clk(unsigned char *base, unsigned char *mmss_cc_base);
+void mdss_edp_unconfig_clk(unsigned char *base,
+		unsigned char *mmss_cc_base);
+
+void mdss_edp_dpcd_cap_read(struct mdss_edp_drv_pdata *edp);
+void mdss_edp_dpcd_status_read(struct mdss_edp_drv_pdata *edp);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void mdss_edp_edid_read(struct mdss_edp_drv_pdata *edp, int block);
 int mdss_edp_link_train(struct mdss_edp_drv_pdata *edp);
 void edp_aux_i2c_handler(struct mdss_edp_drv_pdata *edp, u32 isr);
 void edp_aux_native_handler(struct mdss_edp_drv_pdata *edp, u32 isr);
 void mdss_edp_aux_init(struct mdss_edp_drv_pdata *ep);
+<<<<<<< HEAD
 
 void mdss_edp_fill_link_cfg(struct mdss_edp_drv_pdata *ep);
 void mdss_edp_sink_power_down(struct mdss_edp_drv_pdata *ep);
@@ -369,5 +420,20 @@ void mdss_edp_lane_power_ctrl(struct mdss_edp_drv_pdata *ep, int up);
 void mdss_edp_config_ctrl(struct mdss_edp_drv_pdata *ep);
 
 void mdss_edp_clk_debug(unsigned char *edp_base, unsigned char *mmss_cc_base);
+=======
+void mdss_edp_enable_aux(unsigned char *edp_base, int enable);
+
+void mdss_edp_timing_engine_ctrl(unsigned char *edp_base, int enable);
+void mdss_edp_mainlink_ctrl(unsigned char *edp_base, int enable);
+void mdss_edp_mainlink_reset(unsigned char *edp_base);
+void mdss_edp_aux_reset(unsigned char *edp_base);
+void mdss_edp_aux_ctrl(unsigned char *edp_base, int enable);
+void mdss_edp_phy_pll_reset(unsigned char *edp_base);
+int mdss_edp_phy_pll_ready(unsigned char *edp_base);
+int mdss_edp_phy_ready(unsigned char *edp_base);
+void mdss_edp_lane_power_ctrl(unsigned char *edp_base, int max_lane, int up);
+void mdss_edp_phy_vm_pe_init(unsigned char *edp_base);
+void mdss_edp_clock_synchrous(unsigned char *edp_base, int sync);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #endif /* MDSS_EDP_H */

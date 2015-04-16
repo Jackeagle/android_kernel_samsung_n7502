@@ -299,7 +299,10 @@ ENTRY(\name\()_processor_functions)
 ENTRY(\name\()_cache_fns)
 	.long	\name\()_flush_icache_all
 	.long	\name\()_flush_kern_cache_all
+<<<<<<< HEAD
 	.long   \name\()_flush_kern_cache_louis
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.long	\name\()_flush_user_cache_all
 	.long	\name\()_flush_user_cache_range
 	.long	\name\()_coherent_kern_range

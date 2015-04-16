@@ -18,6 +18,7 @@ enum session_type {
 	MSM_VIDC_MAX_DEVICES,
 };
 
+<<<<<<< HEAD
 /* NOTE: if you change this enum you MUST update the
  * "buffer-type-tz-usage-table" for any affected target
  * in arch/arm/boot/dts/<arch>.dtsi
@@ -53,6 +54,8 @@ enum smem_cache_ops {
 	SMEM_CACHE_CLEAN_INVALIDATE,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void *msm_vidc_open(int core_id, int session_type);
 int msm_vidc_close(void *instance);
 int msm_vidc_querycap(void *instance, struct v4l2_capability *cap);
@@ -60,11 +63,18 @@ int msm_vidc_enum_fmt(void *instance, struct v4l2_fmtdesc *f);
 int msm_vidc_s_fmt(void *instance, struct v4l2_format *f);
 int msm_vidc_g_fmt(void *instance, struct v4l2_format *f);
 int msm_vidc_s_ctrl(void *instance, struct v4l2_control *a);
+<<<<<<< HEAD
 int msm_vidc_s_ext_ctrl(void *instance, struct v4l2_ext_controls *a);
 int msm_vidc_g_ctrl(void *instance, struct v4l2_control *a);
 int msm_vidc_reqbufs(void *instance, struct v4l2_requestbuffers *b);
 int msm_vidc_prepare_buf(void *instance, struct v4l2_buffer *b);
 int msm_vidc_release_buffers(void *instance, int buffer_type);
+=======
+int msm_vidc_g_ctrl(void *instance, struct v4l2_control *a);
+int msm_vidc_reqbufs(void *instance, struct v4l2_requestbuffers *b);
+int msm_vidc_prepare_buf(void *instance, struct v4l2_buffer *b);
+int msm_vidc_release_buf(void *instance, struct v4l2_buffer *b);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int msm_vidc_qbuf(void *instance, struct v4l2_buffer *b);
 int msm_vidc_dqbuf(void *instance, struct v4l2_buffer *b);
 int msm_vidc_streamon(void *instance, enum v4l2_buf_type i);
@@ -83,6 +93,7 @@ int msm_vidc_dqevent(void *instance, struct v4l2_event *event);
 int msm_vidc_wait(void *instance);
 int msm_vidc_s_parm(void *instance, struct v4l2_streamparm *a);
 int msm_vidc_enum_framesizes(void *instance, struct v4l2_frmsizeenum *fsize);
+<<<<<<< HEAD
 struct msm_smem *msm_vidc_smem_alloc(void *instance,
 			size_t size, u32 align, u32 flags,
 			enum hal_buffer buffer_type, int map_kernel);
@@ -95,6 +106,8 @@ int msm_vidc_smem_get_domain_partition(void *instance,
 		u32 flags, enum hal_buffer buffer_type,
 		int *domain_num, int *partition_num);
 void *msm_vidc_smem_get_client(void *instance);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif
 struct msm_vidc_interlace_payload {
 	unsigned int format;
@@ -141,6 +154,7 @@ struct msm_vidc_panscan_window_payload {
 	unsigned int num_panscan_windows;
 	struct msm_vidc_panscan_window wnd[1];
 };
+<<<<<<< HEAD
 struct msm_vidc_s3d_frame_packing_payload {
 	unsigned int fpa_id;
 	unsigned int cancel_flag;
@@ -162,6 +176,8 @@ struct msm_vidc_s3d_frame_packing_payload {
 	unsigned int fpa_extension_flag;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 enum msm_vidc_extradata_type {
 	EXTRADATA_NONE = 0x00000000,
 	EXTRADATA_MB_QUANTIZATION = 0x00000001,

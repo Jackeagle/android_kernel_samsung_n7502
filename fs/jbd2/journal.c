@@ -1340,7 +1340,11 @@ static void jbd2_mark_journal_empty(journal_t *journal)
  * Update a journal's errno.  Write updated superblock to disk waiting for IO
  * to complete.
  */
+<<<<<<< HEAD
 void jbd2_journal_update_sb_errno(journal_t *journal)
+=======
+static void jbd2_journal_update_sb_errno(journal_t *journal)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	journal_superblock_t *sb = journal->j_superblock;
 
@@ -1352,7 +1356,10 @@ void jbd2_journal_update_sb_errno(journal_t *journal)
 
 	jbd2_write_superblock(journal, WRITE_SYNC);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(jbd2_journal_update_sb_errno);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /*
  * Read the superblock for a given journal, performing initial

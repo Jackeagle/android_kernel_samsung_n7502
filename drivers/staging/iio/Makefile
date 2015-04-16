@@ -33,3 +33,7 @@ obj-y += magnetometer/
 obj-y += meter/
 obj-y += resolver/
 obj-y += trigger/
+<<<<<<< HEAD
+=======
+obj-y += inv_test/
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60

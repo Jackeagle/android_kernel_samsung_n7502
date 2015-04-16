@@ -38,10 +38,13 @@ static const struct of_device_id msm_vfe_dt_match[] = {
 		.compatible = "qcom,vfe40",
 		.data = &vfe40_hw_info,
 	},
+<<<<<<< HEAD
 	{
 		.compatible = "qcom,vfe32",
 		.data = &vfe32_hw_info,
 	},
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	{}
 };
 
@@ -91,6 +94,10 @@ static int __devinit vfe_probe(struct platform_device *pdev)
 
 	if (!vfe_dev->hw_info) {
 		pr_err("%s: No vfe hardware info\n", __func__);
+<<<<<<< HEAD
+=======
+		kfree(vfe_dev);//prevent
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return -EINVAL;
 	}
 	ISP_DBG("%s: device id = %d\n", __func__, pdev->id);
@@ -140,7 +147,10 @@ static int __devinit vfe_probe(struct platform_device *pdev)
 		&vfe_vb2_ops, &vfe_layout);
 	if (rc < 0) {
 		pr_err("%s: Unable to create buffer manager\n", __func__);
+<<<<<<< HEAD
 		msm_sd_unregister(&vfe_dev->subdev);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		kfree(vfe_dev);
 		return -EINVAL;
 	}

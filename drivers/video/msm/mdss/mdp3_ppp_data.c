@@ -36,7 +36,10 @@ const uint32_t src_cfg_lut[MDP_IMGTYPE_LIMIT] = {
 	[MDP_YCRYCB_H2V1] = MDP_YCRYCB_H2V1_SRC_REG,
 	[MDP_Y_CBCR_H2V1] = MDP_Y_CRCB_H2V1_SRC_REG,
 	[MDP_Y_CRCB_H2V1] = MDP_Y_CRCB_H2V1_SRC_REG,
+<<<<<<< HEAD
 	[MDP_BGRX_8888] = MDP_RGBX_8888_SRC_REG,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 const uint32_t out_cfg_lut[MDP_IMGTYPE_LIMIT] = {
@@ -56,7 +59,10 @@ const uint32_t out_cfg_lut[MDP_IMGTYPE_LIMIT] = {
 	[MDP_YCRYCB_H2V1] = MDP_YCRYCB_H2V1_DST_REG,
 	[MDP_Y_CBCR_H2V1] = MDP_Y_CRCB_H2V1_DST_REG,
 	[MDP_Y_CRCB_H2V1] = MDP_Y_CRCB_H2V1_DST_REG,
+<<<<<<< HEAD
 	[MDP_BGRX_8888] = MDP_RGBX_8888_DST_REG,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 const uint32_t pack_patt_lut[MDP_IMGTYPE_LIMIT] = {
@@ -64,8 +70,13 @@ const uint32_t pack_patt_lut[MDP_IMGTYPE_LIMIT] = {
 	[MDP_BGR_565] = PPP_GET_PACK_PATTERN(0, CLR_B, CLR_G, CLR_R, 8),
 	[MDP_RGB_888] = PPP_GET_PACK_PATTERN(0, CLR_R, CLR_G, CLR_B, 8),
 	[MDP_BGR_888] = PPP_GET_PACK_PATTERN(0, CLR_B, CLR_G, CLR_R, 8),
+<<<<<<< HEAD
 	[MDP_BGRA_8888] = PPP_GET_PACK_PATTERN(CLR_ALPHA, CLR_B,
 		CLR_G, CLR_R, 8),
+=======
+	[MDP_BGRA_8888] = PPP_GET_PACK_PATTERN(CLR_ALPHA, CLR_R,
+		CLR_G, CLR_B, 8),
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	[MDP_RGBA_8888] = PPP_GET_PACK_PATTERN(CLR_ALPHA, CLR_R,
 		CLR_G, CLR_B, 8),
 	[MDP_ARGB_8888] = PPP_GET_PACK_PATTERN(CLR_ALPHA, CLR_R,
@@ -84,8 +95,11 @@ const uint32_t pack_patt_lut[MDP_IMGTYPE_LIMIT] = {
 		CLR_CR, CLR_Y, CLR_CB, 8),
 	[MDP_Y_CBCR_H2V1] = PPP_GET_PACK_PATTERN(0, 0, CLR_CB, CLR_CR, 8),
 	[MDP_Y_CRCB_H2V1] = PPP_GET_PACK_PATTERN(0, 0, CLR_CR, CLR_CB, 8),
+<<<<<<< HEAD
 	[MDP_BGRX_8888] = PPP_GET_PACK_PATTERN(CLR_ALPHA, CLR_B,
 		CLR_G, CLR_R, 8),
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 const uint32_t dst_op_reg[MDP_IMGTYPE_LIMIT] = {
@@ -125,7 +139,10 @@ const uint32_t bytes_per_pixel[MDP_IMGTYPE_LIMIT] = {
 	[MDP_Y_CRCB_H2V1] = 1,
 	[MDP_Y_CRCB_H2V2] = 1,
 	[MDP_YCRYCB_H2V1] = 2,
+<<<<<<< HEAD
 	[MDP_BGRX_8888] = 4,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 const bool per_pixel_alpha[MDP_IMGTYPE_LIMIT] = {

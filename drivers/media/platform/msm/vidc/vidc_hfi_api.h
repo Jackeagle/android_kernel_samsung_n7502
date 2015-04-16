@@ -177,7 +177,10 @@ enum hal_property {
 	HAL_PARAM_BUFFER_ALLOC_MODE,
 	HAL_PARAM_VDEC_FRAME_ASSEMBLY,
 	HAL_PARAM_VDEC_CONCEAL_COLOR,
+<<<<<<< HEAD
 	HAL_PARAM_VENC_ENABLE_INITIAL_QP,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 enum hal_domain {
@@ -187,6 +190,7 @@ enum hal_domain {
 	HAL_UNUSED_DOMAIN = 0x10000000,
 };
 
+<<<<<<< HEAD
 enum multi_stream {
 	HAL_VIDEO_DECODER_NONE = 0x00000000,
 	HAL_VIDEO_DECODER_PRIMARY = 0x00000001,
@@ -203,6 +207,8 @@ enum hal_core_capabilities {
 	HAL_VIDEO_UNUSED_CAPABILITY      = 0x10000000,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 enum hal_video_codec {
 	HAL_VIDEO_CODEC_UNKNOWN  = 0x00000000,
 	HAL_VIDEO_CODEC_MVC      = 0x00000001,
@@ -623,6 +629,7 @@ struct hal_quantization {
 	u32 layer_id;
 };
 
+<<<<<<< HEAD
 struct hal_initial_quantization {
 	u32 qpi;
 	u32 qpp;
@@ -630,6 +637,8 @@ struct hal_initial_quantization {
 	u32 init_qp_enable;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct hal_quantization_range {
 	u32 min_qp;
 	u32 max_qp;
@@ -870,7 +879,10 @@ struct vidc_frame_data {
 	u32 mark_target;
 	u32 mark_data;
 	u32 clnt_data;
+<<<<<<< HEAD
 	u32 extradata_size;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct vidc_seq_hdr {
@@ -889,14 +901,22 @@ enum hal_flush {
 enum hal_event_type {
 	HAL_EVENT_SEQ_CHANGED_SUFFICIENT_RESOURCES,
 	HAL_EVENT_SEQ_CHANGED_INSUFFICIENT_RESOURCES,
+<<<<<<< HEAD
 	HAL_EVENT_RELEASE_BUFFER_REFERENCE,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	HAL_UNUSED_SEQCHG = 0x10000000,
 };
 
 enum buffer_mode_type {
+<<<<<<< HEAD
 	HAL_BUFFER_MODE_STATIC = 0x001,
 	HAL_BUFFER_MODE_RING = 0x010,
 	HAL_BUFFER_MODE_DYNAMIC = 0x100,
+=======
+	HAL_BUFFER_MODE_STATIC = 0x00000000,
+	HAL_BUFFER_MODE_RING,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct hal_buffer_alloc_mode {
@@ -958,8 +978,11 @@ struct msm_vidc_cb_event {
 	u32 height;
 	u32 width;
 	u32 hal_event_type;
+<<<<<<< HEAD
 	u8 *packet_buffer;
 	u8 *exra_data_buffer;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /* Data callback structure */
@@ -1043,9 +1066,16 @@ struct vidc_hal_session_init_done {
 	struct hal_uncompressed_format_supported uncomp_format;
 	struct hal_interlace_format_supported HAL_format;
 	struct hal_nal_stream_format_supported nal_stream_format;
+<<<<<<< HEAD
 	struct hal_intra_refresh intra_refresh;
 	struct hal_seq_header_info seq_hdr_info;
 	enum buffer_mode_type alloc_mode_out;
+=======
+/*	struct hal_profile_level_supported profile_level;
+	// allocate and released memory for above. */
+	struct hal_intra_refresh intra_refresh;
+	struct hal_seq_header_info seq_hdr_info;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct buffer_requirements {
@@ -1070,6 +1100,7 @@ enum fw_info {
 	FW_INFO_MAX,
 };
 
+<<<<<<< HEAD
 enum dev_info {
 	DEV_CLOCK_COUNT,
 	DEV_CLOCK_ENABLED,
@@ -1078,6 +1109,8 @@ enum dev_info {
 	DEV_INFO_MAX
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define call_hfi_op(q, op, args...)			\
 	(((q) && (q)->op) ? ((q)->op(args)) : 0)
 
@@ -1131,14 +1164,20 @@ struct hfi_device {
 	int (*load_fw)(void *dev);
 	void (*unload_fw)(void *dev);
 	int (*get_fw_info)(void *dev, enum fw_info info);
+<<<<<<< HEAD
 	int (*get_info) (void *dev, enum dev_info info);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int (*get_stride_scanline)(int color_fmt, int width,
 		int height,	int *stride, int *scanlines);
 	int (*capability_check)(u32 fourcc, u32 width,
 		u32 *max_width, u32 *max_height);
 	int (*session_clean)(void *sess);
+<<<<<<< HEAD
 	int (*get_core_capabilities)(void);
 	int (*power_enable)(void *dev);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 typedef void (*hfi_cmd_response_callback) (enum command_response cmd,

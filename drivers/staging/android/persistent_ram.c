@@ -378,6 +378,10 @@ static int __devinit persistent_ram_buffer_init(const char *name,
 		struct persistent_ram_zone *prz, struct persistent_ram **ramp)
 {
 	int i;
+<<<<<<< HEAD
+=======
+	unsigned int size_of_desc_name;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct persistent_ram *ram;
 	struct persistent_ram_descriptor *desc;
 	phys_addr_t start;
@@ -386,7 +390,12 @@ static int __devinit persistent_ram_buffer_init(const char *name,
 		start = ram->start;
 		for (i = 0; i < ram->num_descs; i++) {
 			desc = &ram->descs[i];
+<<<<<<< HEAD
 			if (!strcmp(desc->name, name)) {
+=======
+			size_of_desc_name=strlen(desc->name);			
+			if (!strncmp(desc->name, name,size_of_desc_name)) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				*ramp = ram;
 				return persistent_ram_buffer_map(start,
 						desc->size, prz);

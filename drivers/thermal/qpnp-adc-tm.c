@@ -1339,7 +1339,11 @@ static int qpnp_adc_tm_read_status(struct qpnp_adc_tm_chip *chip)
 {
 	u8 status_low = 0, status_high = 0, qpnp_adc_tm_meas_en = 0;
 	u8 adc_tm_low_enable = 0, adc_tm_high_enable = 0;
+<<<<<<< HEAD
 	u8 sensor_mask = 0, adc_tm_low_thr_set = 0, adc_tm_high_thr_set = 0;
+=======
+	u8 sensor_mask = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int rc = 0, sensor_notify_num = 0, i = 0, sensor_num = 0;
 	uint32_t btm_chan_num = 0;
 	struct qpnp_adc_thr_client_info *client_info = NULL;
@@ -1368,6 +1372,7 @@ static int qpnp_adc_tm_read_status(struct qpnp_adc_tm_chip *chip)
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	rc = qpnp_adc_tm_read_reg(chip, QPNP_ADC_TM_LOW_THR_INT_EN,
 						&adc_tm_low_thr_set);
 	if (rc) {
@@ -1382,6 +1387,8 @@ static int qpnp_adc_tm_read_status(struct qpnp_adc_tm_chip *chip)
 		goto fail;
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* Check which interrupt threshold is lower and measure against the
 	 * enabled channel */
 	rc = qpnp_adc_tm_read_reg(chip, QPNP_ADC_TM_MULTI_MEAS_EN,
@@ -1392,9 +1399,13 @@ static int qpnp_adc_tm_read_status(struct qpnp_adc_tm_chip *chip)
 	}
 
 	adc_tm_low_enable = qpnp_adc_tm_meas_en & status_low;
+<<<<<<< HEAD
 	adc_tm_low_enable &= adc_tm_low_thr_set;
 	adc_tm_high_enable = qpnp_adc_tm_meas_en & status_high;
 	adc_tm_high_enable &= adc_tm_high_thr_set;
+=======
+	adc_tm_high_enable = qpnp_adc_tm_meas_en & status_high;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (adc_tm_high_enable) {
 		sensor_notify_num = adc_tm_high_enable;
@@ -1902,7 +1913,11 @@ static int __devinit qpnp_adc_tm_probe(struct spmi_device *spmi)
 			pr_debug("thermal node%x\n", btm_channel_num);
 			chip->sensor[sen_idx].mode = THERMAL_DEVICE_DISABLED;
 			chip->sensor[sen_idx].thermal_node = true;
+<<<<<<< HEAD
 			snprintf(name, sizeof(name), "%s",
+=======
+			snprintf(name, sizeof(name),
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				chip->adc->adc_channels[sen_idx].name);
 			chip->sensor[sen_idx].meas_interval =
 				QPNP_ADC_TM_MEAS_INTERVAL;

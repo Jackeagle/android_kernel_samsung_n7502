@@ -36,10 +36,13 @@ static struct debug_buffer dbg_buf;
 	__buf.filled_size = 0; \
 })
 
+<<<<<<< HEAD
 #define DYNAMIC_BUF_OWNER(__binfo) ({ \
 	atomic_read(&__binfo->ref_count) == 2 ? "video driver" : "firmware";\
 })
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int core_info_open(struct inode *inode, struct file *file)
 {
 	file->private_data = inode->i_private;
@@ -86,6 +89,7 @@ static ssize_t core_info_read(struct file *file, char __user *buf,
 	write_str(&dbg_buf, "irq: %u\n",
 		call_hfi_op(hdev, get_fw_info, hdev->hfi_device_data,
 					FW_IRQ));
+<<<<<<< HEAD
 	write_str(&dbg_buf, "clock count: %d\n",
 		call_hfi_op(hdev, get_info, hdev->hfi_device_data,
 					DEV_CLOCK_COUNT));
@@ -98,6 +102,8 @@ static ssize_t core_info_read(struct file *file, char __user *buf,
 	write_str(&dbg_buf, "power enabled: %u\n",
 		call_hfi_op(hdev, get_info, hdev->hfi_device_data,
 					DEV_PWR_ENABLED));
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	for (i = SYS_MSG_START; i < SYS_MSG_END; i++) {
 		write_str(&dbg_buf, "completions[%d]: %s\n", i,
 			completion_done(&core->completions[SYS_MSG_INDEX(i)]) ?
@@ -209,6 +215,7 @@ static int inst_info_open(struct inode *inode, struct file *file)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int publish_unreleased_reference(struct msm_vidc_inst *inst)
 {
 	struct buffer_info *temp = NULL;
@@ -240,6 +247,8 @@ static int publish_unreleased_reference(struct msm_vidc_inst *inst)
 	return 0;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static ssize_t inst_info_read(struct file *file, char __user *buf,
 		size_t count, loff_t *ppos)
 {
@@ -268,6 +277,7 @@ static ssize_t inst_info_read(struct file *file, char __user *buf,
 		write_str(
 		&dbg_buf, "type: %s\n", inst->fmts[i]->type == OUTPUT_PORT ?
 		"Output" : "Capture");
+<<<<<<< HEAD
 		switch (inst->buffer_mode_set[i]) {
 		case HAL_BUFFER_MODE_STATIC:
 			write_str(&dbg_buf, "buffer mode : %s\n", "static");
@@ -281,6 +291,8 @@ static ssize_t inst_info_read(struct file *file, char __user *buf,
 		default:
 			write_str(&dbg_buf, "buffer mode : unsupported\n");
 		}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		for (j = 0; j < inst->fmts[i]->num_planes; j++)
 			write_str(&dbg_buf, "size for plane %d: %u\n", j,
 			inst->bufq[i].vb2_bufq.plane_sizes[j]);
@@ -295,8 +307,11 @@ static ssize_t inst_info_read(struct file *file, char __user *buf,
 	write_str(&dbg_buf, "EBD Count: %d\n", inst->count.ebd);
 	write_str(&dbg_buf, "FTB Count: %d\n", inst->count.ftb);
 	write_str(&dbg_buf, "FBD Count: %d\n", inst->count.fbd);
+<<<<<<< HEAD
 	publish_unreleased_reference(inst);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return simple_read_from_buffer(buf, count, ppos,
 		dbg_buf.ptr, dbg_buf.filled_size);
 }

@@ -22,6 +22,12 @@
 
 #include <linux/mfd/pm8xxx/core.h>
 #include <linux/input/pmic8xxx-pwrkey.h>
+<<<<<<< HEAD
+=======
+#if CONFIG_SEC_DEBUG
+#include <mach/sec_debug.h>
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define PON_CNTL_1 0x1C
 #define PON_CNTL_PULL_UP BIT(7)
@@ -53,7 +59,13 @@ static irqreturn_t pwrkey_press_irq(int irq, void *_pwrkey)
 
 	input_report_key(pwrkey->pwr, KEY_POWER, 1);
 	input_sync(pwrkey->pwr);
+<<<<<<< HEAD
 
+=======
+#if CONFIG_SEC_DEBUG
+	sec_debug_check_crash_key(KEY_POWER, 1);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return IRQ_HANDLED;
 }
 
@@ -71,7 +83,13 @@ static irqreturn_t pwrkey_release_irq(int irq, void *_pwrkey)
 
 	input_report_key(pwrkey->pwr, KEY_POWER, 0);
 	input_sync(pwrkey->pwr);
+<<<<<<< HEAD
 
+=======
+#if CONFIG_SEC_DEBUG
+	sec_debug_check_crash_key(KEY_POWER, 0);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return IRQ_HANDLED;
 }
 

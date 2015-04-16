@@ -300,7 +300,10 @@ struct mmc_host {
 
 #define MMC_CAP2_HS400_1_8V	(1 << 21)        /* can support */
 #define MMC_CAP2_HS400_1_2V	(1 << 22)        /* can support */
+<<<<<<< HEAD
 #define MMC_CAP2_CORE_PM	(1 << 23)       /* use PM framework */
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define MMC_CAP2_HS400		(MMC_CAP2_HS400_1_8V | \
 				 MMC_CAP2_HS400_1_2V)
 	mmc_pm_flag_t		pm_caps;	/* supported pm features */
@@ -326,6 +329,10 @@ struct mmc_host {
 
 	/* private data */
 	spinlock_t		lock;		/* lock for claim and bus ops */
+<<<<<<< HEAD
+=======
+	spinlock_t		mrq_lock;	/* lock for mrq usage */
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	struct mmc_ios		ios;		/* current io bus settings */
 	u32			ocr;		/* the current OCR setting */
@@ -573,9 +580,12 @@ static inline int mmc_use_core_runtime_pm(struct mmc_host *host)
 	return host->caps2 & MMC_CAP2_CORE_RUNTIME_PM;
 }
 
+<<<<<<< HEAD
 static inline int mmc_use_core_pm(struct mmc_host *host)
 {
 	return host->caps2 & MMC_CAP2_CORE_PM;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif /* LINUX_MMC_HOST_H */

@@ -61,7 +61,10 @@ static void mmc_clk_scaling(struct mmc_host *host, bool from_wq);
 
 /* Flushing a large amount of cached data may take a long time. */
 #define MMC_FLUSH_REQ_TIMEOUT_MS 90000 /* msec */
+<<<<<<< HEAD
 #define MMC_CACHE_DISBALE_TIMEOUT_MS 180000 /* msec */
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static struct workqueue_struct *workqueue;
 
@@ -745,11 +748,15 @@ static int mmc_wait_for_data_req_done(struct mmc_host *host,
 				 */
 				mmc_update_clk_scaling(host);
 				err = mmc_stop_request(host);
+<<<<<<< HEAD
 				if (err == MMC_BLK_NO_REQ_TO_STOP) {
 					pending_is_urgent = true;
 					/* wait for done/new/urgent event */
 					continue;
 				} else if (err && !context_info->is_done_rcv) {
+=======
+				if (err && !context_info->is_done_rcv) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					err = MMC_BLK_ABORT;
 					break;
 				}
@@ -895,8 +902,12 @@ struct mmc_async_req *mmc_start_req(struct mmc_host *host,
 			mmc_post_req(host, host->areq->mrq, 0);
 			host->areq = NULL;
 			if (areq) {
+<<<<<<< HEAD
 				if (!(areq->cmd_flags &
 						MMC_REQ_NOREINSERT_MASK)) {
+=======
+				if (!(areq->cmd_flags & REQ_URGENT)) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					areq->reinsert_req(areq);
 					mmc_post_req(host, areq->mrq, 0);
 				} else {
@@ -1241,6 +1252,15 @@ void mmc_set_data_timeout(struct mmc_data *data, const struct mmc_card *card)
 	if (data->flags & MMC_DATA_WRITE)
 		mult <<= card->csd.r2w_factor;
 
+<<<<<<< HEAD
+=======
+	/* max time value is 4.2s */
+	if ((card->csd.tacc_ns/1000 * mult) > 4294967)
+		data->timeout_ns = 0xffffffff;
+	else
+		data->timeout_ns = card->csd.tacc_ns * mult;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	data->timeout_ns = card->csd.tacc_ns * mult;
 	data->timeout_clks = card->csd.tacc_clks * mult;
 
@@ -2235,6 +2255,24 @@ static unsigned int mmc_erase_timeout(struct mmc_card *card,
 		return mmc_mmc_erase_timeout(card, arg, qty);
 }
 
+<<<<<<< HEAD
+=======
+#define UNSTUFF_BITS(resp, start, size)                                        \
+       ({                                                              \
+               const int __size = size;                                \
+               const u32 __mask = (__size < 32 ? 1 << __size : 0) - 1; \
+               const int __off = 3 - ((start) / 32);                   \
+               const int __shft = (start) & 31;                        \
+               u32 __res;                                              \
+                                                                       \
+               __res = resp[__off] >> __shft;                          \
+               if (__size + __shft > 32)                               \
+                       __res |= resp[__off-1] << ((32 - __shft) % 32); \
+               __res & __mask;                                         \
+       })
+
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int mmc_do_erase(struct mmc_card *card, unsigned int from,
 			unsigned int to, unsigned int arg)
 {
@@ -2243,6 +2281,17 @@ static int mmc_do_erase(struct mmc_card *card, unsigned int from,
 	unsigned long timeout;
 	int err;
 
+<<<<<<< HEAD
+=======
+	u32 *resp = card->raw_csd;
+
+	/* For WriteProtection */
+	if (UNSTUFF_BITS(resp, 12, 2)) {
+               printk(KERN_ERR "eMMC set Write Protection mode, Can't be written or erased.");
+               err = -EIO;
+               goto out;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/*
 	 * qty is used to calculate the erase timeout which depends on how many
 	 * erase groups (or allocation units in SD terminology) are affected.
@@ -2333,6 +2382,16 @@ static int mmc_do_erase(struct mmc_card *card, unsigned int from,
 			goto out;
 		}
 
+<<<<<<< HEAD
+=======
+		if (cmd.resp[0] & R1_WP_ERASE_SKIP) {
+			printk(KERN_ERR "error %d requesting status %#x (R1_WP_ERASE_SKIP)\n",
+				err, cmd.resp[0]);
+                	err = -EIO;
+                        goto out;
+                }
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/* Timeout if the device never becomes ready for data and
 		 * never leaves the program state.
 		 */
@@ -2409,6 +2468,17 @@ int mmc_erase(struct mmc_card *card, unsigned int from, unsigned int nr,
 	if (to <= from)
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	/* to set the address in 16k (32sectors) */
+	if(arg == MMC_TRIM_ARG) {
+		if ((from % 32) != 0)
+		        from = ((from >> 5) + 1) << 5;
+	        to = (to >> 5) << 5;
+	        if (from >= to)
+		        return 0;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* 'from' and 'to' are inclusive */
 	to -= 1;
 
@@ -2694,19 +2764,26 @@ EXPORT_SYMBOL_GPL(mmc_reset_clk_scale_stats);
 unsigned long mmc_get_max_frequency(struct mmc_host *host)
 {
 	unsigned long freq;
+<<<<<<< HEAD
 	unsigned char timing;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (host->ops && host->ops->get_max_frequency) {
 		freq = host->ops->get_max_frequency(host);
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (mmc_card_hs400(host->card))
 		timing = MMC_TIMING_MMC_HS400;
 	else
 		timing = host->ios.timing;
 
 	switch (timing) {
+=======
+	switch (host->ios.timing) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	case MMC_TIMING_UHS_SDR50:
 		freq = UHS_SDR50_MAX_DTR;
 		break;
@@ -2719,9 +2796,12 @@ unsigned long mmc_get_max_frequency(struct mmc_host *host)
 	case MMC_TIMING_UHS_DDR50:
 		freq = UHS_DDR50_MAX_DTR;
 		break;
+<<<<<<< HEAD
 	case MMC_TIMING_MMC_HS400:
 		freq = MMC_HS400_MAX_DTR;
 		break;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	default:
 		mmc_host_clk_hold(host);
 		freq = host->ios.clock;
@@ -2762,9 +2842,12 @@ static unsigned long mmc_get_min_frequency(struct mmc_host *host)
 	case MMC_TIMING_MMC_HS200:
 		freq = MMC_HIGH_52_MAX_DTR;
 		break;
+<<<<<<< HEAD
 	case MMC_TIMING_MMC_HS400:
 		freq = MMC_HIGH_52_MAX_DTR;
 		break;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	case MMC_TIMING_UHS_DDR50:
 		freq = UHS_DDR50_MAX_DTR / 2;
 		break;
@@ -3395,14 +3478,22 @@ int mmc_cache_ctrl(struct mmc_host *host, u8 enable)
 
 		if (card->ext_csd.cache_ctrl ^ enable) {
 			if (!enable)
+<<<<<<< HEAD
 				timeout = MMC_CACHE_DISBALE_TIMEOUT_MS;
+=======
+				timeout = MMC_FLUSH_REQ_TIMEOUT_MS;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 			err = mmc_switch_ignore_timeout(card,
 					EXT_CSD_CMD_SET_NORMAL,
 					EXT_CSD_CACHE_CTRL, enable, timeout);
 
 			if (err == -ETIMEDOUT && !enable) {
+<<<<<<< HEAD
 				pr_err("%s:cache disable operation timeout\n",
+=======
+				pr_debug("%s:cache disable operation timeout\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 						mmc_hostname(card->host));
 				rc = mmc_interrupt_hpi(card);
 				if (rc)
@@ -3486,6 +3577,12 @@ int mmc_suspend_host(struct mmc_host *host)
 	}
 	mmc_bus_put(host);
 
+<<<<<<< HEAD
+=======
+	if (host->card || host->index == 1)
+		mdelay(50);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!err && !mmc_card_keep_power(host))
 		mmc_power_off(host);
 

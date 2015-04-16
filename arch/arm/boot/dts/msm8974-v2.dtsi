@@ -58,6 +58,7 @@
 	qcom,msm-bus,vectors-KBps =
 		/* Off */
 		<26 512 0 0>, <89 604 0 0>,
+<<<<<<< HEAD
 		/* Sub-SVS / SVS */
 		<26 512 0 1600000>, <89 604 0 3000000>,
 		/* SVS */
@@ -72,6 +73,16 @@
 		<26 512 0 7464000>, <89 604 0 5120000>,
 		/* Nominal / Turbo */
 		<26 512 0 4912000>, <89 604 0 6400000>,
+=======
+		/* SVS */
+		<26 512 0 2400000>, <89 604 0 3000000>,
+		/* Nominal / SVS */
+		<26 512 0 4656000>, <89 604 0 3000000>,
+		/* Nominal */
+		<26 512 0 4656000>, <89 604 0 5120000>,
+		/* Turbo / Nominal */
+		<26 512 0 7464000>, <89 604 0 5120000>,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/* Turbo */
 		<26 512 0 7464000>, <89 604 0 6400000>;
 };
@@ -87,7 +98,10 @@
 	qcom,mdss-has-bwc;
 	qcom,mdss-has-decimation;
 	qcom,mdss-ad-off = <0x0013100 0x00013300>;
+<<<<<<< HEAD
 	vdd-cx-supply = <&pm8841_s2_corner>;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 &mdss_hdmi_tx {
@@ -143,6 +157,7 @@
 		<3240000 1600000>,
 		<4048000 1600000>,
 		<4264000 1600000>;
+<<<<<<< HEAD
 	qcom,buffer-type-tz-usage-table = <0x241 0x1>,
 					<0x106 0x2>,
 					<0x480 0x3>;
@@ -165,6 +180,30 @@
 			qcom,vidc-partition-buffer-types = <0x480>;
 		};
 	};
+=======
+	qcom,buffer-type-tz-usage-table = <0x91 0x1>,
+					<0x42 0x2>,
+					<0x120 0x3>;
+	qcom,vidc-iommu-domains {
+                qcom,domain-ns {
+                        qcom,vidc-domain-phandle = <&venus_domain_ns>;
+                        qcom,vidc-partition-buffer-types = <0x1ff>,
+							<0x200>;
+                };
+                qcom,domain-sec-bs {
+                        qcom,vidc-domain-phandle = <&venus_domain_sec_bitstream>;
+                        qcom,vidc-partition-buffer-types = <0x91>;
+                };
+                qcom,domain-sec-px {
+                        qcom,vidc-domain-phandle = <&venus_domain_sec_pixel>;
+                        qcom,vidc-partition-buffer-types = <0x42>;
+                };
+                qcom,domain-sec-np {
+                        qcom,vidc-domain-phandle = <&venus_domain_sec_non_pixel>;
+                        qcom,vidc-partition-buffer-types = <0x120>;
+                };
+        };
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 };
 

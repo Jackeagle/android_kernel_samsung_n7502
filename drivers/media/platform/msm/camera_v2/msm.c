@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -29,8 +33,11 @@
 #include "msm.h"
 #include "msm_vb2.h"
 #include "msm_sd.h"
+<<<<<<< HEAD
 #include <media/msmb_generic_buf_mgr.h>
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static struct v4l2_device *msm_v4l2_dev;
 static struct list_head    ordered_sd_list;
@@ -44,6 +51,15 @@ spinlock_t msm_eventq_lock;
 static struct pid *msm_pid;
 spinlock_t msm_pid_lock;
 
+<<<<<<< HEAD
+=======
+static int  module_init_status;
+struct msm_cam_dummy_queue {
+	wait_queue_head_t state_wait;
+};
+static struct msm_cam_dummy_queue cam_dummy_queue;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define msm_dequeue(queue, type, member) ({				\
 	unsigned long flags;					\
 	struct msm_queue_head *__q = (queue);			\
@@ -320,11 +336,23 @@ static void msm_add_sd_in_position(struct msm_sd_subdev *msm_subdev,
 
 int msm_sd_register(struct msm_sd_subdev *msm_subdev)
 {
+<<<<<<< HEAD
 	if (WARN_ON(!msm_subdev))
 		return -EINVAL;
 
 	if (WARN_ON(!msm_v4l2_dev) || WARN_ON(!msm_v4l2_dev->dev))
 		return -EIO;
+=======
+	if (WARN_ON(!msm_subdev)) {
+		pr_err("FAILED -1\n");
+		return -EINVAL;
+        } 
+
+	if (WARN_ON(!msm_v4l2_dev) || WARN_ON(!msm_v4l2_dev->dev)) {
+		pr_err("FAILED -1\n");
+		return -EIO;
+        }
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	msm_add_sd_in_position(msm_subdev, &ordered_sd_list);
 	return __msm_sd_register_subdev(&msm_subdev->sd);
@@ -339,10 +367,36 @@ int msm_sd_unregister(struct msm_sd_subdev *msm_subdev)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+int msm_cam_get_module_init_status(void)
+{
+	int rc;
+	pr_warn("msm_cam_get_module_init_status : start\n");
+	if (module_init_status == 1)
+		return 0;
+	while (1) {
+		rc = wait_event_interruptible(cam_dummy_queue.state_wait,
+			(module_init_status == 1));
+		if (rc == -ETIMEDOUT)
+			continue;
+		else if (rc == 0)
+			break;
+	}
+	pr_err("msm_cam_get_module_init_status : end %d\n", rc);
+	return 0;
+}
+int msm_module_init_status(void)
+{
+	pr_warn("msm_module_init_status: %d\n", module_init_status);
+	return module_init_status;
+}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int msm_create_session(unsigned int session_id, struct video_device *vdev)
 {
 	struct msm_session *session = NULL;
 
+<<<<<<< HEAD
 	if (!msm_session_q)
 		return -ENODEV;
 
@@ -354,6 +408,26 @@ int msm_create_session(unsigned int session_id, struct video_device *vdev)
 	session = kzalloc(sizeof(*session), GFP_KERNEL);
 	if (!session)
 		return -ENOMEM;
+=======
+	if (!msm_session_q) {
+	    pr_err("msm_create_session : msm_session_q is NULL!!");
+	    return -ENODEV;
+	}
+
+	session = msm_queue_find(msm_session_q, struct msm_session,
+		list, __msm_queue_find_session, &session_id);
+	if (session) {
+	    pr_err("msm_create_session : session already exist");
+	    return -EINVAL;
+	}
+
+	session = kzalloc(sizeof(*session), GFP_KERNEL);
+	if (!session) {
+	    pr_err("msm_create_session : session is NULL");
+	    pr_err("msm_create_session : session creation failed!");
+	    return -ENOMEM;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	session->session_id = session_id;
 	session->event_q.vdev = vdev;
@@ -361,6 +435,11 @@ int msm_create_session(unsigned int session_id, struct video_device *vdev)
 	msm_init_queue(&session->stream_q);
 	msm_enqueue(msm_session_q, &session->list);
 	mutex_init(&session->lock);
+<<<<<<< HEAD
+=======
+	pr_warn("msm_create_session : Succeed!, session_id %d",
+		session_id);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return 0;
 }
 
@@ -369,6 +448,7 @@ int msm_create_command_ack_q(unsigned int session_id, unsigned int stream_id)
 	struct msm_session *session;
 	struct msm_command_ack *cmd_ack;
 
+<<<<<<< HEAD
 	if (!msm_session_q)
 		return -ENODEV;
 
@@ -376,10 +456,28 @@ int msm_create_command_ack_q(unsigned int session_id, unsigned int stream_id)
 		list, __msm_queue_find_session, &session_id);
 	if (!session)
 		return -EINVAL;
+=======
+	if (!msm_session_q) {
+	    pr_err("%s : msm_session_q is NULL!!", __func__);
+	    return -ENODEV;
+	}
+
+	session = msm_queue_find(msm_session_q, struct msm_session,
+		list, __msm_queue_find_session, &session_id);
+	if (!session) {
+	    pr_err("%s : session is NULL", __func__);
+	    pr_err("%s : can't find session !", __func__);
+	    return -EINVAL;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mutex_lock(&session->lock);
 	cmd_ack = kzalloc(sizeof(*cmd_ack), GFP_KERNEL);
 	if (!cmd_ack) {
 		mutex_unlock(&session->lock);
+<<<<<<< HEAD
+=======
+		pr_err("%s : cmd_ack is NULL!", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return -ENOMEM;
 	}
 
@@ -402,16 +500,28 @@ void msm_delete_command_ack_q(unsigned int session_id, unsigned int stream_id)
 
 	session = msm_queue_find(msm_session_q, struct msm_session,
 		list, __msm_queue_find_session, &session_id);
+<<<<<<< HEAD
 	if (!session)
 		return;
 	mutex_lock(&session->lock);
+=======
+	if (!session) {
+	    pr_err("%s : session is NULL!!", __func__);
+	    return;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	cmd_ack = msm_queue_find(&session->command_ack_q,
 		struct msm_command_ack,	list, __msm_queue_find_command_ack_q,
 		&stream_id);
 	if (!cmd_ack) {
+<<<<<<< HEAD
 		mutex_unlock(&session->lock);
 		return;
+=======
+	    pr_err("%s : cmd_ack is NULL!", __func__);
+	    return;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	msm_queue_drain(&cmd_ack->command_q, struct msm_command, list);
@@ -421,7 +531,10 @@ void msm_delete_command_ack_q(unsigned int session_id, unsigned int stream_id)
 	kzfree(cmd_ack);
 	session->command_ack_q.len--;
 	spin_unlock_irqrestore(&(session->command_ack_q.lock), flags);
+<<<<<<< HEAD
 	mutex_unlock(&session->lock);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static inline int __msm_sd_close_subdevs(struct msm_sd_subdev *msm_sd,
@@ -429,7 +542,11 @@ static inline int __msm_sd_close_subdevs(struct msm_sd_subdev *msm_sd,
 {
 	struct v4l2_subdev *sd;
 	sd = &msm_sd->sd;
+<<<<<<< HEAD
 	pr_debug("%s: Shutting down subdev %s", __func__, sd->name);
+=======
+	pr_warn("%s: Shutting down subdev %s", __func__, sd->name);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	v4l2_subdev_call(sd, core, ioctl, MSM_SD_SHUTDOWN, sd_close);
 	v4l2_subdev_call(sd, core, s_power, 0);
@@ -461,9 +578,12 @@ static inline int __msm_remove_session_cmd_ack_q(void *d1, void *d2)
 {
 	struct msm_command_ack *cmd_ack = d1;
 
+<<<<<<< HEAD
 	if (!(&cmd_ack->command_q))
 		return 0;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	msm_queue_drain(&cmd_ack->command_q, struct msm_command, list);
 
 	return 0;
@@ -471,10 +591,16 @@ static inline int __msm_remove_session_cmd_ack_q(void *d1, void *d2)
 
 static void msm_remove_session_cmd_ack_q(struct msm_session *session)
 {
+<<<<<<< HEAD
 	if ((!session) || !(&session->command_ack_q))
 		return;
 
 	mutex_lock(&session->lock);
+=======
+	if (!session)
+		return;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* to ensure error handling purpose, it needs to detach all subdevs
 	 * which are being connected to streams */
 	msm_queue_traverse_action(&session->command_ack_q,
@@ -482,31 +608,49 @@ static void msm_remove_session_cmd_ack_q(struct msm_session *session)
 		__msm_remove_session_cmd_ack_q, NULL);
 
 	msm_queue_drain(&session->command_ack_q, struct msm_command_ack, list);
+<<<<<<< HEAD
 
 	mutex_unlock(&session->lock);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 int msm_destroy_session(unsigned int session_id)
 {
 	struct msm_session *session;
+<<<<<<< HEAD
 	struct v4l2_subdev *buf_mgr_subdev;
 
 	session = msm_queue_find(msm_session_q, struct msm_session,
 		list, __msm_queue_find_session, &session_id);
 	if (!session)
 		return -EINVAL;
+=======
+
+	session = msm_queue_find(msm_session_q, struct msm_session,
+		list, __msm_queue_find_session, &session_id);
+	if (!session) {
+	    pr_err("%s : session is NULL", __func__);
+	    return -EINVAL;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	msm_destroy_session_streams(session);
 	msm_remove_session_cmd_ack_q(session);
 	mutex_destroy(&session->lock);
 	msm_delete_entry(msm_session_q, struct msm_session,
 		list, session);
+<<<<<<< HEAD
 	buf_mgr_subdev = msm_buf_mngr_get_subdev();
 	if (buf_mgr_subdev) {
 		v4l2_subdev_call(buf_mgr_subdev, core, ioctl,
 			MSM_SD_SHUTDOWN, NULL);
 	} else
 		pr_err("%s: Buff manger device node is NULL\n", __func__);
+=======
+
+	pr_warn("%s : Succeed", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return 0;
 }
@@ -517,7 +661,11 @@ static int __msm_close_destry_session_notify_apps(void *d1, void *d2)
 	struct msm_v4l2_event_data *event_data =
 		(struct msm_v4l2_event_data *)&event.u.data[0];
 	struct msm_session *session = d1;
+<<<<<<< HEAD
 
+=======
+	pr_warn("%s, __dbg:", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	event.type = MSM_CAMERA_V4L2_EVENT_TYPE;
 	event.id   = MSM_CAMERA_MSM_NOTIFY;
 	event_data->command = MSM_CAMERA_PRIV_SHUTDOWN;
@@ -535,8 +683,18 @@ static long msm_private_ioctl(struct file *file, void *fh,
 	struct msm_session *session;
 	unsigned int session_id;
 	unsigned int stream_id;
+<<<<<<< HEAD
 	unsigned long spin_flags = 0;
 
+=======
+
+	if (cmd == MSM_CAM_V4L2_IOCTL_NOTIFY_MODULE_STATUS) {
+		module_init_status = *(int *) arg;
+		if (module_init_status)
+			wake_up(&cam_dummy_queue.state_wait);
+		return rc;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	event_data = (struct msm_v4l2_event_data *)
 		((struct v4l2_event *)arg)->u.data;
 
@@ -547,7 +705,11 @@ static long msm_private_ioctl(struct file *file, void *fh,
 		list, __msm_queue_find_session, &session_id);
 
 	if (!session)
+<<<<<<< HEAD
 		return -EINVAL;
+=======
+	    return -EINVAL;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	switch (cmd) {
 	case MSM_CAM_V4L2_IOCTL_NOTIFY: {
@@ -564,10 +726,18 @@ static long msm_private_ioctl(struct file *file, void *fh,
 	case MSM_CAM_V4L2_IOCTL_CMD_ACK: {
 		struct msm_command_ack *cmd_ack;
 		struct msm_command *ret_cmd;
+<<<<<<< HEAD
+=======
+		unsigned long spin_flags;  //QC_Patch
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		ret_cmd = kzalloc(sizeof(*ret_cmd), GFP_KERNEL);
 		if (!ret_cmd) {
 			rc = -ENOMEM;
+<<<<<<< HEAD
+=======
+			pr_err("%s : ret_cmd is NULL", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			break;
 		}
 
@@ -580,6 +750,7 @@ static long msm_private_ioctl(struct file *file, void *fh,
 			rc = -EFAULT;
 			break;
 		}
+<<<<<<< HEAD
 
 		spin_lock_irqsave(&(session->command_ack_q.lock),
 		   spin_flags);
@@ -588,6 +759,13 @@ static long msm_private_ioctl(struct file *file, void *fh,
 		wake_up(&cmd_ack->wait);
 		spin_unlock_irqrestore(&(session->command_ack_q.lock),
 		   spin_flags);
+=======
+		spin_lock_irqsave(&(session->command_ack_q.lock), spin_flags); //QC_Patch
+		ret_cmd->event = *(struct v4l2_event *)arg;
+		msm_enqueue(&cmd_ack->command_q, &ret_cmd->list);
+		wake_up(&cmd_ack->wait);
+		spin_unlock_irqrestore(&(session->command_ack_q.lock), spin_flags);  //QC_Patch
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 		break;
 
@@ -596,6 +774,11 @@ static long msm_private_ioctl(struct file *file, void *fh,
 		msm_queue_traverse_action(msm_session_q,
 			struct msm_session, list,
 			__msm_close_destry_session_notify_apps, NULL);
+<<<<<<< HEAD
+=======
+		pr_err("%s : MSM_CAM_V4L2_IOCTL_NOTIFY_ERROR",
+		       __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		break;
 
 	default:
@@ -639,7 +822,22 @@ static unsigned int msm_poll(struct file *f,
 
 	return rc;
 }
+<<<<<<< HEAD
 
+=======
+#if defined(CONFIG_MACH_MS01_EUR_3G) || defined(CONFIG_MACH_CRATERQ) || defined(CONFIG_MACH_MS01_LTE) || defined(CONFIG_MACH_S3VE) || defined(CONFIG_MACH_BAFFIN2_CHN_CMCC)
+static void msm_print_event_error(struct v4l2_event *event) 
+{ 
+	struct msm_v4l2_event_data *event_data = 
+	(struct msm_v4l2_event_data *)&event->u.data[0]; 
+	pr_err("Evt_type=%x Evt_id=%d Evt_cmd=%x\n", event->type, 
+		event->id, event_data->command); 
+	pr_err("Evt_session_id=%d Evt_stream_id=%d Evt_arg=%d\n", 
+	event_data->session_id, event_data->stream_id, 
+				event_data->arg_value); 
+} 
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* something seriously wrong if msm_close is triggered
  *   !!! user space imaging server is shutdown !!!
  */
@@ -661,6 +859,10 @@ int msm_post_event(struct v4l2_event *event, int timeout)
 	spin_lock_irqsave(&msm_eventq_lock, flags);
 	if (!msm_eventq) {
 		spin_unlock_irqrestore(&msm_eventq_lock, flags);
+<<<<<<< HEAD
+=======
+		pr_err("%s:%d failed\n", __func__, __LINE__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return -ENODEV;
 	}
 	spin_unlock_irqrestore(&msm_eventq_lock, flags);
@@ -670,14 +872,25 @@ int msm_post_event(struct v4l2_event *event, int timeout)
 	/* send to imaging server and wait for ACK */
 	session = msm_queue_find(msm_session_q, struct msm_session,
 		list, __msm_queue_find_session, &session_id);
+<<<<<<< HEAD
 	if (WARN_ON(!session))
 		return -EIO;
+=======
+	if (WARN_ON(!session)) {
+		pr_err("%s:%d failed\n", __func__, __LINE__);
+		return -EIO;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mutex_lock(&session->lock);
 	cmd_ack = msm_queue_find(&session->command_ack_q,
 		struct msm_command_ack, list,
 		__msm_queue_find_command_ack_q, &stream_id);
 	if (WARN_ON(!cmd_ack)) {
 		mutex_unlock(&session->lock);
+<<<<<<< HEAD
+=======
+		pr_err("%s:%d failed\n", __func__, __LINE__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return -EIO;
 	}
 
@@ -685,6 +898,7 @@ int msm_post_event(struct v4l2_event *event, int timeout)
 
 	if (timeout < 0) {
 		mutex_unlock(&session->lock);
+<<<<<<< HEAD
 		return rc;
 	}
 
@@ -697,22 +911,71 @@ int msm_post_event(struct v4l2_event *event, int timeout)
 			break;
 	} while (1);
 
+=======
+		pr_err("%s:%d failed\n", __func__, __LINE__);
+		return rc;
+	}
+	
+#if defined(CONFIG_MACH_MS01_EUR_3G) || defined(CONFIG_MACH_CRATERQ) || defined(CONFIG_MACH_MS01_LTE) || defined(CONFIG_MACH_S3VE) || defined(CONFIG_MACH_BAFFIN2_CHN_CMCC)
+	do { 
+		/* should wait on session based condition */ 
+		rc = wait_event_interruptible_timeout(cmd_ack->wait, 
+			!list_empty_careful(&cmd_ack->command_q.list), 
+			msecs_to_jiffies(timeout)); 
+		if(rc != -ERESTARTSYS) 
+			break; 
+		pr_err("%s:%d retry wait_event_interruptible_timeout ERESTARTSYS\n", __func__, __LINE__); 
+	} while(1); 
+	if (list_empty_careful(&cmd_ack->command_q.list)) { 
+		pr_err("%s:%d failed (rc = %d)\n", __func__, __LINE__, rc); 
+		if (!rc) { 
+			pr_err("%s: Timed out\n", __func__); 
+			msm_print_event_error(event); 
+			rc = -ETIMEDOUT; 
+		} 
+	if (rc < 0) { 
+			msm_print_event_error(event); 
+			pr_err("%s:%d failed\n", __func__, __LINE__); 
+			mutex_unlock(&session->lock); 
+			return rc; 
+		} 
+
+	} 
+#else 
+	/* should wait on session based condition */
+	rc = wait_event_interruptible_timeout(cmd_ack->wait,
+		!list_empty_careful(&cmd_ack->command_q.list),
+		msecs_to_jiffies(timeout));
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (list_empty_careful(&cmd_ack->command_q.list)) {
 		if (!rc) {
 			pr_err("%s: Timed out\n", __func__);
 			rc = -ETIMEDOUT;
 		}
 		if (rc < 0) {
+<<<<<<< HEAD
 			pr_err("%s: rc = %d\n", __func__, rc);
 			mutex_unlock(&session->lock);
 			return rc;
 		}
 	}
 
+=======
+			mutex_unlock(&session->lock);
+			pr_err("%s:%d failed\n", __func__, __LINE__);
+			return rc;
+		}
+	}
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	cmd = msm_dequeue(&cmd_ack->command_q,
 		struct msm_command, list);
 	if (!cmd) {
 		mutex_unlock(&session->lock);
+<<<<<<< HEAD
+=======
+		pr_err("%s:%d failed\n", __func__, __LINE__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return -EINVAL;
 	}
 
@@ -720,8 +983,15 @@ int msm_post_event(struct v4l2_event *event, int timeout)
 
 	/* compare cmd_ret and event */
 	if (WARN_ON(event->type != cmd->event.type) ||
+<<<<<<< HEAD
 			WARN_ON(event->id != cmd->event.id))
 		rc = -EINVAL;
+=======
+			WARN_ON(event->id != cmd->event.id)) {
+		pr_err("%s:%d failed\n", __func__, __LINE__);
+		rc = -EINVAL;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	*event = cmd->event;
 
@@ -742,7 +1012,11 @@ static int msm_close(struct file *filep)
 	if (!list_empty(&msm_v4l2_dev->subdevs))
 		list_for_each_entry(msm_sd, &ordered_sd_list, list)
 			__msm_sd_close_subdevs(msm_sd, &sd_close);
+<<<<<<< HEAD
 
+=======
+	pr_err("%s __dbg: \n", __func__);  //QC_Patch
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* send v4l2_event to HAL next*/
 	msm_queue_traverse_action(msm_session_q, struct msm_session, list,
 		__msm_close_destry_session_notify_apps, NULL);
@@ -781,9 +1055,16 @@ static int msm_open(struct file *filep)
 	BUG_ON(!pvdev);
 
 	/* !!! only ONE open is allowed !!! */
+<<<<<<< HEAD
 	if (atomic_read(&pvdev->opened))
 		return -EBUSY;
 
+=======
+	if (atomic_read(&pvdev->opened)) {
+		pr_err("__dbg: Already device node is in opened state \n");
+		return -EBUSY;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	atomic_set(&pvdev->opened, 1);
 
 	spin_lock_irqsave(&msm_pid_lock, flags);
@@ -792,13 +1073,25 @@ static int msm_open(struct file *filep)
 
 	/* create event queue */
 	rc = v4l2_fh_open(filep);
+<<<<<<< HEAD
 	if (rc  < 0)
 		return rc;
+=======
+	if (rc  < 0) {
+	    pr_err("%s : can't create event queue", __func__);
+	    return rc;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	spin_lock_irqsave(&msm_eventq_lock, flags);
 	msm_eventq = filep->private_data;
 	spin_unlock_irqrestore(&msm_eventq_lock, flags);
 
+<<<<<<< HEAD
+=======
+	pr_warn("%s : Succeed!", __func__);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return rc;
 }
 
@@ -818,14 +1111,28 @@ struct msm_stream *msm_get_stream(unsigned int session_id,
 
 	session = msm_queue_find(msm_session_q, struct msm_session,
 		list, __msm_queue_find_session, &session_id);
+<<<<<<< HEAD
 	if (!session)
 		return ERR_PTR(-EINVAL);
+=======
+	if (!session) {
+	    pr_err("%s : session is NULL", __func__);
+	    return ERR_PTR(-EINVAL);
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	stream = msm_queue_find(&session->stream_q, struct msm_stream,
 		list, __msm_queue_find_stream, &stream_id);
 
+<<<<<<< HEAD
 	if (!stream)
 		return ERR_PTR(-EINVAL);
+=======
+	if (!stream) {
+	    pr_err("%s : stream is NULL", __func__);
+	    return ERR_PTR(-EINVAL);
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return stream;
 }
@@ -838,6 +1145,7 @@ struct vb2_queue *msm_get_stream_vb2q(unsigned int session_id,
 
 	session = msm_queue_find(msm_session_q, struct msm_session,
 		list, __msm_queue_find_session, &session_id);
+<<<<<<< HEAD
 	if (!session)
 		return NULL;
 
@@ -845,6 +1153,19 @@ struct vb2_queue *msm_get_stream_vb2q(unsigned int session_id,
 		list, __msm_queue_find_stream, &stream_id);
 	if (!stream)
 		return NULL;
+=======
+	if (!session) {
+	    pr_err("%s : session is NULL", __func__);
+	    return NULL;
+	}
+
+	stream = msm_queue_find(&session->stream_q, struct msm_stream,
+		list, __msm_queue_find_stream, &stream_id);
+	if (!stream) {
+	    pr_err("%s : stream is NULL", __func__);
+	    return NULL;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return stream->vb2_q;
 }
@@ -878,11 +1199,15 @@ static struct v4l2_subdev *msm_sd_find(const char *name)
 {
 	unsigned long flags;
 	struct v4l2_subdev *subdev = NULL;
+<<<<<<< HEAD
 	struct v4l2_subdev *subdev_out = NULL;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	spin_lock_irqsave(&msm_v4l2_dev->lock, flags);
 	if (!list_empty(&msm_v4l2_dev->subdevs)) {
 		list_for_each_entry(subdev, &msm_v4l2_dev->subdevs, list)
+<<<<<<< HEAD
 			if (!strcmp(name, subdev->name)) {
 				subdev_out = subdev;
 				break;
@@ -891,6 +1216,14 @@ static struct v4l2_subdev *msm_sd_find(const char *name)
 	spin_unlock_irqrestore(&msm_v4l2_dev->lock, flags);
 
 	return subdev_out;
+=======
+			if (!strcmp(name, subdev->name))
+				break;
+	}
+	spin_unlock_irqrestore(&msm_v4l2_dev->lock, flags);
+
+	return subdev;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static void msm_sd_notify(struct v4l2_subdev *sd,
@@ -903,8 +1236,15 @@ static void msm_sd_notify(struct v4l2_subdev *sd,
 	BUG_ON(!arg);
 
 	/* Check if subdev exists before processing*/
+<<<<<<< HEAD
 	if (!msm_sd_find(sd->name))
 		return;
+=======
+	if (!msm_sd_find(sd->name)) {
+	    pr_warn("%s : sd already exist", __func__);
+	    return;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	switch (notification) {
 	case MSM_SD_NOTIFY_GET_SD: {
@@ -924,8 +1264,15 @@ static void msm_sd_notify(struct v4l2_subdev *sd,
 	case MSM_SD_NOTIFY_REQ_CB: {
 		struct msm_sd_req_vb2_q *req_sd = arg;
 		rc = msm_vb2_request_cb(req_sd);
+<<<<<<< HEAD
 		if (rc < 0)
 			return;
+=======
+		if (rc < 0) {
+		    pr_err("%s : msm_vb2_request_cb failed!", __func__);
+		    return;
+		}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 		break;
 
@@ -1010,19 +1357,31 @@ static int __devinit msm_probe(struct platform_device *pdev)
 	video_set_drvdata(pvdev->vdev, pvdev);
 
 	msm_session_q = kzalloc(sizeof(*msm_session_q), GFP_KERNEL);
+<<<<<<< HEAD
 	if (WARN_ON(!msm_session_q)) {
 		rc = -ENOMEM;
 		goto session_fail;
 	}
+=======
+	if (WARN_ON(!msm_session_q))
+		goto v4l2_fail;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	msm_init_queue(msm_session_q);
 	spin_lock_init(&msm_eventq_lock);
 	spin_lock_init(&msm_pid_lock);
 	INIT_LIST_HEAD(&ordered_sd_list);
+<<<<<<< HEAD
 	goto probe_end;
 
 session_fail:
 	video_unregister_device(pvdev->vdev);
+=======
+	init_waitqueue_head(&cam_dummy_queue.state_wait);
+	pr_warn("%s : Succeed!", __func__);
+	goto probe_end;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 v4l2_fail:
 	v4l2_device_unregister(pvdev->vdev->v4l2_dev);
 register_fail:

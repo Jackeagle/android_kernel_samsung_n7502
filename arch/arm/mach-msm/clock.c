@@ -63,21 +63,32 @@ int find_vdd_level(struct clk *clk, unsigned long rate)
 /* Update voltage level given the current votes. */
 static int update_vdd(struct clk_vdd_class *vdd_class)
 {
+<<<<<<< HEAD
 	int level, rc = 0, i, ignore;
+=======
+	int level, rc = 0, i;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct regulator **r = vdd_class->regulator;
 	int *uv = vdd_class->vdd_uv;
 	int *ua = vdd_class->vdd_ua;
 	int n_reg = vdd_class->num_regulators;
+<<<<<<< HEAD
 	int cur_lvl = vdd_class->cur_level;
 	int max_lvl = vdd_class->num_levels - 1;
 	int cur_base = cur_lvl * n_reg;
 	int new_base;
 
 	/* aggregate votes */
+=======
+	int max_lvl = vdd_class->num_levels - 1;
+	int lvl_base;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	for (level = max_lvl; level > 0; level--)
 		if (vdd_class->level_votes[level])
 			break;
 
+<<<<<<< HEAD
 	if (level == cur_lvl)
 		return 0;
 
@@ -85,10 +96,20 @@ static int update_vdd(struct clk_vdd_class *vdd_class)
 	new_base = level * n_reg;
 	for (i = 0; i < vdd_class->num_regulators; i++) {
 		rc = regulator_set_voltage(r[i], uv[new_base + i],
+=======
+	if (level == vdd_class->cur_level)
+		return 0;
+
+	max_lvl = max_lvl * n_reg;
+	lvl_base = level * n_reg;
+	for (i = 0; i < vdd_class->num_regulators; i++) {
+		rc = regulator_set_voltage(r[i], uv[lvl_base + i],
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					   uv[max_lvl + i]);
 		if (rc)
 			goto set_voltage_fail;
 
+<<<<<<< HEAD
 		if (ua) {
 			rc = regulator_set_optimum_mode(r[i], ua[new_base + i]);
 			rc = rc > 0 ? 0 : rc;
@@ -101,6 +122,15 @@ static int update_vdd(struct clk_vdd_class *vdd_class)
 			rc = regulator_disable(r[i]);
 		if (rc)
 			goto enable_disable_fail;
+=======
+		if (!ua)
+			continue;
+
+		rc = regulator_set_optimum_mode(r[i], ua[lvl_base + i]);
+		rc = rc > 0 ? 0 : rc;
+		if (rc)
+			goto set_mode_fail;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	if (vdd_class->set_vdd && !vdd_class->num_regulators)
 		rc = vdd_class->set_vdd(vdd_class, level);
@@ -110,6 +140,7 @@ static int update_vdd(struct clk_vdd_class *vdd_class)
 
 	return rc;
 
+<<<<<<< HEAD
 enable_disable_fail:
 	/*
 	 * set_optimum_mode could use voltage to derive mode.  Restore
@@ -133,6 +164,22 @@ set_voltage_fail:
 		else if (level == 0)
 			ignore = regulator_enable(r[i]);
 	}
+=======
+set_mode_fail:
+	regulator_set_voltage(r[i], uv[vdd_class->cur_level * n_reg + i],
+			      uv[max_lvl + i]);
+
+set_voltage_fail:
+	lvl_base = vdd_class->cur_level * n_reg;
+	for (i--; i >= 0; i--) {
+		regulator_set_voltage(r[i], uv[lvl_base + i], uv[max_lvl + i]);
+
+		if (!ua)
+			continue;
+		regulator_set_optimum_mode(r[i], ua[lvl_base + i]);
+	}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return rc;
 }
 
@@ -544,15 +591,19 @@ EXPORT_SYMBOL(clk_set_rate);
 
 long clk_round_rate(struct clk *clk, unsigned long rate)
 {
+<<<<<<< HEAD
 	long rrate;
 	unsigned long fmax = 0, i;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (IS_ERR_OR_NULL(clk))
 		return -EINVAL;
 
 	if (!clk->ops->round_rate)
 		return -ENOSYS;
 
+<<<<<<< HEAD
 	for (i = 0; i < clk->num_fmax; i++)
 		fmax = max(fmax, clk->fmax[i]);
 
@@ -564,6 +615,9 @@ long clk_round_rate(struct clk *clk, unsigned long rate)
 	if (rrate > fmax)
 		return -EINVAL;
 	return rrate;
+=======
+	return clk->ops->round_rate(clk, rate);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 EXPORT_SYMBOL(clk_round_rate);
 
@@ -583,16 +637,27 @@ int clk_set_parent(struct clk *clk, struct clk *parent)
 {
 	int rc = 0;
 
+<<<<<<< HEAD
 	if (!clk->ops->set_parent && clk->parent == parent)
 		return 0;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!clk->ops->set_parent)
 		return -ENOSYS;
 
 	mutex_lock(&clk->prepare_lock);
+<<<<<<< HEAD
 	if (clk->parent == parent && !(clk->flags & CLKFLAG_NO_RATE_CACHE))
 		goto out;
 	rc = clk->ops->set_parent(clk, parent);
+=======
+	if (clk->parent == parent)
+		goto out;
+	rc = clk->ops->set_parent(clk, parent);
+	if (!rc)
+		clk->parent = parent;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 out:
 	mutex_unlock(&clk->prepare_lock);
 
@@ -638,6 +703,10 @@ static void init_sibling_lists(struct clk_lookup *clock_tbl, size_t num_clocks)
 static void vdd_class_init(struct clk_vdd_class *vdd)
 {
 	struct handoff_vdd *v;
+<<<<<<< HEAD
+=======
+	int i;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (!vdd)
 		return;
@@ -651,6 +720,12 @@ static void vdd_class_init(struct clk_vdd_class *vdd)
 	if (vote_vdd_level(vdd, vdd->num_levels - 1))
 		pr_err("failed to vote for %s\n", vdd->class_name);
 
+<<<<<<< HEAD
+=======
+	for (i = 0; i < vdd->num_regulators; i++)
+		regulator_enable(vdd->regulator[i]);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	v = kmalloc(sizeof(*v), GFP_KERNEL);
 	if (!v) {
 		pr_err("Unable to kmalloc. %s will be stuck at max.\n",

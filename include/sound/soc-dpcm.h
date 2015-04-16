@@ -11,7 +11,10 @@
 #ifndef __LINUX_SND_SOC_DPCM_H
 #define __LINUX_SND_SOC_DPCM_H
 
+<<<<<<< HEAD
 #include <linux/slab.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <sound/pcm.h>
 
 /*
@@ -107,6 +110,7 @@ static inline void snd_soc_dpcm_be_set_state(struct snd_soc_pcm_runtime *be,
 {
 	be->dpcm[stream].state = state;
 }
+<<<<<<< HEAD
 
 int dpcm_path_get(struct snd_soc_pcm_runtime *fe,
        int stream, struct snd_soc_dapm_widget_list **list_);
@@ -129,4 +133,6 @@ static inline void dpcm_path_put(struct snd_soc_dapm_widget_list **list)
 }
 
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif

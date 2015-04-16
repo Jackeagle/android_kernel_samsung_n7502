@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -202,7 +206,10 @@ static int __devinit qpnp_clkdiv_probe(struct spmi_device *spmi)
 	if (!res) {
 		dev_err(&spmi->dev, "%s: unable to get device reg resource\n",
 					__func__);
+<<<<<<< HEAD
 		return -EINVAL;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	q_clkdiv->slave = spmi->sid;

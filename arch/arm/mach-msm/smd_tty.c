@@ -91,6 +91,10 @@ static int smd_tty_probe_done;
  * @ra_lock_lha3:  Read-available lock - used to synchronize reads from SMD
  * @ra_wakeup_source_name: Name of the read-available wakeup source
  * @ra_wakeup_source:  Read-available wakeup source
+<<<<<<< HEAD
+=======
+ * @smd_tty_device_init_lock: smd device init lock/unlock -used to serialize tty character open/close
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  */
 struct smd_tty_info {
 	smd_channel_t *ch;
@@ -118,6 +122,10 @@ struct smd_tty_info {
 	spinlock_t ra_lock_lha3;
 	char ra_wakeup_source_name[MAX_RA_WAKE_LOCK_NAME_LEN];
 	struct wakeup_source ra_wakeup_source;
+<<<<<<< HEAD
+=======
+	struct mutex smd_tty_device_init_lock;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /**
@@ -544,9 +552,19 @@ static void smd_tty_port_shutdown(struct tty_port *tport)
 
 static int smd_tty_open(struct tty_struct *tty, struct file *f)
 {
+<<<<<<< HEAD
 	struct smd_tty_info *info = smd_tty + tty->index;
 
 	return tty_port_open(&info->port, tty, f);
+=======
+	int ret = 0;
+	struct smd_tty_info *info = smd_tty + tty->index;
+
+	mutex_lock(&smd_tty[tty->index].smd_tty_device_init_lock);
+	ret = tty_port_open(&info->port, tty, f);
+	mutex_unlock(&smd_tty[tty->index].smd_tty_device_init_lock);
+	return ret;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static void smd_tty_close(struct tty_struct *tty, struct file *f)
@@ -794,6 +812,10 @@ static int smd_tty_core_init(void)
 
 	for (n = 0; n < ARRAY_SIZE(smd_configs); ++n) {
 		idx = smd_configs[n].tty_dev_index;
+<<<<<<< HEAD
+=======
+		mutex_init(&smd_tty[idx].smd_tty_device_init_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		smd_tty[idx].edge = smd_configs[n].edge;
 
 		strlcpy(smd_tty[idx].ch_name, smd_configs[n].port_name,
@@ -820,6 +842,7 @@ static int smd_tty_core_init(void)
 			/*
 			 * use legacy mode for 8660 Standalone (subtype 0)
 			 */
+<<<<<<< HEAD
 			legacy_ds |= cpu_is_msm8x60() &&
 					(socinfo_get_platform_subtype() == 0x0);
 
@@ -828,6 +851,19 @@ static int smd_tty_core_init(void)
 		}
 
 		ret = smd_tty_device_init(idx);
+=======
+			legacy_ds |= (cpu_is_msm8x60() || cpu_is_msm8226()) &&
+					(socinfo_get_platform_subtype() == 0x0);
+
+			legacy_ds = 1; //ALRAN: for Samsung request 01290901 
+						
+			if (!legacy_ds)
+				continue;
+		}
+		mutex_lock(&smd_tty[idx].smd_tty_device_init_lock);
+		ret = smd_tty_device_init(idx);
+		mutex_unlock(&smd_tty[idx].smd_tty_device_init_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (ret) {
 			SMD_TTY_ERR(
 				"%s: init failed %d (%d)", __func__, idx, ret);

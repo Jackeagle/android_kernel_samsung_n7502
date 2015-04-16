@@ -18,7 +18,10 @@
 #include <linux/usb/usb_qdss.h>
 #include <linux/usb/msm_hsusb.h>
 
+<<<<<<< HEAD
 #include "gadget_chips.h"
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include "f_qdss.h"
 #include "u_qdss.c"
 
@@ -396,9 +399,13 @@ static int qdss_bind(struct usb_configuration *c, struct usb_function *f)
 			goto fail;
 		}
 	}
+<<<<<<< HEAD
 
 	if (gadget_is_dwc3(gadget))
 		dwc3_tx_fifo_resize_request(qdss->data, true);
+=======
+	dwc3_tx_fifo_resize_request(qdss->data, true);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return 0;
 fail:
@@ -411,6 +418,7 @@ fail:
 static void qdss_unbind(struct usb_configuration *c, struct usb_function *f)
 {
 	struct f_qdss  *qdss = func_to_qdss(f);
+<<<<<<< HEAD
 	struct usb_gadget *gadget = c->cdev->gadget;
 
 	pr_debug("qdss_unbind\n");
@@ -420,6 +428,14 @@ static void qdss_unbind(struct usb_configuration *c, struct usb_function *f)
 
 	clear_eps(f);
 	clear_desc(gadget, f);
+=======
+
+	pr_debug("qdss_unbind\n");
+
+	dwc3_tx_fifo_resize_request(qdss->data, false);
+	clear_eps(f);
+	clear_desc(c->cdev->gadget, f);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static void qdss_eps_disable(struct usb_function *f)
@@ -611,7 +627,11 @@ static int qdss_bind_config(struct usb_configuration *c, const char *name)
 
 	spin_lock_irqsave(&d_lock, flags);
 	list_for_each_entry(ch, &usb_qdss_ch_list, list) {
+<<<<<<< HEAD
 		if (!strcmp(name, ch->name)) {
+=======
+		if (!strncmp(name, ch->name, sizeof(ch->name))) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			found = 1;
 			break;
 		}
@@ -773,7 +793,11 @@ struct usb_qdss_ch *usb_qdss_open(const char *name, void *priv,
 	spin_lock_irqsave(&d_lock, flags);
 	/* Check if we already have a channel with this name */
 	list_for_each_entry(ch, &usb_qdss_ch_list, list) {
+<<<<<<< HEAD
 		if (!strcmp(name, ch->name)) {
+=======
+		if (!strncmp(name, ch->name, sizeof(ch->name))) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			found = 1;
 			break;
 		}
@@ -830,8 +854,12 @@ void usb_qdss_close(struct usb_qdss_ch *ch)
 	ch->app_conn = 0;
 	spin_unlock_irqrestore(&d_lock, flags);
 
+<<<<<<< HEAD
 	if (gadget_is_dwc3(gadget))
 		msm_dwc3_restart_usb_session(gadget);
+=======
+	msm_dwc3_restart_usb_session(gadget);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 EXPORT_SYMBOL(usb_qdss_close);
 

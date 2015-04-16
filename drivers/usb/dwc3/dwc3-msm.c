@@ -69,10 +69,13 @@ static int override_phy_init;
 module_param(override_phy_init, int, S_IRUGO|S_IWUSR);
 MODULE_PARM_DESC(override_phy_init, "Override HSPHY Init Seq");
 
+<<<<<<< HEAD
 static int ss_phy_override_deemphasis;
 module_param(ss_phy_override_deemphasis, int, S_IRUGO|S_IWUSR);
 MODULE_PARM_DESC(ss_phy_override_deemphasis, "Override SSPHY demphasis value");
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* Enable Proprietary charger detection */
 static bool prop_chg_detect;
 module_param(prop_chg_detect, bool, S_IRUGO | S_IWUSR);
@@ -202,7 +205,10 @@ struct dwc3_msm {
 	atomic_t		in_lpm;
 	int			hs_phy_irq;
 	int			hsphy_init_seq;
+<<<<<<< HEAD
 	int			deemphasis_val;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	bool			lpm_irq_seen;
 	struct delayed_work	resume_work;
 	struct work_struct	restart_usb_work;
@@ -1042,6 +1048,7 @@ void dwc3_tx_fifo_resize_request(struct usb_ep *ep, bool qdss_enabled)
 	struct dwc3 *dwc = dep->dwc;
 	struct dwc3_msm *mdwc = dev_get_drvdata(dwc->dev->parent);
 
+<<<<<<< HEAD
 	if (qdss_enabled) {
 		dwc->tx_fifo_reduced = true;
 		dwc->tx_fifo_size = mdwc->qdss_tx_fifo_size;
@@ -1049,6 +1056,12 @@ void dwc3_tx_fifo_resize_request(struct usb_ep *ep, bool qdss_enabled)
 		dwc->tx_fifo_reduced = false;
 		dwc->tx_fifo_size = mdwc->tx_fifo_size;
 	}
+=======
+	if (qdss_enabled)
+		dwc->tx_fifo_size = mdwc->qdss_tx_fifo_size;
+	else
+		dwc->tx_fifo_size = mdwc->tx_fifo_size;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 EXPORT_SYMBOL(dwc3_tx_fifo_resize_request);
 
@@ -1424,12 +1437,16 @@ static void dwc3_msm_ss_phy_reg_init(struct dwc3_msm *mdwc)
 	 */
 	data = dwc3_msm_ssusb_read_phycreg(mdwc->base, 0x1002);
 	data &= ~0x3F80;
+<<<<<<< HEAD
 	if (ss_phy_override_deemphasis)
 		mdwc->deemphasis_val = ss_phy_override_deemphasis;
 	if (mdwc->deemphasis_val)
 		data |= (mdwc->deemphasis_val << 7);
 	else
 		data |= (0x16 << 7);
+=======
+	data |= (0x16 << 7);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	data &= ~0x7F;
 	data |= (0x7F | (1 << 14));
 	dwc3_msm_ssusb_write_phycreg(mdwc->base, 0x1002, data);
@@ -1505,9 +1522,12 @@ static void dwc3_msm_notify_event(struct dwc3 *dwc, unsigned event)
 {
 	struct dwc3_msm *mdwc = dev_get_drvdata(dwc->dev->parent);
 
+<<<<<<< HEAD
 	if (dwc->revision < DWC3_REVISION_230A)
 		return;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	switch (event) {
 	case DWC3_CONTROLLER_ERROR_EVENT:
 		dev_info(mdwc->dev, "DWC3_CONTROLLER_ERROR_EVENT received\n");
@@ -1529,10 +1549,13 @@ static void dwc3_msm_notify_event(struct dwc3 *dwc, unsigned event)
 					DWC3_CONTROLLER_POST_RESET_EVENT);
 		dwc->tx_fifo_size = mdwc->tx_fifo_size;
 		break;
+<<<<<<< HEAD
 	case DWC3_CONTROLLER_POST_INITIALIZATION_EVENT:
 		/* clear LANE0_PWR_PRESENT bit after initialization is done */
 		dwc3_msm_write_readback(mdwc->base, SS_PHY_CTRL_REG, (1 << 24),
 									0x0);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	default:
 		dev_dbg(mdwc->dev, "unknown dwc3 event\n");
 		break;
@@ -2288,12 +2311,17 @@ static int dwc3_msm_power_set_property_usb(struct power_supply *psy,
 		if (mdwc->otg_xceiv && !mdwc->ext_inuse &&
 		    (mdwc->ext_xceiv.otg_capability || !init)) {
 			mdwc->ext_xceiv.bsv = val->intval;
+<<<<<<< HEAD
 			/*
 			 * set debouncing delay to 120msec. Otherwise battery
 			 * charging CDP complaince test fails if delay > 120ms.
 			 */
 			queue_delayed_work(system_nrt_wq,
 							&mdwc->resume_work, 12);
+=======
+			queue_delayed_work(system_nrt_wq,
+							&mdwc->resume_work, 20);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 			if (!init)
 				init = true;
@@ -3002,10 +3030,13 @@ static int __devinit dwc3_msm_probe(struct platform_device *pdev)
 	else if (!mdwc->hsphy_init_seq)
 		dev_warn(&pdev->dev, "incorrect hsphyinitseq.Using PORvalue\n");
 
+<<<<<<< HEAD
 	if (of_property_read_u32(node, "qcom,dwc-ssphy-deemphasis-value",
 						&mdwc->deemphasis_val))
 		dev_dbg(&pdev->dev, "unable to read ssphy deemphasis value\n");
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	pm_runtime_set_active(mdwc->dev);
 	pm_runtime_enable(mdwc->dev);
 

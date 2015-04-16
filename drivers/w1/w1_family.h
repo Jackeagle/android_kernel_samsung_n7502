@@ -30,6 +30,10 @@
 #define W1_FAMILY_SMEM_01	0x01
 #define W1_FAMILY_SMEM_81	0x81
 #define W1_THERM_DS18S20 	0x10
+<<<<<<< HEAD
+=======
+#define W1_FAMILY_DS28EL15	0x97
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define W1_COUNTER_DS2423	0x1D
 #define W1_THERM_DS1822  	0x22
 #define W1_EEPROM_DS2433  	0x23

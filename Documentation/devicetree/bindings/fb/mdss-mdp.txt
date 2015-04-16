@@ -107,7 +107,10 @@ Required properties
 
 Optional properties:
 - vdd-cx-supply :	Phandle for vdd CX regulator device node.
+<<<<<<< HEAD
 - batfet-supply :	Phandle for battery FET regulator device node.
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 - qcom,vbif-settings :	Array with key-value pairs of constant VBIF register
 			settings used to setup MDSS QoS for optimum performance.
 			The key used should be offset from "vbif_phys" register
@@ -146,6 +149,7 @@ Optional properties:
 				total numbers of MMBs per pipe while values, if
 				any, following first one denotes indexes of MMBs
 				to that RGB pipe.
+<<<<<<< HEAD
 - qcom,max-bandwidth-low-kbps:	This value indicates the max bandwidth in KB
 				that can be supported without underflow.
 				This is a low bandwidth threshold which should
@@ -158,6 +162,9 @@ Optional properties:
 				applied in scenarios where panel interface can
 				be more tolerant to memory latency such as
 				command mode panels.
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 Optional subnodes:
 Child nodes representing the frame buffer virtual devices.
 
@@ -196,11 +203,14 @@ Example:
 		interrupts = <0 72 0>;
 		vdd-supply = <&gdsc_mdss>;
 		vdd-cx-supply = <&pm8841_s2_corner>;
+<<<<<<< HEAD
 		batfet-supply = <&pm8941_chg_batif>;
 
 		qcom,max-bandwidth-low-kbps = <2300000>;
 		qcom,max-bandwidth-high-kbps = <3000000>;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,max-clk-rate = <320000000>;
 		qcom,vbif-settings = <0x0004 0x00000001>,
 				     <0x00D8 0x00000707>;

@@ -46,6 +46,11 @@ struct mmc_ioc_cmd {
 #define mmc_ioc_cmd_set_data(ic, ptr) ic.data_ptr = (__u64)(unsigned long) ptr
 
 #define MMC_IOC_CMD _IOWR(MMC_BLOCK_MAJOR, 0, struct mmc_ioc_cmd)
+<<<<<<< HEAD
+=======
+#define MMC_IOC_BUSWIDTH _IO(MMC_BLOCK_MAJOR, 0xCB)
+#define MMC_IOC_CLOCK _IO(MMC_BLOCK_MAJOR, 0xCC)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /**
  * There are four request types that are applicable for rpmb accesses- two
@@ -107,5 +112,9 @@ struct mmc_ioc_rpmb {
  * is enforced per ioctl call.  For larger data transfers, use the normal
  * block device operations.
  */
+<<<<<<< HEAD
 #define MMC_IOC_MAX_BYTES  (512L * 256)
+=======
+#define MMC_IOC_MAX_BYTES  (512L * 512)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif /* LINUX_MMC_IOCTL_H */

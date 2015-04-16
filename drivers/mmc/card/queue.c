@@ -79,8 +79,12 @@ static int mmc_queue_thread(void *d)
 				continue; /* fetch again */
 			} else if ((mq->flags & MMC_QUEUE_URGENT_REQUEST) &&
 				   (mq->mqrq_cur->req &&
+<<<<<<< HEAD
 				!(mq->mqrq_cur->req->cmd_flags &
 				       MMC_REQ_NOREINSERT_MASK))) {
+=======
+				!(mq->mqrq_cur->req->cmd_flags & REQ_URGENT))) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				/*
 				 * clean current request when urgent request
 				 * processing in progress and current request is

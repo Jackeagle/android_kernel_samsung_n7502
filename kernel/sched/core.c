@@ -80,7 +80,13 @@
 #ifdef CONFIG_PARAVIRT
 #include <asm/paravirt.h>
 #endif
+<<<<<<< HEAD
 
+=======
+#ifdef CONFIG_SEC_DEBUG
+#include <mach/sec_debug.h>
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include "sched.h"
 #include "../workqueue_sched.h"
 
@@ -621,6 +627,7 @@ void wake_up_idle_cpu(int cpu)
 static inline bool got_nohz_idle_kick(void)
 {
 	int cpu = smp_processor_id();
+<<<<<<< HEAD
 
 	if (!test_bit(NOHZ_BALANCE_KICK, nohz_flags(cpu)))
 		return false;
@@ -634,6 +641,9 @@ static inline bool got_nohz_idle_kick(void)
 	 */
 	clear_bit(NOHZ_BALANCE_KICK, nohz_flags(cpu));
 	return false;
+=======
+	return idle_cpu(cpu) && test_bit(NOHZ_BALANCE_KICK, nohz_flags(cpu));
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 #else /* CONFIG_NO_HZ */
@@ -1531,7 +1541,11 @@ void scheduler_ipi(void)
 	/*
 	 * Check if someone kicked us for doing the nohz idle load balance.
 	 */
+<<<<<<< HEAD
 	if (unlikely(got_nohz_idle_kick())) {
+=======
+	if (unlikely(got_nohz_idle_kick() && !need_resched())) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		this_rq()->idle_balance = 1;
 		raise_softirq_irqoff(SCHED_SOFTIRQ);
 	}
@@ -2192,6 +2206,16 @@ unsigned long this_cpu_load(void)
 	return this->cpu_load[0];
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_ZRAM_FOR_ANDROID
+unsigned long this_cpu_loadx(int i)
+{
+	struct rq *this = this_rq();
+	return this->cpu_load[i];
+}
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* Variables and functions for calc_load */
 static atomic_long_t calc_load_tasks;
@@ -3272,6 +3296,12 @@ need_resched:
 		 */
 		cpu = smp_processor_id();
 		rq = cpu_rq(cpu);
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SEC_DEBUG
+		sec_debug_task_sched_log(cpu, rq->curr);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	} else
 		raw_spin_unlock_irq(&rq->lock);
 
@@ -4931,7 +4961,11 @@ void show_state_filter(unsigned long state_filter)
 
 	touch_all_softlockup_watchdogs();
 
+<<<<<<< HEAD
 #ifdef CONFIG_SYSRQ_SCHED_DEBUG
+=======
+#ifdef CONFIG_SCHED_DEBUG
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	sysrq_sched_debug_show();
 #endif
 	rcu_read_unlock();
@@ -6947,7 +6981,10 @@ int in_sched_functions(unsigned long addr)
 
 #ifdef CONFIG_CGROUP_SCHED
 struct task_group root_task_group;
+<<<<<<< HEAD
 LIST_HEAD(task_groups);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif
 
 DECLARE_PER_CPU(cpumask_var_t, load_balance_tmpmask);
@@ -6957,6 +6994,12 @@ void __init sched_init(void)
 	int i, j;
 	unsigned long alloc_size = 0, ptr;
 
+<<<<<<< HEAD
+=======
+	sec_gaf_supply_rqinfo(offsetof(struct rq, curr),
+						  offsetof(struct cfs_rq, rq));
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #ifdef CONFIG_FAIR_GROUP_SCHED
 	alloc_size += 2 * nr_cpu_ids * sizeof(void **);
 #endif

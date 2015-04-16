@@ -36,6 +36,13 @@
 
 #include "coresight-priv.h"
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_CORESIGHT_ETM_DEFAULT_ENABLE) && defined(CONFIG_SEC_DEBUG)
+#include <mach/sec_debug.h>
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define etm_writel_mm(drvdata, val, off)  \
 			__raw_writel((val), drvdata->base + off)
 #define etm_readl_mm(drvdata, off)        \
@@ -2239,6 +2246,16 @@ static int __devinit etm_probe(struct platform_device *pdev)
 
 	dev_info(dev, "ETM initialized\n");
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_CORESIGHT_ETM_DEFAULT_ENABLE) && defined(CONFIG_SEC_DEBUG)
+	if (kernel_sec_get_debug_level() == KERNEL_SEC_DEBUG_LEVEL_LOW)
+		boot_enable = 0;
+	else
+		boot_enable = 1;
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (boot_enable) {
 		coresight_enable(drvdata->csdev);
 		drvdata->boot_enable = true;

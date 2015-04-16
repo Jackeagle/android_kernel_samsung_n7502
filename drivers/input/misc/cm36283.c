@@ -17,9 +17,15 @@
  */
 
 #include <linux/delay.h>
+<<<<<<< HEAD
 #include <linux/i2c.h>
 #include <linux/input.h>
 #include <linux/sensors.h>
+=======
+#include <linux/earlysuspend.h>
+#include <linux/i2c.h>
+#include <linux/input.h>
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <linux/interrupt.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
@@ -40,6 +46,11 @@
 #include <asm/mach-types.h>
 #include <asm/setup.h>
 
+<<<<<<< HEAD
+=======
+#define D(x...) pr_info(x)
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define I2C_RETRY_COUNT 10
 
 #define NEAR_DELAY_TIME ((100 * HZ) / 1000)
@@ -63,6 +74,7 @@
 #define CM36283_PS_MAX_POLL_DELAY	1000
 #define CM36283_PS_DEFAULT_POLL_DELAY	100
 
+<<<<<<< HEAD
 static struct sensors_classdev sensors_light_cdev = {
 	.name = "cm36283-light",
 	.vendor = "Capella",
@@ -91,6 +103,9 @@ static struct sensors_classdev sensors_proximity_cdev = {
 	.fifo_max_event_count = 0,
 };
 
+=======
+static int record_init_fail = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static const int als_range[] = {
 	[CM36283_ALS_IT0] = 6554,
@@ -117,6 +132,10 @@ struct cm36283_info {
 	struct input_dev *ls_input_dev;
 	struct input_dev *ps_input_dev;
 
+<<<<<<< HEAD
+=======
+	struct early_suspend early_suspend;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct i2c_client *i2c_client;
 	struct workqueue_struct *lp_wq;
 
@@ -180,8 +199,14 @@ static int control_and_report(struct cm36283_info *lpi, uint8_t mode,
 static int I2C_RxData(uint16_t slaveAddr, uint8_t cmd, uint8_t *rxData, int length)
 {
 	uint8_t loop_i;
+<<<<<<< HEAD
 	struct cm36283_info *lpi = lp_info;
 	uint8_t subaddr[1];
+=======
+	int val;
+	struct cm36283_info *lpi = lp_info;
+  uint8_t subaddr[1];
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	struct i2c_msg msgs[] = {
 		{
@@ -197,14 +222,19 @@ static int I2C_RxData(uint16_t slaveAddr, uint8_t cmd, uint8_t *rxData, int leng
 		 .buf = rxData,
 		 },		 
 	};
+<<<<<<< HEAD
 
 	subaddr[0] = cmd;
+=======
+  subaddr[0] = cmd;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	for (loop_i = 0; loop_i < I2C_RETRY_COUNT; loop_i++) {
 
 		if (i2c_transfer(lp_info->i2c_client->adapter, msgs, 2) > 0)
 			break;
 
+<<<<<<< HEAD
 		dev_err(&lpi->i2c_client->dev, "%s: I2C error(%d). Retrying.\n",
 				__func__, cmd);
 		msleep(10);
@@ -212,6 +242,19 @@ static int I2C_RxData(uint16_t slaveAddr, uint8_t cmd, uint8_t *rxData, int leng
 	if (loop_i >= I2C_RETRY_COUNT) {
 		dev_err(&lpi->i2c_client->dev, "%s: Retry count exceeds %d.",
 				__func__, I2C_RETRY_COUNT);
+=======
+		val = gpio_get_value(lpi->intr_pin);
+		/*check intr GPIO when i2c error*/
+		if (loop_i == 0 || loop_i == I2C_RETRY_COUNT -1)
+			D("[PS][CM36283 error] %s, i2c err, slaveAddr 0x%x ISR gpio %d  = %d, record_init_fail %d \n",
+				__func__, slaveAddr, lpi->intr_pin, val, record_init_fail);
+
+		msleep(10);
+	}
+	if (loop_i >= I2C_RETRY_COUNT) {
+		printk(KERN_ERR "[PS_ERR][CM36283 error] %s retry over %d\n",
+			__func__, I2C_RETRY_COUNT);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return -EIO;
 	}
 
@@ -221,8 +264,13 @@ static int I2C_RxData(uint16_t slaveAddr, uint8_t cmd, uint8_t *rxData, int leng
 static int I2C_TxData(uint16_t slaveAddr, uint8_t *txData, int length)
 {
 	uint8_t loop_i;
+<<<<<<< HEAD
 	struct cm36283_info *lpi = lp_info;
 
+=======
+	int val;
+	struct cm36283_info *lpi = lp_info;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct i2c_msg msg[] = {
 		{
 		 .addr = slaveAddr,
@@ -236,13 +284,27 @@ static int I2C_TxData(uint16_t slaveAddr, uint8_t *txData, int length)
 		if (i2c_transfer(lp_info->i2c_client->adapter, msg, 1) > 0)
 			break;
 
+<<<<<<< HEAD
 		pr_err("%s: I2C error. Retrying...\n", __func__);
+=======
+		val = gpio_get_value(lpi->intr_pin);
+		/*check intr GPIO when i2c error*/
+		if (loop_i == 0 || loop_i == I2C_RETRY_COUNT -1)
+			D("[PS][CM36283 error] %s, i2c err, slaveAddr 0x%x, value 0x%x, ISR gpio%d  = %d, record_init_fail %d\n",
+				__func__, slaveAddr, txData[0], lpi->intr_pin, val, record_init_fail);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		msleep(10);
 	}
 
 	if (loop_i >= I2C_RETRY_COUNT) {
+<<<<<<< HEAD
 		dev_err(&lpi->i2c_client->dev, "%s: Retry count exceeds %d.",
 				__func__, I2C_RETRY_COUNT);
+=======
+		printk(KERN_ERR "[PS_ERR][CM36283 error] %s retry over %d\n",
+			__func__, I2C_RETRY_COUNT);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return -EIO;
 	}
 
@@ -259,12 +321,26 @@ static int _cm36283_I2C_Read_Word(uint16_t slaveAddr, uint8_t cmd, uint16_t *pda
 
 	ret = I2C_RxData(slaveAddr, cmd, buffer, 2);
 	if (ret < 0) {
+<<<<<<< HEAD
 		pr_err("%s: I2C RxData fail(%d).\n", __func__, cmd);
+=======
+		pr_err(
+			"[PS_ERR][CM3218 error]%s: I2C_RxData fail [0x%x, 0x%x]\n",
+			__func__, slaveAddr, cmd);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return ret;
 	}
 
 	*pdata = (buffer[1]<<8)|buffer[0];
+<<<<<<< HEAD
 
+=======
+#if 0
+	/* Debug use */
+	printk(KERN_DEBUG "[CM3218] %s: I2C_RxData[0x%x, 0x%x] = 0x%x\n",
+		__func__, slaveAddr, cmd, *pdata);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return ret;
 }
 
@@ -272,14 +348,27 @@ static int _cm36283_I2C_Write_Word(uint16_t SlaveAddress, uint8_t cmd, uint16_t 
 {
 	char buffer[3];
 	int ret = 0;
+<<<<<<< HEAD
 
+=======
+#if 0
+	/* Debug use */
+	printk(KERN_DEBUG
+	"[CM3218] %s: _cm36283_I2C_Write_Word[0x%x, 0x%x, 0x%x]\n",
+		__func__, SlaveAddress, cmd, data);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	buffer[0] = cmd;
 	buffer[1] = (uint8_t)(data&0xff);
 	buffer[2] = (uint8_t)((data&0xff00)>>8);	
 	
 	ret = I2C_TxData(SlaveAddress, buffer, 3);
 	if (ret < 0) {
+<<<<<<< HEAD
 		pr_err("%s: I2C_TxData failed.\n", __func__);
+=======
+		pr_err("[PS_ERR][CM3218 error]%s: I2C_TxData fail\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return -EIO;
 	}
 
@@ -289,7 +378,11 @@ static int _cm36283_I2C_Write_Word(uint16_t SlaveAddress, uint8_t cmd, uint16_t 
 static int get_ls_adc_value(uint16_t *als_step, bool resume)
 {
 	struct cm36283_info *lpi = lp_info;
+<<<<<<< HEAD
 	uint32_t tmp;
+=======
+	uint32_t tmpResult;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int ret = 0;
 
 	if (als_step == NULL)
@@ -298,6 +391,7 @@ static int get_ls_adc_value(uint16_t *als_step, bool resume)
 	/* Read ALS data: */
 	ret = _cm36283_I2C_Read_Word(lpi->slave_addr, ALS_DATA, als_step);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(&lpi->i2c_client->dev, "%s: I2C read word failed.\n",
 				__func__);
 		return -EIO;
@@ -312,6 +406,24 @@ static int get_ls_adc_value(uint16_t *als_step, bool resume)
 	}
 
 	dev_dbg(&lpi->i2c_client->dev, "raw adc = 0x%x\n", *als_step);
+=======
+		pr_err(
+			"[LS][CM3218 error]%s: _cm36283_I2C_Read_Word fail\n",
+			__func__);
+		return -EIO;
+	}
+
+  if (!lpi->ls_calibrate) {
+		tmpResult = (uint32_t)(*als_step) * lpi->als_gadc / lpi->als_kadc;
+		if (tmpResult > 0xFFFF)
+			*als_step = 0xFFFF;
+		else
+		  *als_step = tmpResult;  			
+	}
+
+	D("[LS][CM3218] %s: raw adc = 0x%X, ls_calibrate = %d\n",
+		__func__, *als_step, lpi->ls_calibrate);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return ret;
 }
@@ -337,10 +449,25 @@ static int get_ps_adc_value(uint16_t *data)
 
 	ret = _cm36283_I2C_Read_Word(lpi->slave_addr, PS_DATA, data);
 	
+<<<<<<< HEAD
 	if (ret < 0)
 		return ret;
 
 	(*data) &= 0xFF;
+=======
+	(*data) &= 0xFF;
+	
+	if (ret < 0) {
+		pr_err(
+			"[PS][CM36283 error]%s: _cm36283_I2C_Read_Word fail\n",
+			__func__);
+		return -EIO;
+	} else {
+		pr_err(
+			"[PS][CM36283 OK]%s: _cm36283_I2C_Read_Word OK 0x%x\n",
+			__func__, *data);
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return ret;
 }
@@ -377,16 +504,26 @@ static int get_stable_ps_adc_value(uint16_t *ps_adc)
 			msleep(10);
 			wait_count++;
 			if (wait_count > 12) {
+<<<<<<< HEAD
 				dev_err(&lpi->i2c_client->dev, "%s: interrupt GPIO low\n",
 					       __func__);
+=======
+				pr_err("[PS_ERR][CM36283 error]%s: interrupt GPIO low,"
+					" get_ps_adc_value\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				return -EIO;
 			}
 		}
 
 		ret = get_ps_adc_value(&value[i]);
 		if (ret < 0) {
+<<<<<<< HEAD
 			dev_err(&lpi->i2c_client->dev,
 					"%s: error get ps value\n", __func__);
+=======
+			pr_err("[PS_ERR][CM36283 error]%s: get_ps_adc_value\n",
+				__func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			return -EIO;
 		}
 
@@ -396,8 +533,15 @@ static int get_stable_ps_adc_value(uint16_t *ps_adc)
 		wait_count = 0;
 	}
 
+<<<<<<< HEAD
 	mid_val = mid_value(value, 3);
 	dev_dbg(&lpi->i2c_client->dev, "Sta_ps: After sort, value[0, 1, 2] = [0x%x, 0x%x, 0x%x]",
+=======
+	/*D("Sta_ps: Before sort, value[0, 1, 2] = [0x%x, 0x%x, 0x%x]",
+		value[0], value[1], value[2]);*/
+	mid_val = mid_value(value, 3);
+	D("Sta_ps: After sort, value[0, 1, 2] = [0x%x, 0x%x, 0x%x]",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		value[0], value[1], value[2]);
 	*ps_adc = (mid_val & 0xFF);
 
@@ -523,6 +667,7 @@ static void ls_initial_cmd(struct cm36283_info *lpi)
 
 static void psensor_initial_cmd(struct cm36283_info *lpi)
 {
+<<<<<<< HEAD
 	/*must disable p-sensor interrupt befrore IST create*/
 	lpi->ps_conf1_val |= CM36283_PS_SD;
 	lpi->ps_conf1_val &= CM36283_PS_INT_MASK;
@@ -533,6 +678,16 @@ static void psensor_initial_cmd(struct cm36283_info *lpi)
 
 	dev_dbg(&lpi->i2c_client->dev,
 			"%s:send psensor initial command finished\n", __func__);
+=======
+	/*must disable p-sensor interrupt befrore IST create*//*disable ALS func*/		
+  lpi->ps_conf1_val |= CM36283_PS_SD;
+  lpi->ps_conf1_val &= CM36283_PS_INT_MASK;  
+  _cm36283_I2C_Write_Word(lpi->slave_addr, PS_CONF1, lpi->ps_conf1_val);   
+  _cm36283_I2C_Write_Word(lpi->slave_addr, PS_CONF3, lpi->ps_conf3_val);
+  _cm36283_I2C_Write_Word(lpi->slave_addr, PS_THD, (lpi->ps_close_thd_set <<8)| lpi->ps_away_thd_set);
+
+	D("[PS][CM36283] %s, finish\n", __func__);	
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int psensor_enable(struct cm36283_info *lpi)
@@ -541,10 +696,17 @@ static int psensor_enable(struct cm36283_info *lpi)
 	unsigned int delay;
 	
 	mutex_lock(&ps_enable_mutex);
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "psensor enable!\n");
 
 	if (lpi->ps_enable) {
 		dev_err(&lpi->i2c_client->dev, "already enabled\n");
+=======
+	D("[PS][CM36283] %s\n", __func__);
+
+	if (lpi->ps_enable) {
+		D("[PS][CM36283] %s: already enabled\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		ret = 0;
 	} else {
 		ret = control_and_report(lpi, CONTROL_PS, 1, 0);
@@ -567,10 +729,17 @@ static int psensor_disable(struct cm36283_info *lpi)
 		cancel_delayed_work_sync(&lpi->pdwork);
 
 	mutex_lock(&ps_disable_mutex);
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "psensor disable!\n");
 
 	if (lpi->ps_enable == 0) {
 		dev_err(&lpi->i2c_client->dev, "already disabled\n");
+=======
+	D("[PS][CM36283] %s\n", __func__);
+
+	if (lpi->ps_enable == 0) {
+		D("[PS][CM36283] %s: already disabled\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		ret = 0;
 	} else {
 		ret = control_and_report(lpi, CONTROL_PS, 0, 0);
@@ -584,7 +753,11 @@ static int psensor_open(struct inode *inode, struct file *file)
 {
 	struct cm36283_info *lpi = lp_info;
 
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "psensor open!");
+=======
+	D("[PS][CM36283] %s\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (lpi->psensor_opened)
 		return -EBUSY;
@@ -598,7 +771,11 @@ static int psensor_release(struct inode *inode, struct file *file)
 {
 	struct cm36283_info *lpi = lp_info;
 
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "psensor release!");
+=======
+	D("[PS][CM36283] %s\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	lpi->psensor_opened = 0;
 
@@ -612,7 +789,11 @@ static long psensor_ioctl(struct file *file, unsigned int cmd,
 	int val;
 	struct cm36283_info *lpi = lp_info;
 
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "%s cmd %d\n", __func__, _IOC_NR(cmd));
+=======
+	D("[PS][CM36283] %s cmd %d\n", __func__, _IOC_NR(cmd));
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	switch (cmd) {
 	case CAPELLA_CM3602_IOCTL_ENABLE:
@@ -627,7 +808,11 @@ static long psensor_ioctl(struct file *file, unsigned int cmd,
 		return put_user(lpi->ps_enable, (unsigned long __user *)arg);
 		break;
 	default:
+<<<<<<< HEAD
 		dev_err(&lpi->i2c_client->dev, "%s: invalid cmd %d\n",
+=======
+		pr_err("[PS][CM36283 error]%s: invalid cmd %d\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			__func__, _IOC_NR(cmd));
 		return -EINVAL;
 	}
@@ -640,6 +825,7 @@ static const struct file_operations psensor_fops = {
 	.unlocked_ioctl = psensor_ioctl
 };
 
+<<<<<<< HEAD
 void lightsensor_set_kvalue(struct cm36283_info *lpi)
 {
 	if (!lpi) {
@@ -648,14 +834,34 @@ void lightsensor_set_kvalue(struct cm36283_info *lpi)
 	}
 
 	dev_dbg(&lpi->i2c_client->dev, "%s: ALS calibrated als_kadc=0x%x\n",
+=======
+struct miscdevice psensor_misc = {
+	.minor = MISC_DYNAMIC_MINOR,
+	.name = "proximity",
+	.fops = &psensor_fops
+};
+
+void lightsensor_set_kvalue(struct cm36283_info *lpi)
+{
+	if (!lpi) {
+		pr_err("[LS][CM36283 error]%s: ls_info is empty\n", __func__);
+		return;
+	}
+
+	D("[LS][CM36283] %s: ALS calibrated als_kadc=0x%x\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			__func__, als_kadc);
 
 	if (als_kadc >> 16 == ALS_CALIBRATED)
 		lpi->als_kadc = als_kadc & 0xFFFF;
 	else {
 		lpi->als_kadc = 0;
+<<<<<<< HEAD
 		dev_dbg(&lpi->i2c_client->dev, "%s: no ALS calibrated\n",
 				__func__);
+=======
+		D("[LS][CM36283] %s: no ALS calibrated\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	if (lpi->als_kadc && lpi->golden_adc > 0) {
@@ -666,13 +872,18 @@ void lightsensor_set_kvalue(struct cm36283_info *lpi)
 		lpi->als_kadc = 1;
 		lpi->als_gadc = 1;
 	}
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "%s: als_kadc=0x%x, als_gadc=0x%x\n",
+=======
+	D("[LS][CM36283] %s: als_kadc=0x%x, als_gadc=0x%x\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		__func__, lpi->als_kadc, lpi->als_gadc);
 }
 
 
 static int lightsensor_update_table(struct cm36283_info *lpi)
 {
+<<<<<<< HEAD
 	uint32_t tmp_data[10];
 	int i;
 	for (i = 0; i < 10; i++) {
@@ -686,6 +897,20 @@ static int lightsensor_update_table(struct cm36283_info *lpi)
 
 		dev_dbg(&lpi->i2c_client->dev, "%s: Calibrated adc_table: data[%d], %x\n",
 				__func__, i, lpi->cali_table[i]);
+=======
+	uint32_t tmpData[10];
+	int i;
+	for (i = 0; i < 10; i++) {
+		tmpData[i] = (uint32_t)(*(lpi->adc_table + i))
+				* lpi->als_kadc / lpi->als_gadc ;
+		if( tmpData[i] <= 0xFFFF ){
+      lpi->cali_table[i] = (uint16_t) tmpData[i];		
+    } else {
+      lpi->cali_table[i] = 0xFFFF;    
+    }         
+		D("[LS][CM36283] %s: Calibrated adc_table: data[%d], %x\n",
+			__func__, i, lpi->cali_table[i]);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	return 0;
@@ -696,9 +921,23 @@ static int lightsensor_enable(struct cm36283_info *lpi)
 {
 	int ret = -EIO;
 	unsigned int delay;
+<<<<<<< HEAD
 
 	mutex_lock(&als_enable_mutex);
 	ret = control_and_report(lpi, CONTROL_ALS, 1, 0);
+=======
+	
+	mutex_lock(&als_enable_mutex);
+	D("[LS][CM36283] %s\n", __func__);
+
+	if (lpi->als_enable) {
+		D("[LS][CM36283] %s: already enabled\n", __func__);
+		ret = 0;
+	} else {
+		ret = control_and_report(lpi, CONTROL_ALS, 1, 0);
+	}
+	
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mutex_unlock(&als_enable_mutex);
 
 	delay = atomic_read(&lpi->ls_poll_delay);
@@ -713,13 +952,21 @@ static int lightsensor_disable(struct cm36283_info *lpi)
 {
 	int ret = -EIO;
 	mutex_lock(&als_disable_mutex);
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "disable lightsensor\n");
+=======
+	D("[LS][CM36283] %s\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (lpi->polling)
 		cancel_delayed_work_sync(&lpi->ldwork);
 
 	if ( lpi->als_enable == 0 ) {
+<<<<<<< HEAD
 		dev_err(&lpi->i2c_client->dev, "already disabled\n");
+=======
+		D("[LS][CM36283] %s: already disabled\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		ret = 0;
 	} else {
 		ret = control_and_report(lpi, CONTROL_ALS, 0, 0);
@@ -734,10 +981,16 @@ static int lightsensor_open(struct inode *inode, struct file *file)
 	struct cm36283_info *lpi = lp_info;
 	int rc = 0;
 
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "%s\n", __func__);
 	if (lpi->lightsensor_opened) {
 		dev_err(&lpi->i2c_client->dev, "%s: already opened\n",
 				__func__);
+=======
+	D("[LS][CM36283] %s\n", __func__);
+	if (lpi->lightsensor_opened) {
+		pr_err("[LS][CM36283 error]%s: already opened\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rc = -EBUSY;
 	}
 	lpi->lightsensor_opened = 1;
@@ -748,7 +1001,11 @@ static int lightsensor_release(struct inode *inode, struct file *file)
 {
 	struct cm36283_info *lpi = lp_info;
 
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "%s\n", __func__);
+=======
+	D("[LS][CM36283] %s\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	lpi->lightsensor_opened = 0;
 	return 0;
 }
@@ -759,16 +1016,31 @@ static long lightsensor_ioctl(struct file *file, unsigned int cmd,
 	int rc, val;
 	struct cm36283_info *lpi = lp_info;
 
+<<<<<<< HEAD
+=======
+	/*D("[CM36283] %s cmd %d\n", __func__, _IOC_NR(cmd));*/
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	switch (cmd) {
 	case LIGHTSENSOR_IOCTL_ENABLE:
 		if (get_user(val, (unsigned long __user *)arg)) {
 			rc = -EFAULT;
 			break;
 		}
+<<<<<<< HEAD
+=======
+		D("[LS][CM36283] %s LIGHTSENSOR_IOCTL_ENABLE, value = %d\n",
+			__func__, val);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rc = val ? lightsensor_enable(lpi) : lightsensor_disable(lpi);
 		break;
 	case LIGHTSENSOR_IOCTL_GET_ENABLED:
 		val = lpi->als_enable;
+<<<<<<< HEAD
+=======
+		D("[LS][CM36283] %s LIGHTSENSOR_IOCTL_GET_ENABLED, enabled %d\n",
+			__func__, val);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rc = put_user(val, (unsigned long __user *)arg);
 		break;
 	default:
@@ -787,6 +1059,16 @@ static const struct file_operations lightsensor_fops = {
 	.unlocked_ioctl = lightsensor_ioctl
 };
 
+<<<<<<< HEAD
+=======
+static struct miscdevice lightsensor_misc = {
+	.minor = MISC_DYNAMIC_MINOR,
+	.name = "lightsensor",
+	.fops = &lightsensor_fops
+};
+
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static ssize_t ps_adc_show(struct device *dev,
 			struct device_attribute *attr, char *buf)
 {
@@ -820,6 +1102,7 @@ static ssize_t ps_enable_store(struct device *dev,
 		&& ps_en != 10 && ps_en != 13 && ps_en != 16)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "%s: ps_en=%d\n",
 			__func__, ps_en);
 
@@ -832,15 +1115,37 @@ static ssize_t ps_enable_store(struct device *dev,
 }
 
 
+=======
+	if (ps_en) {
+		D("[PS][CM36283] %s: ps_en=%d\n",
+			__func__, ps_en);
+		psensor_enable(lpi);
+	} else
+		psensor_disable(lpi);
+
+	D("[PS][CM36283] %s\n", __func__);
+
+	return count;
+}
+
+static DEVICE_ATTR(ps_adc, 0664, ps_adc_show, ps_enable_store);
+
+unsigned PS_cmd_test_value;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static ssize_t ps_parameters_show(struct device *dev,
 			struct device_attribute *attr, char *buf)
 {
 	int ret;
 	struct cm36283_info *lpi = lp_info;
 
+<<<<<<< HEAD
 	ret = snprintf(buf, PAGE_SIZE,
 			"PS_close_thd_set = 0x%x, PS_away_thd_set = 0x%x\n",
 			lpi->ps_close_thd_set, lpi->ps_away_thd_set);
+=======
+	ret = sprintf(buf, "PS_close_thd_set = 0x%x, PS_away_thd_set = 0x%x, PS_cmd_cmd:value = 0x%x\n",
+		lpi->ps_close_thd_set, lpi->ps_away_thd_set, PS_cmd_test_value);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return ret;
 }
@@ -853,6 +1158,7 @@ static ssize_t ps_parameters_store(struct device *dev,
 	struct cm36283_info *lpi = lp_info;
 	char *token[10];
 	int i;
+<<<<<<< HEAD
 	unsigned long tmp;
 
 	for (i = 0; i < 3; i++)
@@ -870,10 +1176,32 @@ static ssize_t ps_parameters_store(struct device *dev,
 			lpi->ps_close_thd_set);
 	dev_dbg(&lpi->i2c_client->dev, "ps_away_thd_set:0x%x\n",
 			lpi->ps_away_thd_set);
+=======
+
+	printk(KERN_INFO "[PS][CM36283] %s\n", buf);
+	for (i = 0; i < 3; i++)
+		token[i] = strsep((char **)&buf, " ");
+
+	lpi->ps_close_thd_set = simple_strtoul(token[0], NULL, 16);
+	lpi->ps_away_thd_set = simple_strtoul(token[1], NULL, 16);	
+	PS_cmd_test_value = simple_strtoul(token[2], NULL, 16);
+	printk(KERN_INFO
+		"[PS][CM36283]Set PS_close_thd_set = 0x%x, PS_away_thd_set = 0x%x, PS_cmd_cmd:value = 0x%x\n",
+		lpi->ps_close_thd_set, lpi->ps_away_thd_set, PS_cmd_test_value);
+
+	D("[PS][CM36283] %s\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return count;
 }
 
+<<<<<<< HEAD
+=======
+static DEVICE_ATTR(ps_parameters, 0664,
+	ps_parameters_show, ps_parameters_store);
+
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static ssize_t ps_conf_show(struct device *dev,
 			struct device_attribute *attr, char *buf)
 {
@@ -888,6 +1216,7 @@ static ssize_t ps_conf_store(struct device *dev,
 	struct cm36283_info *lpi = lp_info;
 
 	sscanf(buf, "0x%x 0x%x", &code1, &code2);
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "PS_CONF1:0x%x PS_CONF3:0x%x\n",
 			code1, code2);
 
@@ -899,6 +1228,20 @@ static ssize_t ps_conf_store(struct device *dev,
 
 	return count;
 }
+=======
+
+	D("[PS]%s: store value PS conf1 reg = 0x%x PS conf3 reg = 0x%x\n", __func__, code1, code2);
+
+  lpi->ps_conf1_val = code1;
+  lpi->ps_conf3_val = code2;
+
+	_cm36283_I2C_Write_Word(lpi->slave_addr, PS_CONF3, lpi->ps_conf3_val );  
+	_cm36283_I2C_Write_Word(lpi->slave_addr, PS_CONF1, lpi->ps_conf1_val );
+
+	return count;
+}
+static DEVICE_ATTR(ps_conf, 0664, ps_conf_show, ps_conf_store);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static ssize_t ps_thd_show(struct device *dev,
 			struct device_attribute *attr, char *buf)
@@ -917,6 +1260,7 @@ static ssize_t ps_thd_store(struct device *dev,
 
 	sscanf(buf, "0x%x", &code);
 
+<<<<<<< HEAD
 	lpi->ps_away_thd_set = code &0xFF;
 	lpi->ps_close_thd_set = (code & 0xFF00)>>8;
 
@@ -927,6 +1271,18 @@ static ssize_t ps_thd_store(struct device *dev,
 
 	return count;
 }
+=======
+	D("[PS]%s: store value = 0x%x\n", __func__, code);
+
+	lpi->ps_away_thd_set = code &0xFF;
+	lpi->ps_close_thd_set = (code &0xFF00)>>8;	
+
+	D("[PS]%s: ps_close_thd_set = 0x%x, ps_away_thd_set = 0x%x\n", __func__, lpi->ps_close_thd_set, lpi->ps_away_thd_set);
+
+	return count;
+}
+static DEVICE_ATTR(ps_thd, 0664, ps_thd_show, ps_thd_store);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static ssize_t ps_hw_show(struct device *dev,
 			struct device_attribute *attr, char *buf)
@@ -944,11 +1300,23 @@ static ssize_t ps_hw_store(struct device *dev,
 				const char *buf, size_t count)
 {
 	int code;
+<<<<<<< HEAD
 
 	sscanf(buf, "0x%x", &code);
 
 	return count;
 }
+=======
+//	struct cm36283_info *lpi = lp_info;
+
+	sscanf(buf, "0x%x", &code);
+
+	D("[PS]%s: store value = 0x%x\n", __func__, code);
+
+	return count;
+}
+static DEVICE_ATTR(ps_hw, 0664, ps_hw_show, ps_hw_store);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static ssize_t ls_adc_show(struct device *dev,
 				  struct device_attribute *attr, char *buf)
@@ -956,12 +1324,22 @@ static ssize_t ls_adc_show(struct device *dev,
 	int ret;
 	struct cm36283_info *lpi = lp_info;
 
+<<<<<<< HEAD
+=======
+	D("[LS][CM36283] %s: ADC = 0x%04X, Level = %d \n",
+		__func__, lpi->current_adc, lpi->current_level);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ret = sprintf(buf, "ADC[0x%04X] => level %d\n",
 		lpi->current_adc, lpi->current_level);
 
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static DEVICE_ATTR(ls_adc, 0664, ls_adc_show, NULL);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static ssize_t ls_enable_show(struct device *dev,
 				  struct device_attribute *attr, char *buf)
 {
@@ -997,6 +1375,7 @@ static ssize_t ls_enable_store(struct device *dev,
 		ret = lightsensor_disable(lpi);
 	}
 
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "als_enable:0x%x\n",
 			lpi->als_enable);
 	dev_dbg(&lpi->i2c_client->dev, "ls_calibrate:0x%x\n",
@@ -1005,11 +1384,24 @@ static ssize_t ls_enable_store(struct device *dev,
 
 	if (ret < 0)
 		dev_err(&lpi->i2c_client->dev, "%s: set auto light sensor fail\n",
+=======
+	D("[LS][CM36283] %s: lpi->als_enable = %d, lpi->ls_calibrate = %d, ls_auto=%d\n",
+		__func__, lpi->als_enable, lpi->ls_calibrate, ls_auto);
+
+	if (ret < 0)
+		pr_err(
+		"[LS][CM36283 error]%s: set auto light sensor fail\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		__func__);
 
 	return count;
 }
 
+<<<<<<< HEAD
+=======
+static DEVICE_ATTR(ls_auto, 0664,
+	ls_enable_show, ls_enable_store);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static ssize_t ls_kadc_show(struct device *dev,
 				  struct device_attribute *attr, char *buf)
@@ -1033,6 +1425,7 @@ static ssize_t ls_kadc_store(struct device *dev,
 	sscanf(buf, "%d", &kadc_temp);
 
 	mutex_lock(&als_get_adc_mutex);
+<<<<<<< HEAD
 	if (kadc_temp != 0) {
 		lpi->als_kadc = kadc_temp;
 		if (lpi->als_gadc != 0) {
@@ -1045,6 +1438,19 @@ static ssize_t ls_kadc_store(struct device *dev,
 		}
 	} else {
 		dev_err(&lpi->i2c_client->dev, "%s: als_kadc can't be set to zero\n",
+=======
+  if(kadc_temp != 0) {
+		lpi->als_kadc = kadc_temp;
+		if(  lpi->als_gadc != 0){
+  		if (lightsensor_update_table(lpi) < 0)
+				printk(KERN_ERR "[LS][CM36283 error] %s: update ls table fail\n", __func__);
+  	} else {
+			printk(KERN_INFO "[LS]%s: als_gadc =0x%x wait to be set\n",
+					__func__, lpi->als_gadc);
+  	}		
+	} else {
+		printk(KERN_INFO "[LS]%s: als_kadc can't be set to zero\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				__func__);
 	}
 				
@@ -1052,6 +1458,10 @@ static ssize_t ls_kadc_store(struct device *dev,
 	return count;
 }
 
+<<<<<<< HEAD
+=======
+static DEVICE_ATTR(ls_kadc, 0664, ls_kadc_show, ls_kadc_store);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static ssize_t ls_gadc_show(struct device *dev,
 				  struct device_attribute *attr, char *buf)
@@ -1074,6 +1484,7 @@ static ssize_t ls_gadc_store(struct device *dev,
 	sscanf(buf, "%d", &gadc_temp);
 	
 	mutex_lock(&als_get_adc_mutex);
+<<<<<<< HEAD
 	if (gadc_temp != 0) {
 		lpi->als_gadc = gadc_temp;
 		if (lpi->als_kadc != 0) {
@@ -1086,11 +1497,29 @@ static ssize_t ls_gadc_store(struct device *dev,
 		}
 	} else {
 		dev_err(&lpi->i2c_client->dev, "als_gadc can't be set to zero\n");
+=======
+  if(gadc_temp != 0) {
+		lpi->als_gadc = gadc_temp;
+		if(  lpi->als_kadc != 0){
+  		if (lightsensor_update_table(lpi) < 0)
+				printk(KERN_ERR "[LS][CM36283 error] %s: update ls table fail\n", __func__);
+  	} else {
+			printk(KERN_INFO "[LS]%s: als_kadc =0x%x wait to be set\n",
+					__func__, lpi->als_kadc);
+  	}		
+	} else {
+		printk(KERN_INFO "[LS]%s: als_gadc can't be set to zero\n",
+				__func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	mutex_unlock(&als_get_adc_mutex);
 	return count;
 }
 
+<<<<<<< HEAD
+=======
+static DEVICE_ATTR(ls_gadc, 0664, ls_gadc_show, ls_gadc_store);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static ssize_t ls_adc_table_show(struct device *dev,
 			struct device_attribute *attr, char *buf)
@@ -1119,17 +1548,27 @@ static ssize_t ls_adc_table_store(struct device *dev,
 	uint16_t tempdata[10];
 	int i;
 
+<<<<<<< HEAD
+=======
+	printk(KERN_INFO "[LS][CM36283]%s\n", buf);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	for (i = 0; i < 10; i++) {
 		token[i] = strsep((char **)&buf, " ");
 		tempdata[i] = simple_strtoul(token[i], NULL, 16);
 		if (tempdata[i] < 1 || tempdata[i] > 0xffff) {
+<<<<<<< HEAD
 			dev_err(&lpi->i2c_client->dev,
 			"adc_table[%d] =  0x%x error\n",
+=======
+			printk(KERN_ERR
+			"[LS][CM36283 error] adc_table[%d] =  0x%x Err\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			i, tempdata[i]);
 			return count;
 		}
 	}
 	mutex_lock(&als_get_adc_mutex);
+<<<<<<< HEAD
 	for (i = 0; i < 10; i++)
 		lpi->adc_table[i] = tempdata[i];
 
@@ -1137,10 +1576,29 @@ static ssize_t ls_adc_table_store(struct device *dev,
 		dev_err(&lpi->i2c_client->dev, "%s: update ls table fail\n",
 		__func__);
 	mutex_unlock(&als_get_adc_mutex);
+=======
+	for (i = 0; i < 10; i++) {
+		lpi->adc_table[i] = tempdata[i];
+		printk(KERN_INFO
+		"[LS][CM36283]Set lpi->adc_table[%d] =  0x%x\n",
+		i, *(lp_info->adc_table + i));
+	}
+	if (lightsensor_update_table(lpi) < 0)
+		printk(KERN_ERR "[LS][CM36283 error] %s: update ls table fail\n",
+		__func__);
+	mutex_unlock(&als_get_adc_mutex);
+	D("[LS][CM36283] %s\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return count;
 }
 
+<<<<<<< HEAD
+=======
+static DEVICE_ATTR(ls_adc_table, 0664,
+	ls_adc_table_show, ls_adc_table_store);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static ssize_t ls_conf_show(struct device *dev,
 				  struct device_attribute *attr, char *buf)
 {
@@ -1156,12 +1614,21 @@ static ssize_t ls_conf_store(struct device *dev,
 	sscanf(buf, "0x%x", &value);
 
 	lpi->ls_cmd = value;
+<<<<<<< HEAD
 
 	dev_dbg(&lpi->i2c_client->dev, "ALS_CONF:0x%x\n", lpi->ls_cmd);
 
 	_cm36283_I2C_Write_Word(lpi->slave_addr, ALS_CONF, lpi->ls_cmd);
 	return count;
 }
+=======
+	printk(KERN_INFO "[LS]set ALS_CONF = %x\n", lpi->ls_cmd);
+	
+	_cm36283_I2C_Write_Word(lpi->slave_addr, ALS_CONF, lpi->ls_cmd);
+	return count;
+}
+static DEVICE_ATTR(ls_conf, 0664, ls_conf_show, ls_conf_store);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static ssize_t ls_poll_delay_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
@@ -1188,6 +1655,12 @@ static ssize_t ls_poll_delay_store(struct device *dev,
 	return count;
 }
 
+<<<<<<< HEAD
+=======
+static DEVICE_ATTR(ls_poll_delay, 0664, ls_poll_delay_show,
+		ls_poll_delay_store);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static ssize_t ps_poll_delay_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
@@ -1213,6 +1686,12 @@ static ssize_t ps_poll_delay_store(struct device *dev,
 	return count;
 }
 
+<<<<<<< HEAD
+=======
+static DEVICE_ATTR(ps_poll_delay, 0664, ps_poll_delay_show,
+		ps_poll_delay_store);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static ssize_t ls_fLevel_show(struct device *dev,
 				  struct device_attribute *attr, char *buf)
 {
@@ -1229,11 +1708,19 @@ static ssize_t ls_fLevel_store(struct device *dev,
 	fLevel=value;
 	input_report_abs(lpi->ls_input_dev, ABS_MISC, fLevel);
 	input_sync(lpi->ls_input_dev);
+<<<<<<< HEAD
+=======
+	printk(KERN_INFO "[LS]set fLevel = %d\n", fLevel);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	msleep(1000);
 	fLevel=-1;
 	return count;
 }
+<<<<<<< HEAD
+=======
+static DEVICE_ATTR(ls_flevel, 0664, ls_fLevel_show, ls_fLevel_store);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static int lightsensor_setup(struct cm36283_info *lpi)
 {
@@ -1248,7 +1735,10 @@ static int lightsensor_setup(struct cm36283_info *lpi)
 		return -ENOMEM;
 	}
 	lpi->ls_input_dev->name = "cm36283-ls";
+<<<<<<< HEAD
 	lpi->ls_input_dev->id.bustype = BUS_I2C;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	set_bit(EV_ABS, lpi->ls_input_dev->evbit);
 
 	range = get_als_range();
@@ -1261,8 +1751,22 @@ static int lightsensor_setup(struct cm36283_info *lpi)
 		goto err_free_ls_input_device;
 	}
 
+<<<<<<< HEAD
 	return ret;
 
+=======
+	ret = misc_register(&lightsensor_misc);
+	if (ret < 0) {
+		pr_err("[LS][CM36283 error]%s: can not register ls misc device\n",
+				__func__);
+		goto err_unregister_ls_input_device;
+	}
+
+	return ret;
+
+err_unregister_ls_input_device:
+	input_unregister_device(lpi->ls_input_dev);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 err_free_ls_input_device:
 	input_free_device(lpi->ls_input_dev);
 	return ret;
@@ -1280,7 +1784,10 @@ static int psensor_setup(struct cm36283_info *lpi)
 		return -ENOMEM;
 	}
 	lpi->ps_input_dev->name = "cm36283-ps";
+<<<<<<< HEAD
 	lpi->ps_input_dev->id.bustype = BUS_I2C;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	set_bit(EV_ABS, lpi->ps_input_dev->evbit);
 	input_set_abs_params(lpi->ps_input_dev, ABS_DISTANCE, 0, 1, 0, 0);
 
@@ -1292,8 +1799,23 @@ static int psensor_setup(struct cm36283_info *lpi)
 		goto err_free_ps_input_device;
 	}
 
+<<<<<<< HEAD
 	return ret;
 
+=======
+	ret = misc_register(&psensor_misc);
+	if (ret < 0) {
+		pr_err(
+			"[PS][CM36283 error]%s: could not register ps misc device\n",
+			__func__);
+		goto err_unregister_ps_input_device;
+	}
+
+	return ret;
+
+err_unregister_ps_input_device:
+	input_unregister_device(lpi->ps_input_dev);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 err_free_ps_input_device:
 	input_free_device(lpi->ps_input_dev);
 	return ret;
@@ -1306,8 +1828,12 @@ static int initial_cm36283(struct cm36283_info *lpi)
 	uint16_t idReg;
 
 	val = gpio_get_value(lpi->intr_pin);
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "%s, INTERRUPT GPIO val = %d\n",
 		       __func__, val);
+=======
+	D("[PS][CM36283] %s, INTERRUPT GPIO val = %d\n", __func__, val);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	ret = _cm36283_I2C_Read_Word(lpi->slave_addr, ID_REG, &idReg);
 
@@ -1369,6 +1895,32 @@ fail_free_intr_pin:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_HAS_EARLYSUSPEND
+static void cm36283_early_suspend(struct early_suspend *h)
+{
+	struct cm36283_info *lpi = lp_info;
+
+	D("[LS][CM36283] %s\n", __func__);
+
+	if (lpi->als_enable)
+		lightsensor_disable(lpi);
+
+}
+
+static void cm36283_late_resume(struct early_suspend *h)
+{
+	struct cm36283_info *lpi = lp_info;
+
+	D("[LS][CM36283] %s\n", __func__);
+
+	if (!lpi->als_enable)
+		lightsensor_enable(lpi);
+}
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int cm36283_parse_dt(struct device *dev,
 				struct cm36283_platform_data *pdata)
 {
@@ -1441,6 +1993,7 @@ static int cm36283_parse_dt(struct device *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int create_sysfs_interfaces(struct device *dev,
 		struct device_attribute *attributes, int len)
 {
@@ -1494,6 +2047,8 @@ static struct device_attribute proximity_attr[] = {
 	__ATTR(ls_flevel, 0664, ls_fLevel_show, ls_fLevel_store),
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int cm36283_probe(struct i2c_client *client,
 	const struct i2c_device_id *id)
 {
@@ -1501,10 +2056,21 @@ static int cm36283_probe(struct i2c_client *client,
 	struct cm36283_info *lpi;
 	struct cm36283_platform_data *pdata;
 
+<<<<<<< HEAD
+=======
+	D("[PS][CM36283] %s\n", __func__);
+
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	lpi = kzalloc(sizeof(struct cm36283_info), GFP_KERNEL);
 	if (!lpi)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	/*D("[CM36283] %s: client->irq = %d\n", __func__, client->irq);*/
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	lpi->i2c_client = client;
 
 	if (client->dev.of_node) {
@@ -1556,11 +2122,19 @@ static int cm36283_probe(struct i2c_client *client,
 	
 	lpi->record_clear_int_fail=0;
 	
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "[PS][CM36283] %s: ls_cmd 0x%x\n",
 		__func__, lpi->ls_cmd);
 	
 	if (pdata->ls_cmd == 0) {
 		lpi->ls_cmd  = CM36283_ALS_IT_80ms | CM36283_ALS_GAIN_2;
+=======
+	D("[PS][CM36283] %s: ls_cmd 0x%x\n",
+		__func__, lpi->ls_cmd);
+	
+	if (pdata->ls_cmd == 0) {
+		lpi->ls_cmd  = CM36283_ALS_IT_160ms | CM36283_ALS_GAIN_2;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	lp_info = lpi;
@@ -1577,6 +2151,7 @@ static int cm36283_probe(struct i2c_client *client,
 	mutex_init(&ps_get_adc_mutex);
 
 
+<<<<<<< HEAD
 	/*
 	 * SET LUX STEP FACTOR HERE
 	 * if adc raw value one step = 5/100 = 1/20 = 0.05 lux
@@ -1588,6 +2163,19 @@ static int cm36283_probe(struct i2c_client *client,
 	als_kadc = (ALS_CALIBRATED << 16) | 10;
 	lpi->golden_adc = 100;
 	lpi->ls_calibrate = 0;
+=======
+  //SET LUX STEP FACTOR HERE
+  // if adc raw value one step = 5/100 = 1/20 = 0.05 lux
+  // the following will set the factor 0.05 = 1/20
+  // and lpi->golden_adc = 1;  
+  // set als_kadc = (ALS_CALIBRATED <<16) | 20;
+
+  als_kadc = (ALS_CALIBRATED <<16) | 20;
+  lpi->golden_adc = 1;
+
+  //ls calibrate always set to 1 
+  lpi->ls_calibrate = 1;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	lightsensor_set_kvalue(lpi);
 	ret = lightsensor_update_table(lpi);
@@ -1631,6 +2219,7 @@ static int cm36283_probe(struct i2c_client *client,
 		goto err_psensor_setup;
 	}
 
+<<<<<<< HEAD
 	ret = create_sysfs_interfaces(&lpi->ls_input_dev->dev, light_attr,
 			ARRAY_SIZE(light_attr));
 	if (ret < 0) {
@@ -1653,10 +2242,106 @@ static int cm36283_probe(struct i2c_client *client,
 	ret = sensors_classdev_register(&client->dev, &sensors_proximity_cdev);
 	if (ret)
 		goto err_create_class_sysfs;
+=======
+	lpi->cm36283_class = class_create(THIS_MODULE, "optical_sensors");
+	if (IS_ERR(lpi->cm36283_class)) {
+		ret = PTR_ERR(lpi->cm36283_class);
+		lpi->cm36283_class = NULL;
+		goto err_create_class;
+	}
+
+	lpi->ls_dev = device_create(lpi->cm36283_class,
+				NULL, 0, "%s", "lightsensor");
+	if (unlikely(IS_ERR(lpi->ls_dev))) {
+		ret = PTR_ERR(lpi->ls_dev);
+		lpi->ls_dev = NULL;
+		goto err_create_ls_device;
+	}
+
+	/* register the attributes */
+	ret = device_create_file(lpi->ls_dev, &dev_attr_ls_adc);
+	if (ret)
+		goto err_create_ls_device_file;
+
+	/* register the attributes */
+	ret = device_create_file(lpi->ls_dev, &dev_attr_ls_auto);
+	if (ret)
+		goto err_create_ls_device_file;
+
+	/* register the attributes */
+	ret = device_create_file(lpi->ls_dev, &dev_attr_ls_kadc);
+	if (ret)
+		goto err_create_ls_device_file;
+
+	ret = device_create_file(lpi->ls_dev, &dev_attr_ls_gadc);
+	if (ret)
+		goto err_create_ls_device_file;
+
+	ret = device_create_file(lpi->ls_dev, &dev_attr_ls_adc_table);
+	if (ret)
+		goto err_create_ls_device_file;
+
+	ret = device_create_file(lpi->ls_dev, &dev_attr_ls_conf);
+	if (ret)
+		goto err_create_ls_device_file;
+
+	ret = device_create_file(lpi->ls_dev, &dev_attr_ls_flevel);
+	if (ret)
+		goto err_create_ls_device_file;
+
+	ret = device_create_file(lpi->ls_dev, &dev_attr_ls_poll_delay);
+	if (ret)
+		goto err_create_ls_device_file;
+
+	lpi->ps_dev = device_create(lpi->cm36283_class,
+				NULL, 0, "%s", "proximity");
+	if (unlikely(IS_ERR(lpi->ps_dev))) {
+		ret = PTR_ERR(lpi->ps_dev);
+		lpi->ps_dev = NULL;
+		goto err_create_ps_device;
+	}
+
+	/* register the attributes */
+	ret = device_create_file(lpi->ps_dev, &dev_attr_ps_adc);
+	if (ret)
+		goto err_create_ps_device_file;
+
+	ret = device_create_file(lpi->ps_dev,
+		&dev_attr_ps_parameters);
+	if (ret)
+		goto err_create_ps_device_file;
+
+	/* register the attributes */
+	ret = device_create_file(lpi->ps_dev, &dev_attr_ps_conf);
+	if (ret)
+		goto err_create_ps_device_file;
+
+	/* register the attributes */
+	ret = device_create_file(lpi->ps_dev, &dev_attr_ps_thd);
+	if (ret)
+		goto err_create_ps_device_file;
+
+	ret = device_create_file(lpi->ps_dev, &dev_attr_ps_hw);
+	if (ret)
+		goto err_create_ps_device_file;
+
+	ret = device_create_file(lpi->ps_dev, &dev_attr_ps_poll_delay);
+	if (ret)
+		goto err_create_ps_device_file;
+
+#ifdef CONFIG_HAS_EARLYSUSPEND
+	lpi->early_suspend.level =
+			EARLY_SUSPEND_LEVEL_BLANK_SCREEN + 1;
+	lpi->early_suspend.suspend = cm36283_early_suspend;
+	lpi->early_suspend.resume = cm36283_late_resume;
+	register_early_suspend(&lpi->early_suspend);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	mutex_init(&wq_lock);
 	INIT_DELAYED_WORK(&lpi->ldwork, lsensor_delay_work_handler);
 	INIT_DELAYED_WORK(&lpi->pdwork, psensor_delay_work_handler);
+<<<<<<< HEAD
 	dev_dbg(&lpi->i2c_client->dev, "%s: Probe success!\n", __func__);
 
 	return ret;
@@ -1672,6 +2357,25 @@ err_input_cleanup:
 	input_unregister_device(lpi->ps_input_dev);
 	input_free_device(lpi->ps_input_dev);
 err_psensor_setup:
+=======
+	D("[PS][CM36283] %s: Probe success!\n", __func__);
+
+	return ret;
+
+err_create_ps_device_file:
+	device_unregister(lpi->ps_dev);
+err_create_ps_device:
+err_create_ls_device_file:
+	device_unregister(lpi->ls_dev);
+err_create_ls_device:
+	class_destroy(lpi->cm36283_class);
+err_create_class:
+	misc_deregister(&psensor_misc);
+	input_unregister_device(lpi->ps_input_dev);
+	input_free_device(lpi->ps_input_dev);
+err_psensor_setup:
+	misc_deregister(&lightsensor_misc);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	input_unregister_device(lpi->ls_input_dev);
 	input_free_device(lpi->ls_input_dev);
 err_lightsensor_setup:
@@ -1931,6 +2635,7 @@ static int cm36283_suspend(struct device *dev)
 	struct cm36283_info *lpi = lp_info;
 
 	if (lpi->als_enable) {
+<<<<<<< HEAD
 		if (lightsensor_disable(lpi))
 			goto out;
 		lpi->als_enable = 1;
@@ -1944,12 +2649,21 @@ out:
 	dev_err(&lpi->i2c_client->dev, "%s:failed during resume operation.\n",
 			__func__);
 	return -EIO;
+=======
+		lightsensor_disable(lpi);
+		lpi->als_enable = 1;
+	}
+	cm36283_power_set(lpi, 0);
+
+	return 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int cm36283_resume(struct device *dev)
 {
 	struct cm36283_info *lpi = lp_info;
 
+<<<<<<< HEAD
 	if (cm36283_power_set(lpi, 1))
 		goto out;
 
@@ -1965,6 +2679,17 @@ out:
 	dev_err(&lpi->i2c_client->dev, "%s:failed during resume operation.\n",
 			__func__);
 	return -EIO;
+=======
+	cm36283_power_set(lpi, 1);
+
+	if (lpi->als_enable) {
+		cm36283_setup(lpi);
+		lightsensor_setup(lpi);
+		psensor_setup(lpi);
+		lightsensor_enable(lpi);
+	}
+	return 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 #endif
 

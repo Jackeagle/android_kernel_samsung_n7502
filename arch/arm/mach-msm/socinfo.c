@@ -32,6 +32,7 @@
 #include "boot_stats.h"
 
 #define BUILD_ID_LENGTH 32
+<<<<<<< HEAD
 #define SMEM_IMAGE_VERSION_BLOCKS_COUNT 32
 #define SMEM_IMAGE_VERSION_SINGLE_BLOCK_SIZE 128
 #define SMEM_IMAGE_VERSION_SIZE 4096
@@ -41,6 +42,8 @@
 #define SMEM_IMAGE_VERSION_OEM_SIZE 32
 #define SMEM_IMAGE_VERSION_OEM_OFFSET 96
 #define SMEM_IMAGE_VERSION_PARTITION_APPS 10
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 enum {
 	HW_PLATFORM_UNKNOWN = 0,
@@ -430,7 +433,10 @@ static enum msm_cpu cpu_of_id[] = {
 };
 
 static enum msm_cpu cur_cpu;
+<<<<<<< HEAD
 static int current_image;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static struct socinfo_v1 dummy_socinfo = {
 	.format = 1,
@@ -513,11 +519,14 @@ uint32_t socinfo_get_pmic_die_revision(void)
 		: 0;
 }
 
+<<<<<<< HEAD
 static char *socinfo_get_image_version_base_address(void)
 {
 	return smem_alloc(SMEM_IMAGE_VERSION_TABLE, SMEM_IMAGE_VERSION_SIZE);
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static uint32_t socinfo_get_format(void)
 {
 	return socinfo ? socinfo->v1.format : 0;
@@ -844,6 +853,7 @@ msm_get_pmic_die_revision(struct device *dev,
 			 socinfo_get_pmic_die_revision());
 }
 
+<<<<<<< HEAD
 static ssize_t
 msm_get_image_version(struct device *dev,
 			struct device_attribute *attr,
@@ -944,6 +954,8 @@ msm_get_image_crm_version(struct device *dev,
 			string_address);
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static struct sysdev_attribute socinfo_v1_files[] = {
 	_SYSDEV_ATTR(id, 0444, socinfo_show_id, NULL),
 	_SYSDEV_ATTR(version, 0444, socinfo_show_version, NULL),
@@ -981,6 +993,7 @@ static struct sysdev_attribute socinfo_v7_files[] = {
 			socinfo_show_pmic_die_revision, NULL),
 };
 
+<<<<<<< HEAD
 static ssize_t
 msm_set_image_crm_version(struct device *dev,
 			struct device_attribute *attr,
@@ -1029,6 +1042,8 @@ msm_select_image(struct device *dev, struct device_attribute *attr,
 }
 
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static struct device_attribute msm_soc_attr_raw_version =
 	__ATTR(raw_version, S_IRUGO, msm_get_raw_version,  NULL);
 
@@ -1065,6 +1080,7 @@ static struct device_attribute msm_soc_attr_pmic_die_revision =
 	__ATTR(pmic_die_revision, S_IRUGO,
 			msm_get_pmic_die_revision, NULL);
 
+<<<<<<< HEAD
 static struct device_attribute image_version =
 	__ATTR(image_version, S_IRUGO | S_IWUSR,
 			msm_get_image_version, msm_set_image_version);
@@ -1081,6 +1097,8 @@ static struct device_attribute select_image =
 	__ATTR(select_image, S_IRUGO | S_IWUSR,
 			msm_get_image_number, msm_select_image);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static struct sysdev_class soc_sysdev_class = {
 	.name = "soc",
 };
@@ -1135,10 +1153,13 @@ static void __init populate_soc_sysfs_files(struct device *msm_soc_device)
 	uint32_t legacy_format = socinfo_get_format();
 
 	device_create_file(msm_soc_device, &msm_soc_attr_vendor);
+<<<<<<< HEAD
 	device_create_file(msm_soc_device, &image_version);
 	device_create_file(msm_soc_device, &image_variant);
 	device_create_file(msm_soc_device, &image_crm_version);
 	device_create_file(msm_soc_device, &select_image);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	switch (legacy_format) {
 	case 8:
@@ -1218,26 +1239,42 @@ static int __init socinfo_init_sysdev(void)
 
 	msm_soc_device = soc_device_to_device(soc_dev);
 	populate_soc_sysfs_files(msm_soc_device);
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	err = sysdev_class_register(&soc_sysdev_class);
 	if (err) {
 		pr_err("%s: sysdev_class_register fail (%d)\n",
 		       __func__, err);
 		goto socinfo_init_err;
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	err = sysdev_register(&soc_sys_device);
 	if (err) {
 		pr_err("%s: sysdev_register fail (%d)\n",
 		       __func__, err);
 		goto socinfo_init_err;
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	socinfo_create_files(&soc_sys_device, socinfo_v1_files,
 				ARRAY_SIZE(socinfo_v1_files));
 	if (socinfo->v1.format < 2)
 		goto socinfo_init_err;
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	socinfo_create_files(&soc_sys_device, socinfo_v2_files,
 				ARRAY_SIZE(socinfo_v2_files));
 
@@ -1272,10 +1309,16 @@ static int __init socinfo_init_sysdev(void)
 				ARRAY_SIZE(socinfo_v7_files));
 
 	return 0;
+<<<<<<< HEAD
 
 socinfo_init_err:
 	 kfree(soc_dev_attr);
          return err;
+=======
+socinfo_init_err:
+	 kfree(soc_dev_attr);
+         return err; 		
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 arch_initcall(socinfo_init_sysdev);

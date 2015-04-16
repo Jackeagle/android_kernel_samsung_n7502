@@ -726,6 +726,7 @@ static const uint32_t msg_bld_masks_22[] = {
 };
 
 /* LOG CODES */
+<<<<<<< HEAD
 static const uint32_t log_code_last_tbl[] = {
 	0x0,	/* EQUIP ID 0 */
 	0x182F,	/* EQUIP ID 1 */
@@ -748,5 +749,27 @@ static const uint32_t log_code_last_tbl[] = {
 #define LOG_GET_ITEM_NUM(xx_code)	(xx_code & 0x0FFF)
 #define LOG_GET_EQUIP_ID(xx_code)	((xx_code & 0xF000) >> 12)
 #define LOG_ITEMS_TO_SIZE(num_items)	((num_items+7)/8)
+=======
+
+#define LOG_0	0x0
+#define LOG_1	0x1808
+#define LOG_2	0x0
+#define LOG_3	0x0
+#define LOG_4	0x4910
+#define LOG_5	0x5420
+#define LOG_6	0x0
+#define LOG_7	0x74FF
+#define LOG_8	0x0
+#define LOG_9	0x0
+#define LOG_10	0xA38A
+#define LOG_11	0xB201
+#define LOG_12	0x0
+#define LOG_13	0x0
+#define LOG_14	0x0
+#define LOG_15	0x0
+
+#define LOG_GET_ITEM_NUM(xx_code) (xx_code & 0x0FFF)
+#define LOG_GET_EQUIP_ID(xx_code) ((xx_code & 0xF000) >> 12)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #endif

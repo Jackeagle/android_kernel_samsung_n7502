@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -31,6 +35,11 @@ static struct mdss_mdp_rotator_session rotator_session[MAX_ROTATOR_SESSIONS];
 static LIST_HEAD(rotator_queue);
 
 static int mdss_mdp_rotator_finish(struct mdss_mdp_rotator_session *rot);
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static void mdss_mdp_rotator_commit_wq_handler(struct work_struct *work);
 static int mdss_mdp_rotator_busy_wait(struct mdss_mdp_rotator_session *rot);
 static int mdss_mdp_rotator_queue_helper(struct mdss_mdp_rotator_session *rot);
@@ -137,6 +146,10 @@ static int mdss_mdp_rotator_kickoff(struct mdss_mdp_ctl *ctl,
 {
 	int ret;
 	struct mdss_mdp_writeback_arg wb_args = {
+<<<<<<< HEAD
+=======
+		.callback_fnc = NULL,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.data = dst_data,
 		.priv_data = rot,
 	};
@@ -202,7 +215,11 @@ static int mdss_mdp_rotator_queue_sub(struct mdss_mdp_rotator_session *rot,
 			   struct mdss_mdp_data *dst_data)
 {
 	struct mdss_mdp_pipe *rot_pipe = NULL;
+<<<<<<< HEAD
 	struct mdss_mdp_ctl *orig_ctl, *rot_ctl;
+=======
+	struct mdss_mdp_ctl *ctl;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int ret;
 
 	if (!rot || !rot->ref_cnt)
@@ -218,6 +235,7 @@ static int mdss_mdp_rotator_queue_sub(struct mdss_mdp_rotator_session *rot,
 
 	pr_debug("queue rotator pnum=%d\n", rot_pipe->num);
 
+<<<<<<< HEAD
 	orig_ctl = rot_pipe->mixer->ctl;
 	if (orig_ctl->shared_lock)
 		mutex_lock(orig_ctl->shared_lock);
@@ -232,6 +250,22 @@ static int mdss_mdp_rotator_queue_sub(struct mdss_mdp_rotator_session *rot,
 	}
 
 	if (rot->params_changed || rot_ctl->mdata->mixer_switched) {
+=======
+	ctl = rot_pipe->mixer->ctl;
+	if (ctl->shared_lock)
+		mutex_lock(ctl->shared_lock);
+
+	ctl = mdss_mdp_ctl_mixer_switch(ctl,
+			MDSS_MDP_WB_CTL_TYPE_BLOCK);
+	if (!ctl) {
+		ret = -EINVAL;
+		goto error;
+	} else {
+		rot->pipe->mixer = ctl->mixer_left;
+	}
+
+	if (rot->params_changed || ctl->mdata->mixer_switched) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rot->params_changed = 0;
 		rot_pipe->flags = rot->flags;
 		rot_pipe->src_fmt = mdss_mdp_get_format_params(rot->format);
@@ -257,12 +291,21 @@ static int mdss_mdp_rotator_queue_sub(struct mdss_mdp_rotator_session *rot,
 		goto error;
 	}
 
+<<<<<<< HEAD
 	ret = mdss_mdp_rotator_kickoff(rot_ctl, rot, dst_data);
 
 	return ret;
 error:
 	if (orig_ctl->shared_lock)
 		mutex_unlock(orig_ctl->shared_lock);
+=======
+	ret = mdss_mdp_rotator_kickoff(ctl, rot, dst_data);
+
+	return ret;
+error:
+	if (ctl->shared_lock)
+		mutex_unlock(ctl->shared_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return ret;
 }
 
@@ -437,7 +480,10 @@ int mdss_mdp_rotator_setup(struct msm_fb_data_type *mfd,
 		rot->flags |= MDP_DEINTERLACE;
 		rot->src_rect.h /= 2;
 		rot->src_rect.y = DIV_ROUND_UP(rot->src_rect.y, 2);
+<<<<<<< HEAD
 		rot->src_rect.y &= ~1;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	rot->dst = rot->src_rect;
@@ -616,7 +662,10 @@ int mdss_mdp_rotator_play(struct msm_fb_data_type *mfd,
 			    struct msmfb_overlay_data *req)
 {
 	struct mdss_mdp_rotator_session *rot;
+<<<<<<< HEAD
 	struct mdss_overlay_private *mdp5_data = mfd_to_mdp5_data(mfd);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int ret;
 	u32 flgs;
 
@@ -636,9 +685,12 @@ int mdss_mdp_rotator_play(struct msm_fb_data_type *mfd,
 		goto dst_buf_fail;
 	}
 
+<<<<<<< HEAD
 	if (!mfd->panel_info->cont_splash_enabled)
 		mdss_iommu_attach(mdp5_data->mdata);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mdss_mdp_overlay_free_buf(&rot->src_buf);
 	ret = mdss_mdp_overlay_get_buf(mfd, &rot->src_buf, &req->data, 1, flgs);
 	if (ret) {

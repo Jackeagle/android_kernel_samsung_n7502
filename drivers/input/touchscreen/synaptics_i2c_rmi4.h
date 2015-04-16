@@ -161,7 +161,10 @@ struct synaptics_rmi4_device_info {
 	unsigned char product_id_string[SYNAPTICS_RMI4_PRODUCT_ID_SIZE + 1];
 	unsigned char build_id[SYNAPTICS_RMI4_BUILD_ID_SIZE];
 	unsigned char config_id[3];
+<<<<<<< HEAD
 	struct mutex support_fn_list_mutex;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct list_head support_fn_list;
 };
 
@@ -287,6 +290,17 @@ void synaptics_rmi4_new_function(enum exp_fn fn_type, bool insert,
 		void (*func_attn)(struct synaptics_rmi4_data *rmi4_data,
 				unsigned char intr_mask));
 
+<<<<<<< HEAD
+=======
+static inline ssize_t synaptics_rmi4_show_error(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	dev_warn(dev, "%s Attempted to read from write-only attribute %s\n",
+			__func__, attr->attr.name);
+	return -EPERM;
+}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static inline ssize_t synaptics_rmi4_store_error(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t count)
 {

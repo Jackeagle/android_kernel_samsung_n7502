@@ -37,8 +37,13 @@
 
 #define msm_ipc_sk(sk) ((struct msm_ipc_sock *)(sk))
 #define msm_ipc_sk_port(sk) ((struct msm_ipc_port *)(msm_ipc_sk(sk)->port))
+<<<<<<< HEAD
 #define REQ_RESP_IPC_LOG_PAGES 5
 #define IND_IPC_LOG_PAGES 5
+=======
+#define REQ_RESP_IPC_LOG_PAGES 1
+#define IND_IPC_LOG_PAGES 1 
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define IPC_SEND 1
 #define IPC_RECV 2
 #define IPC_REQ_RESP_LOG(level, buf...) \
@@ -589,6 +594,7 @@ static const struct net_proto_family msm_ipc_family_ops = {
 };
 
 static const struct proto_ops msm_ipc_proto_ops = {
+<<<<<<< HEAD
 	.family         = AF_MSM_IPC,
 	.owner		= THIS_MODULE,
 	.release        = msm_ipc_router_close,
@@ -607,6 +613,19 @@ static const struct proto_ops msm_ipc_proto_ops = {
 	.recvmsg	= msm_ipc_router_recvmsg,
 	.mmap		= sock_no_mmap,
 	.sendpage	= sock_no_sendpage,
+=======
+	.owner		= THIS_MODULE,
+	.family         = AF_MSM_IPC,
+	.bind		= msm_ipc_router_bind,
+	.connect	= sock_no_connect,
+	.sendmsg	= msm_ipc_router_sendmsg,
+	.recvmsg	= msm_ipc_router_recvmsg,
+	.ioctl		= msm_ipc_router_ioctl,
+	.poll		= msm_ipc_router_poll,
+	.setsockopt	= sock_no_setsockopt,
+	.getsockopt	= sock_no_getsockopt,
+	.release	= msm_ipc_router_close,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 static struct proto msm_ipc_proto = {

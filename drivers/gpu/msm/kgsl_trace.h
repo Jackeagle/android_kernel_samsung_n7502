@@ -37,13 +37,22 @@ TRACE_EVENT(kgsl_issueibcmds,
 
 	TP_PROTO(struct kgsl_device *device,
 			int drawctxt_id,
+<<<<<<< HEAD
 			struct kgsl_cmdbatch *cmdbatch,
+=======
+			struct kgsl_ibdesc *ibdesc,
+			int numibs,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			int timestamp,
 			int flags,
 			int result,
 			unsigned int type),
 
+<<<<<<< HEAD
 	TP_ARGS(device, drawctxt_id, cmdbatch, timestamp, flags,
+=======
+	TP_ARGS(device, drawctxt_id, ibdesc, numibs, timestamp, flags,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		result, type),
 
 	TP_STRUCT__entry(
@@ -60,8 +69,13 @@ TRACE_EVENT(kgsl_issueibcmds,
 	TP_fast_assign(
 		__assign_str(device_name, device->name);
 		__entry->drawctxt_id = drawctxt_id;
+<<<<<<< HEAD
 		__entry->ibdesc_addr = cmdbatch->ibdesc[0].gpuaddr;
 		__entry->numibs = cmdbatch->ibcount;
+=======
+		__entry->ibdesc_addr = ibdesc[0].gpuaddr;
+		__entry->numibs = numibs;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		__entry->timestamp = timestamp;
 		__entry->flags = flags;
 		__entry->result = result;
@@ -730,39 +744,63 @@ TRACE_EVENT(kgsl_regwrite,
 );
 
 TRACE_EVENT(kgsl_register_event,
+<<<<<<< HEAD
 		TP_PROTO(unsigned int id, unsigned int timestamp, void *func),
 		TP_ARGS(id, timestamp, func),
 		TP_STRUCT__entry(
 			__field(unsigned int, id)
 			__field(unsigned int, timestamp)
 			__field(void *, func)
+=======
+		TP_PROTO(unsigned int id, unsigned int timestamp),
+		TP_ARGS(id, timestamp),
+		TP_STRUCT__entry(
+			__field(unsigned int, id)
+			__field(unsigned int, timestamp)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		),
 		TP_fast_assign(
 			__entry->id = id;
 			__entry->timestamp = timestamp;
+<<<<<<< HEAD
 			__entry->func = func;
 		),
 		TP_printk(
 			"ctx=%u ts=%u cb=%pF",
 			__entry->id, __entry->timestamp, __entry->func)
+=======
+		),
+		TP_printk(
+			"ctx=%u ts=%u",
+			__entry->id, __entry->timestamp)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 );
 
 TRACE_EVENT(kgsl_fire_event,
 		TP_PROTO(unsigned int id, unsigned int ts,
+<<<<<<< HEAD
 			unsigned int type, unsigned int age, void *func),
 		TP_ARGS(id, ts, type, age, func),
+=======
+			unsigned int type, unsigned int age),
+		TP_ARGS(id, ts, type, age),
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		TP_STRUCT__entry(
 			__field(unsigned int, id)
 			__field(unsigned int, ts)
 			__field(unsigned int, type)
 			__field(unsigned int, age)
+<<<<<<< HEAD
 			__field(void *, func)
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		),
 		TP_fast_assign(
 			__entry->id = id;
 			__entry->ts = ts;
 			__entry->type = type;
 			__entry->age = age;
+<<<<<<< HEAD
 			__entry->func = func;
 		),
 		TP_printk(
@@ -770,6 +808,14 @@ TRACE_EVENT(kgsl_fire_event,
 			__entry->id, __entry->ts,
 			__print_symbolic(__entry->type, KGSL_EVENT_TYPES),
 			__entry->age, __entry->func)
+=======
+		),
+		TP_printk(
+			"ctx=%u ts=%u type=%s age=%u",
+			__entry->id, __entry->ts,
+			__print_symbolic(__entry->type, KGSL_EVENT_TYPES),
+			__entry->age)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 );
 
 TRACE_EVENT(kgsl_active_count,
@@ -796,6 +842,7 @@ TRACE_EVENT(kgsl_active_count,
 	)
 );
 
+<<<<<<< HEAD
 
 TRACE_EVENT(kgsl_pwrstats,
 	TP_PROTO(struct kgsl_device *device, s64 time,
@@ -827,6 +874,8 @@ TRACE_EVENT(kgsl_pwrstats,
 );
 
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif /* _KGSL_TRACE_H */
 
 /* This part must be outside protection */

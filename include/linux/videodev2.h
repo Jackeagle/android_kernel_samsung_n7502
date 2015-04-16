@@ -707,7 +707,10 @@ struct v4l2_buffer {
 #define V4L2_QCOM_BUF_DROP_FRAME 0x100000
 #define V4L2_QCOM_BUF_INPUT_UNSUPPORTED 0x200000
 #define V4L2_QCOM_BUF_FLAG_EOS          0x2000
+<<<<<<< HEAD
 #define V4L2_QCOM_BUF_FLAG_READONLY     0x400000
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /*
  *	O V E R L A Y   P R E V I E W
@@ -1864,6 +1867,7 @@ enum v4l2_mpeg_vidc_video_h264_vui_timing_info {
 	V4L2_MPEG_VIDC_VIDEO_H264_VUI_TIMING_INFO_ENABLED = 1
 };
 
+<<<<<<< HEAD
 #define V4L2_CID_MPEG_VIDC_VIDEO_ALLOC_MODE_INPUT	\
 		(V4L2_CID_MPEG_MSM_VIDC_BASE+30)
 #define V4L2_CID_MPEG_VIDC_VIDEO_ALLOC_MODE_OUTPUT	\
@@ -1876,13 +1880,28 @@ enum v4l2_mpeg_vidc_video_alloc_mode_type {
 
 #define V4L2_CID_MPEG_VIDC_VIDEO_FRAME_ASSEMBLY	\
 		(V4L2_CID_MPEG_MSM_VIDC_BASE+32)
+=======
+#define V4L2_CID_MPEG_VIDC_VIDEO_ALLOC_MODE		\
+		(V4L2_CID_MPEG_MSM_VIDC_BASE+30)
+enum v4l2_mpeg_vidc_video_alloc_mode_type {
+	V4L2_MPEG_VIDC_VIDEO_STATIC	= 0,
+	V4L2_MPEG_VIDC_VIDEO_RING	= 1,
+};
+
+#define V4L2_CID_MPEG_VIDC_VIDEO_FRAME_ASSEMBLY	\
+		(V4L2_CID_MPEG_MSM_VIDC_BASE+31)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 enum v4l2_mpeg_vidc_video_assembly {
 	V4L2_MPEG_VIDC_FRAME_ASSEMBLY_DISABLE	= 0,
 	V4L2_MPEG_VIDC_FRAME_ASSEMBLY_ENABLE	= 1,
 };
 
 #define V4L2_CID_MPEG_VIDC_VIDEO_VP8_PROFILE_LEVEL \
+<<<<<<< HEAD
 		(V4L2_CID_MPEG_MSM_VIDC_BASE+33)
+=======
+		(V4L2_CID_MPEG_MSM_VIDC_BASE+32)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 enum v4l2_mpeg_vidc_video_vp8_profile_level {
 	V4L2_MPEG_VIDC_VIDEO_VP8_UNUSED,
 	V4L2_MPEG_VIDC_VIDEO_VP8_VERSION_0,
@@ -1891,6 +1910,7 @@ enum v4l2_mpeg_vidc_video_vp8_profile_level {
 	V4L2_MPEG_VIDC_VIDEO_VP8_VERSION_3,
 };
 
+<<<<<<< HEAD
 #define V4L2_CID_MPEG_VIDC_VIDEO_DEINTERLACE \
 	(V4L2_CID_MPEG_MSM_VIDC_BASE + 34)
 enum v4l2_mpeg_vidc_video_deinterlace {
@@ -1919,6 +1939,8 @@ enum v4l2_mpeg_vidc_video_decoder_multi_stream {
 #define V4L2_CID_MPEG_VIDC_VIDEO_B_FRAME_QP \
 		(V4L2_CID_MPEG_MSM_VIDC_BASE + 42)
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /*  Camera class control IDs */
 #define V4L2_CID_CAMERA_CLASS_BASE 	(V4L2_CTRL_CLASS_CAMERA | 0x900)
 #define V4L2_CID_CAMERA_CLASS 		(V4L2_CTRL_CLASS_CAMERA | 1)
@@ -2480,10 +2502,14 @@ struct v4l2_streamparm {
 		(V4L2_EVENT_MSM_VIDC_START + 3)
 #define V4L2_EVENT_MSM_VIDC_CLOSE_DONE	(V4L2_EVENT_MSM_VIDC_START + 4)
 #define V4L2_EVENT_MSM_VIDC_SYS_ERROR	(V4L2_EVENT_MSM_VIDC_START + 5)
+<<<<<<< HEAD
 #define V4L2_EVENT_MSM_VIDC_RELEASE_BUFFER_REFERENCE \
 		(V4L2_EVENT_MSM_VIDC_START + 6)
 #define V4L2_EVENT_MSM_VIDC_RELEASE_UNQUEUED_BUFFER \
 		(V4L2_EVENT_MSM_VIDC_START + 7)
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* Payload for V4L2_EVENT_VSYNC */
 struct v4l2_event_vsync {

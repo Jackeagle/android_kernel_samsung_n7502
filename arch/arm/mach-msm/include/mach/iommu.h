@@ -101,7 +101,10 @@ struct msm_iommu_bfb_settings {
  * @asid:         List of ASID and their usage count (index is ASID value).
  * @ctx_attach_count: Count of how many context are attached.
  * @bus_client  : Bus client needed to vote for bus bandwidth.
+<<<<<<< HEAD
  * @needs_rem_spinlock  : 1 if remote spinlock is needed, 0 otherwise
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * A msm_iommu_drvdata holds the global driver data about a single piece
  * of an IOMMU hardware instance.
@@ -126,7 +129,10 @@ struct msm_iommu_drvdata {
 	int *asid;
 	unsigned int ctx_attach_count;
 	unsigned int bus_client;
+<<<<<<< HEAD
 	int needs_rem_spinlock;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /**
@@ -148,8 +154,13 @@ struct iommu_access_ops {
 	int (*iommu_clk_on)(struct msm_iommu_drvdata *);
 	void (*iommu_clk_off)(struct msm_iommu_drvdata *);
 	void * (*iommu_lock_initialize)(void);
+<<<<<<< HEAD
 	void (*iommu_lock_acquire)(unsigned int need_extra_lock);
 	void (*iommu_lock_release)(unsigned int need_extra_lock);
+=======
+	void (*iommu_lock_acquire)(void);
+	void (*iommu_lock_release)(void);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 void msm_iommu_add_drv(struct msm_iommu_drvdata *drv);
@@ -279,6 +290,7 @@ static inline struct iommu_access_ops *msm_get_iommu_access_ops(void)
 }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_MSM_IOMMU_SYNC
 void msm_iommu_remote_p0_spin_lock(unsigned int need_lock);
 void msm_iommu_remote_p0_spin_unlock(unsigned int need_lock);
@@ -294,6 +306,34 @@ void msm_iommu_remote_p0_spin_unlock(unsigned int need_lock);
 #define msm_iommu_remote_spin_unlock(need_lock)
 #endif
 
+=======
+#ifdef CONFIG_MSM_IOMMU_GPU_SYNC
+void msm_iommu_remote_p0_spin_lock(void);
+void msm_iommu_remote_p0_spin_unlock(void);
+
+#define msm_iommu_remote_lock_init() _msm_iommu_remote_spin_lock_init()
+#define msm_iommu_remote_spin_lock() msm_iommu_remote_p0_spin_lock()
+#define msm_iommu_remote_spin_unlock() msm_iommu_remote_p0_spin_unlock()
+#else
+#define msm_iommu_remote_lock_init()
+#define msm_iommu_remote_spin_lock()
+#define msm_iommu_remote_spin_unlock()
+#endif
+
+/* Allows kgsl iommu driver to acquire lock */
+#define msm_iommu_lock() \
+	do { \
+		msm_iommu_mutex_lock(); \
+		msm_iommu_remote_spin_lock(); \
+	} while (0)
+
+#define msm_iommu_unlock() \
+	do { \
+		msm_iommu_remote_spin_unlock(); \
+		msm_iommu_mutex_unlock(); \
+	} while (0)
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #ifdef CONFIG_MSM_IOMMU
 /*
  * Look up an IOMMU context device by its context name. NULL if none found.

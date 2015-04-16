@@ -1148,8 +1148,13 @@ decrypt_pki_encrypted_session_key(struct ecryptfs_auth_tok *auth_tok,
 	u8 cipher_code = 0;
 	struct ecryptfs_msg_ctx *msg_ctx;
 	struct ecryptfs_message *msg = NULL;
+<<<<<<< HEAD
 	char *auth_tok_sig;
 	char *payload;
+=======
+	char *auth_tok_sig = NULL;
+	char *payload = NULL;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	size_t payload_len;
 	int rc;
 
@@ -1204,6 +1209,13 @@ decrypt_pki_encrypted_session_key(struct ecryptfs_auth_tok *auth_tok,
 out:
 	if (msg)
 		kfree(msg);
+<<<<<<< HEAD
+=======
+	if (auth_tok_sig)
+        kfree(auth_tok_sig);
+	if (payload)
+        kfree(payload);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return rc;
 }
 
@@ -2184,7 +2196,11 @@ write_tag_3_packet(char *dest, size_t *remaining_bytes,
 {
 	size_t i;
 	size_t encrypted_session_key_valid = 0;
+<<<<<<< HEAD
 	char session_key_encryption_key[ECRYPTFS_MAX_KEY_BYTES];
+=======
+	char session_key_encryption_key[ECRYPTFS_MAX_KEY_BYTES] = {0, };
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct scatterlist dst_sg[2];
 	struct scatterlist src_sg[2];
 	struct mutex *tfm_mutex = NULL;

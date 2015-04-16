@@ -21,6 +21,7 @@
 #include <media/v4l2-subdev.h>
 #include "msm_sd.h"
 
+<<<<<<< HEAD
 /* hw version info:
   31:28  Major version
   27:16  Minor version
@@ -30,6 +31,8 @@
 #define CPP_HW_VERSION_1_1_1  0x10010001
 #define CPP_HW_VERSION_2_0_0  0x20000000
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define MAX_ACTIVE_CPP_INSTANCE 8
 #define MAX_CPP_PROCESSING_FRAME 2
 #define MAX_CPP_V4l2_EVENTS 30
@@ -157,8 +160,13 @@ struct msm_cpp_buff_queue_info_t {
 };
 
 struct msm_cpp_work_t {
+<<<<<<< HEAD
 	struct work_struct my_work;
 	struct cpp_device *cpp_dev;
+=======
+  struct work_struct my_work;
+  struct cpp_device *cpp_dev;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct cpp_device {
@@ -182,6 +190,11 @@ struct cpp_device {
 	char *fw_name_bin;
 	struct workqueue_struct *timer_wq;
 	struct msm_cpp_work_t *work;
+<<<<<<< HEAD
+=======
+	uint8_t stream_cnt;
+	uint8_t timeout_trial_cnt;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	int domain_num;
 	struct iommu_domain *domain;

@@ -12,10 +12,20 @@
  */
 #include "msm_sensor.h"
 #define OV2720_SENSOR_NAME "ov2720"
+<<<<<<< HEAD
+=======
+#undef CDBG
+#ifdef OV2720_DEBUG
+#define CDBG(fmt, args...) pr_err(fmt, ##args)
+#else
+#define CDBG(fmt, args...) pr_debug(fmt, ##args)
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 DEFINE_MSM_MUTEX(ov2720_mut);
 
 static struct msm_sensor_ctrl_t ov2720_s_ctrl;
 
+<<<<<<< HEAD
 static struct msm_sensor_power_setting ov2720_power_setting[] = {
 	{
 		.seq_type = SENSOR_VREG,
@@ -60,6 +70,8 @@ static struct msm_sensor_power_setting ov2720_power_setting[] = {
 		.delay = 0,
 	},
 };
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static struct v4l2_subdev_info ov2720_subdev_info[] = {
 	{
@@ -80,7 +92,10 @@ static int32_t msm_ov2720_i2c_probe(struct i2c_client *client,
 {
 	return msm_sensor_i2c_probe(client, id, &ov2720_s_ctrl);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static struct i2c_driver ov2720_i2c_driver = {
 	.id_table = ov2720_i2c_id,
 	.probe  = msm_ov2720_i2c_probe,
@@ -120,18 +135,32 @@ static int32_t ov2720_platform_probe(struct platform_device *pdev)
 static int __init ov2720_init_module(void)
 {
 	int32_t rc = 0;
+<<<<<<< HEAD
 	pr_info("%s:%d\n", __func__, __LINE__);
 	rc = platform_driver_probe(&ov2720_platform_driver,
 		ov2720_platform_probe);
 	if (!rc)
 		return rc;
 	pr_err("%s:%d rc %d\n", __func__, __LINE__, rc);
+=======
+	CDBG("%s:%d init\n", __func__, __LINE__);
+	rc = platform_driver_probe(&ov2720_platform_driver,
+		ov2720_platform_probe);
+	if (!rc) {
+		pr_info("%s: probe success\n", __func__);
+		return rc;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return i2c_add_driver(&ov2720_i2c_driver);
 }
 
 static void __exit ov2720_exit_module(void)
 {
+<<<<<<< HEAD
 	pr_info("%s:%d\n", __func__, __LINE__);
+=======
+	CDBG("%s:%d\n", __func__, __LINE__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (ov2720_s_ctrl.pdev) {
 		msm_sensor_free_sensor_data(&ov2720_s_ctrl);
 		platform_driver_unregister(&ov2720_platform_driver);
@@ -142,8 +171,11 @@ static void __exit ov2720_exit_module(void)
 
 static struct msm_sensor_ctrl_t ov2720_s_ctrl = {
 	.sensor_i2c_client = &ov2720_sensor_i2c_client,
+<<<<<<< HEAD
 	.power_setting_array.power_setting = ov2720_power_setting,
 	.power_setting_array.size = ARRAY_SIZE(ov2720_power_setting),
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.msm_sensor_mutex = &ov2720_mut,
 	.sensor_v4l2_subdev_info = ov2720_subdev_info,
 	.sensor_v4l2_subdev_info_size = ARRAY_SIZE(ov2720_subdev_info),

@@ -38,6 +38,7 @@ struct ion_secure_cma_buffer_info {
 	 * This needs to come first for compatibility with the secure buffer API
 	 */
 	struct ion_cp_buffer secure;
+<<<<<<< HEAD
 	dma_addr_t phys;
 	struct sg_table *table;
 	bool is_cached;
@@ -97,13 +98,25 @@ struct ion_cma_secure_heap {
 
 static void ion_secure_pool_pages(struct work_struct *work);
 
+=======
+	void *cpu_addr;
+	dma_addr_t handle;
+	struct sg_table *table;
+	bool is_cached;
+};
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /*
  * Create scatter-list for the already allocated DMA buffer.
  * This function could be replace by dma_common_get_sgtable
  * as soon as it will avalaible.
  */
 int ion_secure_cma_get_sgtable(struct device *dev, struct sg_table *sgt,
+<<<<<<< HEAD
 			dma_addr_t handle, size_t size)
+=======
+			void *cpu_addr, dma_addr_t handle, size_t size)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	struct page *page = phys_to_page(handle);
 	int ret;
@@ -117,6 +130,7 @@ int ion_secure_cma_get_sgtable(struct device *dev, struct sg_table *sgt,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int ion_secure_cma_add_to_pool(
 					struct ion_cma_secure_heap *sheap,
 					unsigned long len)
@@ -421,12 +435,15 @@ static void ion_secure_cma_free_from_pool(struct ion_cma_secure_heap *sheap,
 	mutex_unlock(&sheap->chunk_lock);
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* ION CMA heap operations functions */
 static struct ion_secure_cma_buffer_info *__ion_secure_cma_allocate(
 			    struct ion_heap *heap, struct ion_buffer *buffer,
 			    unsigned long len, unsigned long align,
 			    unsigned long flags)
 {
+<<<<<<< HEAD
 	struct ion_cma_secure_heap *sheap =
 		container_of(heap, struct ion_cma_secure_heap, heap);
 	struct ion_secure_cma_buffer_info *info;
@@ -475,6 +492,43 @@ static struct ion_secure_cma_buffer_info *__ion_secure_cma_allocate(
 	/* keep this for memory release */
 	buffer->priv_virt = info;
 	dev_dbg(sheap->dev, "Allocate buffer %p\n", buffer);
+=======
+	struct device *dev = heap->priv;
+	struct ion_secure_cma_buffer_info *info;
+	DEFINE_DMA_ATTRS(attrs);
+	dma_set_attr(DMA_ATTR_NO_KERNEL_MAPPING, &attrs);
+
+	dev_dbg(dev, "Request buffer allocation len %ld\n", len);
+
+	info = kzalloc(sizeof(struct ion_secure_cma_buffer_info), GFP_KERNEL);
+	if (!info) {
+		dev_err(dev, "Can't allocate buffer info\n");
+		return ION_CMA_ALLOCATE_FAILED;
+	}
+
+	info->cpu_addr = dma_alloc_attrs(dev, len, &(info->handle), GFP_KERNEL,
+						&attrs);
+
+	if (!info->cpu_addr) {
+		dev_err(dev, "Fail to allocate buffer\n");
+		goto err;
+	}
+
+	info->table = kmalloc(sizeof(struct sg_table), GFP_KERNEL);
+	if (!info->table) {
+		dev_err(dev, "Fail to allocate sg table\n");
+		goto err;
+	}
+
+	ion_secure_cma_get_sgtable(dev,
+			info->table, info->cpu_addr, info->handle, len);
+
+	info->secure.buffer = info->handle;
+
+	/* keep this for memory release */
+	buffer->priv_virt = info;
+	dev_dbg(dev, "Allocate buffer %p\n", buffer);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return info;
 
 err:
@@ -537,6 +591,7 @@ static int ion_secure_cma_allocate(struct ion_heap *heap,
 
 static void ion_secure_cma_free(struct ion_buffer *buffer)
 {
+<<<<<<< HEAD
 	struct ion_cma_secure_heap *sheap =
 		container_of(buffer->heap, struct ion_cma_secure_heap, heap);
 	struct ion_secure_cma_buffer_info *info = buffer->priv_virt;
@@ -549,6 +604,18 @@ static void ion_secure_cma_free(struct ion_buffer *buffer)
 	ion_secure_cma_free_from_pool(sheap, info->phys, buffer->size);
 	/* release sg table */
 	sg_free_table(info->table);
+=======
+	struct device *dev = buffer->heap->priv;
+	struct ion_secure_cma_buffer_info *info = buffer->priv_virt;
+
+	dev_dbg(dev, "Release buffer %p\n", buffer);
+
+	ion_cp_unsecure_buffer(buffer, 1);
+	/* release memory */
+	dma_free_coherent(dev, buffer->size, info->cpu_addr, info->handle);
+	sg_free_table(info->table);
+	/* release sg table */
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	kfree(info->table);
 	kfree(info);
 }
@@ -556,6 +623,7 @@ static void ion_secure_cma_free(struct ion_buffer *buffer)
 static int ion_secure_cma_phys(struct ion_heap *heap, struct ion_buffer *buffer,
 			ion_phys_addr_t *addr, size_t *len)
 {
+<<<<<<< HEAD
 	struct ion_cma_secure_heap *sheap =
 		container_of(heap, struct ion_cma_secure_heap, heap);
 	struct ion_secure_cma_buffer_info *info = buffer->priv_virt;
@@ -564,6 +632,15 @@ static int ion_secure_cma_phys(struct ion_heap *heap, struct ion_buffer *buffer,
 		&info->phys);
 
 	*addr = info->phys;
+=======
+	struct device *dev = heap->priv;
+	struct ion_secure_cma_buffer_info *info = buffer->priv_virt;
+
+	dev_dbg(dev, "Return buffer %p physical address 0x%pa\n", buffer,
+		&info->handle);
+
+	*addr = info->handle;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	*len = buffer->size;
 
 	return 0;
@@ -607,6 +684,7 @@ static void ion_secure_cma_unmap_kernel(struct ion_heap *heap,
 }
 
 static int ion_secure_cma_print_debug(struct ion_heap *heap, struct seq_file *s,
+<<<<<<< HEAD
 			const struct list_head *mem_map)
 {
 	struct ion_cma_secure_heap *sheap =
@@ -614,13 +692,25 @@ static int ion_secure_cma_print_debug(struct ion_heap *heap, struct seq_file *s,
 
 	if (mem_map) {
 		struct mem_map_data *data;
+=======
+			const struct rb_root *mem_map)
+{
+	if (mem_map) {
+		struct rb_node *n;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		seq_printf(s, "\nMemory Map\n");
 		seq_printf(s, "%16.s %14.s %14.s %14.s\n",
 			   "client", "start address", "end address",
 			   "size (hex)");
 
+<<<<<<< HEAD
 		list_for_each_entry(data, mem_map, node) {
+=======
+		for (n = rb_first(mem_map); n; n = rb_next(n)) {
+			struct mem_map_data *data =
+					rb_entry(n, struct mem_map_data, node);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			const char *client_name = "(null)";
 
 
@@ -633,10 +723,13 @@ static int ion_secure_cma_print_debug(struct ion_heap *heap, struct seq_file *s,
 				   data->size, data->size);
 		}
 	}
+<<<<<<< HEAD
 	seq_printf(s, "Total allocated: %x\n",
 				atomic_read(&sheap->total_allocated));
 	seq_printf(s, "Total pool size: %x\n",
 				atomic_read(&sheap->total_pool_size));
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return 0;
 }
 
@@ -656,6 +749,7 @@ static struct ion_heap_ops ion_secure_cma_ops = {
 
 struct ion_heap *ion_secure_cma_heap_create(struct ion_platform_heap *data)
 {
+<<<<<<< HEAD
 	struct ion_cma_secure_heap *sheap;
 	int map_size = BITS_TO_LONGS(data->size >> PAGE_SHIFT) * sizeof(long);
 
@@ -697,12 +791,31 @@ struct ion_heap *ion_secure_cma_heap_create(struct ion_platform_heap *data)
 	bitmap_fill(sheap->bitmap, sheap->npages);
 
 	return &sheap->heap;
+=======
+	struct ion_heap *heap;
+
+	heap = kzalloc(sizeof(struct ion_heap), GFP_KERNEL);
+
+	if (!heap)
+		return ERR_PTR(-ENOMEM);
+
+	heap->ops = &ion_secure_cma_ops;
+	/* set device as private heaps data, later it will be
+	 * used to make the link with reserved CMA memory */
+	heap->priv = data->priv;
+	heap->type = ION_HEAP_TYPE_SECURE_DMA;
+	return heap;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 void ion_secure_cma_heap_destroy(struct ion_heap *heap)
 {
+<<<<<<< HEAD
 	struct ion_cma_secure_heap *sheap =
 		container_of(heap, struct ion_cma_secure_heap, heap);
 
 	kfree(sheap);
+=======
+	kfree(heap);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }

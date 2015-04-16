@@ -289,7 +289,11 @@ static int msm_vidc_load_bus_vector(struct platform_device *pdev,
 		bus_pdata->usecase[i].vectors = kzalloc(
 			sizeof(*bus_pdata->usecase[i].vectors) * num_ports,
 			GFP_KERNEL);
+<<<<<<< HEAD
 		if (!bus_pdata->usecase[i].vectors) {
+=======
+		if (!bus_pdata->usecase) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			dprintk(VIDC_ERR,
 				"%s Failed to alloc bus_pdata usecase\n",
 				__func__);

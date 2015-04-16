@@ -176,8 +176,11 @@ enum rq_flag_bits {
 	 REQ_SANITIZE)
 #define REQ_CLONE_MASK		REQ_COMMON_MASK
 
+<<<<<<< HEAD
 #define MMC_REQ_NOREINSERT_MASK (REQ_URGENT | REQ_FUA | REQ_FLUSH)
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define REQ_RAHEAD		(1 << __REQ_RAHEAD)
 #define REQ_THROTTLED		(1 << __REQ_THROTTLED)
 

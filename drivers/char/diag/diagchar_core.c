@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2008-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2008-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -51,7 +55,10 @@ MODULE_DESCRIPTION("Diag Char Driver");
 MODULE_LICENSE("GPL v2");
 MODULE_VERSION("1.0");
 
+<<<<<<< HEAD
 #define MIN_SIZ_ALLOW 4
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define INIT	1
 #define EXIT	-1
 struct diagchar_dev *driver;
@@ -262,6 +269,14 @@ static int diagchar_close(struct inode *inode, struct file *file)
 	if (!driver)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	if(driver->silent_log_pid) {
+		put_pid(driver->silent_log_pid);
+		driver->silent_log_pid = NULL;
+	}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* clean up any DCI registrations, if this is a DCI client
 	* This will specially help in case of ungraceful exit of any DCI client
 	* This call will remove any pending registrations of such client
@@ -879,8 +894,11 @@ long diagchar_ioctl(struct file *filp,
 	struct diag_log_event_stats le_stats;
 	struct diagpkt_delay_params delay_params;
 	struct real_time_vote_t rt_vote;
+<<<<<<< HEAD
 	struct list_head *start, *req_temp;
 	struct dci_pkt_req_entry_t *req_entry = NULL;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	switch (iocmd) {
 	case DIAG_IOCTL_COMMAND_REG:
@@ -940,8 +958,11 @@ long diagchar_ioctl(struct file *filp,
 		for (i = 0; i < MAX_DCI_CLIENTS; i++) {
 			if (driver->dci_client_tbl[i].client == NULL) {
 				driver->dci_client_tbl[i].client = current;
+<<<<<<< HEAD
 				driver->dci_client_tbl[i].client_id =
 							driver->dci_client_id;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				driver->dci_client_tbl[i].list =
 							 dci_params->list;
 				driver->dci_client_tbl[i].signal_type =
@@ -981,7 +1002,11 @@ long diagchar_ioctl(struct file *filp,
 			clear_client_dci_cumulative_log_mask(i);
 			/* send updated log mask to peripherals */
 			result =
+<<<<<<< HEAD
 			diag_send_dci_log_mask(&driver->smd_cntl[MODEM_DATA]);
+=======
+			diag_send_dci_log_mask(driver->smd_cntl[MODEM_DATA].ch);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			if (result != DIAG_DCI_NO_ERROR) {
 				mutex_unlock(&driver->dci_mutex);
 				return result;
@@ -991,13 +1016,18 @@ long diagchar_ioctl(struct file *filp,
 			/* send updated event mask to peripherals */
 			result =
 			diag_send_dci_event_mask(
+<<<<<<< HEAD
 				&driver->smd_cntl[MODEM_DATA]);
+=======
+				driver->smd_cntl[MODEM_DATA].ch);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			if (result != DIAG_DCI_NO_ERROR) {
 				mutex_unlock(&driver->dci_mutex);
 				return result;
 			}
 			result = i;
 			/* Delete this process from DCI table */
+<<<<<<< HEAD
 			list_for_each_safe(start, req_temp,
 							&driver->dci_req_list) {
 				req_entry = list_entry(start,
@@ -1008,6 +1038,12 @@ long diagchar_ioctl(struct file *filp,
 					kfree(req_entry);
 				}
 			}
+=======
+			for (i = 0; i < dci_max_reg; i++)
+				if (driver->req_tracking_tbl[i].pid ==
+					 current->tgid)
+					driver->req_tracking_tbl[i].pid = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			driver->dci_client_tbl[result].client = NULL;
 			kfree(driver->dci_client_tbl[result].dci_data);
 			driver->dci_client_tbl[result].dci_data = NULL;
@@ -1042,7 +1078,11 @@ long diagchar_ioctl(struct file *filp,
 				 sizeof(struct diag_dci_health_stats)))
 			return -EFAULT;
 		mutex_lock(&dci_health_mutex);
+<<<<<<< HEAD
 		i = diag_dci_find_client_index_health(stats.client_id);
+=======
+		i = diag_dci_find_client_index(current->tgid);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (i != DCI_CLIENT_INDEX_INVALID) {
 			dci_params = &(driver->dci_client_tbl[i]);
 			stats.dropped_logs = dci_params->dropped_logs;
@@ -1108,6 +1148,13 @@ long diagchar_ioctl(struct file *filp,
 		result = 1;
 		break;
 	case DIAG_IOCTL_SWITCH_LOGGING:
+<<<<<<< HEAD
+=======
+		/*
+		 * Get a pid of diag_mdlog(app) and save it.
+		 */
+		driver->silent_log_pid = get_pid(task_pid(current));
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		result = diag_switch_logging(ioarg);
 		break;
 	case DIAG_IOCTL_REMOTE_DEV:
@@ -1159,6 +1206,29 @@ long diagchar_ioctl(struct file *filp,
 	return result;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * silent_log_panic_handler()
+ * If the silent log is enabled for CP and CP is in
+ * trouble, diag_mdlog (APP) should be terminated before
+ * a panic occurs, since it can flush logs to SD card
+ * when it is over. So, please use this function to termimate it.
+ */
+int silent_log_panic_handler(void)
+{
+	int ret = 0;
+	if(driver->silent_log_pid) {
+		pr_info("%s: killing slient log...\n", __func__);
+		kill_pid(driver->silent_log_pid, SIGTERM, 1);
+		driver->silent_log_pid = NULL;
+		ret = 1;
+	}
+	return ret;
+}
+EXPORT_SYMBOL(silent_log_panic_handler);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int diagchar_read(struct file *file, char __user *buf, size_t count,
 			  loff_t *ppos)
 {
@@ -1455,10 +1525,13 @@ static int diagchar_write(struct file *file, const char __user *buf,
 	index = 0;
 	/* Get the packet type F3/log/event/Pkt response */
 	err = copy_from_user((&pkt_type), buf, 4);
+<<<<<<< HEAD
 	if (err) {
 		pr_alert("diag: copy failed for pkt_type\n");
 		return -EAGAIN;
 	}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* First 4 bytes indicate the type of payload - ignore these */
 	if (count < 4) {
 		pr_err("diag: Client sending short data\n");
@@ -1500,26 +1573,44 @@ static int diagchar_write(struct file *file, const char __user *buf,
 		return err;
 	}
 	if (pkt_type == CALLBACK_DATA_TYPE) {
+<<<<<<< HEAD
 		if (payload_size > driver->itemsize ||
 				payload_size <= MIN_SIZ_ALLOW) {
 			pr_err("diag: Dropping packet, invalid packet size. Current payload size %d\n",
+=======
+		if (payload_size > itemsize) {
+			pr_err("diag: Dropping packet, packet payload size crosses 4KB limit. Current payload size %d\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				payload_size);
 			driver->dropped_count++;
 			return -EBADMSG;
 		}
 
+<<<<<<< HEAD
 		buf_copy = diagmem_alloc(driver, payload_size, POOL_TYPE_COPY);
 		if (!buf_copy) {
 			driver->dropped_count++;
+=======
+		mutex_lock(&driver->diagchar_mutex);
+		buf_copy = diagmem_alloc(driver, payload_size, POOL_TYPE_COPY);
+		if (!buf_copy) {
+			driver->dropped_count++;
+			mutex_unlock(&driver->diagchar_mutex);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			return -ENOMEM;
 		}
 
 		err = copy_from_user(buf_copy, buf + 4, payload_size);
 		if (err) {
 			pr_err("diag: copy failed for user space data\n");
+<<<<<<< HEAD
 			diagmem_free(driver, buf_copy, POOL_TYPE_COPY);
 			buf_copy = NULL;
 			return -EIO;
+=======
+			ret = -EIO;
+			goto fail_free_copy;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 		/* Check for proc_type */
 		remote_proc = diag_get_remote(*(int *)buf_copy);
@@ -1528,9 +1619,13 @@ static int diagchar_write(struct file *file, const char __user *buf,
 			wait_event_interruptible(driver->wait_q,
 				 (driver->in_busy_pktdata == 0));
 			ret = diag_process_apps_pkt(buf_copy, payload_size);
+<<<<<<< HEAD
 			diagmem_free(driver, buf_copy, POOL_TYPE_COPY);
 			buf_copy = NULL;
 			return ret;
+=======
+			goto fail_free_copy;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 		/* The packet is for the remote processor */
 		token_offset = 4;
@@ -1543,7 +1638,11 @@ static int diagchar_write(struct file *file, const char __user *buf,
 							1 + payload_size);
 		send.terminate = 1;
 
+<<<<<<< HEAD
 		mutex_lock(&driver->diagchar_mutex);
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (!buf_hdlc)
 			buf_hdlc = diagmem_alloc(driver, HDLC_OUT_BUF_SIZE,
 							POOL_TYPE_HDLC);
@@ -1632,6 +1731,7 @@ static int diagchar_write(struct file *file, const char __user *buf,
 			return -EIO;
 		}
 		/* Check for proc_type */
+<<<<<<< HEAD
 		remote_proc =
 			diag_get_remote(*(int *)driver->user_space_data_buf);
 
@@ -1641,6 +1741,11 @@ static int diagchar_write(struct file *file, const char __user *buf,
 							__func__, payload_size);
 				return -EBADMSG;
 			}
+=======
+		remote_proc = diag_get_remote(*(int *)driver->user_space_data_buf);
+
+		if (remote_proc) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			token_offset = 4;
 			payload_size -= 4;
 			buf += 4;
@@ -1701,7 +1806,11 @@ static int diagchar_write(struct file *file, const char __user *buf,
 									0;
 				err = diag_bridge_write(index,
 						driver->user_space_data_buf +
+<<<<<<< HEAD
 						token_offset, payload_size);
+=======
+						token_offset, payload_size);				
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				if (err) {
 					pr_err("diag: err sending mask to MDM: %d\n",
 					       err);
@@ -1722,8 +1831,12 @@ static int diagchar_write(struct file *file, const char __user *buf,
 						&& driver->lcid) {
 			if (payload_size > 0) {
 				err = msm_smux_write(driver->lcid, NULL,
+<<<<<<< HEAD
 					driver->user_space_data_buf +
 						token_offset,
+=======
+					driver->user_space_data_buf + token_offset,					
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					payload_size);
 				if (err) {
 					pr_err("diag:send mask to MDM err %d",
@@ -1737,7 +1850,11 @@ static int diagchar_write(struct file *file, const char __user *buf,
 		if (!remote_proc)
 			diag_process_hdlc((void *)
 				(driver->user_space_data_buf + token_offset),
+<<<<<<< HEAD
 					payload_size);
+=======
+				payload_size);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return 0;
 	}
 

@@ -11,7 +11,10 @@
  *
  */
 
+<<<<<<< HEAD
 #include <linux/err.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <linux/file.h>
 #include <linux/sched.h>
 #include <linux/slab.h>
@@ -282,6 +285,7 @@ void kgsl_sync_timeline_destroy(struct kgsl_context *context)
 {
 	sync_timeline_destroy(context->timeline);
 }
+<<<<<<< HEAD
 
 static void kgsl_sync_callback(struct sync_fence *fence,
 	struct sync_fence_waiter *waiter)
@@ -344,3 +348,5 @@ int kgsl_sync_fence_async_cancel(struct kgsl_sync_fence_waiter *kwaiter)
 	}
 	return 0;
 }
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60

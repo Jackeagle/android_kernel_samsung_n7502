@@ -151,6 +151,7 @@ config CORESIGHT_ETM_PCSAVE_DEFAULT_ENABLE
 
 	  If unsure, say 'N' here to avoid potential power penalty.
 
+<<<<<<< HEAD
 config CORESIGHT_AUDIO_ETM
 	bool "Audio processor ETM trace support"
 	help
@@ -183,6 +184,8 @@ config CORESIGHT_RPM_ETM
 	  tracing on RPM processor via sysfs by configuring the required
 	  CoreSight components.
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 endif
 
 config CORESIGHT_EVENT

@@ -973,6 +973,13 @@ config FB_MSM_QPIC_PANEL_DETECT
 	---help---
 	  Support for Qpic panel auto detect
 
+<<<<<<< HEAD
+=======
+config FB_MSM_CAMERA_CSC
+	bool "Camera CSC configuration"
+	default n
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 if FB_MSM_MDSS
 	source "drivers/video/msm/mdss/Kconfig"
 endif

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2011-2013, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -288,6 +292,7 @@ static struct device_type slim_dev_type = {
 
 static void slim_report(struct work_struct *work)
 {
+<<<<<<< HEAD
 	u8 laddr;
 	int ret, i;
 	struct slim_driver *sbdrv;
@@ -319,6 +324,29 @@ static void slim_report(struct work_struct *work)
 	if (!ret) {
 		if (sbdrv)
 			sbdev->notified = true;
+=======
+	struct slim_driver *sbdrv;
+	struct slim_device *sbdev =
+			container_of(work, struct slim_device, wd);
+	if (!sbdev->dev.driver)
+		return;
+	/* check if device-up or down needs to be called */
+	if ((!sbdev->reported && !sbdev->notified) ||
+			(sbdev->reported && sbdev->notified))
+		return;
+
+	sbdrv = to_slim_driver(sbdev->dev.driver);
+	/*
+	 * address no longer valid, means device reported absent, whereas
+	 * address valid, means device reported present
+	 */
+	if (sbdev->notified && !sbdev->reported) {
+		sbdev->notified = false;
+		if (sbdrv->device_down)
+			sbdrv->device_down(sbdev);
+	} else if (!sbdev->notified && sbdev->reported) {
+		sbdev->notified = true;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (sbdrv->device_up)
 			sbdrv->device_up(sbdev);
 	}
@@ -645,6 +673,10 @@ void slim_report_absent(struct slim_device *sbdev)
 			ctrl->addrt[i].valid = false;
 	}
 	mutex_unlock(&ctrl->m_ctrl);
+<<<<<<< HEAD
+=======
+	sbdev->reported = false;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	queue_work(ctrl->wq, &sbdev->wd);
 }
 EXPORT_SYMBOL(slim_report_absent);
@@ -773,6 +805,11 @@ int slim_assign_laddr(struct slim_controller *ctrl, const u8 *e_addr,
 	u8 i = 0;
 	bool exists = false;
 	struct slim_device *sbdev;
+<<<<<<< HEAD
+=======
+	struct list_head *pos, *next;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mutex_lock(&ctrl->m_ctrl);
 	/* already assigned */
 	if (ctrl_getlogical_addr(ctrl, e_addr, e_len, &i) == 0) {
@@ -822,10 +859,19 @@ ret_assigned_laddr:
 	pr_info("slimbus:%d laddr:0x%x, EAPC:0x%x:0x%x", ctrl->nr, *laddr,
 				e_addr[1], e_addr[2]);
 	mutex_lock(&ctrl->m_ctrl);
+<<<<<<< HEAD
 	list_for_each_entry(sbdev, &ctrl->devs, dev_list) {
 		if (memcmp(sbdev->e_addr, e_addr, 6) == 0) {
 			struct slim_driver *sbdrv;
 			sbdev->laddr = *laddr;
+=======
+	list_for_each_safe(pos, next, &ctrl->devs) {
+		sbdev = list_entry(pos, struct slim_device, dev_list);
+		if (memcmp(sbdev->e_addr, e_addr, 6) == 0) {
+			struct slim_driver *sbdrv;
+			sbdev->laddr = *laddr;
+			sbdev->reported = true;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			if (sbdev->dev.driver) {
 				sbdrv = to_slim_driver(sbdev->dev.driver);
 				if (sbdrv->device_up)

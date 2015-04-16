@@ -79,10 +79,20 @@ extern int tapan_mclk_enable(struct snd_soc_codec *codec, int mclk_enable,
 			     bool dapm);
 extern int tapan_hs_detect(struct snd_soc_codec *codec,
 			   struct wcd9xxx_mbhc_config *mbhc_cfg);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 extern void *tapan_get_afe_config(struct snd_soc_codec *codec,
 				  enum afe_config_type config_type);
 extern void tapan_event_register(
 	int (*machine_event_cb)(struct snd_soc_codec *codec,
 				 enum wcd9xxx_codec_event),
 	struct snd_soc_codec *codec);
+<<<<<<< HEAD
+=======
+
+extern void tapan_register_mclk_cb(struct snd_soc_codec *codec,
+			int (*mclk_cb_fn) (struct snd_soc_codec*, int, bool));
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif

@@ -34,25 +34,37 @@
 #include <linux/suspend.h>
 #include <linux/rwsem.h>
 #include <linux/mfd/pm8xxx/misc.h>
+<<<<<<< HEAD
 #include <linux/qpnp/qpnp-adc.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #include <mach/msm_smd.h>
 #include <mach/msm_iomap.h>
 #include <mach/subsystem_restart.h>
+<<<<<<< HEAD
 #include <mach/subsystem_notif.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #ifdef CONFIG_WCNSS_MEM_PRE_ALLOC
 #include "wcnss_prealloc.h"
 #endif
 
 #define DEVICE "wcnss_wlan"
+<<<<<<< HEAD
 #define CTRL_DEVICE "wcnss_ctrl"
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define VERSION "1.01"
 #define WCNSS_PIL_DEVICE "wcnss"
 
 /* module params */
 #define WCNSS_CONFIG_UNSPECIFIED (-1)
+<<<<<<< HEAD
 #define UINT32_MAX (0xFFFFFFFFU)
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static int has_48mhz_xo = WCNSS_CONFIG_UNSPECIFIED;
 module_param(has_48mhz_xo, int, S_IWUSR | S_IRUGO);
@@ -87,6 +99,7 @@ static DEFINE_SPINLOCK(reg_spinlock);
 
 #define PRONTO_PMU_SPARE_OFFSET       0x1088
 
+<<<<<<< HEAD
 #define PRONTO_PMU_COM_GDSCR_OFFSET       0x0024
 #define PRONTO_PMU_COM_GDSCR_SW_COLLAPSE  BIT(0)
 #define PRONTO_PMU_COM_GDSCR_HW_CTRL      BIT(1)
@@ -97,10 +110,16 @@ static DEFINE_SPINLOCK(reg_spinlock);
 #define PRONTO_PMU_WLAN_GDSCR_OFFSET       0x0054
 #define PRONTO_PMU_WLAN_GDSCR_SW_COLLAPSE  BIT(0)
 
+=======
+#define PRONTO_PMU_GDSCR_OFFSET       0x0024
+#define PRONTO_PMU_GDSCR_SW_COLLAPSE  BIT(0)
+#define PRONTO_PMU_GDSCR_HW_CTRL      BIT(1)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define PRONTO_PMU_CBCR_OFFSET        0x0008
 #define PRONTO_PMU_CBCR_CLK_EN        BIT(0)
 
+<<<<<<< HEAD
 #define PRONTO_PMU_COM_CPU_CBCR_OFFSET     0x0030
 #define PRONTO_PMU_COM_AHB_CBCR_OFFSET     0x0034
 
@@ -115,6 +134,8 @@ static DEFINE_SPINLOCK(reg_spinlock);
 #define PRONTO_PMU_COM_CSR_OFFSET          0x1040
 #define PRONTO_PMU_SOFT_RESET_OFFSET       0x104C
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define MSM_PRONTO_A2XB_BASE		0xfb100400
 #define A2XB_CFG_OFFSET				0x00
 #define A2XB_INT_SRC_OFFSET			0x0c
@@ -139,6 +160,7 @@ static DEFINE_SPINLOCK(reg_spinlock);
 #define CCU_PRONTO_LAST_ADDR1_OFFSET		0x10
 #define CCU_PRONTO_LAST_ADDR2_OFFSET		0x14
 
+<<<<<<< HEAD
 #define MSM_PRONTO_SAW2_BASE			0xfb219000
 #define PRONTO_SAW2_SPM_STS_OFFSET		0x0c
 
@@ -172,10 +194,14 @@ static DEFINE_SPINLOCK(reg_spinlock);
 #define WCNSS_VBATT_GUARD		200
 #define WCNSS_VBATT_HIGH		3700000
 #define WCNSS_VBATT_LOW			3300000
+=======
+#define WCNSS_DEF_WLAN_RX_BUFF_COUNT		1024
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define WCNSS_CTRL_CHANNEL			"WCNSS_CTRL"
 #define WCNSS_MAX_FRAME_SIZE		(4*1024)
 #define WCNSS_VERSION_LEN			30
+<<<<<<< HEAD
 #define WCNSS_MAX_BUILD_VER_LEN		256
 #define WCNSS_MAX_CMD_LEN		(128)
 #define WCNSS_MIN_CMD_LEN		(3)
@@ -187,6 +213,8 @@ static DEFINE_SPINLOCK(reg_spinlock);
 #define WCNSS_USR_HAS_CAL_DATA    (WCNSS_USR_CTRL_MSG_START + 2)
 
 #define MAC_ADDRESS_STR "%02x:%02x:%02x:%02x:%02x:%02x"
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* message types */
 #define WCNSS_CTRL_MSG_START	0x01000000
@@ -198,12 +226,16 @@ static DEFINE_SPINLOCK(reg_spinlock);
 #define	WCNSS_CALDATA_UPLD_RSP        (WCNSS_CTRL_MSG_START + 5)
 #define	WCNSS_CALDATA_DNLD_REQ        (WCNSS_CTRL_MSG_START + 6)
 #define	WCNSS_CALDATA_DNLD_RSP        (WCNSS_CTRL_MSG_START + 7)
+<<<<<<< HEAD
 #define	WCNSS_VBATT_LEVEL_IND         (WCNSS_CTRL_MSG_START + 8)
 #define	WCNSS_BUILD_VER_REQ           (WCNSS_CTRL_MSG_START + 9)
 #define	WCNSS_BUILD_VER_RSP           (WCNSS_CTRL_MSG_START + 10)
 
 /* max 20mhz channel count */
 #define WCNSS_MAX_CH_NUM			45
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define VALID_VERSION(version) \
 	((strncmp(version, "INVALID", WCNSS_VERSION_LEN)) ? 1 : 0)
@@ -334,6 +366,7 @@ struct cal_data_msg {
 	struct cal_data_params cal_params;
 };
 
+<<<<<<< HEAD
 struct vbatt_level {
 	u32 curr_volt;
 	u32 threshold;
@@ -344,6 +377,8 @@ struct vbatt_message {
 	struct vbatt_level vbatt;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static struct {
 	struct platform_device *pdev;
 	void		*pil;
@@ -365,7 +400,10 @@ static struct {
 	void		(*tm_notify)(struct device *, int);
 	struct wcnss_wlan_config wlan_config;
 	struct delayed_work wcnss_work;
+<<<<<<< HEAD
 	struct delayed_work vbatt_work;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct work_struct wcnssctrl_version_work;
 	struct work_struct wcnssctrl_nvbin_dnld_work;
 	struct work_struct wcnssctrl_rx_work;
@@ -374,6 +412,7 @@ static struct {
 	void __iomem *riva_ccu_base;
 	void __iomem *pronto_a2xb_base;
 	void __iomem *pronto_ccpu_base;
+<<<<<<< HEAD
 	void __iomem *pronto_saw2_base;
 	void __iomem *pronto_pll_base;
 	void __iomem *pronto_mcu_base;
@@ -383,6 +422,10 @@ static struct {
 	void __iomem *alarms_txctl;
 	void __iomem *alarms_tactl;
 	void __iomem *fiq_reg;
+=======
+	void __iomem *fiq_reg;
+	int	ssr_boot;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int	nv_downloaded;
 	unsigned char *fw_cal_data;
 	unsigned char *user_cal_data;
@@ -391,6 +434,7 @@ static struct {
 	int	fw_cal_available;
 	int	user_cal_read;
 	int	user_cal_available;
+<<<<<<< HEAD
 	u32	user_cal_rcvd;
 	int	user_cal_exp_size;
 	int	device_opened;
@@ -454,6 +498,16 @@ static ssize_t wcnss_wlan_macaddr_show(struct device *dev,
 static DEVICE_ATTR(wcnss_mac_addr, S_IRUSR | S_IWUSR,
 	wcnss_wlan_macaddr_show, wcnss_wlan_macaddr_store);
 
+=======
+	int	user_cal_rcvd;
+	int	user_cal_exp_size;
+	int	device_opened;
+	int	iris_xo_mode_set;
+	struct mutex dev_lock;
+	wait_queue_head_t read_wait;
+} *penv = NULL;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static ssize_t wcnss_serial_number_show(struct device *dev,
 				struct device_attribute *attr, char *buf)
 {
@@ -575,11 +629,16 @@ EXPORT_SYMBOL(wcnss_riva_log_debug_regs);
 void wcnss_pronto_log_debug_regs(void)
 {
 	void __iomem *reg_addr, *tst_addr, *tst_ctrl_addr;
+<<<<<<< HEAD
 	u32 reg = 0, reg2 = 0, reg3 = 0, reg4 = 0;
+=======
+	u32 reg = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 
 	reg_addr = penv->msm_wcnss_base + PRONTO_PMU_SPARE_OFFSET;
 	reg = readl_relaxed(reg_addr);
+<<<<<<< HEAD
 	pr_err("%s:  PRONTO_PMU_SPARE %08x\n", __func__, reg);
 
 	reg_addr = penv->msm_wcnss_base + PRONTO_PMU_COM_CPU_CBCR_OFFSET;
@@ -631,6 +690,20 @@ void wcnss_pronto_log_debug_regs(void)
 	}
 	reg &= ~(PRONTO_PMU_COM_GDSCR_SW_COLLAPSE
 			| PRONTO_PMU_COM_GDSCR_HW_CTRL);
+=======
+	pr_info_ratelimited("%s:  PRONTO_PMU_SPARE %08x\n", __func__, reg);
+
+	reg_addr = penv->msm_wcnss_base + PRONTO_PMU_GDSCR_OFFSET;
+	reg = readl_relaxed(reg_addr);
+	reg >>= 31;
+
+	if (!reg) {
+		pr_info_ratelimited("%s:  Cannot log, Pronto common SS is power collapsed\n",
+				__func__);
+		return;
+	}
+	reg &= ~(PRONTO_PMU_GDSCR_SW_COLLAPSE | PRONTO_PMU_GDSCR_HW_CTRL);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	writel_relaxed(reg, reg_addr);
 
 	reg_addr = penv->msm_wcnss_base + PRONTO_PMU_CBCR_OFFSET;
@@ -640,6 +713,7 @@ void wcnss_pronto_log_debug_regs(void)
 
 	reg_addr = penv->pronto_a2xb_base + A2XB_CFG_OFFSET;
 	reg = readl_relaxed(reg_addr);
+<<<<<<< HEAD
 	pr_err("%s: A2XB_CFG_OFFSET %08x\n", __func__, reg);
 
 	reg_addr = penv->pronto_a2xb_base + A2XB_INT_SRC_OFFSET;
@@ -665,6 +739,33 @@ void wcnss_pronto_log_debug_regs(void)
 	reg_addr = penv->pronto_ccpu_base + CCU_PRONTO_LAST_ADDR2_OFFSET;
 	reg = readl_relaxed(reg_addr);
 	pr_err("%s: CCU_CCPU_LAST_ADDR2 %08x\n", __func__, reg);
+=======
+	pr_info_ratelimited("%s: A2XB_CFG_OFFSET %08x\n", __func__, reg);
+
+	reg_addr = penv->pronto_a2xb_base + A2XB_INT_SRC_OFFSET;
+	reg = readl_relaxed(reg_addr);
+	pr_info_ratelimited("%s: A2XB_INT_SRC_OFFSET %08x\n", __func__, reg);
+
+	reg_addr = penv->pronto_a2xb_base + A2XB_ERR_INFO_OFFSET;
+	reg = readl_relaxed(reg_addr);
+	pr_info_ratelimited("%s: A2XB_ERR_INFO_OFFSET %08x\n", __func__, reg);
+
+	reg_addr = penv->pronto_ccpu_base + CCU_PRONTO_INVALID_ADDR_OFFSET;
+	reg = readl_relaxed(reg_addr);
+	pr_info_ratelimited("%s: CCU_CCPU_INVALID_ADDR %08x\n", __func__, reg);
+
+	reg_addr = penv->pronto_ccpu_base + CCU_PRONTO_LAST_ADDR0_OFFSET;
+	reg = readl_relaxed(reg_addr);
+	pr_info_ratelimited("%s: CCU_CCPU_LAST_ADDR0 %08x\n", __func__, reg);
+
+	reg_addr = penv->pronto_ccpu_base + CCU_PRONTO_LAST_ADDR1_OFFSET;
+	reg = readl_relaxed(reg_addr);
+	pr_info_ratelimited("%s: CCU_CCPU_LAST_ADDR1 %08x\n", __func__, reg);
+
+	reg_addr = penv->pronto_ccpu_base + CCU_PRONTO_LAST_ADDR2_OFFSET;
+	reg = readl_relaxed(reg_addr);
+	pr_info_ratelimited("%s: CCU_CCPU_LAST_ADDR2 %08x\n", __func__, reg);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	tst_addr = penv->pronto_a2xb_base + A2XB_TSTBUS_OFFSET;
 	tst_ctrl_addr = penv->pronto_a2xb_base + A2XB_TSTBUS_CTRL_OFFSET;
@@ -674,7 +775,11 @@ void wcnss_pronto_log_debug_regs(void)
 	reg = reg | WCNSS_TSTBUS_CTRL_EN | WCNSS_TSTBUS_CTRL_RDFIFO;
 	writel_relaxed(reg, tst_ctrl_addr);
 	reg = readl_relaxed(tst_addr);
+<<<<<<< HEAD
 	pr_err("%s:  Read data FIFO testbus %08x\n",
+=======
+	pr_info_ratelimited("%s:  Read data FIFO testbus %08x\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					__func__, reg);
 
 	/*  command FIFO */
@@ -682,7 +787,11 @@ void wcnss_pronto_log_debug_regs(void)
 	reg = reg | WCNSS_TSTBUS_CTRL_EN | WCNSS_TSTBUS_CTRL_CMDFIFO;
 	writel_relaxed(reg, tst_ctrl_addr);
 	reg = readl_relaxed(tst_addr);
+<<<<<<< HEAD
 	pr_err("%s:  Command FIFO testbus %08x\n",
+=======
+	pr_info_ratelimited("%s:  Command FIFO testbus %08x\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					__func__, reg);
 
 	/*  write data FIFO */
@@ -690,7 +799,11 @@ void wcnss_pronto_log_debug_regs(void)
 	reg = reg | WCNSS_TSTBUS_CTRL_EN | WCNSS_TSTBUS_CTRL_WRFIFO;
 	writel_relaxed(reg, tst_ctrl_addr);
 	reg = readl_relaxed(tst_addr);
+<<<<<<< HEAD
 	pr_err("%s:  Rrite data FIFO testbus %08x\n",
+=======
+	pr_info_ratelimited("%s:  Rrite data FIFO testbus %08x\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					__func__, reg);
 
 	/*   AXIM SEL CFG0 */
@@ -699,7 +812,11 @@ void wcnss_pronto_log_debug_regs(void)
 				WCNSS_TSTBUS_CTRL_AXIM_CFG0;
 	writel_relaxed(reg, tst_ctrl_addr);
 	reg = readl_relaxed(tst_addr);
+<<<<<<< HEAD
 	pr_err("%s:  AXIM SEL CFG0 testbus %08x\n",
+=======
+	pr_info_ratelimited("%s:  AXIM SEL CFG0 testbus %08x\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					__func__, reg);
 
 	/*   AXIM SEL CFG1 */
@@ -708,7 +825,11 @@ void wcnss_pronto_log_debug_regs(void)
 				WCNSS_TSTBUS_CTRL_AXIM_CFG1;
 	writel_relaxed(reg, tst_ctrl_addr);
 	reg = readl_relaxed(tst_addr);
+<<<<<<< HEAD
 	pr_err("%s:  AXIM SEL CFG1 testbus %08x\n",
+=======
+	pr_info_ratelimited("%s:  AXIM SEL CFG1 testbus %08x\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					__func__, reg);
 
 	/*   CTRL SEL CFG0 */
@@ -717,7 +838,11 @@ void wcnss_pronto_log_debug_regs(void)
 		WCNSS_TSTBUS_CTRL_CTRL_CFG0;
 	writel_relaxed(reg, tst_ctrl_addr);
 	reg = readl_relaxed(tst_addr);
+<<<<<<< HEAD
 	pr_err("%s:  CTRL SEL CFG0 testbus %08x\n",
+=======
+	pr_info_ratelimited("%s:  CTRL SEL CFG0 testbus %08x\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					__func__, reg);
 
 	/*   CTRL SEL CFG1 */
@@ -726,6 +851,7 @@ void wcnss_pronto_log_debug_regs(void)
 		WCNSS_TSTBUS_CTRL_CTRL_CFG1;
 	writel_relaxed(reg, tst_ctrl_addr);
 	reg = readl_relaxed(tst_addr);
+<<<<<<< HEAD
 	pr_err("%s:  CTRL SEL CFG1 testbus %08x\n", __func__, reg);
 
 
@@ -849,6 +975,13 @@ void wcnss_log_debug_regs_on_bite(void)
 }
 #endif
 
+=======
+	pr_info_ratelimited("%s:  CTRL SEL CFG1 testbus %08x\n", __func__, reg);
+
+}
+EXPORT_SYMBOL(wcnss_pronto_log_debug_regs);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* interface to reset wcnss by sending the reset interrupt */
 void wcnss_reset_intr(void)
 {
@@ -883,6 +1016,7 @@ static int wcnss_create_sysfs(struct device *dev)
 	if (ret)
 		goto remove_thermal;
 
+<<<<<<< HEAD
 	ret = device_create_file(dev, &dev_attr_wcnss_mac_addr);
 	if (ret)
 		goto remove_version;
@@ -891,6 +1025,10 @@ static int wcnss_create_sysfs(struct device *dev)
 
 remove_version:
 	device_remove_file(dev, &dev_attr_wcnss_version);
+=======
+	return 0;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 remove_thermal:
 	device_remove_file(dev, &dev_attr_thermal_mitigation);
 remove_serial:
@@ -905,7 +1043,10 @@ static void wcnss_remove_sysfs(struct device *dev)
 		device_remove_file(dev, &dev_attr_serial_number);
 		device_remove_file(dev, &dev_attr_thermal_mitigation);
 		device_remove_file(dev, &dev_attr_wcnss_version);
+<<<<<<< HEAD
 		device_remove_file(dev, &dev_attr_wcnss_mac_addr);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 }
 static void wcnss_smd_notify_event(void *data, unsigned int event)
@@ -936,6 +1077,11 @@ static void wcnss_smd_notify_event(void *data, unsigned int event)
 	case SMD_EVENT_CLOSE:
 		pr_debug("wcnss: closing WCNSS SMD channel :%s",
 				WCNSS_CTRL_CHANNEL);
+<<<<<<< HEAD
+=======
+		/* This SMD is closed only during SSR */
+		penv->ssr_boot = true;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		penv->nv_downloaded = 0;
 		break;
 
@@ -1123,13 +1269,18 @@ EXPORT_SYMBOL(wcnss_get_wlan_config);
 
 int wcnss_device_ready(void)
 {
+<<<<<<< HEAD
 	if (penv && penv->pdev && penv->nv_downloaded &&
 	    !wcnss_device_is_shutdown())
+=======
+	if (penv && penv->pdev && penv->nv_downloaded)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return 1;
 	return 0;
 }
 EXPORT_SYMBOL(wcnss_device_ready);
 
+<<<<<<< HEAD
 int wcnss_device_is_shutdown(void)
 {
 	if (penv && penv->is_shutdown)
@@ -1137,6 +1288,8 @@ int wcnss_device_is_shutdown(void)
 	return 0;
 }
 EXPORT_SYMBOL(wcnss_device_is_shutdown);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 struct resource *wcnss_wlan_get_memory_map(struct device *dev)
 {
@@ -1211,6 +1364,7 @@ unsigned int wcnss_get_serial_number(void)
 }
 EXPORT_SYMBOL(wcnss_get_serial_number);
 
+<<<<<<< HEAD
 int wcnss_get_wlan_mac_address(char mac_addr[WLAN_MAC_ADDR_SIZE])
 {
 	if (!penv)
@@ -1225,6 +1379,8 @@ int wcnss_get_wlan_mac_address(char mac_addr[WLAN_MAC_ADDR_SIZE])
 }
 EXPORT_SYMBOL(wcnss_get_wlan_mac_address);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int enable_wcnss_suspend_notify;
 
 static int enable_wcnss_suspend_notify_set(const char *val,
@@ -1362,6 +1518,7 @@ u32 wcnss_get_wlan_rx_buff_count(void)
 }
 EXPORT_SYMBOL(wcnss_get_wlan_rx_buff_count);
 
+<<<<<<< HEAD
 int wcnss_set_wlan_unsafe_channel(u16 *unsafe_ch_list, u16 ch_count)
 {
 	if (penv && unsafe_ch_list &&
@@ -1390,6 +1547,8 @@ int wcnss_get_wlan_unsafe_channel(u16 *unsafe_ch_list, u16 buffer_size,
 		return -ENODEV;
 }
 EXPORT_SYMBOL(wcnss_get_wlan_unsafe_channel);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static int wcnss_smd_tx(void *data, int len)
 {
@@ -1408,6 +1567,7 @@ static int wcnss_smd_tx(void *data, int len)
 	return ret;
 }
 
+<<<<<<< HEAD
 static void wcnss_notify_vbat(enum qpnp_tm_state state, void *ctx)
 {
 	mutex_lock(&penv->vbat_monitor_mutex);
@@ -1504,6 +1664,8 @@ static void wcnss_update_vbatt(struct work_struct *work)
 }
 
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static unsigned char wcnss_fw_status(void)
 {
 	int len = 0;
@@ -1578,6 +1740,7 @@ void extract_cal_data(int len)
 		goto exit;
 	}
 
+<<<<<<< HEAD
 	if (penv->fw_cal_available) {
 		/* ignore cal upload from SSR */
 		smd_read(penv->smd_ch, NULL, calhdr.frag_size);
@@ -1589,6 +1752,8 @@ void extract_cal_data(int len)
 		return;
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (0 == calhdr.frag_number) {
 		if (calhdr.total_size > MAX_CALIBRATED_DATA_SIZE) {
 			pr_err("wcnss: Invalid cal data size %d",
@@ -1652,9 +1817,13 @@ static void wcnssctrl_rx_handler(struct work_struct *worker)
 	int len = 0;
 	int rc = 0;
 	unsigned char buf[sizeof(struct wcnss_version)];
+<<<<<<< HEAD
 	unsigned char build[WCNSS_MAX_BUILD_VER_LEN+1];
 	struct smd_msg_hdr *phdr;
 	struct smd_msg_hdr smd_msg;
+=======
+	struct smd_msg_hdr *phdr;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct wcnss_version *pversion;
 	int hw_type;
 	unsigned char fw_status = 0;
@@ -1711,12 +1880,15 @@ static void wcnssctrl_rx_handler(struct work_struct *worker)
 			break;
 
 		case WCNSS_PRONTO_HW:
+<<<<<<< HEAD
 			smd_msg.msg_type = WCNSS_BUILD_VER_REQ;
 			smd_msg.msg_len = sizeof(smd_msg);
 			rc = wcnss_smd_tx(&smd_msg, smd_msg.msg_len);
 			if (rc < 0)
 				pr_err("wcnss: smd tx failed: %s\n", __func__);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			/* supported only if pronto major >= 1 and minor >= 4 */
 			if ((pversion->major >= 1) && (pversion->minor >= 4)) {
 				pr_info("wcnss: schedule dnld work for pronto\n");
@@ -1731,6 +1903,7 @@ static void wcnssctrl_rx_handler(struct work_struct *worker)
 		}
 		break;
 
+<<<<<<< HEAD
 	case WCNSS_BUILD_VER_RSP:
 		if (len > WCNSS_MAX_BUILD_VER_LEN) {
 			pr_err("wcnss: invalid build version data from wcnss %d\n",
@@ -1746,12 +1919,17 @@ static void wcnssctrl_rx_handler(struct work_struct *worker)
 		pr_info("wcnss: build version %s\n", build);
 		break;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	case WCNSS_NVBIN_DNLD_RSP:
 		penv->nv_downloaded = true;
 		fw_status = wcnss_fw_status();
 		pr_debug("wcnss: received WCNSS_NVBIN_DNLD_RSP from ccpu %u\n",
 			fw_status);
+<<<<<<< HEAD
 		wcnss_setup_vbat_monitoring();
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		break;
 
 	case WCNSS_CALDATA_DNLD_RSP:
@@ -1762,6 +1940,10 @@ static void wcnssctrl_rx_handler(struct work_struct *worker)
 		break;
 
 	case WCNSS_CALDATA_UPLD_REQ:
+<<<<<<< HEAD
+=======
+		penv->fw_cal_available = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		extract_cal_data(len);
 		break;
 
@@ -2011,12 +2193,30 @@ static void wcnss_nvbin_dnld_main(struct work_struct *worker)
 		while (!penv->user_cal_available && retry++ < 5)
 			msleep(500);
 	}
+<<<<<<< HEAD
 	if (penv->fw_cal_available) {
 		pr_info_ratelimited("wcnss: cal download, using fw cal");
 		wcnss_caldata_dnld(penv->fw_cal_data, penv->fw_cal_rcvd, true);
 
 	} else if (penv->user_cal_available) {
 		pr_info_ratelimited("wcnss: cal download, using user cal");
+=======
+
+	/* only cal data is sent during ssr (if available) */
+	if (penv->fw_cal_available && penv->ssr_boot) {
+		pr_info_ratelimited("wcnss: cal download during SSR, using fw cal");
+		wcnss_caldata_dnld(penv->fw_cal_data, penv->fw_cal_rcvd, false);
+		return;
+
+	} else if (penv->user_cal_available && penv->ssr_boot) {
+		pr_info_ratelimited("wcnss: cal download during SSR, using user cal");
+		wcnss_caldata_dnld(penv->user_cal_data,
+		penv->user_cal_rcvd, false);
+		return;
+
+	} else if (penv->user_cal_available) {
+		pr_info_ratelimited("wcnss: cal download during cold boot, using user cal");
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		wcnss_caldata_dnld(penv->user_cal_data,
 		penv->user_cal_rcvd, true);
 	}
@@ -2048,6 +2248,7 @@ static struct notifier_block wcnss_pm_notifier = {
 	.notifier_call = wcnss_pm_notify,
 };
 
+<<<<<<< HEAD
 static int wcnss_ctrl_open(struct inode *inode, struct file *file)
 {
 	int rc = 0;
@@ -2122,6 +2323,8 @@ static struct miscdevice wcnss_usr_ctrl = {
 	.fops = &wcnss_ctrl_fops,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int
 wcnss_trigger_config(struct platform_device *pdev)
 {
@@ -2262,6 +2465,7 @@ wcnss_trigger_config(struct platform_device *pdev)
 			ret = -ENOMEM;
 			goto fail_ioremap4;
 		}
+<<<<<<< HEAD
 		penv->pronto_saw2_base = ioremap_nocache(MSM_PRONTO_SAW2_BASE,
 				SZ_32);
 		if (!penv->pronto_saw2_base) {
@@ -2326,6 +2530,8 @@ wcnss_trigger_config(struct platform_device *pdev)
 	} else {
 		INIT_DELAYED_WORK(&penv->vbatt_work, wcnss_update_vbatt);
 		penv->fw_vbatt_state = WCNSS_CONFIG_UNSPECIFIED;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	/* trigger initialization of the WCNSS */
@@ -2343,6 +2549,7 @@ wcnss_trigger_config(struct platform_device *pdev)
 fail_pil:
 	if (penv->riva_ccu_base)
 		iounmap(penv->riva_ccu_base);
+<<<<<<< HEAD
         if (penv->pronto_mcu_base)
                 iounmap(penv->pronto_mcu_base);
 fail_ioremap12:
@@ -2367,6 +2574,8 @@ fail_ioremap6:
 	if (penv->pronto_saw2_base)
 		iounmap(penv->pronto_saw2_base);
 fail_ioremap5:
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (penv->fiq_reg)
 		iounmap(penv->fiq_reg);
 fail_ioremap4:
@@ -2396,17 +2605,32 @@ fail_gpio_res:
 static int wcnss_node_open(struct inode *inode, struct file *file)
 {
 	struct platform_device *pdev;
+<<<<<<< HEAD
 	int rc = 0;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (!penv)
 		return -EFAULT;
 
+<<<<<<< HEAD
 	if (!penv->triggered) {
 		pr_info(DEVICE " triggered by userspace\n");
 		pdev = penv->pdev;
 		rc = wcnss_trigger_config(pdev);
 		if (rc)
 			return -EFAULT;
+=======
+	/* first open is only to trigger WCNSS platform driver */
+	if (!penv->triggered) {
+		pr_info(DEVICE " triggered by userspace\n");
+		pdev = penv->pdev;
+		return wcnss_trigger_config(pdev);
+
+	} else if (penv->device_opened) {
+		pr_info(DEVICE " already opened\n");
+		return -EBUSY;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	mutex_lock(&penv->dev_lock);
@@ -2417,7 +2641,11 @@ static int wcnss_node_open(struct inode *inode, struct file *file)
 	penv->device_opened = 1;
 	mutex_unlock(&penv->dev_lock);
 
+<<<<<<< HEAD
 	return rc;
+=======
+	return 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static ssize_t wcnss_wlan_read(struct file *fp, char __user
@@ -2462,7 +2690,11 @@ static ssize_t wcnss_wlan_write(struct file *fp, const char __user
 			*user_buffer, size_t count, loff_t *position)
 {
 	int rc = 0;
+<<<<<<< HEAD
 	size_t size = 0;
+=======
+	int size = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (!penv || !penv->device_opened || penv->user_cal_available)
 		return -EFAULT;
@@ -2470,7 +2702,11 @@ static ssize_t wcnss_wlan_write(struct file *fp, const char __user
 	if (penv->user_cal_rcvd == 0 && count >= 4
 			&& !penv->user_cal_data) {
 		rc = copy_from_user((void *)&size, user_buffer, 4);
+<<<<<<< HEAD
 		if (!size || size > MAX_CALIBRATED_DATA_SIZE) {
+=======
+		if (size > MAX_CALIBRATED_DATA_SIZE) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			pr_err(DEVICE " invalid size to write %d\n", size);
 			return -EFAULT;
 		}
@@ -2489,8 +2725,12 @@ static ssize_t wcnss_wlan_write(struct file *fp, const char __user
 	} else if (penv->user_cal_rcvd == 0 && count < 4)
 		return -EFAULT;
 
+<<<<<<< HEAD
 	if ((UINT32_MAX - count < penv->user_cal_rcvd) ||
 	     MAX_CALIBRATED_DATA_SIZE < count + penv->user_cal_rcvd) {
+=======
+	if (MAX_CALIBRATED_DATA_SIZE < count + penv->user_cal_rcvd) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		pr_err(DEVICE " invalid size to write %d\n", count +
 				penv->user_cal_rcvd);
 		rc = -ENOMEM;
@@ -2512,6 +2752,7 @@ exit:
 }
 
 
+<<<<<<< HEAD
 static int wcnss_notif_cb(struct notifier_block *this, unsigned long code,
 				void *ss_handle)
 {
@@ -2532,6 +2773,8 @@ static struct notifier_block wnb = {
 };
 
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static const struct file_operations wcnss_node_fops = {
 	.owner = THIS_MODULE,
 	.open = wcnss_node_open,
@@ -2571,6 +2814,7 @@ wcnss_wlan_probe(struct platform_device *pdev)
 		return -ENOENT;
 	}
 
+<<<<<<< HEAD
 	/* register wcnss event notification */
 	penv->wcnss_notif_hdle = subsys_notif_register_notifier("wcnss", &wnb);
 	if (IS_ERR(penv->wcnss_notif_hdle)) {
@@ -2581,6 +2825,9 @@ wcnss_wlan_probe(struct platform_device *pdev)
 	mutex_init(&penv->dev_lock);
 	mutex_init(&penv->ctrl_lock);
 	mutex_init(&penv->vbat_monitor_mutex);
+=======
+	mutex_init(&penv->dev_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	init_waitqueue_head(&penv->read_wait);
 
 	/* Since we were built into the kernel we'll be called as part
@@ -2592,9 +2839,12 @@ wcnss_wlan_probe(struct platform_device *pdev)
 	 * place
 	 */
 	pr_info(DEVICE " probed in built-in mode\n");
+<<<<<<< HEAD
 
 	misc_register(&wcnss_usr_ctrl);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return misc_register(&wcnss_misc);
 
 }
@@ -2602,8 +2852,11 @@ wcnss_wlan_probe(struct platform_device *pdev)
 static int __devexit
 wcnss_wlan_remove(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	if (penv->wcnss_notif_hdle)
 		subsys_notif_unregister_notifier(penv->wcnss_notif_hdle, &wnb);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	wcnss_remove_sysfs(&pdev->dev);
 	penv = NULL;
 	return 0;

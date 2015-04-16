@@ -22,37 +22,61 @@ static struct msm_sensor_power_setting ov5648_power_setting[] = {
 		.seq_type = SENSOR_VREG,
 		.seq_val = CAM_VIO,
 		.config_val = 0,
+<<<<<<< HEAD
 		.delay = 0,
+=======
+		.delay = 5,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_VDIG,
 		.config_val = GPIO_OUT_LOW,
+<<<<<<< HEAD
 		.delay = 5,
+=======
+		.delay = 10,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_VDIG,
 		.config_val = GPIO_OUT_HIGH,
+<<<<<<< HEAD
 		.delay = 5,
+=======
+		.delay = 10,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_VREG,
 		.seq_val = CAM_VANA,
 		.config_val = 0,
+<<<<<<< HEAD
 		.delay = 5,
+=======
+		.delay = 10,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_STANDBY,
 		.config_val = GPIO_OUT_LOW,
+<<<<<<< HEAD
 		.delay = 5,
+=======
+		.delay = 30,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_STANDBY,
 		.config_val = GPIO_OUT_HIGH,
+<<<<<<< HEAD
 		.delay = 10,
+=======
+		.delay = 30,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_GPIO,
@@ -64,13 +88,21 @@ static struct msm_sensor_power_setting ov5648_power_setting[] = {
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_RESET,
 		.config_val = GPIO_OUT_HIGH,
+<<<<<<< HEAD
 		.delay = 10,
+=======
+		.delay = 30,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_CLK,
 		.seq_val = SENSOR_CAM_MCLK,
 		.config_val = 24000000,
+<<<<<<< HEAD
 		.delay = 10,
+=======
+		.delay = 5,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_I2C_MUX,
@@ -126,7 +158,11 @@ static struct msm_sensor_ctrl_t ov5648_s_ctrl = {
 
 static const struct of_device_id ov5648_dt_match[] = {
 	{
+<<<<<<< HEAD
 		.compatible = "ovti,ov5648",
+=======
+		.compatible = "qcom,ov5648",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.data = &ov5648_s_ctrl
 	},
 	{}
@@ -136,7 +172,11 @@ MODULE_DEVICE_TABLE(of, ov5648_dt_match);
 
 static struct platform_driver ov5648_platform_driver = {
 	.driver = {
+<<<<<<< HEAD
 		.name = "ovti,ov5648",
+=======
+		.name = "qcom,ov5648",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.owner = THIS_MODULE,
 		.of_match_table = ov5648_dt_match,
 	},

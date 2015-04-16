@@ -80,7 +80,11 @@ extern struct mutex sched_domains_mutex;
 struct cfs_rq;
 struct rt_rq;
 
+<<<<<<< HEAD
 extern struct list_head task_groups;
+=======
+static LIST_HEAD(task_groups);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 struct cfs_bandwidth {
 #ifdef CONFIG_CFS_BANDWIDTH
@@ -872,9 +876,13 @@ static inline void idle_balance(int cpu, struct rq *rq)
 
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_SYSRQ_SCHED_DEBUG
 extern void sysrq_sched_debug_show(void);
 #endif
+=======
+extern void sysrq_sched_debug_show(void);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 extern void sched_init_granularity(void);
 extern void update_max_interval(void);
 extern void update_group_power(struct sched_domain *sd, int cpu);

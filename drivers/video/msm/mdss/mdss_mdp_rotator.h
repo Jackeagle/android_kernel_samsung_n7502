@@ -51,11 +51,16 @@ struct mdss_mdp_rotator_session {
 	struct work_struct commit_work;
 };
 
+<<<<<<< HEAD
 static inline u32 mdss_mdp_get_rotator_dst_format(u32 in_format, u8 in_rot90)
+=======
+static inline u32 mdss_mdp_get_rotator_dst_format(u32 in_format)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	switch (in_format) {
 	case MDP_RGB_565:
 	case MDP_BGR_565:
+<<<<<<< HEAD
 		if (in_rot90)
 			return MDP_RGB_888;
 		else
@@ -66,6 +71,10 @@ static inline u32 mdss_mdp_get_rotator_dst_format(u32 in_format, u8 in_rot90)
 			return MDP_Y_CRCB_H2V2;
 		else
 			return in_format;
+=======
+		return MDP_RGB_888;
+	case MDP_Y_CBCR_H2V2_VENUS:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	case MDP_Y_CB_CR_H2V2:
 	case MDP_Y_CR_CB_GH2V2:
 	case MDP_Y_CR_CB_H2V2:

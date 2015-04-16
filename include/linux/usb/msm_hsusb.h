@@ -25,6 +25,12 @@
 #include <linux/wakelock.h>
 #include <linux/pm_qos.h>
 #include <linux/hrtimer.h>
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_USB_HOST_NOTIFY
+#include <linux/host_notify.h>
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <linux/power_supply.h>
 #include <linux/cdev.h>
 /*
@@ -102,11 +108,19 @@ enum msm_usb_phy_type {
 	SNPS_28NM_INTEGRATED_PHY,
 };
 
+<<<<<<< HEAD
 #define IDEV_CHG_MAX	1500
 #define IDEV_CHG_MIN	500
 #define IUNIT		100
 
 #define IDEV_ACA_CHG_MAX	1500
+=======
+#define IDEV_CHG_MAX	1000
+#define IDEV_CHG_MIN	500
+#define IUNIT		100
+
+#define IDEV_ACA_CHG_MAX	1000
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define IDEV_ACA_CHG_LIMIT	500
 
 /**
@@ -229,11 +243,15 @@ enum usb_vdd_value {
  *              between 1 to 7.
  * @l1_supported: enable link power management support.
  * @dpdm_pulldown_added: Indicates whether pull down resistors are
+<<<<<<< HEAD
  *		connected on data lines or not.
  * @enable_ahb2ahb_bypass: Indicates whether enable AHB2AHB BYPASS
  *		mode with controller in device mode.
  * @disable_retention_with_vdd_min: Indicates whether to enable allowing
  *		VDD min without putting PHY into retention
+=======
+		connected on data lines or not.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  */
 struct msm_otg_platform_data {
 	int *phy_init_seq;
@@ -250,6 +268,14 @@ struct msm_otg_platform_data {
 	unsigned int mpm_dmshv_int;
 	bool mhl_enable;
 	bool disable_reset_on_disconnect;
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_USB_HOST_NOTIFY
+        int otg_power_gpio;
+        int otg_test_gpio;
+        int ovp_ctrl_gpio;
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	bool pnoc_errata_fix;
 	bool enable_lpm_on_dev_suspend;
 	bool core_clk_always_on_workaround;
@@ -262,8 +288,11 @@ struct msm_otg_platform_data {
 	int log2_itc;
 	bool l1_supported;
 	bool dpdm_pulldown_added;
+<<<<<<< HEAD
 	bool enable_ahb2ahb_bypass;
 	bool disable_retention_with_vdd_min;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /* phy related flags */
@@ -345,7 +374,10 @@ struct msm_otg_platform_data {
  * @host_bus_suspend: indicates host bus suspend or not.
  * @chg_check_timer: The timer used to implement the workaround to detect
  *               very slow plug in of wall charger.
+<<<<<<< HEAD
  * @ui_enabled: USB Intterupt is enabled or disabled.
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  */
 struct msm_otg {
 	struct usb_phy phy;
@@ -397,6 +429,19 @@ struct msm_otg {
 	unsigned mA_port;
 	struct timer_list id_timer;
 	unsigned long caps;
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_USB_HOST_NOTIFY
+        struct host_notify_dev ndev;
+        struct work_struct notify_work;
+        unsigned notify_state;
+        struct work_struct otg_power_work;
+        struct delayed_work late_power_work;
+        struct timer_list sm_work_timer;
+        int smartdock;
+#endif
+        bool disable_peripheral;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct msm_xo_voter *xo_handle;
 	uint32_t bus_perf_client;
 	bool mhl_enabled;
@@ -430,11 +475,14 @@ struct msm_otg {
 	 * voltage regulator(VDDCX) during host mode.
 	 */
 #define ALLOW_HOST_PHY_RETENTION	BIT(4)
+<<<<<<< HEAD
 	/*
 	* Allow VDD minimization without putting PHY into retention
 	* for fixing PHY current leakage issue when LDOs are turned off.
 	*/
 #define ALLOW_VDD_MIN_WITH_RETENTION_DISABLED BIT(5)
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	unsigned long lpm_flags;
 #define PHY_PWR_COLLAPSED		BIT(0)
 #define PHY_RETENTIONED			BIT(1)
@@ -461,7 +509,11 @@ struct msm_otg {
 	bool ext_chg_opened;
 	bool ext_chg_active;
 	struct completion ext_chg_wait;
+<<<<<<< HEAD
 	int ui_enabled;
+=======
+	bool pm_done;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct ci13xxx_platform_data {
@@ -473,7 +525,10 @@ struct ci13xxx_platform_data {
 	int log2_itc;
 	void *prv_data;
 	bool l1_supported;
+<<<<<<< HEAD
 	bool enable_ahb2ahb_bypass;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /**

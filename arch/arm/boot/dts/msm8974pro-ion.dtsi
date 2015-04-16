@@ -17,8 +17,12 @@
 			compatible = "qcom,msm-ion-reserve";
 			reg = <23>;
 			qcom,heap-align = <0x1000>;
+<<<<<<< HEAD
 			qcom,memory-fixed = <0x05a00000 0x2100000>;
 			qcom,ion-heap-type = "CARVEOUT";
+=======
+			qcom,memory-fixed = <0x05400000 0x2700000>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		};
 
 		qcom,ion-heap@26 { /* MODEM HEAP */
@@ -26,7 +30,10 @@
 			reg = <26>;
 			qcom,heap-align = <0x1000>;
 			qcom,memory-fixed = <0x08000000 0x5000000>;
+<<<<<<< HEAD
 			qcom,ion-heap-type = "CARVEOUT";
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		};
 	};
 };

@@ -43,6 +43,12 @@ struct msm_actuator_func_tbl {
 			struct damping_params_t *,
 			int8_t,
 			int16_t);
+<<<<<<< HEAD
+=======
+	int32_t (*actuator_set_position)(struct msm_actuator_ctrl_t *,
+		struct msm_actuator_set_position_t *);
+	int32_t (*actuator_sw_landing)(struct msm_actuator_ctrl_t *);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct msm_actuator {
@@ -81,6 +87,10 @@ struct msm_actuator_ctrl_t {
 	uint16_t i2c_tbl_index;
 	enum cci_i2c_master_t cci_master;
 	uint32_t subdev_id;
+<<<<<<< HEAD
+=======
+	struct msm_camera_gpio_conf *gpio_conf;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 #endif

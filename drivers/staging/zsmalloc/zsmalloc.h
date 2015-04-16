@@ -19,7 +19,11 @@
  * zsmalloc mapping modes
  *
  * NOTE: These only make a difference when a mapped object spans pages
+<<<<<<< HEAD
  */
+=======
+*/
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 enum zs_mapmode {
 	ZS_MM_RW, /* normal read-write mapping */
 	ZS_MM_RO, /* read-only (no copy-out at unmap time) */
@@ -28,7 +32,11 @@ enum zs_mapmode {
 
 struct zs_pool;
 
+<<<<<<< HEAD
 struct zs_pool *zs_create_pool(gfp_t flags);
+=======
+struct zs_pool *zs_create_pool(const char *name, gfp_t flags);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void zs_destroy_pool(struct zs_pool *pool);
 
 unsigned long zs_malloc(struct zs_pool *pool, size_t size);

@@ -27,8 +27,13 @@
 #include "usfcdev.h"
 
 /* The driver version*/
+<<<<<<< HEAD
 #define DRV_VERSION "1.5.1"
 #define USF_VERSION_ID 0x0151
+=======
+#define DRV_VERSION "1.4.2"
+#define USF_VERSION_ID 0x0142
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* Standard timeout in the asynchronous ops */
 #define USF_TIMEOUT_JIFFIES (1*HZ) /* 1 sec */
@@ -51,19 +56,25 @@
 #define Y_IND 1
 #define Z_IND 2
 
+<<<<<<< HEAD
 /* Shared memory limits */
 /* max_buf_size = (port_size(65535*2) * port_num(8) * group_size(3) */
 #define USF_MAX_BUF_SIZE 3145680
 #define USF_MAX_BUF_NUM  32
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* Place for opreation result, received from QDSP6 */
 #define APR_RESULT_IND 1
 
 /* Place for US detection result, received from QDSP6 */
 #define APR_US_DETECT_RESULT_IND 0
 
+<<<<<<< HEAD
 #define BITS_IN_BYTE 8
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* The driver states */
 enum usf_state_type {
 	USF_IDLE_STATE,
@@ -124,8 +135,11 @@ struct usf_type {
 	uint16_t conflicting_event_types;
 	/* Bitmap of types of events from devs, conflicting with USF */
 	uint16_t conflicting_event_filters;
+<<<<<<< HEAD
 	/* The requested side buttons bitmap */
 	uint16_t req_side_buttons_bitmap;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct usf_input_dev_type {
@@ -155,12 +169,15 @@ static const int s_event_src_map[] = {
 	0,            /* US_INPUT_SRC_UNDEF */
 };
 
+<<<<<<< HEAD
 /* Supported buttons container */
 static const int s_button_map[] = {
 	BTN_STYLUS,
 	BTN_STYLUS2
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* The opened devices container */
 static int s_opened_devs[MAX_DEVS_NUMBER];
 
@@ -191,6 +208,7 @@ static int prepare_tsc_input_device(uint16_t ind,
 				struct us_input_info_type *input_info,
 				const char *name)
 {
+<<<<<<< HEAD
 	int i = 0;
 	int num_side_buttons = min(ARRAY_SIZE(s_button_map),
 		sizeof(input_info->req_side_buttons_bitmap) *
@@ -220,6 +238,16 @@ static int prepare_tsc_input_device(uint16_t ind,
 			in_dev->keybit[BIT_WORD(s_button_map[i])] |=
 			BIT_MASK(s_button_map[i]);
 
+=======
+	struct input_dev *in_dev = allocate_dev(ind, name);
+
+	if (in_dev == NULL)
+		return -ENOMEM;
+
+	usf_info->input_ifs[ind] = in_dev;
+	in_dev->evbit[0] = BIT_MASK(EV_KEY) | BIT_MASK(EV_ABS);
+	in_dev->keybit[BIT_WORD(BTN_TOUCH)] = BIT_MASK(BTN_TOUCH);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	input_set_abs_params(in_dev, ABS_X,
 			     input_info->tsc_x_dim[MIN_IND],
 			     input_info->tsc_x_dim[MAX_IND],
@@ -296,11 +324,14 @@ static void notify_tsc_event(struct usf_type *usf_info,
 			     struct usf_event_type *event)
 
 {
+<<<<<<< HEAD
 	int i = 0;
 	int num_side_buttons = min(ARRAY_SIZE(s_button_map),
 		sizeof(usf_info->req_side_buttons_bitmap) *
 		BITS_IN_BYTE);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct input_dev *input_if = usf_info->input_ifs[if_ind];
 	struct point_event_type *pe = &(event->event_data.point_event);
 
@@ -314,6 +345,7 @@ static void notify_tsc_event(struct usf_type *usf_info,
 	input_report_abs(input_if, ABS_PRESSURE, pe->pressure);
 	input_report_key(input_if, BTN_TOUCH, !!(pe->pressure));
 
+<<<<<<< HEAD
 	for (i = 0; i < num_side_buttons; i++) {
 		uint16_t mask = (1 << i),
 		btn_state = !!(pe->side_buttons_state_bitmap & mask);
@@ -321,20 +353,30 @@ static void notify_tsc_event(struct usf_type *usf_info,
 			input_report_key(input_if, s_button_map[i], btn_state);
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (usf_info->event_src)
 		input_report_key(input_if, usf_info->event_src, 1);
 
 	input_sync(input_if);
 
+<<<<<<< HEAD
 	pr_debug("%s: TSC event: xyz[%d;%d;%d], incl[%d;%d], pressure[%d], side_buttons[%d]\n",
+=======
+	pr_debug("%s: TSC event: xyz[%d;%d;%d], incl[%d;%d], pressure[%d]\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		 __func__,
 		 pe->coordinates[X_IND],
 		 pe->coordinates[Y_IND],
 		 pe->coordinates[Z_IND],
 		 pe->inclinations[X_IND],
 		 pe->inclinations[Y_IND],
+<<<<<<< HEAD
 		 pe->pressure,
 		 pe->side_buttons_state_bitmap);
+=======
+		 pe->pressure);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static void notify_mouse_event(struct usf_type *usf_info,
@@ -387,8 +429,11 @@ static struct usf_input_dev_type s_usf_input_devs[] = {
 		prepare_mouse_input_device, notify_mouse_event},
 	{USF_KEYBOARD_EVENT, "usf_kb",
 		prepare_keyboard_input_device, notify_key_event},
+<<<<<<< HEAD
 	{USF_TSC_EXT_EVENT, "usf_tsc_ext",
 		prepare_tsc_input_device, notify_tsc_event},
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 static void usf_rx_cb(uint32_t opcode, uint32_t token,
@@ -487,6 +532,7 @@ static int config_xx(struct usf_xx_type *usf_xx, struct us_xx_info_type *config)
 	    (config == NULL))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if ((config->buf_size == 0) ||
 	    (config->buf_size > USF_MAX_BUF_SIZE) ||
 	    (config->buf_num == 0) ||
@@ -496,6 +542,8 @@ static int config_xx(struct usf_xx_type *usf_xx, struct us_xx_info_type *config)
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	data_map_size = sizeof(usf_xx->encdec_cfg.cfg_common.data_map);
 	min_map_size = min(data_map_size, config->port_cnt);
 
@@ -808,7 +856,10 @@ static int usf_set_us_detection(struct usf_type *usf, unsigned long arg)
 {
 	uint32_t timeout = 0;
 	struct us_detect_info_type detect_info;
+<<<<<<< HEAD
 	struct usm_session_cmd_detect_info *p_allocated_memory = NULL;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct usm_session_cmd_detect_info usm_detect_info;
 	struct usm_session_cmd_detect_info *p_usm_detect_info =
 						&usm_detect_info;
@@ -835,13 +886,21 @@ static int usf_set_us_detection(struct usf_type *usf, unsigned long arg)
 		uint8_t *p_data = NULL;
 
 		detect_info_size += detect_info.params_data_size;
+<<<<<<< HEAD
 		 p_allocated_memory = kzalloc(detect_info_size, GFP_KERNEL);
 		if (p_allocated_memory == NULL) {
+=======
+		p_usm_detect_info = kzalloc(detect_info_size, GFP_KERNEL);
+		if (p_usm_detect_info == NULL) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			pr_err("%s: detect_info[%d] allocation failed\n",
 			       __func__, detect_info_size);
 			return -ENOMEM;
 		}
+<<<<<<< HEAD
 		p_usm_detect_info = p_allocated_memory;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		p_data = (uint8_t *)p_usm_detect_info +
 			sizeof(struct usm_session_cmd_detect_info);
 
@@ -851,7 +910,11 @@ static int usf_set_us_detection(struct usf_type *usf, unsigned long arg)
 		if (rc) {
 			pr_err("%s: copy params from user; rc=%d\n",
 				__func__, rc);
+<<<<<<< HEAD
 			kfree(p_allocated_memory);
+=======
+			kfree(p_usm_detect_info);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			return -EFAULT;
 		}
 		p_usm_detect_info->algorithm_cfg_size =
@@ -868,7 +931,13 @@ static int usf_set_us_detection(struct usf_type *usf, unsigned long arg)
 				    p_usm_detect_info,
 				    detect_info_size);
 	if (rc || (detect_info.detect_timeout == USF_NO_WAIT_TIMEOUT)) {
+<<<<<<< HEAD
 		kfree(p_allocated_memory);
+=======
+		if (detect_info_size >
+		    sizeof(struct usm_session_cmd_detect_info))
+			kfree(p_usm_detect_info);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return rc;
 	}
 
@@ -888,6 +957,7 @@ static int usf_set_us_detection(struct usf_type *usf, unsigned long arg)
 					 USF_US_DETECT_UNDEF),
 					timeout);
 	/* In the case of timeout, "no US" is assumed */
+<<<<<<< HEAD
 	if (rc < 0)
 		pr_err("%s: Getting US detection failed rc[%d]\n",
 		       __func__, rc);
@@ -906,6 +976,27 @@ static int usf_set_us_detection(struct usf_type *usf, unsigned long arg)
 	}
 
 	kfree(p_allocated_memory);
+=======
+	if (rc < 0) {
+		pr_err("%s: Getting US detection failed rc[%d]\n",
+		       __func__, rc);
+		return rc;
+	}
+
+	usf->usf_rx.us_detect_type = usf->usf_tx.us_detect_type;
+	detect_info.is_us = (usf_xx->us_detect_type == USF_US_DETECT_YES);
+	rc = copy_to_user((void __user *)arg,
+			  &detect_info,
+			  sizeof(detect_info));
+	if (rc) {
+		pr_err("%s: copy detect_info to user; rc=%d\n",
+			__func__, rc);
+		rc = -EFAULT;
+	}
+
+	if (detect_info_size > sizeof(struct usm_session_cmd_detect_info))
+		kfree(p_usm_detect_info);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return rc;
 } /* usf_set_us_detection */
@@ -1006,6 +1097,7 @@ static int usf_set_rx_info(struct usf_type *usf, unsigned long arg)
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	rc = q6usm_us_client_buf_alloc(
 				IN,
 				usf_xx->usc,
@@ -1014,6 +1106,18 @@ static int usf_set_rx_info(struct usf_type *usf, unsigned long arg)
 	if (rc) {
 		(void)q6usm_cmd(usf_xx->usc, CMD_CLOSE);
 		return rc;
+=======
+	if (usf_xx->buffer_size && usf_xx->buffer_count) {
+		rc = q6usm_us_client_buf_alloc(
+					IN,
+					usf_xx->usc,
+					usf_xx->buffer_size,
+					usf_xx->buffer_count);
+		if (rc) {
+			(void)q6usm_cmd(usf_xx->usc, CMD_CLOSE);
+			return rc;
+		}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	rc = q6usm_dec_cfg_blk(usf_xx->usc,
@@ -1232,6 +1336,7 @@ static int usf_get_version(unsigned long arg)
 		return -EFAULT;
 	}
 
+<<<<<<< HEAD
 	if (version_info.buf_size < sizeof(DRV_VERSION)) {
 		pr_err("%s: buf_size (%d) < version string size (%d)\n",
 			__func__, version_info.buf_size, sizeof(DRV_VERSION));
@@ -1241,6 +1346,12 @@ static int usf_get_version(unsigned long arg)
 	rc = copy_to_user(version_info.pbuf,
 			  DRV_VERSION,
 			  sizeof(DRV_VERSION));
+=======
+	/* version_info.buf is pointer to place for the version string */
+	rc = copy_to_user(version_info.pbuf,
+			  DRV_VERSION,
+			  version_info.buf_size);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (rc) {
 		pr_err("%s: copy to version_info.pbuf; rc=%d\n",
 			__func__, rc);

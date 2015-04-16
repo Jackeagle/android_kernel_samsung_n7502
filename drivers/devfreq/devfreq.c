@@ -125,6 +125,7 @@ static int devfreq_update_status(struct devfreq *devfreq, unsigned long freq)
 	cur_time = jiffies;
 	devfreq->time_in_state[lev] +=
 			 cur_time - devfreq->last_stat_updated;
+<<<<<<< HEAD
 	devfreq->last_stat_updated = cur_time;
 
 	if (freq == devfreq->previous_freq)
@@ -135,10 +136,19 @@ static int devfreq_update_status(struct devfreq *devfreq, unsigned long freq)
 		return 0;
 
 	if (lev != prev_lev) {
+=======
+	if (freq != devfreq->previous_freq) {
+		prev_lev = devfreq_get_freq_level(devfreq,
+						devfreq->previous_freq);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		devfreq->trans_table[(prev_lev *
 				devfreq->profile->max_state) + lev]++;
 		devfreq->total_trans++;
 	}
+<<<<<<< HEAD
+=======
+	devfreq->last_stat_updated = cur_time;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return 0;
 }
@@ -193,7 +203,11 @@ int update_devfreq(struct devfreq *devfreq)
 		return -EINVAL;
 
 	/* Reevaluate the proper frequency */
+<<<<<<< HEAD
 	err = devfreq->governor->get_target_freq(devfreq, &freq, &flags);
+=======
+	err = devfreq->governor->get_target_freq(devfreq, &freq);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (err)
 		return err;
 
@@ -465,7 +479,11 @@ static void *find_governor_data(struct devfreq_dev_profile *profile,
 		return NULL;
 
 	for (i = 0; i < profile->num_governor_data; i++) {
+<<<<<<< HEAD
 		if (strncmp(governor_name, profile->governor_data[i].name,
+=======
+		if (!strncmp(governor_name, profile->governor_data[i].name,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			     DEVFREQ_NAME_LEN) == 0) {
 			data = profile->governor_data[i].data;
 			break;

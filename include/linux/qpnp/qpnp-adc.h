@@ -220,8 +220,11 @@ enum qpnp_adc_channel_scaling_param {
  *			btm parameters.
  * %SCALE_QRD_SKUAA_BATT_THERM: Conversion to temperature(decidegC) based on
  *          btm parametersi for SKUAA.
+<<<<<<< HEAD
  * %SCALE_QRD_SKUG_BATT_THERM: Conversion to temperature(decidegC) based on
  * btm parametersi for SKUG.
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * %SCALE_NONE: Do not use this scaling type.
  */
 enum qpnp_adc_scale_fn_type {
@@ -233,7 +236,10 @@ enum qpnp_adc_scale_fn_type {
 	SCALE_THERM_150K_PULLUP,
 	SCALE_QRD_BATT_THERM,
 	SCALE_QRD_SKUAA_BATT_THERM,
+<<<<<<< HEAD
 	SCALE_QRD_SKUG_BATT_THERM = 9,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	SCALE_NONE,
 };
 
@@ -1138,6 +1144,7 @@ int32_t qpnp_adc_scale_qrd_skuaa_batt_therm(struct qpnp_vadc_chip *dev,
 			const struct qpnp_vadc_chan_properties *chan_prop,
 			struct qpnp_vadc_result *chan_rslt);
 /**
+<<<<<<< HEAD
  * qpnp_adc_scale_qrd_skug_batt_therm() - Scales the pre-calibrated digital output
  *		of an ADC to the ADC reference and compensates for the
  *		gain and offset. Returns the temperature in decidegC.
@@ -1155,6 +1162,8 @@ int32_t qpnp_adc_scale_qrd_skug_batt_therm(struct qpnp_vadc_chip *dev,
 			const struct qpnp_vadc_chan_properties *chan_prop,
 			struct qpnp_vadc_result *chan_rslt);
 /**
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * qpnp_adc_scale_batt_id() - Scales the pre-calibrated digital output
  *		of an ADC to the ADC reference and compensates for the
  *		gain and offset.
@@ -1408,12 +1417,15 @@ static inline int32_t qpnp_adc_scale_qrd_skuaa_batt_therm(
 			const struct qpnp_vadc_chan_properties *chan_prop,
 			struct qpnp_vadc_result *chan_rslt)
 { return -ENXIO; }
+<<<<<<< HEAD
 static inline int32_t qpnp_adc_scale_qrd_skug_batt_therm(
 			struct qpnp_vadc_chip *vadc, int32_t adc_code,
 			const struct qpnp_adc_properties *adc_prop,
 			const struct qpnp_vadc_chan_properties *chan_prop,
 			struct qpnp_vadc_result *chan_rslt)
 { return -ENXIO; }
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static inline int32_t qpnp_adc_scale_batt_id(struct qpnp_vadc_chip *vadc,
 			int32_t adc_code,
 			const struct qpnp_adc_properties *adc_prop,

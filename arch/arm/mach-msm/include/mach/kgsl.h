@@ -81,9 +81,15 @@ struct kgsl_device_platform_data {
 	int (*set_grp_async)(void);
 	unsigned int idle_timeout;
 	bool strtstp_sleepwake;
+<<<<<<< HEAD
 	bool bus_control;
 	unsigned int clk_map;
 	unsigned int idle_needed;
+=======
+	unsigned int clk_map;
+	unsigned int idle_needed;
+	unsigned int step_mul;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct msm_bus_scale_pdata *bus_scale_table;
 	struct kgsl_device_iommu_data *iommu_data;
 	int iommu_count;

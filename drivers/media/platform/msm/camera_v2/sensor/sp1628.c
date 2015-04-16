@@ -866,6 +866,7 @@ int32_t sp1628_sensor_config(struct msm_sensor_ctrl_t *s_ctrl,
 		}
 		break;
 	}
+<<<<<<< HEAD
 	case CFG_SET_SATURATION: {
 
 		break;
@@ -902,6 +903,8 @@ int32_t sp1628_sensor_config(struct msm_sensor_ctrl_t *s_ctrl,
 
 		break;
 	}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	default:
 		rc = -EFAULT;
 		break;

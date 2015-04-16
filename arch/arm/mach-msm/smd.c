@@ -1035,6 +1035,7 @@ static unsigned ch_read_buffer(struct smd_channel *ch, void **ptr)
 {
 	unsigned head = ch->half_ch->get_head(ch->recv);
 	unsigned tail = ch->half_ch->get_tail(ch->recv);
+<<<<<<< HEAD
 	unsigned fifo_size = ch->fifo_size;
 
 	BUG_ON(fifo_size >= SZ_1M);
@@ -1048,6 +1049,14 @@ static unsigned ch_read_buffer(struct smd_channel *ch, void **ptr)
 		return head - tail;
 	else
 		return fifo_size - tail;
+=======
+	*ptr = (void *) (ch->recv_data + tail);
+
+	if (tail <= head)
+		return head - tail;
+	else
+		return ch->fifo_size - tail;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int read_intr_blocked(struct smd_channel *ch)
@@ -1147,6 +1156,7 @@ static unsigned ch_write_buffer(struct smd_channel *ch, void **ptr)
 {
 	unsigned head = ch->half_ch->get_head(ch->send);
 	unsigned tail = ch->half_ch->get_tail(ch->send);
+<<<<<<< HEAD
 	unsigned fifo_size = ch->fifo_size;
 
 	BUG_ON(fifo_size >= SZ_1M);
@@ -1156,14 +1166,25 @@ static unsigned ch_write_buffer(struct smd_channel *ch, void **ptr)
 								head));
 
 	*ptr = (void *) (ch->send_data + head);
+=======
+	*ptr = (void *) (ch->send_data + head);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (head < tail) {
 		return tail - head - SMD_FIFO_FULL_RESERVE;
 	} else {
 		if (tail < SMD_FIFO_FULL_RESERVE)
+<<<<<<< HEAD
 			return fifo_size + tail - head
 					- SMD_FIFO_FULL_RESERVE;
 		else
 			return fifo_size - head;
+=======
+			return ch->fifo_size + tail - head
+					- SMD_FIFO_FULL_RESERVE;
+		else
+			return ch->fifo_size - head;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 }
 
@@ -2261,15 +2282,22 @@ EXPORT_SYMBOL(smd_disable_read_intr);
  * particular channel.
  * @ch:      open channel handle to use for the edge
  * @mask:    1 = mask interrupts; 0 = unmask interrupts
+<<<<<<< HEAD
  * @cpumask  cpumask for the next cpu scheduled to be woken up
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * @returns: 0 for success; < 0 for failure
  *
  * Note that this enables/disables all interrupts from the remote subsystem for
  * all channels.  As such, it should be used with care and only for specific
  * use cases such as power-collapse sequencing.
  */
+<<<<<<< HEAD
 int smd_mask_receive_interrupt(smd_channel_t *ch, bool mask,
 		const struct cpumask *cpumask)
+=======
+int smd_mask_receive_interrupt(smd_channel_t *ch, bool mask)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	struct irq_chip *irq_chip;
 	struct irq_data *irq_data;
@@ -2298,8 +2326,11 @@ int smd_mask_receive_interrupt(smd_channel_t *ch, bool mask,
 		SMD_POWER_INFO("SMD Masking interrupts from %s\n",
 				edge_to_pids[ch->type].subsys_name);
 		irq_chip->irq_mask(irq_data);
+<<<<<<< HEAD
 		if (cpumask)
 			irq_set_affinity(int_cfg->irq_id, cpumask);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	} else {
 		SMD_POWER_INFO("SMD Unmasking interrupts from %s\n",
 				edge_to_pids[ch->type].subsys_name);
@@ -3261,7 +3292,11 @@ int smd_edge_to_remote_pid(uint32_t edge)
  */
 void smd_set_edge_subsys_name(uint32_t edge, const char *subsys_name)
 {
+<<<<<<< HEAD
 	if (edge < ARRAY_SIZE(edge_to_pids))
+=======
+	if (edge <= ARRAY_SIZE(edge_to_pids))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		strlcpy(edge_to_pids[edge].subsys_name,
 			subsys_name, SMD_MAX_CH_NAME_LEN);
 	else
@@ -3276,7 +3311,11 @@ void smd_set_edge_subsys_name(uint32_t edge, const char *subsys_name)
  */
 void smd_set_edge_initialized(uint32_t edge)
 {
+<<<<<<< HEAD
 	if (edge < ARRAY_SIZE(edge_to_pids))
+=======
+	if (edge <= ARRAY_SIZE(edge_to_pids))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		edge_to_pids[edge].initialized = true;
 	else
 		pr_err("%s: Invalid edge type[%d]\n", __func__, edge);

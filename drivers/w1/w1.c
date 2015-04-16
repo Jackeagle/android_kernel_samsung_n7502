@@ -45,9 +45,26 @@ MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Evgeniy Polyakov <zbr@ioremap.net>");
 MODULE_DESCRIPTION("Driver for 1-wire Dallas network protocol.");
 
+<<<<<<< HEAD
 static int w1_timeout = 10;
 int w1_max_slave_count = 10;
 int w1_max_slave_ttl = 10;
+=======
+#ifdef CONFIG_W1_SLAVE_DS28EL15
+static int w1_timeout = 2;
+int w1_max_slave_count = 1;
+int w1_max_slave_ttl = 2;
+
+static struct w1_master *master_dev = NULL;
+
+extern int w1_ds28el15_verifymac(struct w1_slave *sl);
+extern int id, color;
+#else
+static int w1_timeout = 10;
+int w1_max_slave_count = 10;
+int w1_max_slave_ttl = 10;
+#endif // CONFIG_W1_SLAVE_DS28EL15
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 module_param_named(timeout, w1_timeout, int, 0);
 module_param_named(max_slave_count, w1_max_slave_count, int, 0);
@@ -56,6 +73,28 @@ module_param_named(slave_ttl, w1_max_slave_ttl, int, 0);
 DEFINE_MUTEX(w1_mlock);
 LIST_HEAD(w1_masters);
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_W1_SLAVE_DS28EL15
+int fail_cnt = 0;
+
+//-----------------------------------------------------------------
+// Count total security fail
+//
+// int result - result of slave node state
+//
+void w1_ds28el15_fail_count(int result)
+{
+	if (result == 0)
+		fail_cnt = 0;
+	else
+		fail_cnt++;
+
+	if (fail_cnt > 100)	fail_cnt = 5;
+}
+#endif /* CONFIG_W1_SLAVE_DS28EL15 */
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int w1_attach_slave_device(struct w1_master *dev, struct w1_reg_num *rn);
 
 static int w1_master_match(struct device *dev, struct device_driver *drv)
@@ -499,6 +538,41 @@ static ssize_t w1_master_attribute_store_remove(struct device *dev,
 	return result;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_W1_SLAVE_DS28EL15
+static ssize_t w1_master_attribute_show_verify_mac(struct device *dev, struct device_attribute *attr, char *buf)
+{
+	struct w1_master *md = dev_to_w1_master(dev);
+	int result = -1;
+	struct list_head *ent, *n;
+	struct w1_slave *sl = NULL;
+	
+	list_for_each_safe(ent, n, &md->slist) {
+		sl = list_entry(ent, struct w1_slave, w1_slave_entry);
+	}
+	
+	/* verify mac */
+	if(sl)
+		result = w1_ds28el15_verifymac(sl);
+	else
+		pr_info("%s : sysfs call fail\n", __func__);
+	
+	return sprintf(buf, "%d\n", result);
+}
+
+static ssize_t w1_master_attribute_show_check_id(struct device *dev, struct device_attribute *attr, char *buf)
+{
+	return sprintf(buf, "%d\n", id);
+}
+
+static ssize_t w1_master_attribute_show_check_color(struct device *dev, struct device_attribute *attr, char *buf)
+{
+	return sprintf(buf, "%d\n", color);
+}
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define W1_MASTER_ATTR_RO(_name, _mode)				\
 	struct device_attribute w1_master_attribute_##_name =	\
 		__ATTR(w1_master_##_name, _mode,		\
@@ -521,6 +595,14 @@ static W1_MASTER_ATTR_RW(search, S_IRUGO | S_IWUSR | S_IWGRP);
 static W1_MASTER_ATTR_RW(pullup, S_IRUGO | S_IWUSR | S_IWGRP);
 static W1_MASTER_ATTR_RW(add, S_IRUGO | S_IWUSR | S_IWGRP);
 static W1_MASTER_ATTR_RW(remove, S_IRUGO | S_IWUSR | S_IWGRP);
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_W1_SLAVE_DS28EL15
+static W1_MASTER_ATTR_RO(verify_mac, S_IRUGO);
+static W1_MASTER_ATTR_RO(check_id, S_IRUGO);
+static W1_MASTER_ATTR_RO(check_color, S_IRUGO);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static struct attribute *w1_master_default_attrs[] = {
 	&w1_master_attribute_name.attr,
@@ -534,6 +616,14 @@ static struct attribute *w1_master_default_attrs[] = {
 	&w1_master_attribute_pullup.attr,
 	&w1_master_attribute_add.attr,
 	&w1_master_attribute_remove.attr,
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_W1_SLAVE_DS28EL15
+	&w1_master_attribute_verify_mac.attr,
+	&w1_master_attribute_check_id.attr,
+	&w1_master_attribute_check_color.attr,
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	NULL
 };
 
@@ -563,6 +653,12 @@ static int w1_uevent(struct device *dev, struct kobj_uevent_env *env)
 		md = container_of(dev, struct w1_master, dev);
 		event_owner = "master";
 		name = md->name;
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_W1_SLAVE_DS28EL15
+		master_dev = md; //container_of(dev, struct w1_master, dev);
+#endif	// CONFIG_W1_SLAVE_DS28EL15
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	} else if (dev->driver == &w1_slave_driver) {
 		sl = container_of(dev, struct w1_slave, dev);
 		event_owner = "slave";
@@ -596,6 +692,22 @@ static int w1_uevent(struct device *dev, struct kobj_uevent_env *env)
 }
 #endif
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_W1_SLAVE_DS28EL15
+static void w1_search_process(struct w1_master *dev, u8 search_type);
+
+void w1_master_search(void)
+{
+	if (master_dev == NULL)
+		return;
+
+	w1_search_process(master_dev, W1_SEARCH);
+}
+EXPORT_SYMBOL(w1_master_search);
+#endif // CONFIG_W1_SLAVE_DS28EL15
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int __w1_attach_slave_device(struct w1_slave *sl)
 {
 	int err;
@@ -840,9 +952,29 @@ void w1_slave_found(struct w1_master *dev, u64 rn)
 	sl = w1_slave_search_device(dev, tmp);
 	if (sl) {
 		set_bit(W1_SLAVE_ACTIVE, (long *)&sl->flags);
+<<<<<<< HEAD
 	} else {
 		if (rn && tmp->crc == w1_calc_crc8((u8 *)&rn_le, 7))
 			w1_attach_slave_device(dev, tmp);
+=======
+#ifdef CONFIG_W1_SLAVE_DS28EL15
+			w1_ds28el15_fail_count(0);
+#endif
+	} else {
+		if (rn && tmp->crc == w1_calc_crc8((u8 *)&rn_le, 7))
+		{
+			w1_attach_slave_device(dev, tmp);
+#ifdef CONFIG_W1_SLAVE_DS28EL15
+			w1_ds28el15_fail_count(0);
+#endif
+		}
+#ifdef CONFIG_W1_SLAVE_DS28EL15
+		else
+		{
+			w1_ds28el15_fail_count(-1);
+		}
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	atomic_dec(&dev->refcnt);
@@ -889,6 +1021,12 @@ void w1_search(struct w1_master *dev, u8 search_type, w1_slave_found_callback cb
 		 */
 		if (w1_reset_bus(dev)) {
 			dev_dbg(&dev->dev, "No devices present on the wire.\n");
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_W1_SLAVE_DS28EL15
+			w1_ds28el15_fail_count(-1);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			break;
 		}
 

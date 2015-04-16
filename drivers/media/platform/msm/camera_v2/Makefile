@@ -8,6 +8,10 @@ ccflags-y += -Idrivers/media/platform/msm/camera_v2/camera
 ccflags-y += -Idrivers/media/platform/msm/camera_v2/jpeg_10
 
 obj-$(CONFIG_MSMB_CAMERA) += msm.o
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_MSMB_CAMERA) += cam_dummy.o
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 obj-$(CONFIG_MSMB_CAMERA) += camera/
 obj-$(CONFIG_MSMB_CAMERA) += msm_vb2/
 obj-$(CONFIG_MSMB_CAMERA) += sensor/
@@ -16,4 +20,7 @@ obj-$(CONFIG_MSMB_CAMERA) += ispif/
 obj-$(CONFIG_MSMB_JPEG) += jpeg_10/
 obj-$(CONFIG_MSMB_CAMERA) += msm_buf_mgr/
 obj-$(CONFIG_MSMB_CAMERA) += pproc/
+<<<<<<< HEAD
 obj-$(CONFIG_MSMB_CAMERA) += gemini/
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60

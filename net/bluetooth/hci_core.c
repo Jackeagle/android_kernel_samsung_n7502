@@ -1457,7 +1457,11 @@ int hci_register_dev(struct hci_dev *hdev)
 		head = p; id++;
 	}
 
+<<<<<<< HEAD
 	snprintf(hdev->name, sizeof(hdev->name), "hci%d", id);
+=======
+	sprintf(hdev->name, "hci%d", id);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	hdev->id = id;
 	list_add(&hdev->list, head);
 

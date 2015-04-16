@@ -33,6 +33,12 @@
 #include <linux/uaccess.h>
 #include <linux/vmalloc.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
+=======
+//KNOX_SEANDROID_START
+#include <linux/security.h>
+//KNOX_SEANDROID_END
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <linux/security.h>
 
 #include "binder.h"
@@ -1489,10 +1495,18 @@ static void binder_transaction(struct binder_proc *proc,
 			return_error = BR_DEAD_REPLY;
 			goto err_dead_binder;
 		}
+<<<<<<< HEAD
+=======
+		//KNOX_SEANDROID_START
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (security_binder_transaction(proc->tsk, target_proc->tsk) < 0) {
 			return_error = BR_FAILED_REPLY;
 			goto err_invalid_target_handle;
 		}
+<<<<<<< HEAD
+=======
+		//KNOX_SEANDROID_END
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (!(tr->flags & TF_ONE_WAY) && thread->transaction_stack) {
 			struct binder_transaction *tmp;
 			tmp = thread->transaction_stack;
@@ -1638,10 +1652,18 @@ static void binder_transaction(struct binder_proc *proc,
 					fp->cookie, node->cookie);
 				goto err_binder_get_ref_for_node_failed;
 			}
+<<<<<<< HEAD
+=======
+			//KNOX_SEANDROID_START
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			if (security_binder_transfer_binder(proc->tsk, target_proc->tsk)) {
 				return_error = BR_FAILED_REPLY;
 				goto err_binder_get_ref_for_node_failed;
 			}
+<<<<<<< HEAD
+=======
+			//KNOX_SEANDROID_END
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			ref = binder_get_ref_for_node(target_proc, node);
 			if (ref == NULL) {
 				return_error = BR_FAILED_REPLY;
@@ -1671,10 +1693,18 @@ static void binder_transaction(struct binder_proc *proc,
 				return_error = BR_FAILED_REPLY;
 				goto err_binder_get_ref_failed;
 			}
+<<<<<<< HEAD
+=======
+			//KNOX_SEANDROID_START
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			if (security_binder_transfer_binder(proc->tsk, target_proc->tsk)) {
 				return_error = BR_FAILED_REPLY;
 				goto err_binder_get_ref_failed;
 			}
+<<<<<<< HEAD
+=======
+			//KNOX_SEANDROID_END
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			if (ref->node->proc == target_proc) {
 				if (fp->type == BINDER_TYPE_HANDLE)
 					fp->type = BINDER_TYPE_BINDER;
@@ -1728,11 +1758,21 @@ static void binder_transaction(struct binder_proc *proc,
 				return_error = BR_FAILED_REPLY;
 				goto err_fget_failed;
 			}
+<<<<<<< HEAD
 			if (security_binder_transfer_file(proc->tsk, target_proc->tsk, file) < 0) {
 				fput(file);
 				return_error = BR_FAILED_REPLY;
 				goto err_get_unused_fd_failed;
 			}
+=======
+			//KNOX_SEANDROID_START
+                        if (security_binder_transfer_file(proc->tsk, target_proc->tsk, file) < 0) {
+                                fput(file);
+                                return_error = BR_FAILED_REPLY;
+                                goto err_get_unused_fd_failed;
+                        }
+			//KNOX_SEANDROID_END
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			target_fd = task_get_unused_fd_flags(target_proc, O_CLOEXEC);
 			if (target_fd < 0) {
 				fput(file);

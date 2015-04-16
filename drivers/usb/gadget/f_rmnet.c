@@ -75,8 +75,18 @@ static struct usb_interface_descriptor rmnet_interface_desc = {
 	.bDescriptorType =	USB_DT_INTERFACE,
 	.bNumEndpoints =	3,
 	.bInterfaceClass =	USB_CLASS_VENDOR_SPEC,
+<<<<<<< HEAD
 	.bInterfaceSubClass =	USB_CLASS_VENDOR_SPEC,
 	.bInterfaceProtocol =	USB_CLASS_VENDOR_SPEC,
+=======
+#ifdef CONFIG_USB_ANDROID_SAMSUNG_COMPOSITE
+	.bInterfaceSubClass = 0xE0,
+	.bInterfaceProtocol = 0x00,
+#else
+	.bInterfaceSubClass =	USB_CLASS_VENDOR_SPEC,
+	.bInterfaceProtocol =	USB_CLASS_VENDOR_SPEC,
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* .iInterface = DYNAMIC */
 };
 
@@ -303,6 +313,10 @@ static int rmnet_gport_setup(void)
 	int	i;
 	u8 base;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	pr_debug("%s: bam ports: %u bam2bam ports: %u data hsic ports: %u data hsuart ports: %u"
 		" smd ports: %u ctrl hsic ports: %u ctrl hsuart ports: %u"
 	" nr_rmnet_ports: %u\n",
@@ -319,12 +333,20 @@ static int rmnet_gport_setup(void)
 
 	if (no_ctrl_smd_ports) {
 		ret = gsmd_ctrl_setup(FRMNET_CTRL_CLIENT,
+<<<<<<< HEAD
 				no_ctrl_smd_ports, &base);
+=======
+				no_ctrl_smd_ports, &base); 
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (ret)
 			return ret;
 		for (i = 0; i < nr_rmnet_ports; i++)
 			if (rmnet_ports[i].port)
 				rmnet_ports[i].port->port_num += base;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	if (no_data_hsic_ports) {
@@ -388,7 +410,11 @@ static int rmnet_gport_setup(void)
 
 static int gport_rmnet_connect(struct f_rmnet *dev)
 {
+<<<<<<< HEAD
 	int			ret;
+=======
+	int			ret = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	unsigned		port_num;
 	enum transport_type	cxport = rmnet_ports[dev->port_num].ctrl_xport;
 	enum transport_type	dxport = rmnet_ports[dev->port_num].data_xport;
@@ -1219,7 +1245,10 @@ static void frmnet_cleanup(void)
 	for (i = 0; i < nr_rmnet_ports; i++)
 		kfree(rmnet_ports[i].port);
 
+<<<<<<< HEAD
 	gbam_cleanup();
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	nr_rmnet_ports = 0;
 	no_ctrl_smd_ports = 0;
 	no_ctrl_qti_ports = 0;

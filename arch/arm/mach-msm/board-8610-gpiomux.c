@@ -252,6 +252,7 @@ static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 	},
 };
 
+<<<<<<< HEAD
 static struct gpiomux_setting gpio_i2c_nfc_pvt_config = {
 		.func = GPIOMUX_FUNC_5, /*active 1*/ /* 0 */
 		.drv = GPIOMUX_DRV_2MA,
@@ -276,6 +277,8 @@ static struct msm_gpiomux_config msm_nfc_configs[] __initdata = {
 };
 
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static struct msm_gpiomux_config msm_atmel_configs[] __initdata = {
 	{
 		.gpio      = 0,		/* TOUCH RESET */
@@ -451,6 +454,7 @@ static struct gpiomux_setting cam_settings[] = {
 	},
 };
 
+<<<<<<< HEAD
 static struct msm_gpiomux_config msm_non_qrd_configs[] __initdata = {
 	{
 		.gpio = 8, /* CAM1_STANDBY_N */
@@ -461,6 +465,8 @@ static struct msm_gpiomux_config msm_non_qrd_configs[] __initdata = {
 	},
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static struct msm_gpiomux_config msm_sensor_configs[] __initdata = {
 	{
 		.gpio = 13, /* CAM_MCLK0 */
@@ -631,6 +637,7 @@ static struct msm_gpiomux_config msm_interrupt_configs[] __initdata = {
 	},
 };
 
+<<<<<<< HEAD
 static struct gpiomux_setting gpio_cdc_dmic_cfg = {
 	.func = GPIOMUX_FUNC_1,
 	.drv = GPIOMUX_DRV_4MA,
@@ -653,6 +660,8 @@ static struct msm_gpiomux_config msm_cdc_dmic_configs[] __initdata = {
 	},
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void __init msm8610_init_gpiomux(void)
 {
 	int rc;
@@ -681,6 +690,7 @@ void __init msm8610_init_gpiomux(void)
 	msm_gpiomux_install(msm_sensor_configs, ARRAY_SIZE(msm_sensor_configs));
 	msm_gpiomux_install(msm_gpio_int_configs,
 			ARRAY_SIZE(msm_gpio_int_configs));
+<<<<<<< HEAD
 	if (of_board_is_qrd()) {
 		msm_gpiomux_install(msm_interrupt_configs,
 			ARRAY_SIZE(msm_interrupt_configs));
@@ -693,4 +703,9 @@ void __init msm8610_init_gpiomux(void)
 	if (of_board_is_cdp())
 		msm_gpiomux_install(msm_cdc_dmic_configs,
 			ARRAY_SIZE(msm_cdc_dmic_configs));
+=======
+	if (of_board_is_qrd())
+		msm_gpiomux_install(msm_interrupt_configs,
+			ARRAY_SIZE(msm_interrupt_configs));
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }

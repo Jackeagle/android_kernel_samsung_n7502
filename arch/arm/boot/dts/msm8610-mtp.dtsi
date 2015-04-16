@@ -20,7 +20,11 @@
 		compatible = "atmel,mxt-ts";
 		reg = <0x4a>;
 		interrupt-parent = <&msmgpio>;
+<<<<<<< HEAD
 		interrupts = <1 0x2002>;
+=======
+		interrupts = <1 0x2>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		vdd_ana-supply = <&pm8110_l19>;
 		vcc_i2c-supply = <&pm8110_l14>;
 		atmel,reset-gpio = <&msmgpio 0 0x00>;
@@ -76,6 +80,7 @@
 				];
 			};
 		};
+<<<<<<< HEAD
 
 		synaptics@20 {
 			compatible = "synaptics,rmi4";
@@ -91,6 +96,8 @@
 			synaptics,power-down;
 			synaptics,disable-gpios;
 		};
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 
 	i2c@f9925000 {
@@ -142,7 +149,11 @@
 				0x2800>;
 			capella,ps_close_thd_set = <0xa>;
 			capella,ps_away_thd_set = <0x5>;
+<<<<<<< HEAD
 			capella,ls_cmd = <0x04>; /* ALS_IT=80ms, INT_PERS=2*/
+=======
+			capella,ls_cmd = <0x44>; /* PS_IT=160ms, INT_PERS=2*/
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			capella,ps_conf1_val = <0x0006>;
 			capella,ps_conf3_val = <0x3010>;
 		};
@@ -244,9 +255,14 @@
 		qcom,cdc-vdd-mic-bias-voltage = <3075000 3075000>;
 		qcom,cdc-vdd-mic-bias-current = <25000>;
 
+<<<<<<< HEAD
 		qcom,cdc-micbias-ldoh-v = <0x3>;
 		qcom,cdc-micbias-cfilt-sel = <0x0>;
 		qcom,cdc-micbias-cfilt-mv = <2700>;
+=======
+		qcom,cdc-micbias-cfilt-sel = <0x0>;
+		qcom,cdc-micbias-cfilt-mv = <1800000>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,cdc-mclk-clk-rate = <12288000>;
 
 		qcom,cdc-static-supplies = "cdc-vdda-h",
@@ -328,6 +344,10 @@
 
 	vdd-io-supply = <&pm8110_l6>;
 	qcom,vdd-io-always-on;
+<<<<<<< HEAD
+=======
+	qcom,vdd-io-lpm-sup;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	qcom,vdd-io-voltage-level = <1800000 1800000>;
 	qcom,vdd-io-current-level = <200 60000>;
 
@@ -460,7 +480,10 @@
 
 &mdss_mdp {
 	qcom,mdss-pref-prim-intf = "dsi";
+<<<<<<< HEAD
 	batfet-supply = <&pm8110_chg_batif>;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 &mdss_dsi0 {

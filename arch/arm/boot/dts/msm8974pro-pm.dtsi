@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2013-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -120,12 +124,17 @@
 		qcom,phase-port = <0x1>;
 		qcom,pfm-port = <0x2>;
 		qcom,saw2-spm-cmd-ret = [1f 00 03 00 0f];
+<<<<<<< HEAD
 		qcom,saw2-spm-cmd-gdhs = [00 32 42 03 44 50 02 32 50 0f];
+=======
+		qcom,saw2-spm-cmd-gdhs = [00 32 42 07 44 50 02 32 50 0f];
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,saw2-spm-cmd-pc = [00 10 32 b0 11 42 07 01 b0 12 44
 				50 02 32 50 0f];
 		qcom,L2-spm-is-apcs-master;
 	};
 
+<<<<<<< HEAD
 	lpm_levels: qcom,lpm-levels {
 		compatible = "qcom,lpm-levels";
 		qcom,allow-synced-levels;
@@ -191,6 +200,64 @@
 				qcom,min-cpu-mode = "pc";
 				qcom,sync-cpus;
 			};
+=======
+	qcom,lpm-levels {
+		compatible = "qcom,lpm-levels";
+		qcom,default-l2-state = "l2_cache_retention";
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		qcom,lpm-level@0 {
+			reg = <0x0>;
+			qcom,mode = "wfi";
+			qcom,l2 = "l2_cache_retention";
+			qcom,latency-us = <1>;
+			qcom,ss-power = <715>;
+			qcom,energy-overhead = <17700>;
+			qcom,time-overhead = <2>;
+		};
+
+		qcom,lpm-level@1 {
+			reg = <0x1>;
+			qcom,mode = "retention";
+			qcom,l2 = "l2_cache_retention";
+			qcom,latency-us = <35>;
+			qcom,ss-power = <542>;
+			qcom,energy-overhead = <34920>;
+			qcom,time-overhead = <40>;
+		};
+
+
+		qcom,lpm-level@2 {
+			reg = <0x2>;
+			qcom,mode = "standalone_pc";
+			qcom,l2 = "l2_cache_retention";
+			qcom,latency-us = <300>;
+			qcom,ss-power = <476>;
+			qcom,energy-overhead = <225300>;
+			qcom,time-overhead = <350>;
+		};
+
+		qcom,lpm-level@3 {
+			reg = <0x3>;
+			qcom,mode = "pc";
+			qcom,l2 = "l2_cache_gdhs";
+			qcom,gpio-detectable;
+			qcom,latency-us = <20000>;
+			qcom,ss-power = <163>;
+			qcom,energy-overhead = <1577736>;
+			qcom,time-overhead = <5067>;
+		};
+
+		qcom,lpm-level@4 {
+			reg = <0x4>;
+			qcom,mode = "pc";
+			qcom,l2 = "l2_cache_pc";
+			qcom,latency-us = <30000>;
+			qcom,ss-power = <83>;
+			qcom,energy-overhead = <2274420>;
+			qcom,time-overhead = <6605>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		};
 	};
 
@@ -214,6 +281,7 @@
 			<50 172>, /* usb1_hs_async_wakeup_irq */
 			<53 104>, /* mdss_irq */
 			<62 222>, /* ee0_krait_hlos_spmi_periph_irq */
+<<<<<<< HEAD
 			<0xff 18>,  /* APCx_qgicQTmrSecPhysIrptReq */
 			<0xff 19>,  /* APCx_qgicQTmrSecPhysIrptReq */
 			<0xff 25>,  /* APCx_qgicExtFaultIrptReq */
@@ -221,6 +289,8 @@
 			<0xff 34>,  /* APCC_qgicL2ErrorIrptReq */
 			<0xff 35>,  /* WDT_barkInt */
 			<0xff 40>,  /* qtimer_phy_irq */
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			<0xff 56>,  /* modem_watchdog */
 			<0xff 57>,  /* mss_to_apps_irq(0) */
 			<0xff 58>,  /* mss_to_apps_irq(1) */
@@ -228,6 +298,7 @@
 			<0xff 60>,  /* mss_to_apps_irq(3) */
 			<0xff 61>,  /* mss_a2_bam_irq */
 			<0xff 70>,  /* iommu_pmon_nonsecure_irq */
+<<<<<<< HEAD
 			<0xff 74>,  /* osmmu_CIrpt[1] */
 			<0xff 75>,  /* osmmu_CIrpt[0] */
 			<0xff 77>,  /* osmmu_CIrpt[0] */
@@ -246,6 +317,10 @@
 			<0xff 159>,  /* sdcc_irq[0] */
 			<0xff 163>,  /* usb30_ee1_irq */
 			<0xff 170>,  /* sdcc_pwr_cmd_irq */
+=======
+			<0xff 97>,  /* iommu_nonsecure_irq */
+			<0xff 105>, /* iommu_pmon_nonsecure_irq */
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			<0xff 173>, /* o_wcss_apss_smd_hi */
 			<0xff 174>, /* o_wcss_apss_smd_med */
 			<0xff 175>, /* o_wcss_apss_smd_low */
@@ -265,7 +340,10 @@
 			<0xff 195>, /* lpass_irq_out_apcs(7) */
 			<0xff 196>, /* lpass_irq_out_apcs(8) */
 			<0xff 197>, /* lpass_irq_out_apcs(9) */
+<<<<<<< HEAD
 			<0xff 198>, /* coresight-tmc-etr interrupt */
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			<0xff 200>, /* rpm_ipc(4) */
 			<0xff 201>, /* rpm_ipc(5) */
 			<0xff 202>, /* rpm_ipc(6) */
@@ -275,12 +353,16 @@
 			<0xff 206>, /* rpm_ipc(26) */
 			<0xff 207>, /* rpm_ipc(27) */
 			<0xff 211>, /* usb_dwc3_otg */
+<<<<<<< HEAD
 			<0xff 240>, /* summary_irq_kpss */
 			<0xff 253>, /* sdcc_pwr_cmd_irq */
 			<0xff 256>, /* sdcc_pwr_cmd_irq */
 			<0xff 268>, /* bam_irq[1] */
 			<0xff 270>, /* bam_irq[0] */
 			<0xff 271>; /* bam_irq[0] */
+=======
+			<0xff 240>; /* summary_irq_kpss */
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		qcom,gpio-parent = <&msmgpio>;
 		qcom,gpio-map = <3  102>,
@@ -331,8 +413,13 @@
 		ranges;
 		reg = <0xfe805664 0x40>;
 		qcom,pc-mode = "tz_l2_int";
+<<<<<<< HEAD
 		qcom,cpus-as-clocks;
 		qcom,lpm-levels = <&lpm_levels>;
+=======
+		qcom,use-sync-timer;
+		qcom,cpus-as-clocks;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		qcom,pm-snoc-client {
 			compatible = "qcom,pm-snoc-client";

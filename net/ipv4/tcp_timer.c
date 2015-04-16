@@ -34,6 +34,7 @@ int sysctl_tcp_thin_linear_timeouts __read_mostly;
 
 static void tcp_write_timer(unsigned long);
 static void tcp_delack_timer(unsigned long);
+<<<<<<< HEAD
 static void tcp_keepalive_timer(unsigned long data);
 
 /*Function to reset tcp_ack related sysctl on resetting master control */
@@ -67,6 +68,9 @@ int tcp_use_userconfig_sysctl_handler(ctl_table *table, int write,
 	}
 	return ret;
 }
+=======
+static void tcp_keepalive_timer (unsigned long data);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 void tcp_init_xmit_timers(struct sock *sk)
 {

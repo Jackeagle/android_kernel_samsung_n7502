@@ -19,7 +19,10 @@
 #include <linux/memory_alloc.h>
 #include <linux/of.h>
 #include <linux/of_platform.h>
+<<<<<<< HEAD
 #include <linux/of_address.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <linux/mm.h>
 #include <linux/mm_types.h>
 #include <linux/sched.h>
@@ -27,7 +30,10 @@
 #include <linux/uaccess.h>
 #include <linux/memblock.h>
 #include <linux/dma-mapping.h>
+<<<<<<< HEAD
 #include <linux/dma-contiguous.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <mach/ion.h>
 #include <mach/msm_memtypes.h>
 #include <asm/cacheflush.h>
@@ -53,56 +59,115 @@ struct ion_heap_desc {
 static struct ion_heap_desc ion_heap_meta[] = {
 	{
 		.id	= ION_SYSTEM_HEAP_ID,
+<<<<<<< HEAD
 		.name	= ION_SYSTEM_HEAP_NAME,
 	},
 	{
 		.id	= ION_SYSTEM_CONTIG_HEAP_ID,
+=======
+		.type	= ION_HEAP_TYPE_SYSTEM,
+		.name	= ION_VMALLOC_HEAP_NAME,
+	},
+	{
+		.id	= ION_SYSTEM_CONTIG_HEAP_ID,
+		.type	= ION_HEAP_TYPE_SYSTEM_CONTIG,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.name	= ION_KMALLOC_HEAP_NAME,
 	},
 	{
 		.id	= ION_CP_MM_HEAP_ID,
+<<<<<<< HEAD
+=======
+		.type	= ION_HEAP_TYPE_SECURE_DMA,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.name	= ION_MM_HEAP_NAME,
 		.permission_type = IPT_TYPE_MM_CARVEOUT,
 	},
 	{
 		.id	= ION_MM_FIRMWARE_HEAP_ID,
+<<<<<<< HEAD
+=======
+		.type	= ION_HEAP_TYPE_CARVEOUT,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.name	= ION_MM_FIRMWARE_HEAP_NAME,
 	},
 	{
 		.id	= ION_CP_MFC_HEAP_ID,
+<<<<<<< HEAD
+=======
+		.type	= ION_HEAP_TYPE_CP,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.name	= ION_MFC_HEAP_NAME,
 		.permission_type = IPT_TYPE_MFC_SHAREDMEM,
 	},
 	{
 		.id	= ION_SF_HEAP_ID,
+<<<<<<< HEAD
 		.name	= ION_SF_HEAP_NAME,
 	},
 	{
 		.id	= ION_QSECOM_HEAP_ID,
+=======
+		.type	= ION_HEAP_TYPE_CARVEOUT,
+		.name	= ION_SF_HEAP_NAME,
+	},
+	{
+		.id	= ION_IOMMU_HEAP_ID,
+		.type	= ION_HEAP_TYPE_IOMMU,
+		.name	= ION_IOMMU_HEAP_NAME,
+	},
+	{
+		.id	= ION_QSECOM_HEAP_ID,
+		.type	= ION_HEAP_TYPE_DMA,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.name	= ION_QSECOM_HEAP_NAME,
 	},
 	{
 		.id	= ION_AUDIO_HEAP_ID,
+<<<<<<< HEAD
+=======
+		.type	= ION_HEAP_TYPE_CARVEOUT,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.name	= ION_AUDIO_HEAP_NAME,
 	},
 	{
 		.id	= ION_PIL1_HEAP_ID,
+<<<<<<< HEAD
+=======
+		.type	= ION_HEAP_TYPE_CARVEOUT,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.name	= ION_PIL1_HEAP_NAME,
 	},
 	{
 		.id	= ION_PIL2_HEAP_ID,
+<<<<<<< HEAD
+=======
+		.type	= ION_HEAP_TYPE_CARVEOUT,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.name	= ION_PIL2_HEAP_NAME,
 	},
 	{
 		.id	= ION_CP_WB_HEAP_ID,
+<<<<<<< HEAD
+=======
+		.type	= ION_HEAP_TYPE_CP,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.name	= ION_WB_HEAP_NAME,
 	},
 	{
 		.id	= ION_CAMERA_HEAP_ID,
+<<<<<<< HEAD
+=======
+		.type	= ION_HEAP_TYPE_CARVEOUT,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.name	= ION_CAMERA_HEAP_NAME,
 	},
 	{
 		.id	= ION_ADSP_HEAP_ID,
+<<<<<<< HEAD
+=======
+		.type	= ION_HEAP_TYPE_DMA,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.name	= ION_ADSP_HEAP_NAME,
 	}
 };
@@ -111,6 +176,7 @@ static struct ion_heap_desc ion_heap_meta[] = {
 struct ion_client *msm_ion_client_create(unsigned int heap_mask,
 					const char *name)
 {
+<<<<<<< HEAD
 	/*
 	 * The assumption is that if there is a NULL device, the ion
 	 * driver has not yet probed.
@@ -121,6 +187,8 @@ struct ion_client *msm_ion_client_create(unsigned int heap_mask,
 	if (IS_ERR(idev))
 		return (struct ion_client *)idev;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return ion_client_create(idev, name);
 }
 EXPORT_SYMBOL(msm_ion_client_create);
@@ -554,8 +622,12 @@ static void check_for_heap_overlap(const struct ion_platform_heap heap_list[],
 }
 
 #ifdef CONFIG_OF
+<<<<<<< HEAD
 static int msm_init_extra_data(struct device_node *node,
 			       struct ion_platform_heap *heap,
+=======
+static int msm_init_extra_data(struct ion_platform_heap *heap,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			       const struct ion_heap_desc *heap_desc)
 {
 	int ret = 0;
@@ -581,6 +653,7 @@ static int msm_init_extra_data(struct device_node *node,
 			ret = -ENOMEM;
 		break;
 	}
+<<<<<<< HEAD
 	case ION_HEAP_TYPE_SECURE_DMA:
 	{
 		unsigned int val;
@@ -603,6 +676,8 @@ static int msm_init_extra_data(struct device_node *node,
 		}
 		break;
 	}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	default:
 		heap->extra_data = 0;
 		break;
@@ -610,6 +685,7 @@ static int msm_init_extra_data(struct device_node *node,
 	return ret;
 }
 
+<<<<<<< HEAD
 #define MAKE_HEAP_TYPE_MAPPING(h) { .name = #h, \
 			.heap_type = ION_HEAP_TYPE_##h, }
 
@@ -653,10 +729,17 @@ static int msm_ion_populate_heap(struct device_node *node,
 {
 	unsigned int i;
 	int ret = -EINVAL, heap_type = -1;
+=======
+static int msm_ion_populate_heap(struct ion_platform_heap *heap)
+{
+	unsigned int i;
+	int ret = -EINVAL;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	unsigned int len = ARRAY_SIZE(ion_heap_meta);
 	for (i = 0; i < len; ++i) {
 		if (ion_heap_meta[i].id == heap->id) {
 			heap->name = ion_heap_meta[i].name;
+<<<<<<< HEAD
 			ret = msm_ion_get_heap_type_from_dt_node(node,
 								&heap_type);
 			if (ret)
@@ -664,6 +747,10 @@ static int msm_ion_populate_heap(struct device_node *node,
 			heap->type = heap_type;
 			ret = msm_init_extra_data(node, heap,
 						&ion_heap_meta[i]);
+=======
+			heap->type = ion_heap_meta[i].type;
+			ret = msm_init_extra_data(heap, &ion_heap_meta[i]);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			break;
 		}
 	}
@@ -725,7 +812,10 @@ static int msm_ion_get_heap_size(struct device_node *node,
 	int ret = 0;
 	u32 out_values[2];
 	const char *memory_name_prop;
+<<<<<<< HEAD
 	struct device_node *pnode;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	ret = of_property_read_u32(node, "qcom,memory-reservation-size", &val);
 	if (!ret) {
@@ -747,6 +837,7 @@ static int msm_ion_get_heap_size(struct device_node *node,
 				__func__);
 			ret = -EINVAL;
 		}
+<<<<<<< HEAD
 		goto out;
 	}
 
@@ -774,6 +865,16 @@ static int msm_ion_get_heap_size(struct device_node *node,
 	}
 
 	ret = 0;
+=======
+	} else {
+		ret = of_property_read_u32_array(node, "qcom,memory-fixed",
+								out_values, 2);
+		if (!ret)
+			heap->size = out_values[1];
+		else
+			ret = 0;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 out:
 	return ret;
 }
@@ -783,12 +884,16 @@ static void msm_ion_get_heap_base(struct device_node *node,
 {
 	u32 out_values[2];
 	int ret = 0;
+<<<<<<< HEAD
 	struct device_node *pnode;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	ret = of_property_read_u32_array(node, "qcom,memory-fixed",
 							out_values, 2);
 	if (!ret)
 		heap->base = out_values[0];
+<<<<<<< HEAD
 
 	pnode = of_parse_phandle(node, "linux,contiguous-region", 0);
 	if (pnode != NULL) {
@@ -796,6 +901,8 @@ static void msm_ion_get_heap_base(struct device_node *node,
 		of_node_put(pnode);
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return;
 }
 
@@ -882,7 +989,11 @@ static struct ion_platform_data *msm_ion_parse_dt(struct platform_device *pdev)
 		}
 		pdata->heaps[idx].id = val;
 
+<<<<<<< HEAD
 		ret = msm_ion_populate_heap(node, &pdata->heaps[idx]);
+=======
+		ret = msm_ion_populate_heap(&pdata->heaps[idx]);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (ret)
 			goto free_heaps;
 
@@ -973,6 +1084,7 @@ static long msm_ion_custom_ioctl(struct ion_client *client,
 					sizeof(struct ion_flush_data)))
 			return -EFAULT;
 
+<<<<<<< HEAD
 		if (data.handle > 0) {
 			handle = ion_handle_get_by_id(client, (int)data.handle);
 			if (IS_ERR(handle)) {
@@ -985,6 +1097,13 @@ static long msm_ion_custom_ioctl(struct ion_client *client,
 			if (IS_ERR(handle)) {
 				pr_info("%s: Could not import handle: %p\n",
 					__func__, handle);
+=======
+		if (!data.handle) {
+			handle = ion_import_dma_buf(client, data.fd);
+			if (IS_ERR(handle)) {
+				pr_info("%s: Could not import handle: %d\n",
+					__func__, (int)handle);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				return -EINVAL;
 			}
 		}
@@ -995,6 +1114,7 @@ static long msm_ion_custom_ioctl(struct ion_client *client,
 		end = (unsigned long) data.vaddr + data.length;
 
 		if (start && check_vaddr_bounds(start, end)) {
+<<<<<<< HEAD
 			pr_err("%s: virtual address %p is out of bounds\n",
 				__func__, data.vaddr);
 			ret = -EINVAL;
@@ -1005,10 +1125,30 @@ static long msm_ion_custom_ioctl(struct ion_client *client,
 		up_read(&mm->mmap_sem);
 
 		ion_free(client, handle);
+=======
+			up_read(&mm->mmap_sem);
+			pr_err("%s: virtual address %p is out of bounds\n",
+				__func__, data.vaddr);
+			if (!data.handle)
+				ion_free(client, handle);
+			return -EINVAL;
+		}
+
+		ret = ion_do_cache_op(client,
+				data.handle ? data.handle : handle,
+				data.vaddr, data.offset, data.length,
+				cmd);
+
+		up_read(&mm->mmap_sem);
+
+		if (!data.handle)
+			ion_free(client, handle);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		if (ret < 0)
 			return ret;
 		break;
+<<<<<<< HEAD
 	}
 	case ION_IOC_PREFETCH:
 	{
@@ -1035,6 +1175,10 @@ static long msm_ion_custom_ioctl(struct ion_client *client,
 		break;
 	}
 
+=======
+
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	default:
 		return -ENOTTY;
 	}
@@ -1046,6 +1190,12 @@ static struct ion_heap *msm_ion_heap_create(struct ion_platform_heap *heap_data)
 	struct ion_heap *heap = NULL;
 
 	switch ((int)heap_data->type) {
+<<<<<<< HEAD
+=======
+	case ION_HEAP_TYPE_IOMMU:
+		heap = ion_iommu_heap_create(heap_data);
+		break;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	case ION_HEAP_TYPE_CP:
 		heap = ion_cp_heap_create(heap_data);
 		break;
@@ -1085,6 +1235,12 @@ static void msm_ion_heap_destroy(struct ion_heap *heap)
 		return;
 
 	switch ((int)heap->type) {
+<<<<<<< HEAD
+=======
+	case ION_HEAP_TYPE_IOMMU:
+		ion_iommu_heap_destroy(heap);
+		break;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	case ION_HEAP_TYPE_CP:
 		ion_cp_heap_destroy(heap);
 		break;
@@ -1106,7 +1262,10 @@ static void msm_ion_heap_destroy(struct ion_heap *heap)
 
 static int msm_ion_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	static struct ion_device *new_dev;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct ion_platform_data *pdata;
 	unsigned int pdata_needs_to_be_freed;
 	int err = -1;
@@ -1132,6 +1291,7 @@ static int msm_ion_probe(struct platform_device *pdev)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	new_dev = ion_device_create(msm_ion_custom_ioctl);
 	if (IS_ERR_OR_NULL(new_dev)) {
 		/*
@@ -1140,6 +1300,11 @@ static int msm_ion_probe(struct platform_device *pdev)
 		 */
 		idev = new_dev;
 		err = PTR_ERR(new_dev);
+=======
+	idev = ion_device_create(msm_ion_custom_ioctl);
+	if (IS_ERR_OR_NULL(idev)) {
+		err = PTR_ERR(idev);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		goto freeheaps;
 	}
 
@@ -1166,18 +1331,26 @@ static int msm_ion_probe(struct platform_device *pdev)
 							  heap_data->name);
 		}
 
+<<<<<<< HEAD
 		ion_device_add_heap(new_dev, heaps[i]);
+=======
+		ion_device_add_heap(idev, heaps[i]);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	check_for_heap_overlap(pdata->heaps, num_heaps);
 	if (pdata_needs_to_be_freed)
 		free_pdata(pdata);
 
+<<<<<<< HEAD
 	platform_set_drvdata(pdev, new_dev);
 	/*
 	 * intentionally set this at the very end to allow probes to be deferred
 	 * completely until Ion is setup
 	 */
 	idev = new_dev;
+=======
+	platform_set_drvdata(pdev, idev);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return 0;
 
 freeheaps:

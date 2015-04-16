@@ -184,4 +184,8 @@ source "drivers/usb/gadget/Kconfig"
 
 source "drivers/usb/otg/Kconfig"
 
+<<<<<<< HEAD
+=======
+source "drivers/usb/notify/Kconfig"
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 endif # USB_SUPPORT

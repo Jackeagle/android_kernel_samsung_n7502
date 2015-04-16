@@ -73,8 +73,12 @@ enum us_detect_mode_enum {
 #define USF_TSC_PTR_EVENT_IND  1
 #define USF_MOUSE_EVENT_IND    2
 #define USF_KEYBOARD_EVENT_IND 3
+<<<<<<< HEAD
 #define USF_TSC_EXT_EVENT_IND  4
 #define USF_MAX_EVENT_IND      5
+=======
+#define USF_MAX_EVENT_IND      4
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* Types of events, produced by the calculators */
 #define USF_NO_EVENT 0
@@ -82,12 +86,19 @@ enum us_detect_mode_enum {
 #define USF_TSC_PTR_EVENT  (1 << USF_TSC_PTR_EVENT_IND)
 #define USF_MOUSE_EVENT    (1 << USF_MOUSE_EVENT_IND)
 #define USF_KEYBOARD_EVENT (1 << USF_KEYBOARD_EVENT_IND)
+<<<<<<< HEAD
 #define USF_TSC_EXT_EVENT  (1 << USF_TSC_EXT_EVENT_IND)
 #define USF_ALL_EVENTS         (USF_TSC_EVENT |\
 				USF_TSC_PTR_EVENT |\
 				USF_MOUSE_EVENT |\
 				USF_KEYBOARD_EVENT |\
 				USF_TSC_EXT_EVENT)
+=======
+#define USF_ALL_EVENTS         (USF_TSC_EVENT |\
+				USF_TSC_PTR_EVENT |\
+				USF_MOUSE_EVENT |\
+				USF_KEYBOARD_EVENT)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* min, max array dimension */
 #define MIN_MAX_DIM 2
@@ -149,8 +160,11 @@ struct us_input_info_type {
 	int tsc_y_tilt[MIN_MAX_DIM];
 	/* Touch screen pressure limits: min & max; for input module */
 	int tsc_pressure[MIN_MAX_DIM];
+<<<<<<< HEAD
 	/* The requested side buttons bitmap */
 	uint16_t req_side_buttons_bitmap;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* Bitmap of types of events (USF_X_EVENT), produced by calculator */
 	uint16_t event_types;
 	/* Input event source */
@@ -179,8 +193,11 @@ struct point_event_type {
 	int inclinations[TILTS_DIM];
 /* [0-1023] (10bits); 0 - pen up */
 	uint32_t pressure;
+<<<<<<< HEAD
 /* Bitmap for side button state. 1 - down, 0 - up */
 	uint16_t side_buttons_state_bitmap;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /* Mouse buttons, supported by USF */

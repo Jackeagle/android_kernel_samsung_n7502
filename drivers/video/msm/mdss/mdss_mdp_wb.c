@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -26,7 +30,11 @@
 #include "mdss_mdp.h"
 #include "mdss_fb.h"
 #include "mdss_wb.h"
+<<<<<<< HEAD
 
+=======
+#include "dlog.h"
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 enum mdss_mdp_wb_state {
 	WB_OPEN,
@@ -123,6 +131,7 @@ struct mdss_mdp_data *mdss_mdp_wb_debug_buffer(struct msm_fb_data_type *mfd)
 }
 #endif
 
+<<<<<<< HEAD
 /*
  * mdss_mdp_get_secure() - Queries the secure status of a writeback session
  * @mfd:                   Frame buffer device structure
@@ -151,6 +160,8 @@ int mdss_mdp_wb_get_secure(struct msm_fb_data_type *mfd, uint8_t *enabled)
  * allowed to write back into the secure buffer. If enable is 0, we
  * deallocate the secure pipe (if it was allocated previously).
  */
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int mdss_mdp_wb_set_secure(struct msm_fb_data_type *mfd, int enable)
 {
 	struct mdss_mdp_wb *wb = mfd_to_wb(mfd);
@@ -159,6 +170,7 @@ int mdss_mdp_wb_set_secure(struct msm_fb_data_type *mfd, int enable)
 	struct mdss_mdp_mixer *mixer;
 
 	pr_debug("setting secure=%d\n", enable);
+<<<<<<< HEAD
 	if ((enable != 1) && (enable != 0)) {
 		pr_err("Invalid enable value = %d\n", enable);
 		return -EINVAL;
@@ -173,6 +185,8 @@ int mdss_mdp_wb_set_secure(struct msm_fb_data_type *mfd, int enable)
 		pr_err("unable to start, writeback is not initialized\n");
 		return -ENODEV;
 	}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	ctl->is_secure = enable;
 	wb->is_secure = enable;
@@ -438,7 +452,10 @@ static int mdss_mdp_wb_queue(struct msm_fb_data_type *mfd,
 {
 	struct mdss_mdp_wb *wb = mfd_to_wb(mfd);
 	struct mdss_mdp_wb_data *node = NULL;
+<<<<<<< HEAD
 	struct mdss_overlay_private *mdp5_data = mfd_to_mdp5_data(mfd);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int ret = 0;
 
 	if (!wb) {
@@ -448,15 +465,21 @@ static int mdss_mdp_wb_queue(struct msm_fb_data_type *mfd,
 
 	pr_debug("fb%d queue\n", wb->fb_ndx);
 
+<<<<<<< HEAD
 	if (!mfd->panel_info->cont_splash_enabled)
 		mdss_iommu_attach(mdp5_data->mdata);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mutex_lock(&wb->lock);
 	if (local)
 		node = get_local_node(wb, data);
 	if (node == NULL)
 		node = get_user_node(mfd, data);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!node || node->state == IN_BUSY_QUEUE ||
 	    node->state == IN_FREE_QUEUE) {
 		pr_err("memory not registered or Buffer already with us\n");
@@ -522,14 +545,32 @@ static int mdss_mdp_wb_dequeue(struct msm_fb_data_type *mfd,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static void mdss_mdp_wb_callback(void *arg)
+{
+	if (arg)
+		complete((struct completion *) arg);
+}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int mdss_mdp_wb_kickoff(struct msm_fb_data_type *mfd)
 {
 	struct mdss_mdp_wb *wb = mfd_to_wb(mfd);
 	struct mdss_mdp_ctl *ctl = mfd_to_ctl(mfd);
 	struct mdss_mdp_wb_data *node = NULL;
 	int ret = 0;
+<<<<<<< HEAD
 	struct mdss_mdp_writeback_arg wb_args;
 
+=======
+	DECLARE_COMPLETION_ONSTACK(comp);
+	struct mdss_mdp_writeback_arg wb_args = {
+		.callback_fnc = mdss_mdp_wb_callback,
+		.priv_data = &comp,
+	};
+	__DLOG__(mfd->fbi->node);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!ctl->power_on)
 		return 0;
 
@@ -570,6 +611,15 @@ int mdss_mdp_wb_kickoff(struct msm_fb_data_type *mfd)
 		goto kickoff_fail;
 	}
 
+<<<<<<< HEAD
+=======
+	ret = wait_for_completion_timeout(&comp, KOFF_TIMEOUT);
+	if (ret == 0)
+		WARN(1, "wfd kick off time out=%d ctl=%d", ret, ctl->num);
+	else
+		ret = 0;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (wb && node) {
 		mutex_lock(&wb->lock);
 		list_add_tail(&node->active_entry, &wb->busy_queue);
@@ -606,6 +656,10 @@ int mdss_mdp_wb_set_mirr_hint(struct msm_fb_data_type *mfd, int hint)
 	default:
 		return -EINVAL;
 	}
+<<<<<<< HEAD
+=======
+	__DLOG__(mfd->fbi->node, hint);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 int mdss_mdp_wb_get_format(struct msm_fb_data_type *mfd,
@@ -744,7 +798,11 @@ int msm_fb_writeback_start(struct fb_info *info)
 
 	if (!mfd)
 		return -ENODEV;
+<<<<<<< HEAD
 
+=======
+	__DLOG__(info->node);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return mdss_mdp_wb_start(mfd);
 }
 EXPORT_SYMBOL(msm_fb_writeback_start);
@@ -834,6 +892,7 @@ int msm_fb_writeback_set_secure(struct fb_info *info, int enable)
 	return mdss_mdp_wb_set_secure(mfd, enable);
 }
 EXPORT_SYMBOL(msm_fb_writeback_set_secure);
+<<<<<<< HEAD
 
 /**
  * msm_fb_writeback_iommu_ref() - Power ON/OFF mdp clock
@@ -853,3 +912,5 @@ int msm_fb_writeback_iommu_ref(struct fb_info *info, int enable)
 	return 0;
 }
 EXPORT_SYMBOL(msm_fb_writeback_iommu_ref);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60

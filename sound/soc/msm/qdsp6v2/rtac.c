@@ -25,7 +25,11 @@
 #include <sound/q6asm-v2.h>
 #include <sound/q6afe-v2.h>
 #include <sound/apr_audio-v2.h>
+<<<<<<< HEAD
 #include <q6voice.h>
+=======
+#include "q6voice.h"
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include "audio_acdb.h"
 
 
@@ -100,6 +104,7 @@ struct rtac_adm {
 	struct rtac_adm_data	device[RTAC_MAX_ACTIVE_DEVICES];
 };
 static struct rtac_adm		rtac_adm_data;
+<<<<<<< HEAD
 
 
 /* ADM V2 data */
@@ -122,6 +127,8 @@ struct rtac_adm_v2 {
 };
 
 static struct rtac_adm_v2	rtac_adm_data_v2;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static u32			*rtac_adm_buffer;
 
 
@@ -378,6 +385,7 @@ done:
 	return result;
 }
 
+<<<<<<< HEAD
 
 /* ADM Info V2 */
 static void add_popp_v2(u32 dev_idx, u32 port_id, u32 popp_id)
@@ -519,6 +527,8 @@ static void rtac_remove_popp_from_adm_devices_v2(u32 popp_id)
 	}
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* ADM Info */
 void add_popp(u32 dev_idx, u32 port_id, u32 popp_id)
 {
@@ -546,8 +556,11 @@ void rtac_add_adm_device(u32 port_id, u32 copp_id, u32 path_id, u32 popp_id)
 		popp_id);
 
 	mutex_lock(&rtac_adm_mutex);
+<<<<<<< HEAD
 	rtac_add_adm_device_v2(port_id, copp_id, path_id, popp_id);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (rtac_adm_data.num_of_dev == RTAC_MAX_ACTIVE_DEVICES) {
 		pr_err("%s, Can't add anymore RTAC devices!\n", __func__);
 		goto done;
@@ -556,8 +569,12 @@ void rtac_add_adm_device(u32 port_id, u32 copp_id, u32 path_id, u32 popp_id)
 	/* Check if device already added */
 	if (rtac_adm_data.num_of_dev != 0) {
 		for (; i < rtac_adm_data.num_of_dev; i++) {
+<<<<<<< HEAD
 			if (rtac_adm_data.device[i].afe_port == port_id &&
 			    rtac_adm_data.device[i].copp == copp_id) {
+=======
+			if (rtac_adm_data.device[i].afe_port == port_id) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				add_popp(i, port_id, popp_id);
 				goto done;
 			}
@@ -606,22 +623,36 @@ static void shift_popp(u32 copp_idx, u32 popp_idx)
 			&rtac_adm_data.device[copp_idx].popp[popp_idx + 1],
 			sizeof(uint32_t));
 		memset(&rtac_adm_data.device[copp_idx].popp[popp_idx + 1], 0,
+<<<<<<< HEAD
 			sizeof(uint32_t));
 	}
 }
 
 void rtac_remove_adm_device(u32 port_id, u32 copp_id)
+=======
+			   sizeof(uint32_t));
+	}
+}
+
+void rtac_remove_adm_device(u32 port_id)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	s32 i;
 	pr_debug("%s: port_id = %d\n", __func__, port_id);
 
 	mutex_lock(&rtac_adm_mutex);
+<<<<<<< HEAD
 	rtac_remove_adm_device_v2(port_id);
 
 	/* look for device */
 	for (i = 0; i < rtac_adm_data.num_of_dev; i++) {
 		if (rtac_adm_data.device[i].afe_port == port_id &&
 		    rtac_adm_data.device[i].copp == copp_id) {
+=======
+	/* look for device */
+	for (i = 0; i < rtac_adm_data.num_of_dev; i++) {
+		if (rtac_adm_data.device[i].afe_port == port_id) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			memset(&rtac_adm_data.device[i], 0,
 				   sizeof(rtac_adm_data.device[i]));
 			rtac_adm_data.num_of_dev--;
@@ -643,7 +674,10 @@ void rtac_remove_popp_from_adm_devices(u32 popp_id)
 	pr_debug("%s: popp_id = %d\n", __func__, popp_id);
 
 	mutex_lock(&rtac_adm_mutex);
+<<<<<<< HEAD
 	rtac_remove_popp_from_adm_devices_v2(popp_id);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	for (i = 0; i < rtac_adm_data.num_of_dev; i++) {
 		for (j = 0; j < rtac_adm_data.device[i].num_of_popp; j++) {
@@ -872,8 +906,11 @@ u32 send_adm_apr(void *buf, u32 opcode)
 	for (port_index = 0; port_index < AFE_MAX_PORTS; port_index++) {
 		if (adm_get_copp_id(port_index) == copp_id)
 			break;
+<<<<<<< HEAD
 		if (adm_get_lowlatency_copp_id(port_index) == copp_id)
 			break;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	if (port_index >= AFE_MAX_PORTS) {
 		pr_err("%s: Could not find port index for copp = %d\n",
@@ -1441,6 +1478,7 @@ static long rtac_ioctl(struct file *f,
 		else
 			result = sizeof(rtac_adm_data);
 		break;
+<<<<<<< HEAD
 	case AUDIO_GET_RTAC_ADM_INFO_V2:
 		if (copy_to_user((void *)arg, &rtac_adm_data_v2,
 						sizeof(rtac_adm_data_v2)))
@@ -1448,6 +1486,8 @@ static long rtac_ioctl(struct file *f,
 		else
 			result = sizeof(rtac_adm_data_v2);
 		break;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	case AUDIO_GET_RTAC_VOICE_INFO:
 		if (copy_to_user((void *)arg, &rtac_voice_data,
 						sizeof(rtac_voice_data)))
@@ -1518,7 +1558,10 @@ static int __init rtac_init(void)
 
 	/* ADM */
 	memset(&rtac_adm_data, 0, sizeof(rtac_adm_data));
+<<<<<<< HEAD
 	memset(&rtac_adm_data_v2, 0, sizeof(rtac_adm_data_v2));
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	rtac_adm_apr_data.apr_handle = NULL;
 	atomic_set(&rtac_adm_apr_data.cmd_state, 0);
 	init_waitqueue_head(&rtac_adm_apr_data.cmd_wait);

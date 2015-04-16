@@ -14,7 +14,14 @@ config CPU_FREQ
 	  For details, take a look at <file:Documentation/cpu-freq>.
 
 	  If in doubt, say N.
+<<<<<<< HEAD
 
+=======
+config SEC_DVFS
+	bool "DVFS job"
+	default n
+	depends on CPU_FREQ
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 if CPU_FREQ
 
 config CPU_FREQ_TABLE

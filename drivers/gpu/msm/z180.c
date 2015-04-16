@@ -94,7 +94,11 @@ enum z180_cmdwindow_type {
 #define Z180_CMDWINDOW_ADDR_SHIFT		8
 
 static int z180_init(struct kgsl_device *device);
+<<<<<<< HEAD
 static int z180_start(struct kgsl_device *device, int priority);
+=======
+static int z180_start(struct kgsl_device *device);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int z180_stop(struct kgsl_device *device);
 static int z180_wait(struct kgsl_device *device,
 				struct kgsl_context *context,
@@ -156,6 +160,10 @@ static struct z180_device device_2d0 = {
 		.drv_log = KGSL_LOG_LEVEL_DEFAULT,
 		.mem_log = KGSL_LOG_LEVEL_DEFAULT,
 		.pwr_log = KGSL_LOG_LEVEL_DEFAULT,
+<<<<<<< HEAD
+=======
+		.ft_log = KGSL_LOG_LEVEL_DEFAULT,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.pm_dump_enable = 0,
 	},
 	.cmdwin_lock = __SPIN_LOCK_INITIALIZER(device_2d1.cmdwin_lock),
@@ -361,6 +369,7 @@ static int room_in_rb(struct z180_device *device)
 	return ts_diff < Z180_PACKET_COUNT;
 }
 
+<<<<<<< HEAD
 /**
  * z180_idle() - Idle the 2D device
  * @device: Pointer to the KGSL device struct for the Z180
@@ -368,6 +377,9 @@ static int room_in_rb(struct z180_device *device)
  * wait until the z180 submission queue is idle
  */
 int z180_idle(struct kgsl_device *device)
+=======
+static int z180_idle(struct kgsl_device *device)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	int status = 0;
 	struct z180_device *z180_dev = Z180_DEVICE(device);
@@ -387,8 +399,15 @@ int z180_idle(struct kgsl_device *device)
 int
 z180_cmdstream_issueibcmds(struct kgsl_device_private *dev_priv,
 			struct kgsl_context *context,
+<<<<<<< HEAD
 			struct kgsl_cmdbatch *cmdbatch,
 			uint32_t *timestamp)
+=======
+			struct kgsl_ibdesc *ibdesc,
+			unsigned int numibs,
+			uint32_t *timestamp,
+			unsigned int ctrl)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	long result = 0;
 	unsigned int ofs        = PACKETSIZE_STATESTREAM * sizeof(unsigned int);
@@ -401,6 +420,7 @@ z180_cmdstream_issueibcmds(struct kgsl_device_private *dev_priv,
 	struct kgsl_pagetable *pagetable = dev_priv->process_priv->pagetable;
 	struct z180_device *z180_dev = Z180_DEVICE(device);
 	unsigned int sizedwords;
+<<<<<<< HEAD
 	unsigned int numibs;
 	struct kgsl_ibdesc *ibdesc;
 
@@ -417,6 +437,8 @@ z180_cmdstream_issueibcmds(struct kgsl_device_private *dev_priv,
 
 	ibdesc = cmdbatch->ibdesc;
 	numibs = cmdbatch->ibcount;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (device->state & KGSL_STATE_HUNG) {
 		result = -EINVAL;
@@ -458,7 +480,11 @@ z180_cmdstream_issueibcmds(struct kgsl_device_private *dev_priv,
 		context->id, cmd, sizedwords);
 	/* context switch */
 	if ((context->id != (int)z180_dev->ringbuffer.prevctx) ||
+<<<<<<< HEAD
 	    (cmdbatch->flags & KGSL_CONTEXT_CTX_SWITCH)) {
+=======
+	    (ctrl & KGSL_CONTEXT_CTX_SWITCH)) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		KGSL_CMD_INFO(device, "context switch %d -> %d\n",
 			context->id, z180_dev->ringbuffer.prevctx);
 		kgsl_mmu_setstate(&device->mmu, pagetable,
@@ -466,6 +492,7 @@ z180_cmdstream_issueibcmds(struct kgsl_device_private *dev_priv,
 		cnt = PACKETSIZE_STATESTREAM;
 		ofs = 0;
 	}
+<<<<<<< HEAD
 
 	result = kgsl_setstate(&device->mmu,
 			KGSL_MEMSTORE_GLOBAL,
@@ -473,6 +500,12 @@ z180_cmdstream_issueibcmds(struct kgsl_device_private *dev_priv,
 			device->id));
 	if (result < 0)
 		goto error;
+=======
+	kgsl_setstate(&device->mmu,
+			KGSL_MEMSTORE_GLOBAL,
+			kgsl_mmu_pt_get_flags(device->mmu.hwpagetable,
+			device->id));
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	result = wait_event_interruptible_timeout(device->wait_queue,
 				  room_in_rb(z180_dev),
@@ -513,12 +546,18 @@ z180_cmdstream_issueibcmds(struct kgsl_device_private *dev_priv,
 	z180_cmdwindow_write(device, ADDR_VGV3_CONTROL, cmd);
 	z180_cmdwindow_write(device, ADDR_VGV3_CONTROL, 0);
 error:
+<<<<<<< HEAD
 	kgsl_trace_issueibcmds(device, context->id, cmdbatch,
 		*timestamp, cmdbatch ? cmdbatch->flags : 0, result, 0);
 
 	kgsl_active_count_put(device);
 error_active_count:
 	mutex_unlock(&device->mutex);
+=======
+
+	kgsl_trace_issueibcmds(device, context->id, ibdesc, numibs,
+		*timestamp, ctrl, result, 0);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return (int)result;
 }
@@ -559,7 +598,12 @@ static int __devinit z180_probe(struct platform_device *pdev)
 	if (status)
 		goto error_close_ringbuffer;
 
+<<<<<<< HEAD
 	kgsl_pwrscale_init(&pdev->dev, CONFIG_MSM_Z180_DEFAULT_GOVERNOR);
+=======
+	kgsl_pwrscale_init(device);
+	kgsl_pwrscale_attach_policy(device, Z180_DEFAULT_PWRSCALE_POLICY);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return status;
 
@@ -594,7 +638,11 @@ static int z180_init(struct kgsl_device *device)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int z180_start(struct kgsl_device *device, int priority)
+=======
+static int z180_start(struct kgsl_device *device)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	int status = 0;
 
@@ -628,12 +676,17 @@ error_clk_off:
 
 static int z180_stop(struct kgsl_device *device)
 {
+<<<<<<< HEAD
 	int ret;
 
 	device->ftbl->irqctrl(device, 0);
 	ret = z180_idle(device);
 	if (ret)
 		return ret;
+=======
+	device->ftbl->irqctrl(device, 0);
+	z180_idle(device);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	del_timer_sync(&device->idle_timer);
 
@@ -699,7 +752,11 @@ static int z180_getproperty(struct kgsl_device *device,
 	return status;
 }
 
+<<<<<<< HEAD
 static bool z180_isidle(struct kgsl_device *device)
+=======
+static unsigned int z180_isidle(struct kgsl_device *device)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	struct z180_device *z180_dev = Z180_DEVICE(device);
 
@@ -864,6 +921,7 @@ static int z180_waittimestamp(struct kgsl_device *device,
 	if (msecs == -1)
 		msecs = Z180_IDLE_TIMEOUT;
 
+<<<<<<< HEAD
 	status = kgsl_active_count_get(device);
 	if (!status) {
 		mutex_unlock(&device->mutex);
@@ -871,6 +929,11 @@ static int z180_waittimestamp(struct kgsl_device *device,
 		mutex_lock(&device->mutex);
 		kgsl_active_count_put(device);
 	}
+=======
+	mutex_unlock(&device->mutex);
+	status = z180_wait(device, context, timestamp, msecs);
+	mutex_lock(&device->mutex);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return status;
 }
@@ -916,25 +979,35 @@ z180_drawctxt_create(struct kgsl_device_private *dev_priv,
 	return context;
 }
 
+<<<<<<< HEAD
 static int
 z180_drawctxt_detach(struct kgsl_context *context)
 {
 	int ret;
+=======
+static void
+z180_drawctxt_detach(struct kgsl_context *context)
+{
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct kgsl_device *device;
 	struct z180_device *z180_dev;
 
 	device = context->device;
 	z180_dev = Z180_DEVICE(device);
 
+<<<<<<< HEAD
 	ret = kgsl_active_count_get(device);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	z180_idle(device);
 
 	if (z180_dev->ringbuffer.prevctx == context->id) {
 		z180_dev->ringbuffer.prevctx = Z180_INVALID_CONTEXT;
 		device->mmu.hwpagetable = device->mmu.defaultpagetable;
+<<<<<<< HEAD
 
 		/* Ignore the result - we are going down anyway */
 		kgsl_setstate(&device->mmu, KGSL_MEMSTORE_GLOBAL,
@@ -943,6 +1016,11 @@ z180_drawctxt_detach(struct kgsl_context *context)
 
 	kgsl_active_count_put(device);
 	return 0;
+=======
+		kgsl_setstate(&device->mmu, KGSL_MEMSTORE_GLOBAL,
+				KGSL_MMUFLAGS_PTUPDATE);
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static void
@@ -954,6 +1032,7 @@ z180_drawctxt_destroy(struct kgsl_context *context)
 static void z180_power_stats(struct kgsl_device *device,
 			    struct kgsl_power_stats *stats)
 {
+<<<<<<< HEAD
 	struct kgsl_pwrscale *pwrscale = &device->pwrscale;
 	s64 tmp = ktime_to_us(ktime_get());
 
@@ -964,6 +1043,20 @@ static void z180_power_stats(struct kgsl_device *device,
 	} else {
 		stats->busy_time = tmp - pwrscale->on_time;
 		pwrscale->on_time = tmp;
+=======
+	struct kgsl_pwrctrl *pwr = &device->pwrctrl;
+	s64 tmp = ktime_to_us(ktime_get());
+
+	if (pwr->time == 0) {
+		pwr->time = tmp;
+		stats->total_time = 0;
+		stats->busy_time = 0;
+	} else {
+		stats->total_time = tmp - pwr->time;
+		pwr->time = tmp;
+		stats->busy_time = tmp - device->on_time;
+		device->on_time = tmp;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 }
 
@@ -1014,7 +1107,10 @@ static const struct kgsl_functable z180_functable = {
 	.irqctrl = z180_irqctrl,
 	.gpuid = z180_gpuid,
 	.irq_handler = z180_irq_handler,
+<<<<<<< HEAD
 	.drain = z180_idle, /* drain == idle for the z180 */
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* Optional functions */
 	.drawctxt_create = z180_drawctxt_create,
 	.drawctxt_detach = z180_drawctxt_detach,

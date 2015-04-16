@@ -19,7 +19,10 @@
 
 #include "mdss_panel.h"
 #include "mdss_io_util.h"
+<<<<<<< HEAD
 #include "mdss_dsi_cmd.h"
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define MMSS_SERDES_BASE_PHY 0x04f01000 /* mmss (De)Serializer CFG */
 
@@ -82,6 +85,12 @@ enum dsi_panel_bl_ctrl {
 	BL_PWM,
 	BL_WLED,
 	BL_DCS_CMD,
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_FB_MSM_MDSS_KTD3102_BACKLIGHT)
+	BL_GPIO_SWING,
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	UNKNOWN_CTRL,
 };
 
@@ -90,6 +99,7 @@ enum dsi_ctrl_op_mode {
 	DSI_HS_MODE,
 };
 
+<<<<<<< HEAD
 enum dsi_lane_map_type {
 	DSI_LANE_MAP_0123,
 	DSI_LANE_MAP_3012,
@@ -101,6 +111,8 @@ enum dsi_lane_map_type {
 	DSI_LANE_MAP_3210,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define CTRL_STATE_UNKNOWN		0x00
 #define CTRL_STATE_PANEL_INIT		BIT(0)
 #define CTRL_STATE_MDP_ACTIVE		BIT(1)
@@ -130,8 +142,11 @@ enum dsi_lane_map_type {
 
 #define DSI_INTR_ERROR_MASK		BIT(25)
 #define DSI_INTR_ERROR			BIT(24)
+<<<<<<< HEAD
 #define DSI_INTR_BTA_DONE_MASK          BIT(21)
 #define DSI_INTR_BTA_DONE               BIT(20)
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define DSI_INTR_VIDEO_DONE_MASK	BIT(17)
 #define DSI_INTR_VIDEO_DONE		BIT(16)
 #define DSI_INTR_CMD_MDP_DONE_MASK	BIT(9)
@@ -147,7 +162,10 @@ enum dsi_lane_map_type {
 
 #define DSI_VIDEO_TERM  BIT(16)
 #define DSI_MDP_TERM    BIT(8)
+<<<<<<< HEAD
 #define DSI_BTA_TERM    BIT(1)
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define DSI_CMD_TERM    BIT(0)
 
 extern struct device dsi_dev;
@@ -195,6 +213,92 @@ struct dsi_clk_desc {
 	u32 pre_div_func;
 };
 
+<<<<<<< HEAD
+=======
+#define DSI_HOST_HDR_SIZE	4
+#define DSI_HDR_LAST		BIT(31)
+#define DSI_HDR_LONG_PKT	BIT(30)
+#define DSI_HDR_BTA		BIT(29)
+#define DSI_HDR_VC(vc)		(((vc) & 0x03) << 22)
+#define DSI_HDR_DTYPE(dtype)	(((dtype) & 0x03f) << 16)
+#define DSI_HDR_DATA2(data)	(((data) & 0x0ff) << 8)
+#define DSI_HDR_DATA1(data)	((data) & 0x0ff)
+#define DSI_HDR_WC(wc)		((wc) & 0x0ffff)
+
+#define MDSS_DSI_MRPS	0x04  /* Maximum Return Packet Size */
+
+#define MDSS_DSI_LEN 8 /* 4 x 4 - 6 - 2, bytes dcs header+crc-align  */
+
+struct dsi_buf {
+	u32 *hdr;	/* dsi host header */
+	char *start;	/* buffer start addr */
+	char *end;	/* buffer end addr */
+	int size;	/* size of buffer */
+	char *data;	/* buffer */
+	int len;	/* data length */
+	dma_addr_t dmap; /* mapped dma addr */
+};
+struct dsi_cmd {
+	struct dsi_cmd_desc *cmd_desc;
+	char *read_size;
+	char *read_startoffset;
+	int num_of_cmds;
+	char *cmds_buff;
+	int cmds_len;
+};
+
+/* dcs read/write */
+#define DTYPE_DCS_WRITE		0x05	/* short write, 0 parameter */
+#define DTYPE_DCS_WRITE1	0x15	/* short write, 1 parameter */
+#define DTYPE_DCS_READ		0x06	/* read */
+#define DTYPE_DCS_LWRITE	0x39	/* long write */
+
+/* generic read/write */
+#define DTYPE_GEN_WRITE		0x03	/* short write, 0 parameter */
+#define DTYPE_GEN_WRITE1	0x13	/* short write, 1 parameter */
+#define DTYPE_GEN_WRITE2	0x23	/* short write, 2 parameter */
+#define DTYPE_GEN_LWRITE	0x29	/* long write */
+#define DTYPE_GEN_READ		0x04	/* long read, 0 parameter */
+#define DTYPE_GEN_READ1		0x14	/* long read, 1 parameter */
+#define DTYPE_GEN_READ2		0x24	/* long read, 2 parameter */
+
+#define DTYPE_TEAR_ON		0x35	/* set tear on */
+#define DTYPE_MAX_PKTSIZE	0x37	/* set max packet size */
+#define DTYPE_NULL_PKT		0x09	/* null packet, no data */
+#define DTYPE_BLANK_PKT		0x19	/* blankiing packet, no data */
+
+#define DTYPE_CM_ON		0x02	/* color mode off */
+#define DTYPE_CM_OFF		0x12	/* color mode on */
+#define DTYPE_PERIPHERAL_OFF	0x22
+#define DTYPE_PERIPHERAL_ON	0x32
+
+/*
+ * dcs response
+ */
+#define DTYPE_ACK_ERR_RESP      0x02
+#define DTYPE_EOT_RESP          0x08    /* end of tx */
+#define DTYPE_GEN_READ1_RESP    0x11    /* 1 parameter, short */
+#define DTYPE_GEN_READ2_RESP    0x12    /* 2 parameter, short */
+#define DTYPE_GEN_LREAD_RESP    0x1a
+#define DTYPE_DCS_LREAD_RESP    0x1c
+#define DTYPE_DCS_READ1_RESP    0x21    /* 1 parameter, short */
+#define DTYPE_DCS_READ2_RESP    0x22    /* 2 parameter, short */
+
+
+struct dsi_ctrl_hdr {
+	char dtype;	/* data type */
+	char last;	/* last in chain */
+	char vc;	/* virtual chan */
+	char ack;	/* ask ACK from peripheral */
+	char wait;	/* ms */
+	short dlen;	/* 16 bits */
+} __packed;
+
+struct dsi_cmd_desc {
+	struct dsi_ctrl_hdr dchdr;
+	char *payload;
+};
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 struct dsi_panel_cmds {
 	char *buf;
@@ -204,6 +308,38 @@ struct dsi_panel_cmds {
 	int link_state;
 };
 
+<<<<<<< HEAD
+=======
+#define CMD_REQ_MAX     4
+
+typedef void (*fxn)(u32 data);
+
+#define CMD_REQ_RX      0x0001
+#define CMD_REQ_COMMIT  0x0002
+#define CMD_CLK_CTRL    0x0004
+#define CMD_REQ_NO_MAX_PKT_SIZE 0x0008
+#define CMD_REQ_SINGLE_TX 0x0010
+
+
+struct dcs_cmd_req {
+	struct dsi_cmd_desc *cmds;
+	int cmds_cnt;
+	u32 flags;
+	int rlen;       /* rx length */
+	#if defined(CONFIG_MACH_HLITE_EUR_3GDS)
+	char *rbuf;
+	#endif
+	fxn cb;
+};
+
+struct dcs_cmd_list {
+	int put;
+	int get;
+	int tot;
+	struct dcs_cmd_req list[CMD_REQ_MAX];
+};
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct dsi_kickoff_action {
 	struct list_head act_entry;
 	void (*action) (void *);
@@ -223,22 +359,37 @@ enum {
 	DSI_CTRL_MAX,
 };
 
+<<<<<<< HEAD
 #define DSI_EV_PLL_UNLOCKED		0x0001
 #define DSI_EV_MDP_FIFO_UNDERFLOW	0x0002
 #define DSI_EV_MDP_BUSY_RELEASE		0x80000000
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct mdss_dsi_ctrl_pdata {
 	int ndx;	/* panel_num */
 	int (*on) (struct mdss_panel_data *pdata);
 	int (*off) (struct mdss_panel_data *pdata);
+<<<<<<< HEAD
 	int (*partial_update_fnc) (struct mdss_panel_data *pdata);
 	int (*check_status) (struct mdss_dsi_ctrl_pdata *pdata);
 	int (*cmdlist_commit)(struct mdss_dsi_ctrl_pdata *ctrl, int from_mdp);
+=======
+	int (*mtp) (struct mdss_panel_data *pdata);
+	int (*partial_update_fnc) (struct mdss_panel_data *pdata);
+	int (*check_status) (struct mdss_dsi_ctrl_pdata *pdata);
+	int (*panel_reset) (struct mdss_panel_data *pdata, int enable);
+	void (*bl_fnc) (struct mdss_panel_data *pdata, u32 bl_level);
+	int (*registered) (struct mdss_panel_data *data);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct mdss_panel_data panel_data;
 	unsigned char *ctrl_base;
 	int reg_size;
 	u32 clk_cnt;
+<<<<<<< HEAD
 	struct clk *mdp_core_clk;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct clk *ahb_clk;
 	struct clk *axi_clk;
 	struct clk *byte_clk;
@@ -249,6 +400,39 @@ struct mdss_dsi_ctrl_pdata {
 	int irq_cnt;
 	int mdss_dsi_clk_on;
 	int rst_gpio;
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_FB_MSM_MDSS_SHARP_HD_PANEL) || defined(CONFIG_FB_MSM_MDSS_HIMAX_QHD_PANEL)
+	int bl_on_gpio;
+	int disp_en_gpio_p;
+	int disp_en_gpio_n;
+#endif
+#if defined(CONFIG_FB_MSM_MDSS_SDC_WXGA_PANEL)
+	int bl_on_gpio;
+	int bl_sda;
+	int bl_scl;
+	int bl_ap_pwm;
+	int bl_rst_gpio;
+	int bl_wled;
+	int bl_ldi_en;
+#endif
+#if defined(CONFIG_FB_MSM_MDSS_BOE_WXGA_PANEL)
+	int bl_on_gpio;
+	int disp_en_gpio_3v;
+#endif
+#if defined(CONFIG_FB_MSM_MDSS_S6E8AA0A_HD_PANEL)
+	int disp_en_gpio_2_2v;
+#endif
+#if defined(CONFIG_FB_MSM_MDSS_MAGNA_WVGA_PANEL)
+	int disp_en_gpio_1_8v;
+#endif
+#if defined(CONFIG_FB_MSM_MDSS_MAGNA_OCTA_720P_PANEL)
+#ifndef CONFIG_MACH_HLITE_EUR_3GDS
+	int lcd_ldo_en1;
+#endif
+	int lcd_ldo_en2;
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int disp_en_gpio;
 	int disp_te_gpio;
 	int mode_gpio;
@@ -262,7 +446,10 @@ struct mdss_dsi_ctrl_pdata {
 	int pwm_lpg_chan;
 	int bklt_max;
 	int new_fps;
+<<<<<<< HEAD
 	int pwm_enabled;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct pwm_device *pwm_bl;
 	struct dsi_drv_cm_data shared_pdata;
 	u32 pclk_rate;
@@ -270,7 +457,10 @@ struct mdss_dsi_ctrl_pdata {
 	struct dss_module_power power_data;
 	u32 dsi_irq_mask;
 	struct mdss_hw *dsi_hw;
+<<<<<<< HEAD
 	struct mdss_panel_recovery *recovery;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	struct dsi_panel_cmds on_cmds;
 	struct dsi_panel_cmds off_cmds;
@@ -279,7 +469,10 @@ struct mdss_dsi_ctrl_pdata {
 	struct completion dma_comp;
 	struct completion mdp_comp;
 	struct completion video_comp;
+<<<<<<< HEAD
 	struct completion bta_comp;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	spinlock_t irq_lock;
 	spinlock_t mdp_lock;
 	int mdp_busy;
@@ -288,26 +481,52 @@ struct mdss_dsi_ctrl_pdata {
 
 	struct dsi_buf tx_buf;
 	struct dsi_buf rx_buf;
+<<<<<<< HEAD
+=======
+	int dsi_on_state;
+	int dsi_off_state;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 int dsi_panel_device_register(struct device_node *pan_node,
 				struct mdss_dsi_ctrl_pdata *ctrl_pdata);
 
+<<<<<<< HEAD
+=======
+char *mdss_dsi_buf_reserve_hdr(struct dsi_buf *dp, int hlen);
+char *mdss_dsi_buf_init(struct dsi_buf *dp);
+void mdss_dsi_init(void);
+int mdss_dsi_buf_alloc(struct dsi_buf *, int size);
+int mdss_dsi_cmd_dma_add(struct dsi_buf *dp, struct dsi_cmd_desc *cm);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int mdss_dsi_cmds_tx(struct mdss_dsi_ctrl_pdata *ctrl,
 		struct dsi_cmd_desc *cmds, int cnt);
 
 int mdss_dsi_cmds_rx(struct mdss_dsi_ctrl_pdata *ctrl,
+<<<<<<< HEAD
 			struct dsi_cmd_desc *cmds, int rlen);
 
 void mdss_dsi_host_init(struct mipi_panel_info *pinfo,
 				struct mdss_panel_data *pdata);
+=======
+			struct dsi_cmd_desc *cmds, int rlen, u32 rx_flags);
+
+void mdss_dsi_host_init(struct mipi_panel_info *pinfo,
+				struct mdss_panel_data *pdata);
+void mdss_dsi_set_tear_on(struct mdss_dsi_ctrl_pdata *ctrl);
+void mdss_dsi_set_tear_off(struct mdss_dsi_ctrl_pdata *ctrl);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void mdss_dsi_op_mode_config(int mode,
 				struct mdss_panel_data *pdata);
 void mdss_dsi_cmd_mode_ctrl(int enable);
 void mdp4_dsi_cmd_trigger(void);
 void mdss_dsi_cmd_mdp_start(struct mdss_dsi_ctrl_pdata *ctrl);
 void mdss_dsi_cmd_bta_sw_trigger(struct mdss_panel_data *pdata);
+<<<<<<< HEAD
 void mdss_dsi_ack_err_status(struct mdss_dsi_ctrl_pdata *ctrl);
+=======
+void mdss_dsi_ack_err_status(unsigned char *dsi_base);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int mdss_dsi_clk_ctrl(struct mdss_dsi_ctrl_pdata *ctrl, int enable);
 void mdss_dsi_clk_req(struct mdss_dsi_ctrl_pdata *ctrl,
 				int enable);
@@ -326,19 +545,34 @@ int mdss_dsi_clk_init(struct platform_device *pdev,
 void mdss_dsi_clk_deinit(struct mdss_dsi_ctrl_pdata *ctrl_pdata);
 int mdss_dsi_enable_bus_clocks(struct mdss_dsi_ctrl_pdata *ctrl_pdata);
 void mdss_dsi_disable_bus_clocks(struct mdss_dsi_ctrl_pdata *ctrl_pdata);
+<<<<<<< HEAD
 void mdss_dsi_panel_reset(struct mdss_panel_data *pdata, int enable);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void mdss_dsi_phy_enable(struct mdss_dsi_ctrl_pdata *ctrl, int on);
 void mdss_dsi_phy_init(struct mdss_panel_data *pdata);
 void mdss_dsi_phy_sw_reset(unsigned char *ctrl_base);
 void mdss_dsi_cmd_test_pattern(struct mdss_panel_data *pdata);
+<<<<<<< HEAD
 void mdss_dsi_panel_pwm_cfg(struct mdss_dsi_ctrl_pdata *ctrl);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 void mdss_dsi_ctrl_init(struct mdss_dsi_ctrl_pdata *ctrl);
 void mdss_dsi_cmd_mdp_busy(struct mdss_dsi_ctrl_pdata *ctrl);
 void mdss_dsi_wait4video_done(struct mdss_dsi_ctrl_pdata *ctrl);
+<<<<<<< HEAD
 int mdss_dsi_cmdlist_commit(struct mdss_dsi_ctrl_pdata *ctrl, int from_mdp);
 void mdss_dsi_cmdlist_kickoff(int intf);
 int mdss_dsi_bta_status_check(struct mdss_dsi_ctrl_pdata *ctrl);
+=======
+void mdss_dsi_cmdlist_commit(struct mdss_dsi_ctrl_pdata *ctrl, int from_mdp);
+int mdss_dsi_cmdlist_put(struct mdss_dsi_ctrl_pdata *ctrl,
+				struct dcs_cmd_req *cmdreq);
+struct dcs_cmd_req *mdss_dsi_cmdlist_get(struct mdss_dsi_ctrl_pdata *ctrl);
+void mdss_dsi_cmdlist_kickoff(int intf);
+void mdss_dsi_panel_pwm_cfg(struct mdss_dsi_ctrl_pdata *ctrl);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 int mdss_dsi_panel_init(struct device_node *node,
 		struct mdss_dsi_ctrl_pdata *ctrl_pdata,

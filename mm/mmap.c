@@ -37,6 +37,12 @@
 #include <asm/mmu_context.h>
 
 #include "internal.h"
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SDCARD_FS
+#include "../fs/sdcardfs/sdcardfs.h"
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #ifndef arch_mmap_check
 #define arch_mmap_check(addr, len, flags)	(0)
@@ -133,7 +139,11 @@ int __vm_enough_memory(struct mm_struct *mm, long pages, int cap_sys_admin)
 		 */
 		free -= global_page_state(NR_SHMEM);
 
+<<<<<<< HEAD
 		free += get_nr_swap_pages();
+=======
+		free += nr_swap_pages;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		/*
 		 * Any slabs which are created with the
@@ -963,6 +973,13 @@ static unsigned long do_mmap_pgoff(struct file *file, unsigned long addr,
 	int error;
 	unsigned long reqprot = prot;
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SDCARD_FS
+	if (file && (file->f_path.mnt->mnt_sb->s_magic == SDCARDFS_SUPER_MAGIC))
+		file = sdcardfs_lower_file(file);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/*
 	 * Does the application expect PROT_READ to imply PROT_EXEC?
 	 *

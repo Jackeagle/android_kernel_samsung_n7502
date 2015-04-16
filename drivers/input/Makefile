@@ -21,6 +21,10 @@ obj-$(CONFIG_INPUT_MOUSE)	+= mouse/
 obj-$(CONFIG_INPUT_JOYSTICK)	+= joystick/
 obj-$(CONFIG_INPUT_TABLET)	+= tablet/
 obj-$(CONFIG_INPUT_TOUCHSCREEN)	+= touchscreen/
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_INPUT_WACOM)	+= wacom/
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 obj-$(CONFIG_INPUT_MISC)	+= misc/
 
 obj-$(CONFIG_INPUT_APMPOWER)	+= apm-power.o

@@ -131,9 +131,14 @@
 #define FT_FW_PKT_DLY_MS	20
 #define FT_FW_LAST_PKT		0x6ffa
 #define FT_EARSE_DLY_MS		100
+<<<<<<< HEAD
 #define FT_55_AA_DLY_NS		5000
 
 #define FT_UPGRADE_LOOP		30
+=======
+
+#define FT_UPGRADE_LOOP		10
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define FT_CAL_START		0x04
 #define FT_CAL_FIN		0x00
 #define FT_CAL_STORE		0x05
@@ -143,6 +148,7 @@
 
 #define FT_INFO_MAX_LEN		512
 
+<<<<<<< HEAD
 #define FT_BLOADER_SIZE_OFF	12
 #define FT_BLOADER_NEW_SIZE	30
 #define FT_DATA_LEN_OFF_OLD_FW	8
@@ -167,6 +173,8 @@ enum {
 	FT_FT5336_FAMILY_ID_0x14 = 0x14,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define FT_STORE_TS_INFO(buf, id, name, max_tch, group_id, fw_vkey_support, \
 			fw_name, fw_maj, fw_min, fw_sub_min) \
 			snprintf(buf, FT_INFO_MAX_LEN, \
@@ -313,7 +321,11 @@ static irqreturn_t ft5x06_ts_interrupt(int irq, void *dev_id)
 	struct ft5x06_ts_data *data = dev_id;
 	struct input_dev *ip_dev;
 	int rc, i;
+<<<<<<< HEAD
 	u32 id, x, y, status, num_touches;
+=======
+	u32 id, x, y, pressure, status, num_touches;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	u8 reg = 0x00, *buf;
 	bool update_input = false;
 
@@ -354,11 +366,22 @@ static irqreturn_t ft5x06_ts_interrupt(int irq, void *dev_id)
 
 		input_mt_slot(ip_dev, id);
 		if (status == FT_TOUCH_DOWN || status == FT_TOUCH_CONTACT) {
+<<<<<<< HEAD
 			input_mt_report_slot_state(ip_dev, MT_TOOL_FINGER, 1);
 			input_report_abs(ip_dev, ABS_MT_POSITION_X, x);
 			input_report_abs(ip_dev, ABS_MT_POSITION_Y, y);
 		} else {
 			input_mt_report_slot_state(ip_dev, MT_TOOL_FINGER, 0);
+=======
+			pressure = FT_PRESS;
+			input_mt_report_slot_state(ip_dev, MT_TOOL_FINGER, 1);
+			input_report_abs(ip_dev, ABS_MT_POSITION_X, x);
+			input_report_abs(ip_dev, ABS_MT_POSITION_Y, y);
+			input_report_abs(ip_dev, ABS_MT_PRESSURE, pressure);
+		} else {
+			input_mt_report_slot_state(ip_dev, MT_TOOL_FINGER, 0);
+			input_report_abs(ip_dev, ABS_MT_PRESSURE, 0);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 	}
 
@@ -502,7 +525,11 @@ static int ft5x06_ts_suspend(struct device *dev)
 		input_mt_slot(data->input_dev, i);
 		input_mt_report_slot_state(data->input_dev, MT_TOOL_FINGER, 0);
 	}
+<<<<<<< HEAD
 	input_mt_report_pointer_emulation(data->input_dev, false);
+=======
+	input_report_key(data->input_dev, BTN_TOUCH, 0);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	input_sync(data->input_dev);
 
 	if (gpio_is_valid(data->pdata->reset_gpio)) {
@@ -670,6 +697,7 @@ static int ft5x06_fw_upgrade_start(struct i2c_client *client,
 	u8 reset_reg;
 	u8 w_buf[FT_MAX_WR_BUF] = {0}, r_buf[FT_MAX_RD_BUF] = {0};
 	u8 pkt_buf[FT_FW_PKT_LEN + FT_FW_PKT_META_LEN];
+<<<<<<< HEAD
 	int i, j, temp;
 	u32 pkt_num, pkt_len;
 	u8 is_5336_new_bootloader = false;
@@ -684,6 +712,13 @@ static int ft5x06_fw_upgrade_start(struct i2c_client *client,
 
 	for (i = 0, j = 0; i < FT_UPGRADE_LOOP; i++) {
 		msleep(FT_EARSE_DLY_MS);
+=======
+	int rc, i, j, temp;
+	u32 pkt_num, pkt_len;
+	u8 fw_ecc;
+
+	for (i = 0, j = 0; i < FT_UPGRADE_LOOP; i++) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/* reset - write 0xaa and 0x55 to reset register */
 		if (ts_data->family_id == FT6X06_ID)
 			reset_reg = FT_RST_CMD_REG2;
@@ -694,6 +729,7 @@ static int ft5x06_fw_upgrade_start(struct i2c_client *client,
 		msleep(info.delay_aa);
 
 		ft5x0x_write_reg(client, reset_reg, FT_UPGRADE_55);
+<<<<<<< HEAD
 		if (i <= (FT_UPGRADE_LOOP / 2))
 			msleep(info.delay_55 + i * 3);
 		else
@@ -705,6 +741,18 @@ static int ft5x06_fw_upgrade_start(struct i2c_client *client,
 		usleep(FT_55_AA_DLY_NS);
 		w_buf[0] = FT_UPGRADE_AA;
 		ft5x06_i2c_write(client, w_buf, 1);
+=======
+		msleep(info.delay_55);
+
+		/* Enter upgrade mode */
+		w_buf[0] = FT_UPGRADE_55;
+		w_buf[1] = FT_UPGRADE_AA;
+		do {
+			j++;
+			rc = ft5x06_i2c_write(client, w_buf, 2);
+			msleep(FT_RETRY_DLY);
+		} while (rc <= 0 && j < FT_MAX_TRIES);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		/* check READ_ID */
 		msleep(info.delay_readid);
@@ -717,9 +765,13 @@ static int ft5x06_fw_upgrade_start(struct i2c_client *client,
 
 		if (r_buf[0] != info.upgrade_id_1
 			|| r_buf[1] != info.upgrade_id_2) {
+<<<<<<< HEAD
 			dev_err(&client->dev, "Upgrade ID mismatch(%d), IC=0x%x 0x%x, info=0x%x 0x%x\n",
 				i, r_buf[0], r_buf[1],
 				info.upgrade_id_1, info.upgrade_id_2);
+=======
+			dev_err(&client->dev, "Upgrade ID mismatch(%d)\n", i);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		} else
 			break;
 	}
@@ -729,6 +781,7 @@ static int ft5x06_fw_upgrade_start(struct i2c_client *client,
 		return -EIO;
 	}
 
+<<<<<<< HEAD
 	w_buf[0] = 0xcd;
 	ft5x06_i2c_read(client, w_buf, 1, r_buf, 1);
 
@@ -749,11 +802,14 @@ static int ft5x06_fw_upgrade_start(struct i2c_client *client,
 		is_5336_new_bootloader, r_buf[0], ts_data->family_id);
 	/* is_5336_new_bootloader = FT_BLOADER_VERSION_GZF; */
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* erase app and panel paramenter area */
 	w_buf[0] = FT_ERASE_APP_REG;
 	ft5x06_i2c_write(client, w_buf, 1);
 	msleep(info.delay_erase_flash);
 
+<<<<<<< HEAD
 	if (is_5336_fwsize_30) {
 		w_buf[0] = FT_ERASE_PANEL_REG;
 		ft5x06_i2c_write(client, w_buf, 1);
@@ -767,6 +823,14 @@ static int ft5x06_fw_upgrade_start(struct i2c_client *client,
 	else
 		data_len = data_len - FT_DATA_LEN_OFF_NEW_FW;
 
+=======
+	w_buf[0] = FT_ERASE_PANEL_REG;
+	ft5x06_i2c_write(client, w_buf, 1);
+	msleep(FT_EARSE_DLY_MS);
+
+	/* program firmware */
+	data_len = data_len - 8;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	pkt_num = (data_len) / FT_FW_PKT_LEN;
 	pkt_len = FT_FW_PKT_LEN;
 	pkt_buf[0] = FT_FW_START_REG;
@@ -809,6 +873,7 @@ static int ft5x06_fw_upgrade_start(struct i2c_client *client,
 	}
 
 	/* send the finishing packet */
+<<<<<<< HEAD
 	if (is_5336_new_bootloader == FT_BLOADER_VERSION_LZ4 ||
 		is_5336_new_bootloader == FT_BLOADER_VERSION_Z7) {
 		for (i = 0; i < FT_FINISHING_PKT_LEN_OLD_FW; i++) {
@@ -848,6 +913,19 @@ static int ft5x06_fw_upgrade_start(struct i2c_client *client,
 			msleep(FT_FW_PKT_DLY_MS);
 
 		}
+=======
+	for (i = 0; i < 6; i++) {
+		temp = FT_FW_LAST_PKT + i;
+		pkt_buf[2] = (u8) (temp >> 8);
+		pkt_buf[3] = (u8) temp;
+		temp = 1;
+		pkt_buf[4] = (u8) (temp >> 8);
+		pkt_buf[5] = (u8) temp;
+		pkt_buf[6] = data[data_len + i];
+		fw_ecc ^= pkt_buf[6];
+		ft5x06_i2c_write(client, pkt_buf, temp + FT_FW_PKT_META_LEN);
+		msleep(FT_FW_PKT_DLY_MS);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	/* verify checksum */
@@ -1459,6 +1537,10 @@ static int ft5x06_ts_probe(struct i2c_client *client,
 			     pdata->x_max, 0, 0);
 	input_set_abs_params(input_dev, ABS_MT_POSITION_Y, pdata->y_min,
 			     pdata->y_max, 0, 0);
+<<<<<<< HEAD
+=======
+	input_set_abs_params(input_dev, ABS_MT_PRESSURE, 0, FT_PRESS, 0, 0);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	err = input_register_device(input_dev);
 	if (err) {
@@ -1543,12 +1625,20 @@ static int ft5x06_ts_probe(struct i2c_client *client,
 		goto free_reset_gpio;
 	}
 
+<<<<<<< HEAD
 	data->family_id = pdata->family_id;
 
 	err = request_threaded_irq(client->irq, NULL,
 				ft5x06_ts_interrupt,
 				pdata->irqflags | IRQF_ONESHOT,
 				client->dev.driver->name, data);
+=======
+	data->family_id = reg_value;
+
+	err = request_threaded_irq(client->irq, NULL,
+				   ft5x06_ts_interrupt, pdata->irqflags,
+				   client->dev.driver->name, data);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (err) {
 		dev_err(&client->dev, "request irq failed\n");
 		goto free_reset_gpio;

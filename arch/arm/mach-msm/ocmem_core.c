@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -575,7 +579,11 @@ static int do_unlock(enum ocmem_client id, unsigned long offset,
 	return 0;
 }
 
+<<<<<<< HEAD
 int ocmem_restore_sec_program(int sec_id)
+=======
+int ocmem_enable_sec_program(int sec_id)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	return 0;
 }
@@ -694,7 +702,11 @@ int ocmem_disable_dump(enum ocmem_client id, unsigned long offset,
 	return rc;
 }
 
+<<<<<<< HEAD
 int ocmem_restore_sec_program(int sec_id)
+=======
+int ocmem_enable_sec_program(int sec_id)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	int rc, scm_ret = 0;
 	struct msm_scm_sec_cfg {
@@ -945,6 +957,10 @@ static int switch_power_state(int id, unsigned long offset, unsigned long len,
 	unsigned end_m = num_banks;
 	unsigned long region_offset = 0;
 	struct ocmem_hw_region *region;
+<<<<<<< HEAD
+=======
+	int rc = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (offset < 0)
 		return -EINVAL;
@@ -965,6 +981,17 @@ static int switch_power_state(int id, unsigned long offset, unsigned long len,
 		(region_end >= num_regions))
 			return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	rc = ocmem_enable_core_clock();
+
+	if (rc < 0) {
+		pr_err("ocmem: Power transistion request for client %s (id: %d) failed\n",
+				get_name(id), id);
+		return rc;
+	}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mutex_lock(&region_ctrl_lock);
 
 	for (i = region_start; i <= region_end; i++) {
@@ -1018,10 +1045,18 @@ static int switch_power_state(int id, unsigned long offset, unsigned long len,
 
 	}
 	mutex_unlock(&region_ctrl_lock);
+<<<<<<< HEAD
 
 	return 0;
 invalid_transition:
 	mutex_unlock(&region_ctrl_lock);
+=======
+	ocmem_disable_core_clock();
+	return 0;
+invalid_transition:
+	mutex_unlock(&region_ctrl_lock);
+	ocmem_disable_core_clock();
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	pr_err("ocmem_core: Invalid state transition detected for %d\n", id);
 	pr_err("ocmem_core: Offset %lx Len %lx curr_state %x new_state %x\n",
 			offset, len, curr_state, new_state);
@@ -1104,6 +1139,7 @@ static int ocmem_power_show_hw_state(struct seq_file *f, void *dummy)
 
 static int ocmem_power_show(struct seq_file *f, void *dummy)
 {
+<<<<<<< HEAD
 	int rc = 0;
 
 	rc = ocmem_enable_core_clock();
@@ -1135,6 +1171,11 @@ iface_clock_fail:
 	ocmem_disable_core_clock();
 core_clock_fail:
 	return -EINVAL;
+=======
+	ocmem_power_show_sw_state(f, dummy);
+	ocmem_power_show_hw_state(f, dummy);
+	return 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int ocmem_power_open(struct inode *inode, struct file *file)

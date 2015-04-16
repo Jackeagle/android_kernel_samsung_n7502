@@ -50,7 +50,10 @@
 #include <linux/slab.h>
 #include <linux/delay.h>
 #include <linux/input.h>
+<<<<<<< HEAD
 #include <linux/sensors.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <linux/workqueue.h>
 #include <linux/module.h>
 #ifdef CONFIG_HAS_EARLYSUSPEND
@@ -88,7 +91,10 @@ struct bmp18x_data {
 	struct	device *dev;
 	struct	mutex lock;
 	struct	bmp18x_calibration_data calibration;
+<<<<<<< HEAD
 	struct  sensors_classdev cdev;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	u8	oversampling_setting;
 	u8	sw_oversampling_setting;
 	u32	raw_temperature;
@@ -105,6 +111,7 @@ struct bmp18x_data {
 	u32					enable;
 };
 
+<<<<<<< HEAD
 static struct sensors_classdev sensors_cdev = {
 	.name = "bmp18x-pressure",
 	.vendor = "Bosch",
@@ -123,6 +130,8 @@ static struct sensors_classdev sensors_cdev = {
 	.sensors_poll_delay = NULL,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #ifdef CONFIG_HAS_EARLYSUSPEND
 static void bmp18x_early_suspend(struct early_suspend *h);
 static void bmp18x_late_resume(struct early_suspend *h);
@@ -408,6 +417,7 @@ static ssize_t show_sw_oversampling(struct device *dev,
 static DEVICE_ATTR(sw_oversampling, S_IWUSR | S_IRUGO,
 				show_sw_oversampling, set_sw_oversampling);
 
+<<<<<<< HEAD
 static ssize_t bmp18x_poll_delay_set(struct sensors_classdev *sensors_cdev,
 						unsigned int delay_msec)
 {
@@ -421,6 +431,8 @@ static ssize_t bmp18x_poll_delay_set(struct sensors_classdev *sensors_cdev,
 }
 
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static ssize_t show_delay(struct device *dev,
 				 struct device_attribute *attr, char *buf)
 {
@@ -434,6 +446,7 @@ static ssize_t set_delay(struct device *dev,
 {
 	struct bmp18x_data *data = dev_get_drvdata(dev);
 	unsigned long delay;
+<<<<<<< HEAD
 	int err = kstrtoul(buf, 10, &delay);
 	if (err < 0)
 		return err;
@@ -470,6 +483,18 @@ static ssize_t bmp18x_enable_set(struct sensors_classdev *sensors_cdev,
 
 	return 0;
 }
+=======
+	int success = kstrtoul(buf, 10, &delay);
+	if (success == 0) {
+		mutex_lock(&data->lock);
+		data->delay = delay;
+		mutex_unlock(&data->lock);
+	}
+	return success;
+}
+static DEVICE_ATTR(delay, S_IWUSR | S_IRUGO,
+				show_delay, set_delay);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static ssize_t show_enable(struct device *dev,
 				 struct device_attribute *attr, char *buf)
@@ -484,6 +509,7 @@ static ssize_t set_enable(struct device *dev,
 {
 	struct bmp18x_data *data = dev_get_drvdata(dev);
 	unsigned long enable;
+<<<<<<< HEAD
 	int err = kstrtoul(buf, 10, &enable);
 	if (err < 0)
 		return err;
@@ -495,6 +521,26 @@ static ssize_t set_enable(struct device *dev,
 	return count;
 }
 
+=======
+	int success = kstrtoul(buf, 10, &enable);
+	if (success == 0) {
+		mutex_lock(&data->lock);
+		data->enable = enable ? 1 : 0;
+
+		if (data->enable) {
+			bmp18x_enable(dev);
+			schedule_delayed_work(&data->work,
+						msecs_to_jiffies(data->delay));
+		} else {
+			cancel_delayed_work_sync(&data->work);
+			bmp18x_disable(dev);
+		}
+		mutex_unlock(&data->lock);
+
+	}
+	return count;
+}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static DEVICE_ATTR(enable, S_IWUSR | S_IRUGO,
 				show_enable, set_enable);
 
@@ -536,7 +582,11 @@ static struct attribute *bmp18x_attributes[] = {
 	&dev_attr_pressure0_input.attr,
 	&dev_attr_oversampling.attr,
 	&dev_attr_sw_oversampling.attr,
+<<<<<<< HEAD
 	&dev_attr_poll_delay.attr,
+=======
+	&dev_attr_delay.attr,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	&dev_attr_enable.attr,
 	NULL
 };
@@ -664,6 +714,7 @@ __devinit int bmp18x_probe(struct device *dev, struct bmp18x_data_bus *data_bus)
 	err = sysfs_create_group(&data->input->dev.kobj, &bmp18x_attr_group);
 	if (err)
 		goto error_sysfs;
+<<<<<<< HEAD
 
 	data->cdev = sensors_cdev;
 	data->cdev.sensors_enable = bmp18x_enable_set;
@@ -674,6 +725,8 @@ __devinit int bmp18x_probe(struct device *dev, struct bmp18x_data_bus *data_bus)
 		goto error_class_sysfs;
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* workqueue init */
 	INIT_DELAYED_WORK(&data->work, bmp18x_work_func);
 	data->delay  = BMP_DELAY_DEFAULT;
@@ -689,8 +742,11 @@ __devinit int bmp18x_probe(struct device *dev, struct bmp18x_data_bus *data_bus)
 	dev_info(dev, "Succesfully initialized bmp18x!\n");
 	return 0;
 
+<<<<<<< HEAD
 error_class_sysfs:
 	sysfs_remove_group(&data->input->dev.kobj, &bmp18x_attr_group);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 error_sysfs:
 	bmp18x_input_delete(data);
 exit_free:

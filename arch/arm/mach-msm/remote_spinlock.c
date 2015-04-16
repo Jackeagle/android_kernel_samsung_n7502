@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2008-2009, 2011-2014 The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2008-2009, 2011-2013 The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -81,8 +85,11 @@ struct spinlock_ops {
 	int (*trylock)(raw_remote_spinlock_t *lock);
 	int (*release)(raw_remote_spinlock_t *lock, uint32_t pid);
 	int (*owner)(raw_remote_spinlock_t *lock);
+<<<<<<< HEAD
 	void (*lock_rlock_id)(raw_remote_spinlock_t *lock, uint32_t tid);
 	void (*unlock_rlock)(raw_remote_spinlock_t *lock);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 static struct spinlock_ops current_ops;
@@ -366,6 +373,7 @@ static void __raw_remote_sfpb_spin_unlock(raw_remote_spinlock_t *lock)
 	writel_relaxed(0, lock);
 	smp_mb();
 }
+<<<<<<< HEAD
 
 static void __raw_remote_sfpb_spin_lock_rlock_id(raw_remote_spinlock_t *lock,
 						 uint32_t tid)
@@ -387,6 +395,8 @@ static void __raw_remote_sfpb_spin_unlock_rlock(raw_remote_spinlock_t *lock)
 	smp_mb();
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* end sfpb implementation -------------------------------------------------- */
 
 /* common spinlock API ------------------------------------------------------ */
@@ -481,9 +491,12 @@ static void initialize_ops(void)
 		current_ops.trylock = __raw_remote_sfpb_spin_trylock;
 		current_ops.release = __raw_remote_gen_spin_release;
 		current_ops.owner = __raw_remote_gen_spin_owner;
+<<<<<<< HEAD
 		current_ops.lock_rlock_id =
 				__raw_remote_sfpb_spin_lock_rlock_id;
 		current_ops.unlock_rlock = __raw_remote_sfpb_spin_unlock_rlock;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		is_hw_lock_type = 1;
 		break;
 	case AUTO_MODE:
@@ -500,10 +513,13 @@ static void initialize_ops(void)
 			current_ops.trylock = __raw_remote_sfpb_spin_trylock;
 			current_ops.release = __raw_remote_gen_spin_release;
 			current_ops.owner = __raw_remote_gen_spin_owner;
+<<<<<<< HEAD
 			current_ops.lock_rlock_id =
 					__raw_remote_sfpb_spin_lock_rlock_id;
 			current_ops.unlock_rlock =
 					__raw_remote_sfpb_spin_unlock_rlock;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			is_hw_lock_type = 1;
 			break;
 		}
@@ -547,11 +563,14 @@ static void remote_spin_release_all_locks(uint32_t pid, int count)
 	int n;
 	 _remote_spinlock_t lock;
 
+<<<<<<< HEAD
 	if (pid >= REMOTE_SPINLOCK_NUM_PID) {
 		pr_err("%s: unsupported PID %d\n", __func__, pid);
 		return;
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	for (n = 0; n < count; ++n) {
 		if (remote_spinlock_init_address(n, &lock) == 0)
 			_remote_spin_release(&lock, pid);
@@ -706,6 +725,7 @@ int _remote_spin_owner(_remote_spinlock_t *lock)
 	return current_ops.owner((raw_remote_spinlock_t *)(*lock));
 }
 EXPORT_SYMBOL(_remote_spin_owner);
+<<<<<<< HEAD
 
 void _remote_spin_lock_rlock_id(_remote_spinlock_t *lock, uint32_t tid)
 {
@@ -723,6 +743,8 @@ void _remote_spin_unlock_rlock(_remote_spinlock_t *lock)
 }
 EXPORT_SYMBOL(_remote_spin_unlock_rlock);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* end common spinlock API -------------------------------------------------- */
 
 /* remote mutex implementation ---------------------------------------------- */

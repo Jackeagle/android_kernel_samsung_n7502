@@ -195,7 +195,10 @@ static struct snd_soc_dai_driver msm_fe_dais[] = {
 			.rate_max =	48000,
 		},
 		.ops = &msm_fe_Multimedia_dai_ops,
+<<<<<<< HEAD
 		.compress_dai = 1,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.name = "MultiMedia4",
 	},
 	{
@@ -281,6 +284,7 @@ static struct snd_soc_dai_driver msm_fe_dais[] = {
 			.rate_min =	8000,
 			.rate_max = 192000,
 		},
+<<<<<<< HEAD
 		.capture = {
 			.stream_name = "MultiMedia8 Capture",
 			.aif_name = "MM_UL8",
@@ -292,6 +296,8 @@ static struct snd_soc_dai_driver msm_fe_dais[] = {
 			.rate_min =     8000,
 			.rate_max =	48000,
 		},
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		.ops = &msm_fe_Multimedia_dai_ops,
 		.name = "MultiMedia8",
 	},
@@ -422,6 +428,7 @@ static struct snd_soc_dai_driver msm_fe_dais[] = {
 	},
 	{
 		.playback = {
+<<<<<<< HEAD
 			.stream_name = "INT_HFP_BT Hostless Playback",
 			.aif_name = "INTHFP_DL_HL",
 			.rates = SNDRV_PCM_RATE_8000 | SNDRV_PCM_RATE_16000,
@@ -446,6 +453,8 @@ static struct snd_soc_dai_driver msm_fe_dais[] = {
 	},
 	{
 		.playback = {
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			.stream_name = "AFE-PROXY Playback",
 			.aif_name = "PCM_RX",
 			.rates = (SNDRV_PCM_RATE_8000 |

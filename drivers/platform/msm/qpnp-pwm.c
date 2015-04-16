@@ -208,12 +208,15 @@ do { \
 #define QPNP_PWM_SIZE_8_BIT		8
 #define QPNP_PWM_SIZE_9_BIT		9
 
+<<<<<<< HEAD
 /* Supported time levels */
 enum time_level {
 	LVL_NSEC,
 	LVL_USEC,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* LPG revisions */
 enum qpnp_lpg_revision {
 	QPNP_LPG_REVISION_0 = 0x0,
@@ -311,8 +314,13 @@ struct qpnp_pwm_config {
 	bool				in_use;
 	const char			*lable;
 	int				pwm_value;
+<<<<<<< HEAD
 	int				pwm_period;	/* in microseconds */
 	int				pwm_duty;	/* in microseconds */
+=======
+	int				pwm_period;
+	int				pwm_duty;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct pwm_period_config	period;
 	int				force_pwm_size;
 };
@@ -431,9 +439,14 @@ static int qpnp_lpg_save_and_write(u8 value, u8 mask, u8 *reg, u16 addr,
  * This is the formula to figure out m for the best pre-divide and clock:
  * (PWM Period / N) = (Pre-divide * Clock Period) * 2^m
  */
+<<<<<<< HEAD
 static void qpnp_lpg_calc_period(enum time_level tm_lvl,
 				unsigned int period_value,
 				struct pwm_device *pwm)
+=======
+static void qpnp_lpg_calc_period(unsigned int period_us,
+				   struct pwm_device *pwm)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	int		n, m, clk, div;
 	int		best_m, best_div, best_clk;
@@ -450,6 +463,7 @@ static void qpnp_lpg_calc_period(enum time_level tm_lvl,
 	else
 		n = 6;
 
+<<<<<<< HEAD
 	if (tm_lvl == LVL_USEC) {
 		if (period_value < ((unsigned)(-1) / NSEC_PER_USEC)) {
 			period_n = (period_value * NSEC_PER_USEC) >> n;
@@ -462,6 +476,16 @@ static void qpnp_lpg_calc_period(enum time_level tm_lvl,
 		}
 	} else {
 		period_n = period_value >> n;
+=======
+	if (period_us < ((unsigned)(-1) / NSEC_PER_USEC)) {
+		period_n = (period_us * NSEC_PER_USEC) >> n;
+	} else {
+		if (qpnp_check_gpled_lpg_channel(id))
+			n = 8;
+		else
+			n = 9;
+		period_n = (period_us >> n) * NSEC_PER_USEC;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	if (force_pwm_size != 0) {
@@ -531,20 +555,34 @@ static void qpnp_lpg_calc_period(enum time_level tm_lvl,
 }
 
 static void qpnp_lpg_calc_pwm_value(struct pwm_device *pwm,
+<<<<<<< HEAD
 				      unsigned int period_value,
 				      unsigned int duty_value)
+=======
+				      unsigned int period_us,
+				      unsigned int duty_us)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	unsigned int		max_pwm_value, tmp;
 	struct qpnp_pwm_config	*pwm_config = &pwm->pwm_config;
 
 	/* Figure out pwm_value with overflow handling */
 	tmp = 1 << (sizeof(tmp) * 8 - pwm_config->period.pwm_size);
+<<<<<<< HEAD
 	if (duty_value < tmp) {
 		tmp = duty_value << pwm_config->period.pwm_size;
 		pwm_config->pwm_value = tmp / period_value;
 	} else {
 		tmp = period_value >> pwm_config->period.pwm_size;
 		pwm_config->pwm_value = duty_value / tmp;
+=======
+	if (duty_us < tmp) {
+		tmp = duty_us << pwm_config->period.pwm_size;
+		pwm_config->pwm_value = tmp / period_us;
+	} else {
+		tmp = period_us >> pwm_config->period.pwm_size;
+		pwm_config->pwm_value = duty_us / tmp;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	max_pwm_value = (1 << pwm_config->period.pwm_size) - 1;
 	if (pwm_config->pwm_value > max_pwm_value)
@@ -1094,20 +1132,29 @@ out:
 	return rc;
 }
 
+<<<<<<< HEAD
 static int _pwm_config(struct pwm_device *pwm,
 				enum time_level tm_lvl,
 				int duty_value, int period_value)
+=======
+static int _pwm_config(struct pwm_device *pwm, int duty_us, int period_us)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	struct qpnp_pwm_config		*pwm_config;
 	struct qpnp_lpg_chip		*chip;
 	struct pwm_period_config	*period;
+<<<<<<< HEAD
 	int period_us, duty_us;
 	int	rc;
+=======
+	int				rc;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	chip = pwm->chip;
 	pwm_config = &pwm->pwm_config;
 	period = &pwm_config->period;
 
+<<<<<<< HEAD
 	if (tm_lvl == LVL_USEC) {
 		period_us = period_value;
 		duty_us = duty_value;
@@ -1118,12 +1165,20 @@ static int _pwm_config(struct pwm_device *pwm,
 
 	if (pwm_config->pwm_period != period_us) {
 		qpnp_lpg_calc_period(tm_lvl, period_value, pwm);
+=======
+	if (pwm_config->pwm_period != period_us) {
+		qpnp_lpg_calc_period(period_us, pwm);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qpnp_lpg_save_period(pwm);
 		pwm_config->pwm_period = period_us;
 	}
 
 	pwm_config->pwm_duty = duty_us;
+<<<<<<< HEAD
 	qpnp_lpg_calc_pwm_value(pwm, period_value, duty_value);
+=======
+	qpnp_lpg_calc_pwm_value(pwm, period_us, duty_us);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	rc = qpnp_lpg_save_pwm_value(pwm);
 
 	if (rc) {
@@ -1146,9 +1201,14 @@ static int _pwm_config(struct pwm_device *pwm,
 		return rc;
 	}
 
+<<<<<<< HEAD
 	pr_debug("duty/period=%u/%u %s: pwm_value=%d (of %d)\n",
 		 (unsigned)duty_us, (unsigned)period_us,
 		 (tm_lvl == LVL_USEC) ? "usec" : "nsec",
+=======
+	pr_debug("duty/period=%u/%u usec: pwm_value=%d (of %d)\n",
+		 (unsigned)duty_us, (unsigned)period_us,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		 pwm_config->pwm_value, 1 << period->pwm_size);
 
 	return 0;
@@ -1174,7 +1234,11 @@ static int _pwm_lut_config(struct pwm_device *pwm, int period_us,
 	period = &pwm_config->period;
 
 	if (pwm_config->pwm_period != period_us) {
+<<<<<<< HEAD
 		qpnp_lpg_calc_period(LVL_USEC, period_us, pwm);
+=======
+		qpnp_lpg_calc_period(period_us, pwm);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qpnp_lpg_save_period(pwm);
 		pwm_config->pwm_period = period_us;
 	}
@@ -1325,6 +1389,7 @@ EXPORT_SYMBOL_GPL(pwm_free);
 /**
  * pwm_config - change a PWM device configuration
  * @pwm: the PWM device
+<<<<<<< HEAD
  * @period_ns: period in nanoseconds
  * @duty_ns: duty cycle in nanoseconds
  */
@@ -1360,6 +1425,12 @@ EXPORT_SYMBOL_GPL(pwm_config);
  * @duty_us: duty cycle in microseconds
  */
 int pwm_config_us(struct pwm_device *pwm, int duty_us, int period_us)
+=======
+ * @period_us: period in microseconds
+ * @duty_us: duty cycle in microseconds
+ */
+int pwm_config(struct pwm_device *pwm, int duty_us, int period_us)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	int rc;
 	unsigned long flags;
@@ -1376,7 +1447,11 @@ int pwm_config_us(struct pwm_device *pwm, int duty_us, int period_us)
 		return -EINVAL;
 
 	spin_lock_irqsave(&pwm->chip->lpg_lock, flags);
+<<<<<<< HEAD
 	rc = _pwm_config(pwm, LVL_USEC, duty_us, period_us);
+=======
+	rc = _pwm_config(pwm, duty_us, period_us);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	spin_unlock_irqrestore(&pwm->chip->lpg_lock, flags);
 
 	if (rc)
@@ -1384,7 +1459,11 @@ int pwm_config_us(struct pwm_device *pwm, int duty_us, int period_us)
 
 	return rc;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(pwm_config_us);
+=======
+EXPORT_SYMBOL_GPL(pwm_config);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /**
  * pwm_enable - start a PWM output toggling
@@ -1681,8 +1760,12 @@ static int qpnp_parse_pwm_dt_config(struct device_node *of_pwm_node,
 		return rc;
 	}
 
+<<<<<<< HEAD
 	rc = _pwm_config(pwm_dev, LVL_USEC,
 					pwm_dev->pwm_config.pwm_duty, period);
+=======
+	rc = _pwm_config(pwm_dev, pwm_dev->pwm_config.pwm_duty, period);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return rc;
 }

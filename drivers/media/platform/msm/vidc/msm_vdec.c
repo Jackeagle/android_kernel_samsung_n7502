@@ -12,7 +12,11 @@
  */
 
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <mach/scm.h>
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include "msm_vidc_internal.h"
 #include "msm_vidc_common.h"
 #include "vidc_hfi_api.h"
@@ -24,6 +28,7 @@
 #define MAX_NUM_OUTPUT_BUFFERS 6
 #define DEFAULT_CONCEAL_COLOR 0x0
 
+<<<<<<< HEAD
 #define TZ_INFO_GET_FEATURE_VERSION_ID 0x3
 #define TZ_DYNAMIC_BUFFER_FEATURE_ID 12
 #define TZ_FEATURE_VERSION(major, minor, patch) \
@@ -32,6 +37,8 @@ struct tz_get_feature_version {
 	u32 feature_id;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 enum msm_vdec_ctrl_cluster {
 	MSM_VDEC_CTRL_CLUSTER_MAX = 1 << 0,
 };
@@ -80,7 +87,10 @@ static const char *const mpeg_video_vidc_extradata[] = {
 static const char *const mpeg_vidc_video_alloc_mode_type[] = {
 	"Buffer Allocation Static",
 	"Buffer Allocation Ring Buffer",
+<<<<<<< HEAD
 	"Buffer Allocation Dynamic Buffer"
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 static const char *const perf_level[] = {
@@ -106,6 +116,10 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 		),
 		.qmenu = mpeg_video_stream_format,
 		.step = 0,
+<<<<<<< HEAD
+=======
+		.cluster = 0,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_OUTPUT_ORDER,
@@ -120,6 +134,10 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 			),
 		.qmenu = mpeg_video_output_order,
 		.step = 0,
+<<<<<<< HEAD
+=======
+		.cluster = 0,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_ENABLE_PICTURE_TYPE,
@@ -131,6 +149,10 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 		.step = 1,
 		.menu_skip_mask = 0,
 		.qmenu = NULL,
+<<<<<<< HEAD
+=======
+		.cluster = 0,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_KEEP_ASPECT_RATIO,
@@ -142,6 +164,10 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 		.step = 1,
 		.menu_skip_mask = 0,
 		.qmenu = NULL,
+<<<<<<< HEAD
+=======
+		.cluster = 0,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_POST_LOOP_DEBLOCKER_MODE,
@@ -153,6 +179,10 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 		.step = 1,
 		.menu_skip_mask = 0,
 		.qmenu = NULL,
+<<<<<<< HEAD
+=======
+		.cluster = 0,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_DIVX_FORMAT,
@@ -168,6 +198,10 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 			),
 		.qmenu = mpeg_video_vidc_divx_format,
 		.step = 0,
+<<<<<<< HEAD
+=======
+		.cluster = 0,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_MB_ERROR_MAP_REPORTING,
@@ -179,6 +213,10 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 		.step = 1,
 		.menu_skip_mask = 0,
 		.qmenu = NULL,
+<<<<<<< HEAD
+=======
+		.cluster = 0,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_CONTINUE_DATA_TRANSFER,
@@ -190,6 +228,10 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 		.step = 1,
 		.menu_skip_mask = 0,
 		.qmenu = NULL,
+<<<<<<< HEAD
+=======
+		.cluster = 0,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_SYNC_FRAME_DECODE,
@@ -209,6 +251,10 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 		.step = 0,
 		.menu_skip_mask = 0,
 		.qmenu = NULL,
+<<<<<<< HEAD
+=======
+		.cluster = 0,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_EXTRADATA,
@@ -255,6 +301,7 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 		.step = 0,
 	},
 	{
+<<<<<<< HEAD
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_ALLOC_MODE_INPUT,
 		.name = "Buffer allocation mode for input",
 		.type = V4L2_CTRL_TYPE_MENU,
@@ -283,6 +330,21 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 			),
 		.qmenu = mpeg_vidc_video_alloc_mode_type,
 		.step = 0,
+=======
+		.id = V4L2_CID_MPEG_VIDC_VIDEO_ALLOC_MODE,
+		.name = "Buffer allocation mode",
+		.type = V4L2_CTRL_TYPE_MENU,
+		.minimum = V4L2_MPEG_VIDC_VIDEO_STATIC,
+		.maximum = V4L2_MPEG_VIDC_VIDEO_RING,
+		.default_value = V4L2_MPEG_VIDC_VIDEO_STATIC,
+		.menu_skip_mask = ~(
+			(1 << V4L2_MPEG_VIDC_VIDEO_STATIC) |
+			(1 << V4L2_MPEG_VIDC_VIDEO_RING)
+			),
+		.qmenu = mpeg_vidc_video_alloc_mode_type,
+		.step = 0,
+		.cluster = 0,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_FRAME_ASSEMBLY,
@@ -294,6 +356,7 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 		.step = 1,
 		.menu_skip_mask = 0,
 		.qmenu = NULL,
+<<<<<<< HEAD
 	},
 	{
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_STREAM_OUTPUT_MODE,
@@ -309,6 +372,9 @@ static struct msm_vidc_ctrl msm_vdec_ctrls[] = {
 		.menu_skip_mask = 0,
 		.step = 1,
 		.qmenu = NULL,
+=======
+		.cluster = 0,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 };
 
@@ -499,8 +565,12 @@ int msm_vdec_prepare_buf(struct msm_vidc_inst *inst,
 				b->m.planes[i].length);
 			}
 			buffer_info.buffer_size = b->m.planes[0].length;
+<<<<<<< HEAD
 			buffer_info.buffer_type =
 				msm_comm_get_hal_output_buffer(inst);
+=======
+			buffer_info.buffer_type = HAL_BUFFER_OUTPUT;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			buffer_info.num_buffers = 1;
 			buffer_info.align_device_addr =
 				b->m.planes[0].m.userptr;
@@ -584,8 +654,12 @@ int msm_vdec_release_buf(struct msm_vidc_inst *inst,
 				b->m.planes[i].length);
 			}
 			buffer_info.buffer_size = b->m.planes[0].length;
+<<<<<<< HEAD
 			buffer_info.buffer_type =
 				msm_comm_get_hal_output_buffer(inst);
+=======
+			buffer_info.buffer_type = HAL_BUFFER_OUTPUT;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			buffer_info.num_buffers = 1;
 			buffer_info.align_device_addr =
 				 b->m.planes[0].m.userptr;
@@ -673,7 +747,11 @@ int msm_vdec_reqbufs(struct msm_vidc_inst *inst, struct v4l2_requestbuffers *b)
 int msm_vdec_g_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 {
 	const struct msm_vidc_format *fmt = NULL;
+<<<<<<< HEAD
 	unsigned int *plane_sizes = NULL;
+=======
+	struct hal_frame_size frame_sz;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct hfi_device *hdev;
 	int stride, scanlines;
 	int extra_idx = 0;
@@ -695,6 +773,7 @@ int msm_vdec_g_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 		f->fmt.pix_mp.pixelformat = fmt->fourcc;
 		f->fmt.pix_mp.num_planes = fmt->num_planes;
 		if (inst->in_reconfig == true) {
+<<<<<<< HEAD
 			if (msm_comm_get_stream_output_mode(inst) ==
 				HAL_VIDEO_DECODER_PRIMARY) {
 				inst->prop.height[CAPTURE_PORT] =
@@ -711,6 +790,10 @@ int msm_vdec_g_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 				inst->prop.width[OUTPUT_PORT] =
 					inst->reconfig_width;
 			}
+=======
+			inst->prop.height = inst->reconfig_height;
+			inst->prop.width = inst->reconfig_width;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			rc = msm_vidc_check_session_supported(inst);
 			if (rc) {
 				dprintk(VIDC_ERR,
@@ -718,10 +801,22 @@ int msm_vdec_g_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 				goto exit;
 			}
 		}
+<<<<<<< HEAD
 		f->fmt.pix_mp.height = inst->prop.height[CAPTURE_PORT];
 		f->fmt.pix_mp.width = inst->prop.width[CAPTURE_PORT];
 		stride = inst->prop.width[CAPTURE_PORT];
 		scanlines = inst->prop.height[CAPTURE_PORT];
+=======
+		f->fmt.pix_mp.height = inst->prop.height;
+		f->fmt.pix_mp.width = inst->prop.width;
+		stride = inst->prop.width;
+		scanlines = inst->prop.height;
+		frame_sz.buffer_type = HAL_BUFFER_OUTPUT;
+		frame_sz.width = inst->prop.width;
+		frame_sz.height = inst->prop.height;
+		dprintk(VIDC_DBG, "width = %d, height = %d\n",
+				frame_sz.width, frame_sz.height);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rc = msm_comm_try_get_bufreqs(inst);
 		if (rc) {
 			dprintk(VIDC_ERR,
@@ -729,6 +824,7 @@ int msm_vdec_g_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 			goto exit;
 		}
 		if (f->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE) {
+<<<<<<< HEAD
 			plane_sizes =
 			&inst->bufq[OUTPUT_PORT].vb2_bufq.plane_sizes[0];
 			for (i = 0; i < fmt->num_planes; ++i) {
@@ -742,14 +838,28 @@ int msm_vdec_g_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 				} else
 					f->fmt.pix_mp.plane_fmt[i].sizeimage =
 						plane_sizes[i];
+=======
+			for (i = 0; i < fmt->num_planes; ++i) {
+				f->fmt.pix_mp.plane_fmt[i].sizeimage =
+					fmt->get_frame_size(i,
+						inst->capability.height.max,
+						inst->capability.width.max);
+				inst->bufq[OUTPUT_PORT].
+					vb2_bufq.plane_sizes[i] =
+					f->fmt.pix_mp.plane_fmt[i].sizeimage;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			}
 		} else {
 			switch (fmt->fourcc) {
 			case V4L2_PIX_FMT_NV12:
 				call_hfi_op(hdev, get_stride_scanline,
 					COLOR_FMT_NV12,
+<<<<<<< HEAD
 					inst->prop.width[CAPTURE_PORT],
 					inst->prop.height[CAPTURE_PORT],
+=======
+					inst->prop.width, inst->prop.height,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					&stride, &scanlines);
 				break;
 			default:
@@ -757,8 +867,12 @@ int msm_vdec_g_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 					"Color format not recognized\n");
 			}
 			buff_req_buffer =
+<<<<<<< HEAD
 				get_buff_req_buffer(inst,
 					msm_comm_get_hal_output_buffer(inst));
+=======
+				get_buff_req_buffer(inst, HAL_BUFFER_OUTPUT);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			if (buff_req_buffer)
 				f->fmt.pix_mp.plane_fmt[0].sizeimage =
 				buff_req_buffer->buffer_size;
@@ -790,9 +904,15 @@ int msm_vdec_g_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 				(__u16)scanlines;
 		} else {
 			f->fmt.pix_mp.plane_fmt[0].bytesperline =
+<<<<<<< HEAD
 				(__u16)inst->prop.width[CAPTURE_PORT];
 			f->fmt.pix_mp.plane_fmt[0].reserved[0] =
 				(__u16)inst->prop.height[CAPTURE_PORT];
+=======
+				(__u16)inst->prop.width;
+			f->fmt.pix_mp.plane_fmt[0].reserved[0] =
+				(__u16)inst->prop.height;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 	} else {
 		dprintk(VIDC_ERR,
@@ -859,14 +979,21 @@ int msm_vdec_s_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 	int ret = 0;
 	int i;
 	struct hal_buffer_requirements *buff_req_buffer;
+<<<<<<< HEAD
 	int max_input_size = 0;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!inst || !f) {
 		dprintk(VIDC_ERR,
 			"Invalid input, inst = %p, format = %p\n", inst, f);
 		return -EINVAL;
 	}
 	if (f->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE) {
+<<<<<<< HEAD
+=======
+		struct hal_frame_size frame_sz;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		fmt = msm_comm_get_pixel_fmt_fourcc(vdec_formats,
 			ARRAY_SIZE(vdec_formats), f->fmt.pix_mp.pixelformat,
@@ -878,6 +1005,7 @@ int msm_vdec_s_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 			rc = -EINVAL;
 			goto err_invalid_fmt;
 		}
+<<<<<<< HEAD
 		inst->prop.width[CAPTURE_PORT] = f->fmt.pix_mp.width;
 		inst->prop.height[CAPTURE_PORT] = f->fmt.pix_mp.height;
 		if (msm_comm_get_stream_output_mode(inst) ==
@@ -898,6 +1026,16 @@ int msm_vdec_s_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 			ret = msm_comm_try_set_prop(inst,
 				HAL_PARAM_FRAME_SIZE, &frame_sz);
 		}
+=======
+		inst->fmts[fmt->type] = fmt;
+		frame_sz.buffer_type = HAL_BUFFER_OUTPUT;
+		frame_sz.width = inst->prop.width;
+		frame_sz.height = inst->prop.height;
+		dprintk(VIDC_DBG, "width = %d, height = %d\n",
+				frame_sz.width, frame_sz.height);
+		ret = msm_comm_try_set_prop(inst,
+			HAL_PARAM_FRAME_SIZE, &frame_sz);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		ret = ret || msm_comm_try_get_bufreqs(inst);
 		if (ret) {
 			for (i = 0; i < fmt->num_planes; ++i) {
@@ -908,8 +1046,12 @@ int msm_vdec_s_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 			}
 		} else {
 			buff_req_buffer =
+<<<<<<< HEAD
 				get_buff_req_buffer(inst,
 					msm_comm_get_hal_output_buffer(inst));
+=======
+				get_buff_req_buffer(inst, HAL_BUFFER_OUTPUT);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			if (buff_req_buffer)
 				f->fmt.pix_mp.plane_fmt[0].sizeimage =
 				buff_req_buffer->buffer_size;
@@ -934,6 +1076,7 @@ int msm_vdec_s_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 				f->fmt.pix_mp.plane_fmt[i].sizeimage;
 		}
 	} else if (f->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE) {
+<<<<<<< HEAD
 		inst->prop.width[OUTPUT_PORT] = f->fmt.pix_mp.width;
 		inst->prop.height[OUTPUT_PORT] = f->fmt.pix_mp.height;
 		if (msm_comm_get_stream_output_mode(inst) ==
@@ -941,6 +1084,10 @@ int msm_vdec_s_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 			inst->prop.width[CAPTURE_PORT] = f->fmt.pix_mp.width;
 			inst->prop.height[CAPTURE_PORT] = f->fmt.pix_mp.height;
 		}
+=======
+		inst->prop.width = f->fmt.pix_mp.width;
+		inst->prop.height = f->fmt.pix_mp.height;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rc = msm_vidc_check_session_supported(inst);
 		if (rc) {
 			dprintk(VIDC_ERR,
@@ -958,6 +1105,7 @@ int msm_vdec_s_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 			rc = -EINVAL;
 			goto err_invalid_fmt;
 		}
+<<<<<<< HEAD
 		rc = msm_comm_try_state(inst, MSM_VIDC_CORE_INIT_DONE);
 		if (rc) {
 			dprintk(VIDC_ERR, "Failed to initialize instance\n");
@@ -972,6 +1120,8 @@ int msm_vdec_s_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 			rc = -EINVAL;
 			goto err_invalid_fmt;
 		}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		inst->fmts[fmt->type] = fmt;
 		rc = msm_comm_try_state(inst, MSM_VIDC_OPEN_DONE);
 		if (rc) {
@@ -979,6 +1129,7 @@ int msm_vdec_s_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 			goto err_invalid_fmt;
 		}
 		frame_sz.buffer_type = HAL_BUFFER_INPUT;
+<<<<<<< HEAD
 		frame_sz.width = inst->prop.width[OUTPUT_PORT];
 		frame_sz.height = inst->prop.height[OUTPUT_PORT];
 		dprintk(VIDC_DBG,
@@ -996,6 +1147,14 @@ int msm_vdec_s_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 			f->fmt.pix_mp.plane_fmt[0].sizeimage = max_input_size;
 		}
 
+=======
+		frame_sz.width = inst->prop.width;
+		frame_sz.height = inst->prop.height;
+		msm_comm_try_set_prop(inst, HAL_PARAM_FRAME_SIZE, &frame_sz);
+		f->fmt.pix_mp.plane_fmt[0].sizeimage =
+			fmt->get_frame_size(0, inst->capability.height.max,
+					inst->capability.width.max);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		f->fmt.pix_mp.num_planes = fmt->num_planes;
 		for (i = 0; i < fmt->num_planes; ++i) {
 			inst->bufq[OUTPUT_PORT].vb2_bufq.plane_sizes[i] =
@@ -1119,8 +1278,12 @@ static int msm_vdec_queue_setup(struct vb2_queue *q,
 			break;
 		}
 		mutex_lock(&inst->lock);
+<<<<<<< HEAD
 		bufreq = get_buff_req_buffer(inst,
 			msm_comm_get_hal_output_buffer(inst));
+=======
+		bufreq = get_buff_req_buffer(inst, HAL_BUFFER_OUTPUT);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (!bufreq) {
 			dprintk(VIDC_ERR,
 				"No buffer requirement for buffer type %x\n",
@@ -1132,8 +1295,12 @@ static int msm_vdec_queue_setup(struct vb2_queue *q,
 		*num_buffers = max(*num_buffers, bufreq->buffer_count_min);
 		if (*num_buffers != bufreq->buffer_count_actual) {
 			property_id = HAL_PARAM_BUFFER_COUNT_ACTUAL;
+<<<<<<< HEAD
 			new_buf_count.buffer_type =
 				msm_comm_get_hal_output_buffer(inst);
+=======
+			new_buf_count.buffer_type = HAL_BUFFER_OUTPUT;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			new_buf_count.buffer_count_actual = *num_buffers;
 			rc = call_hfi_op(hdev, session_set_property,
 				inst->session, property_id, &new_buf_count);
@@ -1163,6 +1330,7 @@ static int msm_vdec_queue_setup(struct vb2_queue *q,
 	return rc;
 }
 
+<<<<<<< HEAD
 static int msm_vdec_queue_output_buffers(struct msm_vidc_inst *inst)
 {
 	struct internal_buf *binfo;
@@ -1227,10 +1395,13 @@ static int msm_vdec_queue_output_buffers(struct msm_vidc_inst *inst)
 	return 0;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static inline int start_streaming(struct msm_vidc_inst *inst)
 {
 	int rc = 0;
 	struct vb2_buf_entry *temp;
+<<<<<<< HEAD
 	struct hfi_device *hdev;
 	struct list_head *ptr, *next;
 
@@ -1243,6 +1414,10 @@ static inline int start_streaming(struct msm_vidc_inst *inst)
 		dprintk(VIDC_ERR, "H/w scaling is not in valid range");
 		return -EINVAL;
 	}
+=======
+	struct list_head *ptr, *next;
+	inst->in_reconfig = false;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	rc = msm_comm_set_scratch_buffers(inst);
 	if (rc) {
 		dprintk(VIDC_ERR,
@@ -1256,6 +1431,7 @@ static inline int start_streaming(struct msm_vidc_inst *inst)
 		goto fail_start;
 	}
 
+<<<<<<< HEAD
 	if (msm_comm_get_stream_output_mode(inst) ==
 		HAL_VIDEO_DECODER_SECONDARY) {
 		rc = msm_comm_set_output_buffers(inst);
@@ -1265,6 +1441,8 @@ static inline int start_streaming(struct msm_vidc_inst *inst)
 			goto fail_start;
 		}
 	}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mutex_lock(&inst->core->sync_lock);
 	msm_comm_scale_clocks_and_bus(inst);
 	mutex_unlock(&inst->core->sync_lock);
@@ -1275,6 +1453,7 @@ static inline int start_streaming(struct msm_vidc_inst *inst)
 			"Failed to move inst: %p to start done state\n", inst);
 		goto fail_start;
 	}
+<<<<<<< HEAD
 	if (msm_comm_get_stream_output_mode(inst) ==
 		HAL_VIDEO_DECODER_SECONDARY) {
 		rc = msm_vdec_queue_output_buffers(inst);
@@ -1284,6 +1463,9 @@ static inline int start_streaming(struct msm_vidc_inst *inst)
 			goto fail_start;
 		}
 	}
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mutex_lock(&inst->sync_lock);
 	if (!list_empty(&inst->pendingq)) {
 		list_for_each_safe(ptr, next, &inst->pendingq) {
@@ -1409,6 +1591,7 @@ int msm_vdec_cmd(struct msm_vidc_inst *inst, struct v4l2_decoder_cmd *dec)
 	}
 	switch (dec->cmd) {
 	case V4L2_DEC_QCOM_CMD_FLUSH:
+<<<<<<< HEAD
 		if (core->state != VIDC_CORE_INVALID &&
 			inst->state ==  MSM_VIDC_CORE_INVALID) {
 			rc = msm_comm_recover_from_session_error(inst);
@@ -1422,6 +1605,9 @@ int msm_vdec_cmd(struct msm_vidc_inst *inst, struct v4l2_decoder_cmd *dec)
 			dprintk(VIDC_ERR,
 					"Failed to flush buffers: %d\n", rc);
 		}
+=======
+		rc = msm_comm_flush(inst, dec->flags);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		break;
 	case V4L2_DEC_CMD_STOP:
 		if (core->state != VIDC_CORE_INVALID &&
@@ -1489,22 +1675,31 @@ int msm_vdec_inst_init(struct msm_vidc_inst *inst)
 	}
 	inst->fmts[OUTPUT_PORT] = &vdec_formats[1];
 	inst->fmts[CAPTURE_PORT] = &vdec_formats[0];
+<<<<<<< HEAD
 	inst->prop.height[CAPTURE_PORT] = DEFAULT_HEIGHT;
 	inst->prop.width[CAPTURE_PORT] = DEFAULT_WIDTH;
 	inst->prop.height[OUTPUT_PORT] = DEFAULT_HEIGHT;
 	inst->prop.width[OUTPUT_PORT] = DEFAULT_WIDTH;
+=======
+	inst->prop.height = DEFAULT_HEIGHT;
+	inst->prop.width = DEFAULT_WIDTH;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	inst->capability.height.min = MIN_SUPPORTED_HEIGHT;
 	inst->capability.height.max = DEFAULT_HEIGHT;
 	inst->capability.width.min = MIN_SUPPORTED_WIDTH;
 	inst->capability.width.max = DEFAULT_WIDTH;
+<<<<<<< HEAD
 	inst->capability.buffer_mode[OUTPUT_PORT] = HAL_BUFFER_MODE_STATIC;
 	inst->capability.buffer_mode[CAPTURE_PORT] = HAL_BUFFER_MODE_STATIC;
 	inst->buffer_mode_set[OUTPUT_PORT] = HAL_BUFFER_MODE_STATIC;
 	inst->buffer_mode_set[CAPTURE_PORT] = HAL_BUFFER_MODE_STATIC;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	inst->prop.fps = 30;
 	return rc;
 }
 
+<<<<<<< HEAD
 static inline enum buffer_mode_type get_buf_type(int val)
 {
 	switch (val) {
@@ -1539,19 +1734,28 @@ static int check_tz_dynamic_buffer_support(void)
 	return rc;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int try_set_ctrl(struct msm_vidc_inst *inst, struct v4l2_ctrl *ctrl)
 {
 	int rc = 0;
 	struct hal_nal_stream_format_supported stream_format;
 	struct hal_enable_picture enable_picture;
+<<<<<<< HEAD
 	struct hal_enable hal_property;
+=======
+	struct hal_enable hal_property;/*, prop;*/
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	enum hal_property property_id = 0;
 	u32 property_val = 0;
 	void *pdata = NULL;
 	struct hfi_device *hdev;
 	struct hal_extradata_enable extra;
+<<<<<<< HEAD
 	struct hal_buffer_alloc_mode alloc_mode;
 	struct hal_multi_stream multi_stream;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (!inst || !inst->core || !inst->core->device) {
 		dprintk(VIDC_ERR, "%s invalid parameters", __func__);
@@ -1640,6 +1844,7 @@ static int try_set_ctrl(struct msm_vidc_inst *inst, struct v4l2_ctrl *ctrl)
 		}
 
 		break;
+<<<<<<< HEAD
 	case V4L2_CID_MPEG_VIDC_VIDEO_ALLOC_MODE_INPUT:
 		if (ctrl->val == V4L2_MPEG_VIDC_VIDEO_DYNAMIC) {
 			rc = -ENOTSUPP;
@@ -1651,6 +1856,17 @@ static int try_set_ctrl(struct msm_vidc_inst *inst, struct v4l2_ctrl *ctrl)
 		inst->buffer_mode_set[OUTPUT_PORT] = alloc_mode.buffer_mode;
 		pdata = &alloc_mode;
 		break;
+=======
+	case V4L2_CID_MPEG_VIDC_VIDEO_ALLOC_MODE:
+	{
+		struct hal_buffer_alloc_mode mode;
+		property_id = HAL_PARAM_BUFFER_ALLOC_MODE;
+		mode.buffer_mode = ctrl->val;
+		mode.buffer_type = HAL_BUFFER_INPUT;
+		pdata = &mode;
+		break;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	case V4L2_CID_MPEG_VIDC_VIDEO_FRAME_ASSEMBLY:
 	{
 		property_id = HAL_PARAM_VDEC_FRAME_ASSEMBLY;
@@ -1658,6 +1874,7 @@ static int try_set_ctrl(struct msm_vidc_inst *inst, struct v4l2_ctrl *ctrl)
 		pdata = &hal_property;
 		break;
 	}
+<<<<<<< HEAD
 	case V4L2_CID_MPEG_VIDC_VIDEO_ALLOC_MODE_OUTPUT:
 		property_id = HAL_PARAM_BUFFER_ALLOC_MODE;
 		alloc_mode.buffer_mode = get_buf_type(ctrl->val);
@@ -1743,6 +1960,8 @@ static int try_set_ctrl(struct msm_vidc_inst *inst, struct v4l2_ctrl *ctrl)
 			break;
 		}
 		break;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	default:
 		break;
 	}
@@ -1763,10 +1982,13 @@ static int msm_vdec_op_s_ctrl(struct v4l2_ctrl *ctrl)
 	int rc = 0, c = 0;
 	struct msm_vidc_inst *inst = container_of(ctrl->handler,
 				struct msm_vidc_inst, ctrl_handler);
+<<<<<<< HEAD
 	if (!inst) {
 		dprintk(VIDC_ERR, "%s invalid parameters", __func__);
 		return -EINVAL;
 	}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	rc = msm_comm_try_state(inst, MSM_VIDC_OPEN_DONE);
 	if (rc) {
 		dprintk(VIDC_ERR,
@@ -1816,18 +2038,34 @@ int msm_vdec_g_ctrl(struct msm_vidc_inst *inst, struct v4l2_control *ctrl)
 	return v4l2_g_ctrl(&inst->ctrl_handler, ctrl);
 }
 
+<<<<<<< HEAD
 static struct v4l2_ctrl **get_super_cluster(struct msm_vidc_inst *inst,
 				int *size)
+=======
+static struct v4l2_ctrl **get_cluster(int type, int *size)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	int c = 0, sz = 0;
 	struct v4l2_ctrl **cluster = kmalloc(sizeof(struct v4l2_ctrl *) *
 			NUM_CTRLS, GFP_KERNEL);
 
+<<<<<<< HEAD
 	if (!size || !cluster || !inst)
 		return NULL;
 
 	for (c = 0; c < NUM_CTRLS; c++)
 		cluster[sz++] = inst->ctrls[c];
+=======
+	if (type <= 0 || !size || !cluster)
+		return NULL;
+
+	for (c = 0; c < NUM_CTRLS; c++) {
+		if (msm_vdec_ctrls[c].cluster & type) {
+			cluster[sz] = msm_vdec_ctrls[c].priv;
+			++sz;
+		}
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	*size = sz;
 	return cluster;
@@ -1836,6 +2074,7 @@ static struct v4l2_ctrl **get_super_cluster(struct msm_vidc_inst *inst,
 int msm_vdec_ctrl_init(struct msm_vidc_inst *inst)
 {
 	int idx = 0;
+<<<<<<< HEAD
 	struct v4l2_ctrl_config ctrl_cfg = {0};
 	int ret_val = 0;
 	int cluster_size = 0;
@@ -1851,6 +2090,10 @@ int msm_vdec_ctrl_init(struct msm_vidc_inst *inst)
 		dprintk(VIDC_ERR, "%s - failed to allocate ctrl\n", __func__);
 		return -ENOMEM;
 	}
+=======
+	struct v4l2_ctrl_config ctrl_cfg;
+	int ret_val = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	ret_val = v4l2_ctrl_handler_init(&inst->ctrl_handler, NUM_CTRLS);
 
@@ -1904,7 +2147,11 @@ int msm_vdec_ctrl_init(struct msm_vidc_inst *inst)
 		}
 
 
+<<<<<<< HEAD
 		inst->ctrls[idx] = ctrl;
+=======
+		msm_vdec_ctrls[idx].priv = ctrl;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	ret_val = inst->ctrl_handler.error;
 	if (ret_val)
@@ -1912,6 +2159,7 @@ int msm_vdec_ctrl_init(struct msm_vidc_inst *inst)
 			"Error adding ctrls to ctrl handle, %d\n",
 			inst->ctrl_handler.error);
 
+<<<<<<< HEAD
 	/* Construct a super cluster of all controls */
 	inst->cluster = get_super_cluster(inst, &cluster_size);
 	if (!inst->cluster || !cluster_size) {
@@ -1922,14 +2170,50 @@ int msm_vdec_ctrl_init(struct msm_vidc_inst *inst)
 
 	v4l2_ctrl_cluster(cluster_size, inst->cluster);
 
+=======
+	/* Construct clusters */
+	for (idx = 1; idx < MSM_VDEC_CTRL_CLUSTER_MAX; ++idx) {
+		struct msm_vidc_ctrl_cluster *temp = NULL;
+		struct v4l2_ctrl **cluster = NULL;
+		int cluster_size = 0;
+
+		cluster = get_cluster(idx, &cluster_size);
+		if (!cluster || !cluster_size) {
+			dprintk(VIDC_WARN, "Failed to setup cluster of type %d",
+					idx);
+			continue;
+		}
+
+		v4l2_ctrl_cluster(cluster_size, cluster);
+
+		temp = kzalloc(sizeof(*temp), GFP_KERNEL);
+		if (!temp) {
+			ret_val = -ENOMEM;
+			break;
+		}
+
+		temp->cluster = cluster;
+		INIT_LIST_HEAD(&temp->list);
+		list_add_tail(&temp->list, &inst->ctrl_clusters);
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return ret_val;
 }
 
 int msm_vdec_ctrl_deinit(struct msm_vidc_inst *inst)
 {
+<<<<<<< HEAD
 	kfree(inst->ctrls);
 	kfree(inst->cluster);
 	v4l2_ctrl_handler_free(&inst->ctrl_handler);
 
+=======
+	struct msm_vidc_ctrl_cluster *curr, *next;
+	list_for_each_entry_safe(curr, next, &inst->ctrl_clusters, list) {
+		kfree(curr->cluster);
+		kfree(curr);
+	}
+	v4l2_ctrl_handler_free(&inst->ctrl_handler);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return 0;
 }

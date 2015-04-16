@@ -1063,7 +1063,11 @@ static ssize_t debug_write_phy_data(struct file *file, const char __user *buf,
 
 	memset(kbuf, 0, 10);
 
+<<<<<<< HEAD
 	if (copy_from_user(kbuf, buf, min_t(size_t, sizeof(kbuf) - 1, count)))
+=======
+	if (copy_from_user(kbuf, buf, count > 10 ? 10 : count))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return -EFAULT;
 
 	if (sscanf(kbuf, "%x", &data) != 1)
@@ -1088,7 +1092,11 @@ static ssize_t debug_phy_write_addr(struct file *file, const char __user *buf,
 
 	memset(kbuf, 0, 10);
 
+<<<<<<< HEAD
 	if (copy_from_user(kbuf, buf, min_t(size_t, sizeof(kbuf) - 1, count)))
+=======
+	if (copy_from_user(kbuf, buf, count > 10 ? 10 : count))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return -EFAULT;
 
 	if (sscanf(kbuf, "%x", &temp) != 1)

@@ -233,17 +233,29 @@ static int pil_msa_pbl_reset(struct pil_desc *pil)
 	if (drv->self_auth) {
 		ret = pil_msa_wait_for_mba_ready(drv);
 		if (ret)
+<<<<<<< HEAD
 			goto err_q6v5_reset;
+=======
+			goto err_auth;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	drv->is_booted = true;
 
 	return 0;
 
+<<<<<<< HEAD
 err_q6v5_reset:
 	pil_msa_pbl_disable_clks(drv);
 err_clks:
 	writel_relaxed(1, drv->restart_reg);
+=======
+err_auth:
+	pil_q6v5_shutdown(pil);
+err_q6v5_reset:
+	pil_msa_pbl_disable_clks(drv);
+err_clks:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	pil_msa_pbl_power_down(drv);
 err_power:
 	return ret;

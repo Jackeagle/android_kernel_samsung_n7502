@@ -242,6 +242,7 @@ TRACE_EVENT(sched_cpu_hotplug,
 		__entry->status ? "online" : "offline", __entry->error)
 );
 
+<<<<<<< HEAD
 /*
  * Tracepoint for load balancing:
  */
@@ -292,6 +293,8 @@ TRACE_EVENT(sched_load_balance,
 		  __entry->balance_interval)
 );
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 DECLARE_EVENT_CLASS(sched_process_template,
 
 	TP_PROTO(struct task_struct *p),

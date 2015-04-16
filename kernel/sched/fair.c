@@ -4422,7 +4422,11 @@ static int load_balance(int this_cpu, struct rq *this_rq,
 	int ld_moved, active_balance = 0;
 	struct sched_group *group;
 	unsigned long imbalance;
+<<<<<<< HEAD
 	struct rq *busiest = NULL;
+=======
+	struct rq *busiest;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	unsigned long flags;
 	struct cpumask *cpus = __get_cpu_var(load_balance_tmpmask);
 
@@ -4591,10 +4595,13 @@ out_one_pinned:
 
 	ld_moved = 0;
 out:
+<<<<<<< HEAD
 	trace_sched_load_balance(this_cpu, idle, *balance,
 				 group ? group->cpumask[0] : 0,
 				 busiest ? busiest->nr_running : 0, imbalance,
 				 env.flags, ld_moved, sd->balance_interval);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return ld_moved;
 }
 

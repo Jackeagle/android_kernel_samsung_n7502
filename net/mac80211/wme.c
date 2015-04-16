@@ -134,7 +134,11 @@ u16 ieee80211_select_queue(struct ieee80211_sub_if_data *sdata,
 
 	/* use the data classifier to determine what 802.1d tag the
 	 * data frame has */
+<<<<<<< HEAD
 	skb->priority = cfg80211_classify8021d(skb, NULL);
+=======
+	skb->priority = cfg80211_classify8021d(skb);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return ieee80211_downgrade_queue(local, skb);
 }

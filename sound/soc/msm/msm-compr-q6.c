@@ -1179,6 +1179,7 @@ static int msm_compr_ioctl(struct snd_pcm_substream *substream,
 			char modelId[128];
 			struct snd_dec_dts opt_dts =
 				compr->info.codec_param.codec.dts;
+<<<<<<< HEAD
 			unsigned int modelIdLength = opt_dts.modelIdLength;
 			if (modelIdLength >= sizeof(modelId)) {
 				rc = -EINVAL;
@@ -1186,6 +1187,9 @@ static int msm_compr_ioctl(struct snd_pcm_substream *substream,
 						"invalid\n", __func__);
 				return rc;
 			}
+=======
+			int modelIdLength = opt_dts.modelIdLength;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			if (copy_from_user(modelId, (void *)opt_dts.modelId,
 				modelIdLength))
 				pr_err("%s: ERROR: copy modelId\n", __func__);
@@ -1228,6 +1232,7 @@ static int msm_compr_ioctl(struct snd_pcm_substream *substream,
 			char modelId[128];
 			struct snd_dec_dts opt_dts =
 				compr->info.codec_param.codec.dts;
+<<<<<<< HEAD
 			unsigned int modelIdLength = opt_dts.modelIdLength;
 			pr_debug("SND_AUDIOCODEC_DTS\n");
 			if (modelIdLength >= sizeof(modelId)) {
@@ -1236,6 +1241,10 @@ static int msm_compr_ioctl(struct snd_pcm_substream *substream,
 						"invalid\n", __func__);
 				return rc;
 			}
+=======
+			int modelIdLength = opt_dts.modelIdLength;
+			pr_debug("SND_AUDIOCODEC_DTS\n");
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			if (copy_from_user(modelId, (void *)opt_dts.modelId,
 				modelIdLength))
 				pr_err("%s: ERROR: copy modelId\n", __func__);

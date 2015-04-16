@@ -126,8 +126,11 @@ struct hw_delay {
 			(AUDIO_MAX_ACDB_IOCTL+9), unsigned)
 #define AUDIO_SET_RTAC_CVP_CAL	_IOWR(AUDIO_IOCTL_MAGIC, \
 			(AUDIO_MAX_ACDB_IOCTL+10), unsigned)
+<<<<<<< HEAD
 #define AUDIO_GET_RTAC_ADM_INFO_V2	_IOWR(AUDIO_IOCTL_MAGIC, \
 			(AUDIO_MAX_ACDB_IOCTL+11), unsigned)
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define	AUDIO_MAX_RTAC_IOCTL	(AUDIO_MAX_ACDB_IOCTL+20)
 

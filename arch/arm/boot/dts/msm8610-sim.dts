@@ -17,7 +17,11 @@
 / {
 	model = "Qualcomm MSM 8610 Simulator";
 	compatible = "qcom,msm8610-sim", "qcom,msm8610", "qcom,sim";
+<<<<<<< HEAD
 	qcom,board-id = <16 0>;
+=======
+	qcom,msm-id = <147 16 0>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 &soc {

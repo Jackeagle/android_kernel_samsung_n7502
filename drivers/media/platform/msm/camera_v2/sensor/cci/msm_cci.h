@@ -52,6 +52,10 @@ enum msm_cci_cmd_type {
 	MSM_CCI_I2C_READ,
 	MSM_CCI_I2C_WRITE,
 	MSM_CCI_GPIO_WRITE,
+<<<<<<< HEAD
+=======
+	MSM_CCI_I2C_WRITE_BURST,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct msm_camera_cci_wait_sync_cfg {
@@ -64,6 +68,16 @@ struct msm_camera_cci_gpio_cfg {
 	uint16_t i2c_queue;
 };
 
+<<<<<<< HEAD
+=======
+struct msm_camera_cci_i2c_write_cfg {
+	struct msm_camera_i2c_reg_conf *reg_conf_tbl;
+	enum msm_camera_i2c_reg_addr_type addr_type;
+	enum msm_camera_i2c_data_type data_type;
+	uint16_t size;
+};
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct msm_camera_cci_i2c_read_cfg {
 	uint16_t addr;
 	enum msm_camera_i2c_reg_addr_type addr_type;
@@ -93,7 +107,10 @@ struct msm_camera_cci_ctrl {
 struct msm_camera_cci_master_info {
 	uint32_t status;
 	uint8_t reset_pending;
+<<<<<<< HEAD
 	struct mutex mutex;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct completion reset_complete;
 };
 
@@ -132,9 +149,16 @@ struct cci_device {
 	struct msm_camera_cci_i2c_queue_info
 		cci_i2c_queue_info[NUM_MASTERS][NUM_QUEUES];
 	struct msm_camera_cci_master_info cci_master_info[NUM_MASTERS];
+<<<<<<< HEAD
 	struct msm_cci_clk_params_t cci_clk_params[MASTER_MAX];
 	struct gpio *cci_gpio_tbl;
 	uint8_t cci_gpio_tbl_size;
+=======
+	struct msm_cci_clk_params_t cci_clk_params;
+	struct gpio *cci_gpio_tbl;
+	uint8_t cci_gpio_tbl_size;
+	struct mutex mutex;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 enum msm_cci_i2c_cmd_type {

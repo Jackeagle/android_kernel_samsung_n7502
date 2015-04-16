@@ -651,7 +651,11 @@ int snd_pcm_new_stream(struct snd_pcm *pcm, int stream, int substream_count)
 	pstr->stream = stream;
 	pstr->pcm = pcm;
 	pstr->substream_count = substream_count;
+<<<<<<< HEAD
 	if (substream_count > 0 && !pcm->internal) {
+=======
+	if (substream_count > 0) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		err = snd_pcm_stream_proc_init(pstr);
 		if (err < 0) {
 			snd_printk(KERN_ERR "Error in snd_pcm_stream_proc_init\n");
@@ -675,6 +679,7 @@ int snd_pcm_new_stream(struct snd_pcm *pcm, int stream, int substream_count)
 			pstr->substream = substream;
 		else
 			prev->next = substream;
+<<<<<<< HEAD
 
 		if (!pcm->internal) {
 			err = snd_pcm_substream_proc_init(substream);
@@ -687,6 +692,17 @@ int snd_pcm_new_stream(struct snd_pcm *pcm, int stream, int substream_count)
 				kfree(substream);
 				return err;
 			}
+=======
+		err = snd_pcm_substream_proc_init(substream);
+		if (err < 0) {
+			snd_printk(KERN_ERR "Error in snd_pcm_stream_proc_init\n");
+			if (prev == NULL)
+				pstr->substream = NULL;
+			else
+				prev->next = NULL;
+			kfree(substream);
+			return err;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 		substream->group = &substream->self_group;
 		spin_lock_init(&substream->self_group.lock);
@@ -700,9 +716,31 @@ int snd_pcm_new_stream(struct snd_pcm *pcm, int stream, int substream_count)
 
 EXPORT_SYMBOL(snd_pcm_new_stream);
 
+<<<<<<< HEAD
 static int _snd_pcm_new(struct snd_card *card, const char *id, int device,
 		int playback_count, int capture_count, bool internal,
 		struct snd_pcm **rpcm)
+=======
+/**
+ * snd_pcm_new - create a new PCM instance
+ * @card: the card instance
+ * @id: the id string
+ * @device: the device index (zero based)
+ * @playback_count: the number of substreams for playback
+ * @capture_count: the number of substreams for capture
+ * @rpcm: the pointer to store the new pcm instance
+ *
+ * Creates a new PCM instance.
+ *
+ * The pcm operators have to be set afterwards to the new instance
+ * via snd_pcm_set_ops().
+ *
+ * Returns zero if successful, or a negative error code on failure.
+ */
+int snd_pcm_new(struct snd_card *card, const char *id, int device,
+		int playback_count, int capture_count,
+	        struct snd_pcm ** rpcm)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	struct snd_pcm *pcm;
 	int err;
@@ -723,7 +761,11 @@ static int _snd_pcm_new(struct snd_card *card, const char *id, int device,
 	}
 	pcm->card = card;
 	pcm->device = device;
+<<<<<<< HEAD
 	pcm->internal = internal;
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (id)
 		strlcpy(pcm->id, id, sizeof(pcm->id));
 	if ((err = snd_pcm_new_stream(pcm, SNDRV_PCM_STREAM_PLAYBACK, playback_count)) < 0) {
@@ -745,6 +787,7 @@ static int _snd_pcm_new(struct snd_card *card, const char *id, int device,
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * snd_pcm_new - create a new PCM instance
  * @card: the card instance
@@ -767,6 +810,8 @@ int snd_pcm_new(struct snd_card *card, const char *id, int device,
 	return _snd_pcm_new(card, id, device, playback_count, capture_count,
 			false, rpcm);
 }
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 EXPORT_SYMBOL(snd_pcm_new);
 
 static int snd_pcm_new_stream_soc_be(struct snd_pcm *pcm, int stream,
@@ -873,6 +918,7 @@ int snd_pcm_new_soc_be(struct snd_card *card, const char *id, int device,
 }
 
 EXPORT_SYMBOL(snd_pcm_new_soc_be);
+<<<<<<< HEAD
 /**
  * snd_pcm_new_internal - create a new internal PCM instance
  * @card: the card instance
@@ -901,6 +947,8 @@ int snd_pcm_new_internal(struct snd_card *card, const char *id, int device,
 			true, rpcm);
 }
 EXPORT_SYMBOL(snd_pcm_new_internal);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static void snd_pcm_free_stream(struct snd_pcm_str * pstr)
 {
@@ -1138,7 +1186,11 @@ static int snd_pcm_dev_register(struct snd_device *device)
 	}
 	for (cidx = 0; cidx < 2; cidx++) {
 		int devtype = -1;
+<<<<<<< HEAD
 		if (pcm->streams[cidx].substream == NULL || pcm->internal)
+=======
+		if (pcm->streams[cidx].substream == NULL)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			continue;
 		switch (cidx) {
 		case SNDRV_PCM_STREAM_PLAYBACK:

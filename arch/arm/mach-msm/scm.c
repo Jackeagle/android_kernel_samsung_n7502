@@ -17,11 +17,27 @@
 #include <linux/errno.h>
 #include <linux/err.h>
 #include <linux/init.h>
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SEC_DEBUG
+#include <mach/sec_debug.h>
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #include <asm/cacheflush.h>
 
 #include <mach/scm.h>
 
+<<<<<<< HEAD
+=======
+#include <linux/thread_info.h>
+#include <linux/sched.h>
+#include <linux/string.h>
+#ifdef CONFIG_ARCH_MSM8226
+#include <linux/smp.h>
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define SCM_ENOMEM		-5
 #define SCM_EOPNOTSUPP		-4
 #define SCM_EINVAL_ADDR		-3
@@ -153,18 +169,58 @@ static u32 smc(u32 cmd_addr)
 	return r0;
 }
 
+<<<<<<< HEAD
 static int __scm_call(const struct scm_command *cmd)
 {
+=======
+#ifdef CONFIG_ARCH_MSM8226
+static void __wrap_flush_cache_all(void* vp)
+{
+	flush_cache_all();
+}
+#endif
+
+static int __scm_call(const struct scm_command *cmd)
+{
+	int flush_all_need;
+	int call_from_ss_daemon;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int ret;
 	u32 cmd_addr = virt_to_phys(cmd);
 
 	/*
+<<<<<<< HEAD
+=======
+	 * in case of QSEE command
+	 */
+	flush_all_need = ((cmd->id & 0x0003FC00) == (252 << 10));
+
+	/*
+	 * in case of secure_storage_daemon
+	*/
+	call_from_ss_daemon = (strncmp(current_thread_info()->task->comm, "secure_storage_daemon", TASK_COMM_LEN - 1) == 0);
+
+	/*
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	 * Flush the command buffer so that the secure world sees
 	 * the correct data.
 	 */
 	__cpuc_flush_dcache_area((void *)cmd, cmd->len);
 	outer_flush_range(cmd_addr, cmd_addr + cmd->len);
 
+<<<<<<< HEAD
+=======
+	if (flush_all_need && call_from_ss_daemon) {
+		flush_cache_all();
+
+#ifdef CONFIG_ARCH_MSM8226
+		smp_call_function((void (*)(void *))__wrap_flush_cache_all, NULL, 1);
+#endif
+
+		outer_flush_all();
+	}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ret = smc(cmd_addr);
 	if (ret < 0)
 		ret = scm_remap_error(ret);
@@ -226,9 +282,21 @@ static int scm_call_common(u32 svc_id, u32 cmd_id, const void *cmd_buf,
 	if (cmd_buf)
 		memcpy(scm_get_command_buffer(scm_buf), cmd_buf, cmd_len);
 
+<<<<<<< HEAD
 	mutex_lock(&scm_lock);
 	ret = __scm_call(scm_buf);
 	mutex_unlock(&scm_lock);
+=======
+#ifdef CONFIG_SEC_DEBUG
+	sec_debug_secure_log(svc_id, cmd_id);
+#endif
+	mutex_lock(&scm_lock);
+	ret = __scm_call(scm_buf);
+	mutex_unlock(&scm_lock);
+#ifdef CONFIG_SEC_DEBUG	
+	sec_debug_secure_log(svc_id, cmd_id);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (ret)
 		return ret;
 

@@ -13,6 +13,7 @@
 /include/ "msm8610-qrd.dtsi"
 
 &soc {
+<<<<<<< HEAD
 	gpio-leds {
 		compatible = "gpio-leds";
 		status = "disabled";
@@ -23,6 +24,8 @@
 			linux,default-trigger = "gpio_flash_trigger";
 		};
 	};
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
     sound {
         qcom,model = "msm8x10-skuab-snd-card";
 
@@ -54,6 +57,7 @@
 			focaltech,no-force-update;
 			focaltech,i2c-pull-up;
 		};
+<<<<<<< HEAD
 		goodix@5d {
 			compatible = "goodix,gt9xx";
 			reg = <0x5d>;
@@ -89,6 +93,8 @@
 				00 FF FF FF FF FF FF FF FF FF
 				F8 FF FF FF E4 01];
 		};
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 	gen-vkeys {
 		compatible = "qcom,gen-vkeys";
@@ -100,7 +106,10 @@
 		qcom,key-codes = <139 102 158>;
 		qcom,y-offset = <0>;
 	};
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
     i2c@f9925000 {
 		fsl@1c {
 			compatible = "fsl,mma8x5x";

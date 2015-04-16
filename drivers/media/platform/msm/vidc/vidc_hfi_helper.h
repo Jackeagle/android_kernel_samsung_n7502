@@ -64,12 +64,16 @@
 
 #define HFI_ERR_SESSION_STREAM_CORRUPT		(HFI_COMMON_BASE + 0x100B)
 #define HFI_ERR_SESSION_ENC_OVERFLOW		(HFI_COMMON_BASE + 0x100C)
+<<<<<<< HEAD
 #define HFI_ERR_SESSION_UNSUPPORTED_STREAM	(HFI_COMMON_BASE + 0x100D)
 #define HFI_ERR_SESSION_CMDSIZE			(HFI_COMMON_BASE + 0x100E)
 #define HFI_ERR_SESSION_UNSUPPORT_CMD		(HFI_COMMON_BASE + 0x100F)
 #define HFI_ERR_SESSION_UNSUPPORT_BUFFERTYPE	(HFI_COMMON_BASE + 0x1010)
 #define HFI_ERR_SESSION_BUFFERCOUNT_TOOSMALL	(HFI_COMMON_BASE + 0x1011)
 #define HFI_ERR_SESSION_INVALID_SCALE_FACTOR	(HFI_COMMON_BASE + 0x1012)
+=======
+#define  HFI_ERR_SESSION_UNSUPPORTED_STREAM	(HFI_COMMON_BASE + 0x100D)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define HFI_EVENT_SYS_ERROR				(HFI_COMMON_BASE + 0x1)
 #define HFI_EVENT_SESSION_ERROR			(HFI_COMMON_BASE + 0x2)
@@ -319,8 +323,11 @@ struct hfi_buffer_info {
 	(HFI_PROPERTY_PARAM_VENC_COMMON_START + 0x01F)
 #define  HFI_PROPERTY_PARAM_VENC_MAX_NUM_B_FRAMES \
 	(HFI_PROPERTY_PARAM_VENC_COMMON_START + 0x020)
+<<<<<<< HEAD
 #define HFI_PROPERTY_PARAM_VENC_INITIAL_QP	\
 	(HFI_PROPERTY_PARAM_VENC_COMMON_START + 0x028)
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define HFI_PROPERTY_CONFIG_VENC_COMMON_START				\
 	(HFI_DOMAIN_BASE_VENC + HFI_ARCH_COMMON_OFFSET + 0x6000)
 #define HFI_PROPERTY_CONFIG_VENC_TARGET_BITRATE				\
@@ -440,11 +447,14 @@ struct hfi_idr_period {
 	u32 idr_period;
 };
 
+<<<<<<< HEAD
 struct hfi_operations_type {
 	u32 rotation;
 	u32 flip;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct hfi_max_num_b_frames {
 	u32 max_num_b_frames;
 };
@@ -527,6 +537,7 @@ struct hfi_quantization {
 	u32 layer_id;
 };
 
+<<<<<<< HEAD
 struct hfi_initial_quantization {
 	u32 qp_i;
 	u32 qp_p;
@@ -534,6 +545,8 @@ struct hfi_initial_quantization {
 	u32 init_qp_enable;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct hfi_quantization_range {
 	u32 min_qp;
 	u32 max_qp;
@@ -863,12 +876,15 @@ struct hfi_msg_event_notify_packet {
 	u32 rg_ext_event_data[1];
 };
 
+<<<<<<< HEAD
 struct hfi_msg_release_buffer_ref_event_packet {
 	u8 *packet_buffer;
 	u8 *exra_data_buffer;
 	u32 output_tag;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct hfi_msg_sys_init_done_packet {
 	u32 size;
 	u32 packet_type;

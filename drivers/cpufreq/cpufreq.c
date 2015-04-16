@@ -1114,10 +1114,17 @@ static int __cpufreq_remove_dev(struct device *dev, struct subsys_interface *sif
 #ifdef CONFIG_HOTPLUG_CPU
 	strncpy(per_cpu(cpufreq_policy_save, cpu).gov, data->governor->name,
 			CPUFREQ_NAME_LEN);
+<<<<<<< HEAD
 	per_cpu(cpufreq_policy_save, cpu).min = data->user_policy.min;
 	per_cpu(cpufreq_policy_save, cpu).max = data->user_policy.max;
 	pr_debug("Saving CPU%d user policy min %d and max %d\n",
 			cpu, data->user_policy.min, data->user_policy.max);
+=======
+	per_cpu(cpufreq_policy_save, cpu).min = data->min;
+	per_cpu(cpufreq_policy_save, cpu).max = data->max;
+	pr_debug("Saving CPU%d policy min %d and max %d\n",
+			cpu, data->min, data->max);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif
 
 	/* if we have other CPUs still registered, we need to unlink them,
@@ -1143,11 +1150,17 @@ static int __cpufreq_remove_dev(struct device *dev, struct subsys_interface *sif
 #ifdef CONFIG_HOTPLUG_CPU
 			strncpy(per_cpu(cpufreq_policy_save, j).gov,
 				data->governor->name, CPUFREQ_NAME_LEN);
+<<<<<<< HEAD
 			per_cpu(cpufreq_policy_save, j).min
 						= data->user_policy.min;
 			per_cpu(cpufreq_policy_save, j).max
 						= data->user_policy.max;
 			pr_debug("Saving CPU%d user policy min %d and max %d\n",
+=======
+			per_cpu(cpufreq_policy_save, j).min = data->min;
+			per_cpu(cpufreq_policy_save, j).max = data->max;
+			pr_debug("Saving CPU%d policy min %d and max %d\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					j, data->min, data->max);
 #endif
 			cpu_dev = get_cpu_device(j);
@@ -1715,19 +1728,36 @@ EXPORT_SYMBOL(cpufreq_get_policy);
  * data   : current policy.
  * policy : policy to be set.
  */
+<<<<<<< HEAD
+=======
+ #define FIXED_MIN_FREQ	300000
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int __cpufreq_set_policy(struct cpufreq_policy *data,
 				struct cpufreq_policy *policy)
 {
 	int ret = 0;
 
+<<<<<<< HEAD
+=======
+/* TEMP : do not set high min_freq in governor */
+#if defined(CONFIG_MACH_MS01) || defined(CONFIG_MACH_MS01_CHN_CTC) || defined(CONFIG_MACH_HLITE_EUR_3GDS)
+	policy->min = FIXED_MIN_FREQ;
+	pr_debug("%s: fix min freq %d\n", __func__, policy->min);
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	pr_debug("setting new policy for CPU %u: %u - %u kHz\n", policy->cpu,
 		policy->min, policy->max);
 
 	memcpy(&policy->cpuinfo, &data->cpuinfo,
 				sizeof(struct cpufreq_cpuinfo));
 
+<<<<<<< HEAD
 	if (policy->min > data->user_policy.max
 		|| policy->max < data->user_policy.min) {
+=======
+	if (policy->min > data->max || policy->max < data->min) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		ret = -EINVAL;
 		goto error_out;
 	}

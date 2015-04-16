@@ -63,6 +63,7 @@ int msm_vidc_poll(void *instance, struct file *filp,
 		struct poll_table_struct *wait)
 {
 	struct msm_vidc_inst *inst = instance;
+<<<<<<< HEAD
 	struct vb2_queue *outq = NULL;
 	struct vb2_queue *capq = NULL;
 
@@ -71,6 +72,10 @@ int msm_vidc_poll(void *instance, struct file *filp,
 
 	outq = &inst->bufq[OUTPUT_PORT].vb2_bufq;
 	capq = &inst->bufq[CAPTURE_PORT].vb2_bufq;
+=======
+	struct vb2_queue *outq = &inst->bufq[OUTPUT_PORT].vb2_bufq;
+	struct vb2_queue *capq = &inst->bufq[CAPTURE_PORT].vb2_bufq;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	poll_wait(filp, &inst->event_handler.wait, wait);
 	poll_wait(filp, &capq->done_wq, wait);
@@ -84,9 +89,12 @@ int msm_vidc_wait(void *instance)
 	struct msm_vidc_inst *inst = instance;
 	int rc = 0;
 
+<<<<<<< HEAD
 	if (!inst)
 		return -EINVAL;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	wait_event(inst->kernel_event_queue, (rc = get_poll_flags(inst)));
 	return rc;
 }
@@ -194,6 +202,7 @@ int msm_vidc_g_ctrl(void *instance, struct v4l2_control *control)
 		return msm_venc_g_ctrl(instance, control);
 	return -EINVAL;
 }
+<<<<<<< HEAD
 
 int msm_vidc_s_ext_ctrl(void *instance, struct v4l2_ext_controls *control)
 {
@@ -205,6 +214,8 @@ int msm_vidc_s_ext_ctrl(void *instance, struct v4l2_ext_controls *control)
 	return -EINVAL;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int msm_vidc_reqbufs(void *instance, struct v4l2_requestbuffers *b)
 {
 	struct msm_vidc_inst *inst = instance;
@@ -219,6 +230,7 @@ int msm_vidc_reqbufs(void *instance, struct v4l2_requestbuffers *b)
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 struct buffer_info *get_registered_buf(struct msm_vidc_inst *inst,
 		struct v4l2_buffer *b, int idx, int *plane)
 {
@@ -697,6 +709,8 @@ int output_buffer_cache_invalidate(struct msm_vidc_inst *inst,
 	return 0;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int msm_vidc_prepare_buf(void *instance, struct v4l2_buffer *b)
 {
 	struct msm_vidc_inst *inst = instance;
@@ -704,6 +718,7 @@ int msm_vidc_prepare_buf(void *instance, struct v4l2_buffer *b)
 	if (!inst || !b)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (is_dynamic_output_buffer_mode(b, inst)) {
 		dprintk(VIDC_ERR, "%s: not supported in dynamic buffer mode\n",
 				__func__);
@@ -717,6 +732,8 @@ int msm_vidc_prepare_buf(void *instance, struct v4l2_buffer *b)
 			return -EINVAL;
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (inst->session_type == MSM_VIDC_DECODER)
 		return msm_vdec_prepare_buf(instance, b);
 	if (inst->session_type == MSM_VIDC_ENCODER)
@@ -724,6 +741,7 @@ int msm_vidc_prepare_buf(void *instance, struct v4l2_buffer *b)
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 int msm_vidc_release_buffers(void *instance, int buffer_type)
 {
 	struct list_head *ptr, *next;
@@ -795,15 +813,32 @@ int msm_vidc_release_buffers(void *instance, int buffer_type)
 	}
 	mutex_unlock(&inst->lock);
 	return rc;
+=======
+int msm_vidc_release_buf(void *instance, struct v4l2_buffer *b)
+{
+	struct msm_vidc_inst *inst = instance;
+
+	if (!inst || !b)
+		return -EINVAL;
+
+	if (inst->session_type == MSM_VIDC_DECODER)
+		return msm_vdec_release_buf(instance, b);
+	if (inst->session_type == MSM_VIDC_ENCODER)
+		return msm_venc_release_buf(instance, b);
+	return -EINVAL;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 int msm_vidc_encoder_cmd(void *instance, struct v4l2_encoder_cmd *enc)
 {
 	struct msm_vidc_inst *inst = instance;
+<<<<<<< HEAD
 	if (!inst || !inst->core || !enc) {
 		dprintk(VIDC_ERR, "%s invalid params\n", __func__);
 		return -EINVAL;
 	}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (inst->session_type == MSM_VIDC_ENCODER)
 		return msm_venc_cmd(instance, enc);
 	return -EINVAL;
@@ -812,10 +847,13 @@ int msm_vidc_encoder_cmd(void *instance, struct v4l2_encoder_cmd *enc)
 int msm_vidc_decoder_cmd(void *instance, struct v4l2_decoder_cmd *dec)
 {
 	struct msm_vidc_inst *inst = instance;
+<<<<<<< HEAD
 	if (!inst || !inst->core || !dec) {
 		dprintk(VIDC_ERR, "%s invalid params\n", __func__);
 		return -EINVAL;
 	}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (inst->session_type == MSM_VIDC_DECODER)
 		return msm_vdec_cmd(instance, dec);
 	return -EINVAL;
@@ -824,14 +862,18 @@ int msm_vidc_decoder_cmd(void *instance, struct v4l2_decoder_cmd *dec)
 int msm_vidc_qbuf(void *instance, struct v4l2_buffer *b)
 {
 	struct msm_vidc_inst *inst = instance;
+<<<<<<< HEAD
 	struct buffer_info *binfo;
 	int plane = 0;
 	int rc = 0;
 	int i;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (!inst || !b)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (b->length > VIDEO_MAX_PLANES) {
 		dprintk(VIDC_ERR, "num planes exceeds max: %d\n",
 			b->length);
@@ -896,24 +938,33 @@ int msm_vidc_qbuf(void *instance, struct v4l2_buffer *b)
 		}
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (inst->session_type == MSM_VIDC_DECODER)
 		return msm_vdec_qbuf(instance, b);
 	if (inst->session_type == MSM_VIDC_ENCODER)
 		return msm_venc_qbuf(instance, b);
+<<<<<<< HEAD
 
 err_invalid_buff:
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return -EINVAL;
 }
 
 int msm_vidc_dqbuf(void *instance, struct v4l2_buffer *b)
 {
 	struct msm_vidc_inst *inst = instance;
+<<<<<<< HEAD
 	struct buffer_info *buffer_info = NULL;
 	int i = 0, rc = 0;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (!inst || !b)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (b->length > VIDEO_MAX_PLANES) {
 		dprintk(VIDC_ERR, "num planes exceed maximum: %d\n",
 			b->length);
@@ -967,6 +1018,13 @@ int msm_vidc_dqbuf(void *instance, struct v4l2_buffer *b)
 		rc = output_buffer_cache_invalidate(inst, buffer_info);
 
 	return rc;
+=======
+	if (inst->session_type == MSM_VIDC_DECODER)
+		return msm_vdec_dqbuf(instance, b);
+	if (inst->session_type == MSM_VIDC_ENCODER)
+		return msm_venc_dqbuf(instance, b);
+	return -EINVAL;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 int msm_vidc_streamon(void *instance, enum v4l2_buf_type i)
@@ -1021,6 +1079,7 @@ int msm_vidc_enum_framesizes(void *instance, struct v4l2_frmsizeenum *fsize)
 	fsize->stepwise.step_height = capability->height.step_size;
 	return 0;
 }
+<<<<<<< HEAD
 
 struct msm_smem *msm_vidc_smem_alloc(void *instance,
 			size_t size, u32 align, u32 flags,
@@ -1072,6 +1131,8 @@ void *msm_vidc_smem_get_client(void *instance)
 
 	return inst->mem_client;
 }
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static void *vidc_get_userptr(void *alloc_ctx, unsigned long vaddr,
 				unsigned long size, int write)
 {
@@ -1198,12 +1259,19 @@ void *msm_vidc_open(int core_id, int session_type)
 	INIT_LIST_HEAD(&inst->pendingq);
 	INIT_LIST_HEAD(&inst->internalbufs);
 	INIT_LIST_HEAD(&inst->persistbufs);
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&inst->registered_bufs);
 	INIT_LIST_HEAD(&inst->outputbufs);
 	init_waitqueue_head(&inst->kernel_event_queue);
 	inst->state = MSM_VIDC_CORE_UNINIT_DONE;
 	inst->core = core;
 	inst->map_output_buffer = false;
+=======
+	INIT_LIST_HEAD(&inst->ctrl_clusters);
+	init_waitqueue_head(&inst->kernel_event_queue);
+	inst->state = MSM_VIDC_CORE_UNINIT_DONE;
+	inst->core = core;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	for (i = SESSION_MSG_INDEX(SESSION_MSG_START);
 		i <= SESSION_MSG_INDEX(SESSION_MSG_END); i++) {
@@ -1246,7 +1314,11 @@ void *msm_vidc_open(int core_id, int session_type)
 	inst->debugfs_root =
 		msm_vidc_debugfs_init_inst(inst, core->debugfs_root);
 
+<<<<<<< HEAD
 	setup_event_queue(inst, &core->vdev[session_type].vdev);
+=======
+	setup_event_queue(inst, &core->vdev[core_id].vdev);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	mutex_lock(&core->sync_lock);
 	list_add_tail(&inst->list, &core->instances);
@@ -1290,7 +1362,11 @@ static void cleanup_instance(struct msm_vidc_inst *inst)
 						list);
 				list_del(&buf->list);
 				mutex_unlock(&inst->lock);
+<<<<<<< HEAD
 				msm_comm_smem_free(inst, buf->handle);
+=======
+				msm_smem_free(inst->mem_client, buf->handle);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				kfree(buf);
 				mutex_lock(&inst->lock);
 			}
@@ -1301,6 +1377,7 @@ static void cleanup_instance(struct msm_vidc_inst *inst)
 						list);
 				list_del(&buf->list);
 				mutex_unlock(&inst->lock);
+<<<<<<< HEAD
 				msm_comm_smem_free(inst, buf->handle);
 				kfree(buf);
 				mutex_lock(&inst->lock);
@@ -1313,13 +1390,20 @@ static void cleanup_instance(struct msm_vidc_inst *inst)
 				list_del(&buf->list);
 				mutex_unlock(&inst->lock);
 				msm_comm_smem_free(inst, buf->handle);
+=======
+				msm_smem_free(inst->mem_client, buf->handle);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				kfree(buf);
 				mutex_lock(&inst->lock);
 			}
 		}
 		if (inst->extradata_handle) {
 			mutex_unlock(&inst->lock);
+<<<<<<< HEAD
 			msm_comm_smem_free(inst, inst->extradata_handle);
+=======
+			msm_smem_free(inst->mem_client, inst->extradata_handle);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			mutex_lock(&inst->lock);
 		}
 		mutex_unlock(&inst->lock);
@@ -1334,13 +1418,17 @@ int msm_vidc_close(void *instance)
 	struct msm_vidc_inst *temp;
 	struct msm_vidc_core *core;
 	struct list_head *ptr, *next;
+<<<<<<< HEAD
 	struct buffer_info *bi;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int rc = 0;
 	int i;
 
 	if (!inst)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	list_for_each_safe(ptr, next, &inst->registered_bufs) {
 		bi = list_entry(ptr, struct buffer_info, list);
 		if (bi->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE) {
@@ -1354,6 +1442,8 @@ int msm_vidc_close(void *instance)
 		}
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	core = inst->core;
 	mutex_lock(&core->sync_lock);
 	list_for_each_safe(ptr, next, &core->instances) {

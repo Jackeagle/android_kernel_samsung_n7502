@@ -67,6 +67,25 @@ enum uart_core_type {
 };
 
 /*
+<<<<<<< HEAD
+=======
+ * Make DUMP_UART_PACKET=1 if want to dump the UART Rx
+ * data on the debug console.Enable for debugging only. 
+ */
+#ifdef CONFIG_MACH_HLITE_EUR_3GDS
+#define DUMP_UART_PACKET 1
+#else
+#define DUMP_UART_PACKET 0
+#endif
+#define FULL_DUMP_UART_PACKET 0
+
+#if DUMP_UART_PACKET
+static char rx_buf[64]; /* 64 is rx fifo size */
+static char tx_buf[64]; /* 64 is tx fifo size */
+#endif
+
+/*
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * UART can be used in 2-wire or 4-wire mode.
  * Use uart_func_mode to set 2-wire or 4-wire mode.
  */
@@ -523,6 +542,7 @@ static void msm_hsl_start_tx(struct uart_port *port)
 {
 	struct msm_hsl_port *msm_hsl_port = UART_TO_MSM(port);
 
+<<<<<<< HEAD
 	if (port->suspended) {
 		pr_err("%s: System is in Suspend state\n", __func__);
 		return;
@@ -530,6 +550,13 @@ static void msm_hsl_start_tx(struct uart_port *port)
 	msm_hsl_port->imr |= UARTDM_ISR_TXLEV_BMSK;
 	msm_hsl_write(port, msm_hsl_port->imr,
 		regmap[msm_hsl_port->ver_id][UARTDM_IMR]);
+=======
+	if(!port->suspended) {
+	msm_hsl_port->imr |= UARTDM_ISR_TXLEV_BMSK;
+	msm_hsl_write(port, msm_hsl_port->imr,
+		regmap[msm_hsl_port->ver_id][UARTDM_IMR]);
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static void msm_hsl_stop_rx(struct uart_port *port)
@@ -558,6 +585,14 @@ static void handle_rx(struct uart_port *port, unsigned int misr)
 	unsigned int sr;
 	int count = 0;
 	struct msm_hsl_port *msm_hsl_port = UART_TO_MSM(port);
+<<<<<<< HEAD
+=======
+#if DUMP_UART_PACKET
+	int rx_buf_count = 0;
+
+	memset(rx_buf, 0xFF, 64);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	vid = msm_hsl_port->ver_id;
 	/*
@@ -610,12 +645,47 @@ static void handle_rx(struct uart_port *port, unsigned int misr)
 		else if (sr & UARTDM_SR_PAR_FRAME_BMSK)
 			flag = TTY_FRAME;
 
+<<<<<<< HEAD
+=======
+#if DUMP_UART_PACKET
+		if (count < 4) {
+			if (rx_buf_count <= (sizeof(rx_buf) - count)) {
+				memcpy(rx_buf+rx_buf_count, &c, count);
+				rx_buf_count += count;
+			}
+		} else {
+			if (rx_buf_count <= (sizeof(rx_buf) - sizeof(int))) {
+				memcpy(rx_buf+rx_buf_count, &c, sizeof(int));
+				rx_buf_count += sizeof(int);
+			}
+		}
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/* TODO: handle sysrq */
 		/* if (!uart_handle_sysrq_char(port, c)) */
 		tty_insert_flip_string(tty, (char *) &c,
 				       (count > 4) ? 4 : count);
 		count -= 4;
 	}
+<<<<<<< HEAD
+=======
+#if DUMP_UART_PACKET
+	/* skip insignificanty packet */
+#if FULL_DUMP_UART_PACKET
+	print_hex_dump(KERN_DEBUG, "RX UART: ",
+					16, 1, DUMP_PREFIX_ADDRESS,
+					rx_buf, rx_buf_count, 1);
+#else
+	if (rx_buf_count > 4) {
+		if (!is_console(port))
+			print_hex_dump(KERN_DEBUG, "RX UART: ", 16,
+				1, DUMP_PREFIX_ADDRESS, rx_buf,
+				rx_buf_count > 16 ? 16 : rx_buf_count, 1);
+	}
+#endif
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	tty_flip_buffer_push(tty);
 }
@@ -629,6 +699,14 @@ static void handle_tx(struct uart_port *port)
 	unsigned int tf_pointer = 0;
 	unsigned int vid;
 
+<<<<<<< HEAD
+=======
+#if DUMP_UART_PACKET
+	int tx_buf_count = 0;
+
+	memset(tx_buf, 0xFF, 64);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	vid = UART_TO_MSM(port)->ver_id;
 	tx_count = uart_circ_chars_pending(xmit);
 
@@ -684,6 +762,24 @@ static void handle_tx(struct uart_port *port)
 			break;
 		}
 		}
+<<<<<<< HEAD
+=======
+
+#if DUMP_UART_PACKET
+		if ((tx_count - tf_pointer) < 4) {
+			if (tx_buf_count <= (sizeof(tx_buf) - (tx_count - tf_pointer))) {
+				memcpy(tx_buf+tx_buf_count, &x, tx_count - tf_pointer);
+				tx_buf_count += (tx_count - tf_pointer);
+			}
+		} else {
+			if (tx_buf_count <= (sizeof(tx_buf) - sizeof(int))) {
+				memcpy(tx_buf+tx_buf_count, &x, sizeof(int));
+				tx_buf_count += sizeof(int);
+			}
+		}
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		msm_hsl_write(port, x, regmap[vid][UARTDM_TF]);
 		xmit->tail = ((tx_count - tf_pointer < 4) ?
 			      (tx_count - tf_pointer + xmit->tail) :
@@ -692,6 +788,24 @@ static void handle_tx(struct uart_port *port)
 		sent_tx = 1;
 	}
 
+<<<<<<< HEAD
+=======
+#if DUMP_UART_PACKET
+	/* skip echo packet */
+#if FULL_DUMP_UART_PACKET
+	print_hex_dump(KERN_DEBUG, "TX UART: ",
+				16, 1, DUMP_PREFIX_ADDRESS,
+				tx_buf, tx_count, 1);
+#else
+	if (tx_count > 4) {
+		if (!is_console(port))
+			print_hex_dump(KERN_DEBUG, "TX UART: ",
+				16, 1, DUMP_PREFIX_ADDRESS,
+				tx_buf, tx_count > 16 ? 16 : tx_count, 1);
+	}
+#endif
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (uart_circ_empty(xmit))
 		msm_hsl_stop_tx(port);
 
@@ -942,10 +1056,20 @@ static void msm_hsl_set_baud_rate(struct uart_port *port,
 	 * RFWR register takes value in Words for UARTDM Core
 	 * whereas it is consider to be in Bytes for UART Core.
 	 * Hence configuring Rx Watermark as 48 Words.
+<<<<<<< HEAD
 	 */
 	watermark = (port->fifosize * 3) / 4;
 	msm_hsl_write(port, watermark, regmap[vid][UARTDM_RFWR]);
 
+=======
+	 * Changing the Qcomm default watermark level to 1/8th
+	 * size of the Rx FIFO for the AT commands failure 
+	 * due to the tty buffer overrun. 
+	 */
+	watermark = (port->fifosize * 1) / 8;
+	msm_hsl_write(port, watermark, regmap[vid][UARTDM_RFWR]);
+	printk(KERN_INFO "[HSL UART] %s UARTDM_RFWR:%x\n",__func__,msm_hsl_read(port,regmap[vid][UARTDM_RFWR]));
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* set TX watermark */
 	msm_hsl_write(port, 0, regmap[vid][UARTDM_TFWR]);
 
@@ -1400,7 +1524,11 @@ static void wait_for_xmitr(struct uart_port *port)
 {
 	struct msm_hsl_port *msm_hsl_port = UART_TO_MSM(port);
 	unsigned int vid = msm_hsl_port->ver_id;
+<<<<<<< HEAD
 	int count = 0;
+=======
+	int count = 0, recovery = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (!(msm_hsl_read(port, regmap[vid][UARTDM_SR]) &
 			UARTDM_SR_TXEMT_BMSK)) {
@@ -1412,8 +1540,21 @@ static void wait_for_xmitr(struct uart_port *port)
 			touch_nmi_watchdog();
 			cpu_relax();
 			if (++count == msm_hsl_port->tx_timeout) {
+<<<<<<< HEAD
 				dump_hsl_regs(port);
 				panic("MSM HSL wait_for_xmitr is stuck!");
+=======
+				if ( recovery == 0) {
+					pr_err("%s: UART TX Stuck, Resetting TX\n", __func__);
+					dump_hsl_regs(port);
+					msm_hsl_write(port, RESET_TX, regmap[vid][UARTDM_CR]);
+					recovery = 1;
+					count = 0;
+				} else {
+					dump_hsl_regs(port);
+					panic("MSM HSL wait_for_xmitr is stuck!");
+				}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			}
 		}
 		msm_hsl_write(port, CLEAR_TX_READY, regmap[vid][UARTDM_CR]);

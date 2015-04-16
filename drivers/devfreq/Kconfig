@@ -63,6 +63,7 @@ config DEVFREQ_GOV_USERSPACE
 	  Otherwise, the governor does not change the frequnecy
 	  given at the initialization.
 
+<<<<<<< HEAD
 config DEVFREQ_GOV_MSM_ADRENO_TZ
 	tristate "MSM Adreno Trustzone"
 	depends on MSM_KGSL && MSM_SCM
@@ -90,6 +91,8 @@ config DEVFREQ_GOV_MSM_CPUBW_HWMON
 	  with existing profiling tools.  This governor is unlikely to be
 	  useful for other devices.
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 comment "DEVFREQ Drivers"
 
 config ARM_EXYNOS4_BUS_DEVFREQ

@@ -36,8 +36,11 @@
 #define MDP_PPP_MAX_BPP 4
 #define MDP_PPP_DYNAMIC_FACTOR 3
 #define MDP_PPP_MAX_READ_WRITE 3
+<<<<<<< HEAD
 #define ENABLE_SOLID_FILL	0x2
 #define DISABLE_SOLID_FILL	0x0
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static const bool valid_fmt[MDP_IMGTYPE_LIMIT] = {
 	[MDP_RGB_565] = true,
@@ -56,7 +59,10 @@ static const bool valid_fmt[MDP_IMGTYPE_LIMIT] = {
 	[MDP_YCRYCB_H2V1] = true,
 	[MDP_Y_CBCR_H2V1] = true,
 	[MDP_Y_CRCB_H2V1] = true,
+<<<<<<< HEAD
 	[MDP_BGRX_8888] = true,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 #define MAX_LIST_WINDOW 16
@@ -283,7 +289,11 @@ int mdp3_ppp_pipe_wait(void)
 	spin_unlock_irqrestore(&ppp_stat->ppp_lock, flag);
 
 	if (wait) {
+<<<<<<< HEAD
 		ret = wait_for_completion_interruptible_timeout(
+=======
+		ret = wait_for_completion_timeout(
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		   &ppp_stat->ppp_comp, 5 * HZ);
 		if (!ret)
 			pr_err("%s: Timed out waiting for the MDP.\n",
@@ -372,14 +382,22 @@ int mdp3_ppp_turnon(struct msm_fb_data_type *mfd, int on_off)
 		ib = (ab * 3) / 2;
 	}
 	mdp3_clk_set_rate(MDP3_CLK_CORE, rate, MDP3_CLIENT_PPP);
+<<<<<<< HEAD
 	rc = mdp3_clk_enable(on_off, 0);
+=======
+	rc = mdp3_clk_enable(on_off);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (rc < 0) {
 		pr_err("%s: mdp3_clk_enable failed\n", __func__);
 		return rc;
 	}
 	rc = mdp3_bus_scale_set_quota(MDP3_CLIENT_PPP, ab, ib);
 	if (rc < 0) {
+<<<<<<< HEAD
 		mdp3_clk_enable(!on_off, 0);
+=======
+		mdp3_clk_enable(!on_off);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		pr_err("%s: scale_set_quota failed\n", __func__);
 		return rc;
 	}
@@ -392,6 +410,7 @@ void mdp3_start_ppp(struct ppp_blit_op *blit_op)
 	/* Wait for the pipe to clear */
 	do { } while (mdp3_ppp_pipe_wait() <= 0);
 	config_ppp_op_mode(blit_op);
+<<<<<<< HEAD
 	if (blit_op->solid_fill) {
 		MDP3_REG_WRITE(0x10138, 0x10000000);
 		MDP3_REG_WRITE(0x1014c, 0xffffffff);
@@ -447,12 +466,21 @@ static int solid_fill_workaround(struct mdp_blit_req *req,
 }
 
 static int mdp3_ppp_process_req(struct ppp_blit_op *blit_op,
+=======
+	mdp3_ppp_kickoff();
+}
+
+static void mdp3_ppp_process_req(struct ppp_blit_op *blit_op,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct mdp_blit_req *req, struct mdp3_img_data *src_data,
 	struct mdp3_img_data *dst_data)
 {
 	unsigned long srcp0_start, srcp0_len, dst_start, dst_len;
 	uint32_t dst_width, dst_height;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	srcp0_start = (unsigned long) src_data->addr;
 	srcp0_len = (unsigned long) src_data->len;
@@ -543,6 +571,7 @@ static int mdp3_ppp_process_req(struct ppp_blit_op *blit_op,
 
 	if (req->flags & MDP_BLUR)
 		blit_op->mdp_op |= MDPOP_ASCALE | MDPOP_BLUR;
+<<<<<<< HEAD
 
 	if (req->flags & MDP_SOLID_FILL) {
 		ret = solid_fill_workaround(req, blit_op);
@@ -558,6 +587,8 @@ static int mdp3_ppp_process_req(struct ppp_blit_op *blit_op,
 		blit_op->solid_fill = false;
 	}
 	return ret;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static void mdp3_ppp_tile_workaround(struct ppp_blit_op *blit_op,
@@ -571,6 +602,10 @@ static void mdp3_ppp_tile_workaround(struct ppp_blit_op *blit_op,
 
 	src_w = req->src_rect.w;
 	dst_h = blit_op->dst.roi.height;
+<<<<<<< HEAD
+=======
+	pr_err("TMsg: In workaround. srcw= %d, dstH=%d\n", src_w, dst_h);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* bg tile fetching HW workaround */
 	for (i = 0; i < (req->dst_rect.h / 16); i++) {
 		/* this tile size */
@@ -623,9 +658,14 @@ static void mdp3_ppp_tile_workaround(struct ppp_blit_op *blit_op,
 			tmp_v =
 				(MDP_SCALE_Q_FACTOR * blit_op->dst.roi.height) /
 				MDP_MAX_X_SCALE_FACTOR +
+<<<<<<< HEAD
 				((MDP_SCALE_Q_FACTOR *
 				blit_op->dst.roi.height) %
 				MDP_MAX_X_SCALE_FACTOR ? 1 : 0);
+=======
+				(MDP_SCALE_Q_FACTOR * blit_op->dst.roi.height) %
+				MDP_MAX_X_SCALE_FACTOR ? 1 : 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 			/* move x location as roi width gets bigger */
 			blit_op->src.roi.x -= tmp_v - blit_op->src.roi.width;
@@ -635,9 +675,14 @@ static void mdp3_ppp_tile_workaround(struct ppp_blit_op *blit_op,
 			tmp_v =
 				(MDP_SCALE_Q_FACTOR * blit_op->dst.roi.height) /
 				MDP_MIN_X_SCALE_FACTOR +
+<<<<<<< HEAD
 				((MDP_SCALE_Q_FACTOR *
 				blit_op->dst.roi.height) %
 				MDP_MIN_X_SCALE_FACTOR ? 1 : 0);
+=======
+				(MDP_SCALE_Q_FACTOR * blit_op->dst.roi.height) %
+				MDP_MIN_X_SCALE_FACTOR ? 1 : 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 			/*
 			 * we don't move x location for continuity of
@@ -656,7 +701,10 @@ static int mdp3_ppp_blit(struct msm_fb_data_type *mfd,
 	struct mdp3_img_data *dst_data)
 {
 	struct ppp_blit_op blit_op;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	memset(&blit_op, 0, sizeof(blit_op));
 
@@ -670,11 +718,15 @@ static int mdp3_ppp_blit(struct msm_fb_data_type *mfd,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	ret = mdp3_ppp_process_req(&blit_op, req, src_data, dst_data);
 	if (ret) {
 		pr_err("%s: Failed to process the blit request", __func__);
 		return ret;
 	}
+=======
+	mdp3_ppp_process_req(&blit_op, req, src_data, dst_data);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (((blit_op.mdp_op & (MDPOP_TRANSP | MDPOP_ALPHAB)) ||
 	     (req->src.format == MDP_ARGB_8888) ||
@@ -865,10 +917,16 @@ int mdp3_ppp_start_blit(struct msm_fb_data_type *mfd,
 	}
 	is_bpp_4 = (ret == 4) ? 1 : 0;
 
+<<<<<<< HEAD
 	if ((is_bpp_4 && (remainder == 6 || remainder == 14)) &&
 						!(req->flags & MDP_SOLID_FILL))
 		ret = mdp3_ppp_blit_workaround(mfd, req, remainder,
 							src_data, dst_data);
+=======
+	if ((is_bpp_4 && (remainder == 6 || remainder == 14)))
+		ret = mdp3_ppp_blit_workaround(mfd, req, remainder,
+				src_data, dst_data);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	else
 		ret = mdp3_ppp_blit(mfd, req, src_data, dst_data);
 	return ret;
@@ -1099,7 +1157,11 @@ int mdp3_ppp_parse_req(void __user *p,
 	while (req_q->count >= MDP3_PPP_MAX_LIST_REQ) {
 		ppp_stat->wait_for_pop = true;
 		mutex_unlock(&ppp_stat->req_mutex);
+<<<<<<< HEAD
 		rc = wait_for_completion_interruptible_timeout(
+=======
+		rc = wait_for_completion_timeout(
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		   &ppp_stat->pop_q_comp, 5 * HZ);
 		if (rc == 0) {
 			/* This will only occur if there is serious problem */

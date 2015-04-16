@@ -447,6 +447,7 @@ static int __init cma_init_reserved_areas(void)
 }
 core_initcall(cma_init_reserved_areas);
 
+<<<<<<< HEAD
 phys_addr_t cma_get_base(struct device *dev)
 {
 	struct cma *cma = dev_get_cma_area(dev);
@@ -454,6 +455,8 @@ phys_addr_t cma_get_base(struct device *dev)
 	return cma->base_pfn << PAGE_SHIFT;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /**
  * dma_alloc_from_contiguous() - allocate pages from contiguous area
  * @dev:   Pointer to device for which the allocation is performed.

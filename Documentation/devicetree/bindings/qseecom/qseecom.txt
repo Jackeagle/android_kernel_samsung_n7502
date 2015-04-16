@@ -11,9 +11,12 @@ Required properties:
 - qcom, msm_bus,num_paths: The paths for source and destination ports
 - qcom, msm_bus,vectors: Vectors for bus topology.
 
+<<<<<<< HEAD
 Optional properties:
   - qcom,support-bus-scaling : optional, indicates if driver support scaling the bus for crypto operation.
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 Example:
 	qcom,qseecom@fe806000 {
 		compatible = "qcom,qseecom";

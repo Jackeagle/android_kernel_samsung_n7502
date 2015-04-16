@@ -27,12 +27,17 @@
 static void mdp3_vsync_intr_handler(int type, void *arg)
 {
 	struct mdp3_dma *dma = (struct mdp3_dma *)arg;
+<<<<<<< HEAD
 	struct mdp3_notification vsync_client;
 	unsigned int wait_for_next_vs;
+=======
+	struct mdp3_vsync_notification vsync_client;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	pr_debug("mdp3_vsync_intr_handler\n");
 	spin_lock(&dma->dma_lock);
 	vsync_client = dma->vsync_client;
+<<<<<<< HEAD
 	wait_for_next_vs = !dma->vsync_status;
 	dma->vsync_status = 0;
 	if (wait_for_next_vs)
@@ -44,11 +49,20 @@ static void mdp3_vsync_intr_handler(int type, void *arg)
 		if (wait_for_next_vs)
 			mdp3_irq_disable_nosync(type);
 	}
+=======
+	complete(&dma->vsync_comp);
+	spin_unlock(&dma->dma_lock);
+	if (vsync_client.handler)
+		vsync_client.handler(vsync_client.arg);
+	else
+		mdp3_irq_disable_nosync(type);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static void mdp3_dma_done_intr_handler(int type, void *arg)
 {
 	struct mdp3_dma *dma = (struct mdp3_dma *)arg;
+<<<<<<< HEAD
 	struct mdp3_notification dma_client;
 
 	pr_debug("mdp3_dma_done_intr_handler\n");
@@ -59,6 +73,12 @@ static void mdp3_dma_done_intr_handler(int type, void *arg)
 	mdp3_irq_disable_nosync(type);
 	if (dma_client.handler)
 		dma_client.handler(dma_client.arg);
+=======
+
+	pr_debug("mdp3_dma_done_intr_handler\n");
+	complete(&dma->dma_comp);
+	mdp3_irq_disable_nosync(type);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static void mdp3_hist_done_intr_handler(int type, void *arg)
@@ -201,7 +221,11 @@ static int mdp3_dma_callback_setup(struct mdp3_dma *dma)
 }
 
 static void mdp3_dma_vsync_enable(struct mdp3_dma *dma,
+<<<<<<< HEAD
 				struct mdp3_notification *vsync_client)
+=======
+				struct mdp3_vsync_notification *vsync_client)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	unsigned long flag;
 	int updated = 0;
@@ -232,6 +256,7 @@ static void mdp3_dma_vsync_enable(struct mdp3_dma *dma,
 	}
 }
 
+<<<<<<< HEAD
 static void mdp3_dma_done_notifier(struct mdp3_dma *dma,
 				struct mdp3_notification *dma_client)
 {
@@ -247,6 +272,8 @@ static void mdp3_dma_done_notifier(struct mdp3_dma *dma,
 	spin_unlock_irqrestore(&dma->dma_lock, flag);
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static void mdp3_dma_clk_auto_gating(struct mdp3_dma *dma, int enable)
 {
 	u32 cgc;
@@ -331,6 +358,7 @@ static int mdp3_dmap_config(struct mdp3_dma *dma,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void mdp3_dmap_config_source(struct mdp3_dma *dma)
 {
 	struct mdp3_dma_source *source_config = &dma->source_config;
@@ -347,6 +375,8 @@ static void mdp3_dmap_config_source(struct mdp3_dma *dma)
 	MDP3_REG_WRITE(MDP3_REG_DMA_P_IBUF_Y_STRIDE, source_config->stride);
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int mdp3_dmas_config(struct mdp3_dma *dma,
 			struct mdp3_dma_source *source_config,
 			struct mdp3_dma_output_config *output_config)
@@ -382,6 +412,7 @@ static int mdp3_dmas_config(struct mdp3_dma *dma,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void mdp3_dmas_config_source(struct mdp3_dma *dma)
 {
 	struct mdp3_dma_source *source_config = &dma->source_config;
@@ -398,6 +429,8 @@ static void mdp3_dmas_config_source(struct mdp3_dma *dma)
 	MDP3_REG_WRITE(MDP3_REG_DMA_S_IBUF_Y_STRIDE, source_config->stride);
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int mdp3_dmap_cursor_config(struct mdp3_dma *dma,
 				struct mdp3_dma_cursor *cursor)
 {
@@ -588,12 +621,16 @@ static int mdp3_dmap_update(struct mdp3_dma *dma, void *buf,
 {
 	unsigned long flag;
 	int cb_type = MDP3_DMA_CALLBACK_TYPE_VSYNC;
+<<<<<<< HEAD
 	int rc = 0;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	pr_debug("mdp3_dmap_update\n");
 
 	if (dma->output_config.out_sel == MDP3_DMA_OUTPUT_SEL_DSI_CMD) {
 		cb_type = MDP3_DMA_CALLBACK_TYPE_DMA_DONE;
+<<<<<<< HEAD
 		if (intf->active) {
 			rc = wait_for_completion_timeout(&dma->dma_comp,
 				KOFF_TIMEOUT);
@@ -602,6 +639,10 @@ static int mdp3_dmap_update(struct mdp3_dma *dma, void *buf,
 				rc = -1;
 			}
 		}
+=======
+		if (intf->active)
+			wait_for_completion_killable(&dma->dma_comp);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	spin_lock_irqsave(&dma->dma_lock, flag);
 	MDP3_REG_WRITE(MDP3_REG_DMA_P_IBUF_ADDR, (u32)buf);
@@ -616,14 +657,19 @@ static int mdp3_dmap_update(struct mdp3_dma *dma, void *buf,
 		intf->start(intf);
 	}
 
+<<<<<<< HEAD
 	mb();
 	dma->vsync_status = MDP3_REG_READ(MDP3_REG_INTR_STATUS) &
 		(1 << MDP3_INTR_LCDC_START_OF_FRAME);
+=======
+	wmb();
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	init_completion(&dma->vsync_comp);
 	spin_unlock_irqrestore(&dma->dma_lock, flag);
 
 	mdp3_dma_callback_enable(dma, cb_type);
 	pr_debug("mdp3_dmap_update wait for vsync_comp in\n");
+<<<<<<< HEAD
 	if (dma->output_config.out_sel == MDP3_DMA_OUTPUT_SEL_DSI_VIDEO) {
 		rc = wait_for_completion_timeout(&dma->vsync_comp,
 			KOFF_TIMEOUT);
@@ -632,6 +678,12 @@ static int mdp3_dmap_update(struct mdp3_dma *dma, void *buf,
 	}
 	pr_debug("mdp3_dmap_update wait for vsync_comp out\n");
 	return rc;
+=======
+	if (dma->output_config.out_sel == MDP3_DMA_OUTPUT_SEL_DSI_VIDEO)
+		wait_for_completion_killable(&dma->vsync_comp);
+	pr_debug("mdp3_dmap_update wait for vsync_comp out\n");
+	return 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int mdp3_dmas_update(struct mdp3_dma *dma, void *buf,
@@ -900,9 +952,12 @@ static int mdp3_dma_stop(struct mdp3_dma *dma, struct mdp3_intf *intf)
 					MDP3_DMA_CALLBACK_TYPE_DMA_DONE);
 	mdp3_irq_disable(MDP3_INTR_LCDC_UNDERFLOW);
 
+<<<<<<< HEAD
 	MDP3_REG_WRITE(MDP3_REG_INTR_ENABLE, 0);
 	MDP3_REG_WRITE(MDP3_REG_INTR_CLEAR, 0xfffffff);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	init_completion(&dma->dma_comp);
 	dma->vsync_client.handler = NULL;
 	return ret;
@@ -916,7 +971,10 @@ int mdp3_dma_init(struct mdp3_dma *dma)
 	switch (dma->dma_sel) {
 	case MDP3_DMA_P:
 		dma->dma_config = mdp3_dmap_config;
+<<<<<<< HEAD
 		dma->dma_config_source = mdp3_dmap_config_source;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		dma->config_cursor = mdp3_dmap_cursor_config;
 		dma->config_ccs = mdp3_dmap_ccs_config;
 		dma->config_histo = mdp3_dmap_histo_config;
@@ -926,13 +984,19 @@ int mdp3_dma_init(struct mdp3_dma *dma)
 		dma->get_histo = mdp3_dmap_histo_get;
 		dma->histo_op = mdp3_dmap_histo_op;
 		dma->vsync_enable = mdp3_dma_vsync_enable;
+<<<<<<< HEAD
 		dma->dma_done_notifier = mdp3_dma_done_notifier;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		dma->start = mdp3_dma_start;
 		dma->stop = mdp3_dma_stop;
 		break;
 	case MDP3_DMA_S:
 		dma->dma_config = mdp3_dmas_config;
+<<<<<<< HEAD
 		dma->dma_config_source = mdp3_dmas_config_source;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		dma->config_cursor = NULL;
 		dma->config_ccs = NULL;
 		dma->config_histo = NULL;

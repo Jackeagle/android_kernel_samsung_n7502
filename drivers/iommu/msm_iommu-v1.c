@@ -123,12 +123,20 @@ static void __disable_clocks(struct msm_iommu_drvdata *drvdata)
 	clk_disable_unprepare(drvdata->pclk);
 }
 
+<<<<<<< HEAD
 static void _iommu_lock_acquire(unsigned int need_extra_lock)
+=======
+static void _iommu_lock_acquire(void)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	mutex_lock(&msm_iommu_lock);
 }
 
+<<<<<<< HEAD
 static void _iommu_lock_release(unsigned int need_extra_lock)
+=======
+static void _iommu_lock_release(void)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	mutex_unlock(&msm_iommu_lock);
 }
@@ -956,8 +964,12 @@ irqreturn_t msm_iommu_fault_handler_v2(int irq, void *dev_id)
 			__print_ctx_regs(drvdata->base, ctx_drvdata->num, fsr);
 		}
 
+<<<<<<< HEAD
 		if (ret != -EBUSY)
 			SET_FSR(drvdata->base, ctx_drvdata->num, fsr);
+=======
+		SET_FSR(drvdata->base, ctx_drvdata->num, fsr);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		ret = IRQ_HANDLED;
 	} else
 		ret = IRQ_NONE;

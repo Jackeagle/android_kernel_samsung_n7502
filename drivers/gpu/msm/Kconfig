@@ -4,10 +4,13 @@ config MSM_KGSL
 	depends on ARCH_MSM && !ARCH_MSM7X00A && !ARCH_MSM7X25
 	select GENERIC_ALLOCATOR
 	select FW_LOADER
+<<<<<<< HEAD
 	select PM_DEVFREQ
 	select DEVFREQ_GOV_SIMPLE_ONDEMAND
 	select DEVFREQ_GOV_PERFORMANCE
 	select DEVFREQ_GOV_MSM_ADRENO_TZ
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	---help---
 	  3D graphics driver. Required to use hardware accelerated
 	  OpenGL ES 2.0 and 1.1.
@@ -64,6 +67,7 @@ config MSM_KGSL_2D
 	default y
 	depends on MSM_KGSL && !ARCH_MSM7X27 && !ARCH_MSM7X27A && !(ARCH_QSD8X50 && !MSM_SOC_REV_A)
 
+<<<<<<< HEAD
 config MSM_ADRENO_DEFAULT_GOVERNOR
 	string "devfreq governor for the adreno core"
 	default "msm-adreno-tz" if DEVFREQ_GOV_MSM_ADRENO_TZ
@@ -75,6 +79,8 @@ config MSM_Z180_DEFAULT_GOVERNOR
 	default "performance"
 	depends on MSM_KGSL_2D
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 config MSM_KGSL_DRM
 	bool "Build a DRM interface for the MSM_KGSL driver"
 	depends on MSM_KGSL && DRM

@@ -460,11 +460,16 @@ static int __devinit msm_rpm_log_probe(struct platform_device *pdev)
 			pdata, &msm_rpm_log_file_fops);
 	if (!dent) {
 		pr_err("%s: ERROR debugfs_create_file failed\n", __func__);
+<<<<<<< HEAD
 		if (pdata->version == VERSION_8974) {
 			ret = -ENOMEM;
 			goto fail;
 		}
 		return -ENOMEM;
+=======
+			ret = -ENOMEM;
+			goto fail;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	platform_set_drvdata(pdev, dent);

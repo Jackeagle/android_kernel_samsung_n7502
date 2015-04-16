@@ -10,14 +10,36 @@
  * GNU General Public License for more details.
  */
 
+<<<<<<< HEAD
 /dts-v1/;
 /include/ "msm8226-v1.dtsi"
 /include/ "msm8226-720p-mtp.dtsi"
+=======
+/* qcom,msm-id =<Chip_id Board_version Other_Specific_info>
+ * All these three fields are unsigned 32 bit integers
+ * For OtherSpecificInfo = 0xABCDEFGH [32 bits in total]
+ *  G[4BITS]:MODEL_VARIANT i.e. 0 for MS01,1 for MILLET_3G
+ *  H[4BITS]:Hardware Revision
+ * Please refer to .../lk/platform/msm_shared/dev_tree.c also
+ */ 
+ 
+/dts-v1/;
+/include/ "msm8226-v1.dtsi"
+/include/ "msm8226-mtp.dtsi"
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 / {
 	model = "Qualcomm MSM 8226 MTP";
 	compatible = "qcom,msm8226-mtp", "qcom,msm8226", "qcom,mtp";
+<<<<<<< HEAD
 	qcom,board-id = <8 0>;
+=======
+	qcom,msm-id = <145 8 0x10000>,
+		      <158 8 0x10000>,
+		      <159 8 0x10000>,
+		      <198 8 0x10000>,
+		      <205 8 0x10000>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 &cci {

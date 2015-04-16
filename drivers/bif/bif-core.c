@@ -205,14 +205,22 @@ static void bif_print_slave_data(struct bif_slave_dev *sdev)
 	}
 
 	if (sdev->nvm_function) {
+<<<<<<< HEAD
 		pr_debug("  NVM function: pointer=0x%04X, task=%d, wr_buf_size=%d, nvm_base=0x%04X, nvm_size=%d, nvm_lock_offset=%d\n",
+=======
+		pr_debug("  NVM function: pointer=0x%04X, task=%d, wr_buf_size=%d, nvm_base=0x%04X, nvm_size=%d\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			sdev->nvm_function->nvm_pointer,
 			sdev->nvm_function->slave_control_channel,
 			(sdev->nvm_function->write_buffer_size
 				? sdev->nvm_function->write_buffer_size : 0),
 			sdev->nvm_function->nvm_base_address,
+<<<<<<< HEAD
 			sdev->nvm_function->nvm_size,
 			sdev->nvm_function->nvm_lock_offset);
+=======
+			sdev->nvm_function->nvm_size);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (sdev->nvm_function->object_count)
 			pr_debug("  NVM objects:\n");
 		i = 0;
@@ -449,6 +457,7 @@ static int _bif_slave_read_no_retry(struct bif_slave_dev *sdev, u16 addr,
 		rc = bdev->desc->ops->read_slave_registers(bdev, addr, buf,
 							   len);
 		if (rc)
+<<<<<<< HEAD
 			pr_debug("read_slave_registers failed, rc=%d\n", rc);
 		else
 			return rc;
@@ -456,6 +465,10 @@ static int _bif_slave_read_no_retry(struct bif_slave_dev *sdev, u16 addr,
 		 * Fall back on individual transactions if high level register
 		 * read failed.
 		 */
+=======
+			pr_err("read_slave_registers failed, rc=%d\n", rc);
+		return rc;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	for (i = 0; i < len; i++) {
@@ -527,6 +540,7 @@ static int _bif_slave_write_no_retry(struct bif_slave_dev *sdev, u16 addr,
 		rc = bdev->desc->ops->write_slave_registers(bdev, addr, buf,
 							    len);
 		if (rc)
+<<<<<<< HEAD
 			pr_debug("write_slave_registers failed, rc=%d\n", rc);
 		else
 			return rc;
@@ -534,6 +548,10 @@ static int _bif_slave_write_no_retry(struct bif_slave_dev *sdev, u16 addr,
 		 * Fall back on individual transactions if high level register
 		 * write failed.
 		 */
+=======
+			pr_err("write_slave_registers failed, rc=%d\n", rc);
+		return rc;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	rc = bdev->desc->ops->bus_transaction(bdev, BIF_TRANS_ERA, addr >> 8);
@@ -578,6 +596,7 @@ static int _bif_slave_write(struct bif_slave_dev *sdev, u16 addr, u8 *buf,
 	return rc;
 }
 
+<<<<<<< HEAD
 /* Perform a read-modify-write sequence on a single BIF slave register. */
 static int _bif_slave_masked_write(struct bif_slave_dev *sdev, u16 addr, u8 val,
 			u8 mask)
@@ -805,6 +824,8 @@ done:
 	return rc;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* Takes a mutex if this consumer is not an exclusive bus user. */
 static void bif_ctrl_lock(struct bif_ctrl *ctrl)
 {
@@ -833,6 +854,7 @@ static void bif_slave_ctrl_unlock(struct bif_slave *slave)
 	bif_ctrl_unlock(&slave->ctrl);
 }
 
+<<<<<<< HEAD
 /**
  * bif_crc_ccitt() - calculate the CRC-CCITT CRC value of the data specified
  * @buffer:	Data to calculate the CRC of
@@ -880,6 +902,27 @@ static int bif_check_task(struct bif_slave *slave, unsigned int task)
 	}
 
 	return _bif_check_task(slave->sdev, task);
+=======
+static int bif_check_task(struct bif_slave *slave, unsigned int task)
+{
+	if (IS_ERR_OR_NULL(slave)) {
+		pr_err("Invalid slave handle.\n");
+		return -EINVAL;
+	} else if (!slave->sdev->bdev) {
+		pr_err("BIF controller has been removed.\n");
+		return -ENXIO;
+	} else if (!slave->sdev->slave_ctrl_function
+			|| slave->sdev->slave_ctrl_function->task_count == 0) {
+		pr_err("BIF slave does not support slave control.\n");
+		return -ENODEV;
+	} else if (task >= slave->sdev->slave_ctrl_function->task_count) {
+		pr_err("Requested task: %u greater than max: %u for this slave\n",
+			task, slave->sdev->slave_ctrl_function->task_count);
+		return -EINVAL;
+	}
+
+	return 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 /**
@@ -1083,6 +1126,7 @@ done:
 EXPORT_SYMBOL(bif_trigger_task);
 
 /**
+<<<<<<< HEAD
  * bif_enable_auto_task() - enable task auto triggering for the specified task
  * @slave:	BIF slave handle
  * @task:	BIF task inside of the slave to configure for automatic
@@ -1138,6 +1182,8 @@ int bif_disable_auto_task(struct bif_slave *slave, unsigned int task)
 EXPORT_SYMBOL(bif_disable_auto_task);
 
 /**
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * bif_task_is_busy() - checks the state of a BIF slave task
  * @slave:	BIF slave handle
  * @task:	BIF task inside of the slave to trigger.  This corresponds to
@@ -1149,6 +1195,7 @@ EXPORT_SYMBOL(bif_disable_auto_task);
 int bif_task_is_busy(struct bif_slave *slave, unsigned int task)
 {
 	int rc;
+<<<<<<< HEAD
 
 	if (IS_ERR_OR_NULL(slave)) {
 		pr_err("Invalid slave pointer=%ld\n", PTR_ERR(slave));
@@ -1157,6 +1204,30 @@ int bif_task_is_busy(struct bif_slave *slave, unsigned int task)
 
 	bif_slave_ctrl_lock(slave);
 	rc = _bif_task_is_busy(slave->sdev, task);
+=======
+	u16 addr;
+	u8 reg;
+
+	rc = bif_check_task(slave, task);
+	if (rc) {
+		pr_err("Invalid slave or task, rc=%d\n", rc);
+		return rc;
+	}
+
+	bif_slave_ctrl_lock(slave);
+
+	/* Check the task busy state. */
+	addr = SLAVE_CTRL_FUNC_TASK_BUSY_ADDR(
+		slave->sdev->slave_ctrl_function->slave_ctrl_pointer, task);
+	rc = _bif_slave_read(slave->sdev, addr, &reg, 1);
+	if (rc) {
+		pr_err("BIF slave register read failed, rc=%d\n", rc);
+		goto done;
+	}
+
+	rc = (reg & BIT(task % SLAVE_CTRL_TASKS_PER_SET)) ? 1 : 0;
+done:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	bif_slave_ctrl_unlock(slave);
 
 	return rc;
@@ -1565,6 +1636,7 @@ void bif_ctrl_put(struct bif_ctrl *ctrl)
 }
 EXPORT_SYMBOL(bif_ctrl_put);
 
+<<<<<<< HEAD
 static bool bif_slave_object_match(const struct bif_object *object,
 		const struct bif_match_criteria *criteria)
 {
@@ -1575,12 +1647,15 @@ static bool bif_slave_object_match(const struct bif_object *object,
 		    || !(criteria->match_mask & BIF_MATCH_OBJ_MANUFACTURER_ID));
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /*
  * Returns true if all parameters are matched, otherwise false.
  * function_type and function_version mean that their exists some function in
  * the slave which has the specified type and subtype.  ctrl == NULL is treated
  * as a wildcard.
  */
+<<<<<<< HEAD
 static bool bif_slave_match(struct bif_ctrl *ctrl,
 	struct bif_slave_dev *sdev, const struct bif_match_criteria *criteria)
 {
@@ -2274,6 +2349,174 @@ error_unlock:
 	return rc;
 }
 EXPORT_SYMBOL(bif_object_delete);
+=======
+static bool bif_slave_match(const struct bif_ctrl *ctrl,
+	struct bif_slave_dev *sdev, const struct bif_match_criteria *criteria)
+{
+	int i, type, version;
+
+	if (ctrl && (ctrl->bdev != sdev->bdev))
+		return false;
+
+	if (!sdev->present
+	    && (!(criteria->match_mask & BIF_MATCH_IGNORE_PRESENCE)
+		|| ((criteria->match_mask & BIF_MATCH_IGNORE_PRESENCE)
+		    && !criteria->ignore_presence)))
+		return false;
+
+	if ((criteria->match_mask & BIF_MATCH_MANUFACTURER_ID)
+	    && sdev->l1_data.manufacturer_id != criteria->manufacturer_id)
+		return false;
+
+	if ((criteria->match_mask & BIF_MATCH_PRODUCT_ID)
+	    && sdev->l1_data.product_id != criteria->product_id)
+		return false;
+
+	if (criteria->match_mask & BIF_MATCH_FUNCTION_TYPE) {
+		if (!sdev->function_directory)
+			return false;
+		for (i = 0; i < sdev->l1_data.length / 4; i++) {
+			type = sdev->function_directory[i].function_type;
+			version = sdev->function_directory[i].function_version;
+			if (type == criteria->function_type &&
+				(version == criteria->function_version
+					|| !(criteria->match_mask
+						& BIF_MATCH_FUNCTION_VERSION)))
+				return true;
+		}
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * bif_slave_match_count() - returns the number of slaves associated with the
+ *			specified BIF controller which fit the matching
+ *			criteria
+ * @ctrl:		BIF controller consumer handle
+ * @match_criteria:	Matching criteria used to filter slaves
+ */
+int bif_slave_match_count(const struct bif_ctrl *ctrl,
+			const struct bif_match_criteria *match_criteria)
+{
+	struct bif_slave_dev *sdev;
+	int count = 0;
+
+	mutex_lock(&bif_sdev_list_mutex);
+
+	list_for_each_entry(sdev, &bif_sdev_list, list) {
+		if (bif_slave_match(ctrl, sdev, match_criteria))
+			count++;
+	}
+
+	mutex_unlock(&bif_sdev_list_mutex);
+
+	return count;
+}
+EXPORT_SYMBOL(bif_slave_match_count);
+
+/**
+ * bif_slave_match_get() - get a slave handle for the id'th slave associated
+ *			with the specified BIF controller which fits the
+ *			matching criteria
+ * @ctrl:		BIF controller consumer handle
+ * @id:			Index into the set of matching slaves
+ * @match_criteria:	Matching criteria used to filter slaves
+ *
+ * id must be in the range [0, bif_slave_match_count(ctrl, match_criteria) - 1].
+ *
+ * Returns a BIF slave handle if successful or an ERR_PTR if not.
+ */
+struct bif_slave *bif_slave_match_get(const struct bif_ctrl *ctrl,
+	unsigned int id, const struct bif_match_criteria *match_criteria)
+{
+	struct bif_slave_dev *sdev;
+	struct bif_slave *slave = ERR_PTR(-ENODEV);
+	struct bif_slave_dev *sdev_found = NULL;
+	int count = 0;
+
+	mutex_lock(&bif_sdev_list_mutex);
+
+	list_for_each_entry(sdev, &bif_sdev_list, list) {
+		if (bif_slave_match(ctrl, sdev, match_criteria))
+			count++;
+		if (count == id + 1) {
+			sdev_found = sdev;
+			break;
+		}
+	}
+
+	mutex_unlock(&bif_sdev_list_mutex);
+
+	if (sdev_found) {
+		slave = kzalloc(sizeof(*slave), GFP_KERNEL);
+		if (!slave) {
+			pr_err("Slave allocation failed\n");
+			slave = ERR_PTR(-ENOMEM);
+		} else {
+			slave->sdev = sdev_found;
+			slave->ctrl.bdev = sdev_found->bdev;
+		}
+	}
+
+	return slave;
+}
+EXPORT_SYMBOL(bif_slave_match_get);
+
+/**
+ * bif_slave_put() - frees a BIF slave handle
+ * @slave:	BIF slave handle
+ */
+void bif_slave_put(struct bif_slave *slave)
+{
+	if (!IS_ERR_OR_NULL(slave) && slave->ctrl.exclusive_lock)
+		mutex_unlock(&slave->sdev->bdev->mutex);
+	kfree(slave);
+}
+EXPORT_SYMBOL(bif_slave_put);
+
+/**
+ * bif_slave_find_function() - get the function pointer and version of a
+ *			BIF function if it is present on the specified slave
+ * @slave:		BIF slave handle
+ * @function:		BIF function to search for inside of the slave
+ * @version:		If the function is found, then 'version' is set to the
+ *			version value of the function
+ * @function_pointer:	If the function is found, then 'function_pointer' is set
+ *			to the BIF slave address of the function
+ *
+ * Returns 0 for success or errno if an error occurred.  If the function is not
+ * found in the slave, then -ENODEV is returned.
+ */
+int bif_slave_find_function(struct bif_slave *slave, u8 function, u8 *version,
+				u16 *function_pointer)
+{
+	int rc = -ENODEV;
+	struct bif_ddb_l2_data *func;
+	int i;
+
+	if (IS_ERR_OR_NULL(slave) || IS_ERR_OR_NULL(version)
+	    || IS_ERR_OR_NULL(function_pointer)) {
+		pr_err("Invalid pointer input.\n");
+		return -EINVAL;
+	}
+
+	func = slave->sdev->function_directory;
+
+	for (i = 0; i < slave->sdev->l1_data.length / 4; i++) {
+		if (function == func[i].function_type) {
+			*version = func[i].function_version;
+			*function_pointer = func[i].function_pointer;
+			rc = 0;
+			break;
+		}
+	}
+
+	return rc;
+}
+EXPORT_SYMBOL(bif_slave_find_function);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /**
  * bif_slave_read() - read contiguous memory values from a BIF slave
@@ -2336,6 +2579,7 @@ int bif_slave_write(struct bif_slave *slave, u16 addr, u8 *buf, int len)
 EXPORT_SYMBOL(bif_slave_write);
 
 /**
+<<<<<<< HEAD
  * bif_slave_nvm_raw_read() - read contiguous memory values from a BIF slave's
  *		non-volatile memory (NVM)
  * @slave:	BIF slave handle
@@ -2404,6 +2648,8 @@ int bif_slave_nvm_raw_write(struct bif_slave *slave, u16 offset, u8 *buf,
 EXPORT_SYMBOL(bif_slave_nvm_raw_write);
 
 /**
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * bif_slave_is_present() - check if a slave is currently physically present
  *		in the system
  * @slave:	BIF slave handle
@@ -2944,6 +3190,48 @@ static int bif_initialize_slave_control_function(struct bif_slave_dev *sdev,
 	return rc;
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * bif_crc_ccitt() - calculate the CRC-CCITT CRC value of the data specified
+ * @buffer:	Data to calculate the CRC of
+ * @len:	Length of the data buffer in bytes
+ *
+ * MIPI-BIF specifies the usage of CRC-CCITT for BIF data objects.  This
+ * function performs the CRC calculation while taking into account the bit
+ * ordering used by BIF.
+ */
+u16 bif_crc_ccitt(const u8 *buffer, unsigned int len)
+{
+	u16 crc = 0xFFFF;
+
+	while (len--) {
+		crc = crc_ccitt_byte(crc, bitrev8(*buffer));
+		buffer++;
+	}
+	return bitrev16(crc);
+}
+EXPORT_SYMBOL(bif_crc_ccitt);
+
+static u16 bif_object_crc_ccitt(const struct bif_object *object)
+{
+	u16 crc = 0xFFFF;
+	int i;
+
+	crc = crc_ccitt_byte(crc, bitrev8(object->type));
+	crc = crc_ccitt_byte(crc, bitrev8(object->version));
+	crc = crc_ccitt_byte(crc, bitrev8(object->manufacturer_id >> 8));
+	crc = crc_ccitt_byte(crc, bitrev8(object->manufacturer_id));
+	crc = crc_ccitt_byte(crc, bitrev8(object->length >> 8));
+	crc = crc_ccitt_byte(crc, bitrev8(object->length));
+
+	for (i = 0; i < object->length - 8; i++)
+		crc = crc_ccitt_byte(crc, bitrev8(object->data[i]));
+
+	return bitrev16(crc);
+}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /*
  * Check if the specified function is an NVM function and if it is, then
  * instantiate NVM function data for the slave and read all objects.
@@ -2952,7 +3240,11 @@ static int bif_initialize_nvm_function(struct bif_slave_dev *sdev,
 		struct bif_ddb_l2_data *func)
 {
 	int rc = 0;
+<<<<<<< HEAD
 	int data_len, read_size;
+=======
+	int data_len;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	u8 buf[8], object_type;
 	struct bif_object *object;
 	struct bif_object *temp;
@@ -2982,12 +3274,17 @@ static int bif_initialize_nvm_function(struct bif_slave_dev *sdev,
 		return rc;
 	}
 
+<<<<<<< HEAD
 	sdev->nvm_function->nvm_pointer			= buf[0] << 8 | buf[1];
+=======
+	sdev->nvm_function->nvm_pointer		= buf[0] << 8 | buf[1];
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	sdev->nvm_function->slave_control_channel	= buf[2];
 	sdev->nvm_function->write_buffer_size		= buf[3];
 	sdev->nvm_function->nvm_base_address		= buf[4] << 8 | buf[5];
 	sdev->nvm_function->nvm_size			= buf[6] << 8 | buf[7];
 
+<<<<<<< HEAD
 	/* Read NVM lock offset */
 	rc = _bif_slave_read(sdev, sdev->nvm_function->nvm_pointer, buf, 2);
 	if (rc) {
@@ -2997,6 +3294,8 @@ static int bif_initialize_nvm_function(struct bif_slave_dev *sdev,
 
 	sdev->nvm_function->nvm_lock_offset		= buf[0] << 8 | buf[1];
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	INIT_LIST_HEAD(&sdev->nvm_function->object_list);
 
 	/* Read object list */
@@ -3007,7 +3306,12 @@ static int bif_initialize_nvm_function(struct bif_slave_dev *sdev,
 		return rc;
 	}
 
+<<<<<<< HEAD
 	while (object_type != BIF_OBJ_END_OF_LIST) {
+=======
+	/* Object type == 0x00 corresponds to the end of the object list. */
+	while (object_type != 0x00) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		object = kzalloc(sizeof(*object), GFP_KERNEL);
 		if (!object) {
 			pr_err("out of memory\n");
@@ -3059,6 +3363,7 @@ static int bif_initialize_nvm_function(struct bif_slave_dev *sdev,
 			goto free_data;
 		}
 
+<<<<<<< HEAD
 		if ((object->length + addr) >= (sdev->nvm_function->nvm_size
 				+ sdev->nvm_function->nvm_base_address))
 			read_size = 2;
@@ -3068,11 +3373,21 @@ static int bif_initialize_nvm_function(struct bif_slave_dev *sdev,
 		if (rc) {
 			pr_err("Slave memory read of object CRC failed; addr=0x%04X, len=%d, rc=%d\n",
 				addr + 6 + data_len, read_size, rc);
+=======
+		rc = _bif_slave_read(sdev, addr + 6 + data_len, buf, 3);
+		if (rc) {
+			pr_err("Slave memory read of object CRC failed; addr=0x%04X, len=%d, rc=%d\n",
+				addr + 6 + data_len, 3, rc);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			goto free_data;
 		}
 
 		object->crc = buf[0] << 8 | buf[1];
+<<<<<<< HEAD
 		object_type = (read_size == 3) ? buf[2] : BIF_OBJ_END_OF_LIST;
+=======
+		object_type = buf[2];
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		sdev->nvm_function->object_count++;
 
 		crc = bif_object_crc_ccitt(object);
@@ -3222,12 +3537,15 @@ static int bif_add_secondary_slaves(struct bif_slave_dev *primary_slave)
 			} else if (rc == 1) {
 				sdev->present = true;
 				sdev->bdev->selected_sdev = sdev;
+<<<<<<< HEAD
 				rc = bif_parse_slave_data(sdev);
 				if (rc) {
 					pr_err("Failed to parse secondary slave data, rc=%d\n",
 						rc);
 					goto free_slave;
 				}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			} else {
 				sdev->present = false;
 				sdev->bdev->selected_sdev = NULL;
@@ -3351,11 +3669,14 @@ static int bif_perform_uid_search(struct bif_ctrl_dev *bdev)
 			sdev->present = true;
 			sdev->bdev->selected_sdev = sdev;
 			rc = bif_parse_slave_data(sdev);
+<<<<<<< HEAD
 			if (rc) {
 				pr_err("Failed to parse secondary slave data, rc=%d\n",
 					rc);
 				return rc;
 			}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		} else {
 			pr_err("Slave failed to respond to DILC bus command; its UID is thus unverified.\n");
 			sdev->unique_id_bits_known = 0;

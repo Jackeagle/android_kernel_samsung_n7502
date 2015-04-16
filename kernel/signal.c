@@ -680,6 +680,7 @@ int dequeue_signal(struct task_struct *tsk, sigset_t *mask, siginfo_t *info)
  * No need to set need_resched since signal event passing
  * goes through ->blocked
  */
+<<<<<<< HEAD
 void signal_wake_up(struct task_struct *t, int resume)
 {
 	unsigned int mask;
@@ -688,15 +689,26 @@ void signal_wake_up(struct task_struct *t, int resume)
 
 	/*
 	 * For SIGKILL, we want to wake it up in the stopped/traced/killable
+=======
+void signal_wake_up_state(struct task_struct *t, unsigned int state)
+{
+	set_tsk_thread_flag(t, TIF_SIGPENDING);
+	/*
+	 * TASK_WAKEKILL also means wake it up in the stopped/traced/killable
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	 * case. We don't check t->state here because there is a race with it
 	 * executing another processor and just now entering stopped state.
 	 * By using wake_up_state, we ensure the process will wake up and
 	 * handle its death signal.
 	 */
+<<<<<<< HEAD
 	mask = TASK_INTERRUPTIBLE;
 	if (resume)
 		mask |= TASK_WAKEKILL;
 	if (!wake_up_state(t, mask))
+=======
+	if (!wake_up_state(t, state | TASK_INTERRUPTIBLE))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		kick_process(t);
 }
 
@@ -845,7 +857,11 @@ static void ptrace_trap_notify(struct task_struct *t)
 	assert_spin_locked(&t->sighand->siglock);
 
 	task_set_jobctl_pending(t, JOBCTL_TRAP_NOTIFY);
+<<<<<<< HEAD
 	signal_wake_up(t, t->jobctl & JOBCTL_LISTENING);
+=======
+	ptrace_signal_wake_up(t, t->jobctl & JOBCTL_LISTENING);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 /*
@@ -1811,6 +1827,13 @@ static inline int may_ptrace_stop(void)
 	 * If SIGKILL was already sent before the caller unlocked
 	 * ->siglock we must see ->core_state != NULL. Otherwise it
 	 * is safe to enter schedule().
+<<<<<<< HEAD
+=======
+	 *
+	 * This is almost outdated, a task with the pending SIGKILL can't
+	 * block in TASK_TRACED. But PTRACE_EVENT_EXIT can be reported
+	 * after SIGKILL was already dequeued.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	 */
 	if (unlikely(current->mm->core_state) &&
 	    unlikely(current->mm == current->parent->mm))
@@ -1936,6 +1959,10 @@ static void ptrace_stop(int exit_code, int why, int clear_code, siginfo_t *info)
 		if (gstop_done)
 			do_notify_parent_cldstop(current, false, why);
 
+<<<<<<< HEAD
+=======
+		/* tasklist protects us from ptrace_freeze_traced() */
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		__set_current_state(TASK_RUNNING);
 		if (clear_code)
 			current->exit_code = 0;

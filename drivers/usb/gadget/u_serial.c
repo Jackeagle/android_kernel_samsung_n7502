@@ -4,7 +4,10 @@
  * Copyright (C) 2003 Al Borchers (alborchers@steinerpoint.com)
  * Copyright (C) 2008 David Brownell
  * Copyright (C) 2008 by Nokia Corporation
+<<<<<<< HEAD
  * Copyright (c) 2013, The Linux Foundation. All rights reserved.
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This code also borrows from usbserial.c, which is
  * Copyright (C) 1999 - 2002 Greg Kroah-Hartman (greg@kroah.com)
@@ -689,20 +692,32 @@ static void gs_free_requests(struct usb_ep *ep, struct list_head *head,
 }
 
 static int gs_alloc_requests(struct usb_ep *ep, struct list_head *head,
+<<<<<<< HEAD
 		int queue_size, int req_size,
 		void (*fn)(struct usb_ep *, struct usb_request *),
+=======
+		int num, int size, void (*fn)(struct usb_ep *, struct usb_request *),
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		int *allocated)
 {
 	int			i;
 	struct usb_request	*req;
+<<<<<<< HEAD
 	int n = allocated ? queue_size - *allocated : queue_size;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/* Pre-allocate up to QUEUE_SIZE transfers, but if we can't
 	 * do quite that many this time, don't fail ... we just won't
 	 * be as speedy as we might otherwise be.
 	 */
+<<<<<<< HEAD
 	for (i = 0; i < n; i++) {
 		req = gs_alloc_req(ep, req_size, GFP_ATOMIC);
+=======
+	for (i = 0; i < num; i++) {
+		req = gs_alloc_req(ep, size, GFP_ATOMIC);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (!req)
 			return list_empty(head) ? -ENOMEM : 0;
 		req->complete = fn;
@@ -943,6 +958,25 @@ static void gs_close(struct tty_struct *tty, struct file *file)
 			port->port_num, tty, file);
 
 	wake_up_interruptible(&port->close_wait);
+<<<<<<< HEAD
+=======
+
+	/*
+	 * Freeing the previously queued requests as they are
+	 * allocated again as a part of gs_open()
+	 */
+	if (port->port_usb) {
+		spin_unlock_irq(&port->port_lock);
+		usb_ep_fifo_flush(gser->out);
+		usb_ep_fifo_flush(gser->in);
+		spin_lock_irq(&port->port_lock);
+		gs_free_requests(gser->out, &port->read_queue, NULL);
+		gs_free_requests(gser->out, &port->read_pool, NULL);
+		gs_free_requests(gser->in, &port->write_pool, NULL);
+	}
+	port->read_allocated = port->read_started =
+		port->write_allocated = port->write_started = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 exit:
 	spin_unlock_irq(&port->port_lock);
 }
@@ -1281,6 +1315,7 @@ const struct file_operations debug_adb_ops = {
 	.read = debug_read_status,
 };
 
+<<<<<<< HEAD
 struct dentry *gs_dent;
 static void usb_debugfs_init(struct gs_port *ui_dev, int port_num)
 {
@@ -1304,6 +1339,24 @@ static void usb_debugfs_remove(void)
 #else
 static inline void usb_debugfs_init(struct gs_port *ui_dev, int port_num) {}
 static inline void usb_debugfs_remove(void) {}
+=======
+static void usb_debugfs_init(struct gs_port *ui_dev, int port_num)
+{
+	struct dentry *dent;
+	char buf[48];
+
+	snprintf(buf, 48, "usb_serial%d", port_num);
+	dent = debugfs_create_dir(buf, 0);
+	if (IS_ERR(dent))
+		return;
+
+	debugfs_create_file("readstatus", 0444, dent, ui_dev, &debug_adb_ops);
+	debugfs_create_file("reset", S_IRUGO | S_IWUSR,
+			dent, ui_dev, &debug_rst_ops);
+}
+#else
+static void usb_debugfs_init(struct gs_port *ui_dev) {}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif
 
 /**
@@ -1468,7 +1521,10 @@ void gserial_cleanup(void)
 	}
 	n_ports = 0;
 
+<<<<<<< HEAD
 	usb_debugfs_remove();
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	destroy_workqueue(gserial_wq);
 	tty_unregister_driver(gs_tty_driver);
 	put_tty_driver(gs_tty_driver);

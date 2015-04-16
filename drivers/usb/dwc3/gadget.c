@@ -229,6 +229,7 @@ int dwc3_gadget_resize_tx_fifos(struct dwc3 *dwc)
 		tmp = mult * (dep->endpoint.maxpacket + mdwidth);
 
 		if (dwc->tx_fifo_size &&
+<<<<<<< HEAD
 			(usb_endpoint_xfer_bulk(dep->endpoint.desc)
 			|| usb_endpoint_xfer_isoc(dep->endpoint.desc))) {
 			/*
@@ -243,6 +244,16 @@ int dwc3_gadget_resize_tx_fifos(struct dwc3 *dwc)
 			else
 				tmp = mult * (1024 + mdwidth);
 		}
+=======
+				(usb_endpoint_xfer_bulk(dep->endpoint.desc)
+				|| usb_endpoint_xfer_isoc(dep->endpoint.desc)))
+			/*
+			 * Allocate 3KB fifo size for bulk and isochronous TX
+			 * endpoints irrespective of speed. For interrupt
+			 * endpoint, allocate fifo size of endpoint maxpacket.
+			 */
+			tmp = 3 * (1024 + mdwidth);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		tmp += mdwidth;
 
@@ -2623,10 +2634,20 @@ static void dwc3_gadget_linksts_change_interrupt(struct dwc3 *dwc,
 		}
 	}
 
+<<<<<<< HEAD
 	if (next == DWC3_LINK_STATE_U0) {
 		if (dwc->link_state == DWC3_LINK_STATE_U3) {
 			dbg_event(0xFF, "RESUME", 0);
 			dwc->gadget_driver->resume(&dwc->gadget);
+=======
+	/*
+	 * Notify suspend only to gadget driver, but not resume. Resume is
+	 * notified as part of wakeup event in dwc3_gadget_wakeup_interrupt().
+	 */
+	if (next == DWC3_LINK_STATE_U0) {
+		if (dwc->link_state == DWC3_LINK_STATE_U3) {
+			dbg_event(0xFF, "RESUME", 0);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 	} else if (next == DWC3_LINK_STATE_U3) {
 		dbg_event(0xFF, "SUSPEND", 0);
@@ -2917,11 +2938,15 @@ int __devinit dwc3_gadget_init(struct dwc3 *dwc)
 
 		dwc3_writel(dwc->regs, DWC3_DCTL, reg);
 
+<<<<<<< HEAD
 		/*
 		 * Clear autosuspend bit in dwc3 register for USB2. It will be
 		 * enabled before setting run/stop bit.
 		 */
 		dwc3_gadget_usb2_phy_suspend(dwc, false);
+=======
+		dwc3_gadget_usb2_phy_suspend(dwc, true);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		dwc3_gadget_usb3_phy_suspend(dwc, true);
 	}
 

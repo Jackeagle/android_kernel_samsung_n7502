@@ -1780,7 +1780,11 @@ static long teth_bridge_ioctl(struct file *filp,
 			break;
 		}
 
+<<<<<<< HEAD
 		if (caps.num_protocols != teth_ctx->aggr_caps->num_protocols) {
+=======
+		if (caps.num_protocols < teth_ctx->aggr_caps->num_protocols) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			caps.num_protocols = teth_ctx->aggr_caps->num_protocols;
 			if (copy_to_user((struct teth_aggr_capabilities *)arg,
 					 &caps,

@@ -494,7 +494,14 @@ static void sd_update_bus_speed_mode(struct mmc_card *card)
 	if ((card->host->caps & MMC_CAP_UHS_SDR104) &&
 	    (card->sw_caps.sd3_bus_mode & SD_MODE_UHS_SDR104) &&
 	    (card->host->f_max > UHS_SDR104_MIN_DTR)) {
+<<<<<<< HEAD
 			card->sd_bus_speed = UHS_SDR104_BUS_SPEED;
+=======
+	    	if(card->cid.manfid == 27)
+                        card->sd_bus_speed = UHS_SDR50_BUS_SPEED;
+                else                    
+                        card->sd_bus_speed = UHS_SDR104_BUS_SPEED;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	} else if ((card->host->caps & MMC_CAP_UHS_DDR50) &&
 		   (card->sw_caps.sd3_bus_mode & SD_MODE_UHS_DDR50) &&
 		    (card->host->f_max > UHS_DDR50_MIN_DTR)) {
@@ -769,6 +776,11 @@ MMC_DEV_ATTR(manfid, "0x%06x\n", card->cid.manfid);
 MMC_DEV_ATTR(name, "%s\n", card->cid.prod_name);
 MMC_DEV_ATTR(oemid, "0x%04x\n", card->cid.oemid);
 MMC_DEV_ATTR(serial, "0x%08x\n", card->cid.serial);
+<<<<<<< HEAD
+=======
+MMC_DEV_ATTR(caps, "0x%08x\n", (unsigned int)(card->host->caps));
+MMC_DEV_ATTR(caps2, "0x%08x\n", card->host->caps2);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 
 static struct attribute *sd_std_attrs[] = {
@@ -784,6 +796,11 @@ static struct attribute *sd_std_attrs[] = {
 	&dev_attr_name.attr,
 	&dev_attr_oemid.attr,
 	&dev_attr_serial.attr,
+<<<<<<< HEAD
+=======
+	&dev_attr_caps.attr,
+	&dev_attr_caps2.attr,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	NULL,
 };
 

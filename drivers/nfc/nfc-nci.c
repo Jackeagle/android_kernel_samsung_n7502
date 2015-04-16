@@ -757,8 +757,12 @@ static int nfc_parse_dt(struct device *dev, struct qca199x_platform_data *pdata)
 
 	r = of_property_read_string(np, "qcom,clk-src", &pdata->clk_src);
 
+<<<<<<< HEAD
 	if ((!strcmp(pdata->clk_src, "GPCLK")) ||
 	    (!strcmp(pdata->clk_src, "GPCLK2")))
+=======
+	if (!strcmp(pdata->clk_src, "GPCLK"))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		pdata->clk_src_gpio = of_get_named_gpio(np,
 				"qcom,clk-en-gpio", 0);
 
@@ -875,6 +879,7 @@ static int qca199x_probe(struct i2c_client *client,
 		} else {
 			goto err_dis_gpio;
 		}
+<<<<<<< HEAD
 	} else if (!strcmp(platform_data->clk_src, "GPCLK2")) {
 		if (gpio_is_valid(platform_data->clk_src_gpio)) {
 			nfc_clk  = clk_get(&client->dev, "core_clk_pvt");
@@ -883,6 +888,8 @@ static int qca199x_probe(struct i2c_client *client,
 		} else {
 			goto err_dis_gpio;
 		}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	} else {
 		nfc_clk = NULL;
 	}
@@ -932,6 +939,7 @@ static int qca199x_probe(struct i2c_client *client,
 		goto err_misc_register;
 	}
 
+<<<<<<< HEAD
 	regulators.regulator = regulator_get(&client->dev, regulators.name);
 	if (IS_ERR(regulators.regulator)) {
 		r = PTR_ERR(regulators.regulator);
@@ -945,6 +953,8 @@ static int qca199x_probe(struct i2c_client *client,
 		}
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	logging_level = 0;
 	/* request irq.  The irq is set whenever the chip has data available
 	* for reading.  It is cleared when all data has been read.
@@ -983,8 +993,12 @@ err_dis_gpio:
 	r = gpio_direction_input(platform_data->dis_gpio);
 	if (r)
 		dev_err(&client->dev, "nfc-nci probe: Unable to set direction\n");
+<<<<<<< HEAD
 	if ((!strcmp(platform_data->clk_src, "GPCLK")) ||
             (!strcmp(platform_data->clk_src, "GPCLK2"))) {
+=======
+	if (!strcmp(platform_data->clk_src, "GPCLK")) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		r = gpio_direction_input(platform_data->clk_src_gpio);
 		if (r)
 			dev_err(&client->dev, "nfc-nci probe: Unable to set direction\n");

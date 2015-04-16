@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2010-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2010-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -94,7 +98,11 @@ struct apr_hdr {
 #define APR_SVC_SRD		0x7
 
 /* APR Port IDs */
+<<<<<<< HEAD
 #define APR_MAX_PORTS		0x80
+=======
+#define APR_MAX_PORTS		0x40
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define APR_NAME_MAX		0x40
 

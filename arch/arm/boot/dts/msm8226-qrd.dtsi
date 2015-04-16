@@ -28,7 +28,10 @@
 			synaptics,reset-gpio = <&msmgpio 16 0x00>;
 			synaptics,irq-gpio = <&msmgpio 17 0x2008>;
 			synaptics,button-map = <139 102 158>;
+<<<<<<< HEAD
 			synaptics,fw-image-name = "PR1468813.img";
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			synaptics,i2c-pull-up;
 			synaptics,power-down;
 			synaptics,disable-gpios;
@@ -41,7 +44,10 @@
 			interrupts = <17 0x2>;
 			vdd-supply = <&pm8226_l19>;
 			vcc_i2c-supply = <&pm8226_lvs1>;
+<<<<<<< HEAD
 			focaltech,name = "ft5x06";
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			focaltech,family-id = <0x55>;
 			focaltech,reset-gpio = <&msmgpio 16 0x00>;
 			focaltech,irq-gpio = <&msmgpio 17 0x00>;
@@ -50,6 +56,7 @@
 			focaltech,button-map= <139 102 158>;
 			focaltech,no-force-update;
 			focaltech,i2c-pull-up;
+<<<<<<< HEAD
 			focaltech,group-id = <1>;
 			focaltech,hard-reset-delay-ms = <20>;
 			focaltech,soft-reset-delay-ms = <150>;
@@ -61,6 +68,8 @@
 			focaltech,fw-upgrade-id2 = <0x03>;
 			focaltech,fw-delay-readid-ms = <10>;
 			focaltech,fw-delay-era-flsh-ms = <2000>;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		};
 	};
 
@@ -130,6 +139,7 @@
 			"MIC BIAS1 External", "Handset Mic",
 			"AMIC2", "MIC BIAS2 External",
 			"MIC BIAS2 External", "Headset Mic",
+<<<<<<< HEAD
 			"AMIC3", "MIC BIAS1 External",
 			"MIC BIAS1 External", "Analog Mic3",
 			"AMIC4", "MIC BIAS3 External",
@@ -137,6 +147,17 @@
 
 		qcom,cdc-mclk-gpios = <&pm8226_gpios 1 0>;
 		qcom,cdc-vdd-spkr-gpios = <&pm8226_gpios 2 0>;
+=======
+			"MIC BIAS1 External", "ANCRight Headset Mic",
+			"MIC BIAS1 External", "Analog Mic3",
+			"AMIC4", "MIC BIAS3 External",
+			"MIC BIAS3 External", "Analog Mic4";
+			"MIC BIAS2 External", "ANCRight Headset Mic",
+			"AMIC5", "MIC BIAS2 External",
+
+		qcom,cdc-mclk-gpios = <&pm8226_gpios 1 0>;
+		/*qcom,cdc-vdd-spkr-gpios = <&pm8226_gpios 2 0>;*/
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,cdc-us-euro-gpios = <&msmgpio 69 0>;
 	};
 
@@ -367,9 +388,18 @@
 		};
 
 		qcom,vibrator@c000 {
+<<<<<<< HEAD
 			status = "okay";
 			qcom,vib-timeout-ms = <15000>;
 			qcom,vib-vtg-level-mV = <3100>;
+=======
+			compatible = "qcom,qpnp-vibrator";
+			reg = <0xc000 0x100>;
+			label = "vibrator";
+			qcom,vib-timeout-ms = <15000>;
+			qcom,vib-vtg-level-mV = <3100>;
+			status = "okay";
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		};
 
 	};
@@ -495,7 +525,10 @@
 
 &mdss_mdp {
 	qcom,mdss-pref-prim-intf = "dsi";
+<<<<<<< HEAD
 	batfet-supply = <&pm8226_chg_batif>;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 &mdss_dsi0 {

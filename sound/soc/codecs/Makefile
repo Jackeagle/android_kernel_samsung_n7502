@@ -27,6 +27,10 @@ snd-soc-l3-objs := l3.o
 snd-soc-lm4857-objs := lm4857.o
 snd-soc-max98088-objs := max98088.o
 snd-soc-max98095-objs := max98095.o
+<<<<<<< HEAD
+=======
+snd-soc-max98504-objs := max98504.o
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 snd-soc-max9850-objs := max9850.o
 snd-soc-pcm3008-objs := pcm3008.o
 snd-soc-rt5631-objs := rt5631.o
@@ -53,7 +57,11 @@ snd-soc-wcd9310-objs := wcd9310.o wcd9310-tables.o
 snd-soc-cs8427-objs := cs8427.o
 snd-soc-wcd9320-objs := wcd9xxx-resmgr.o wcd9320.o wcd9320-tables.o wcd9xxx-mbhc.o wcd9xxx-common.o
 snd-soc-wcd9306-objs := wcd9306.o wcd9306-tables.o wcd9xxx-common.o
+<<<<<<< HEAD
 snd-soc-msm8x10-wcd-objs := msm8x10-wcd.o msm8x10-wcd-tables.o wcd9xxx-common.o
+=======
+snd-soc-msm8x10-wcd-objs := msm8x10-wcd.o msm8x10-wcd-tables.o
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 snd-soc-wl1273-objs := wl1273.o
 snd-soc-wm1250-ev1-objs := wm1250-ev1.o
 snd-soc-wm2000-objs := wm2000.o
@@ -141,6 +149,10 @@ obj-$(CONFIG_SND_SOC_LM4857)	+= snd-soc-lm4857.o
 obj-$(CONFIG_SND_SOC_JZ4740_CODEC)	+= snd-soc-jz4740-codec.o
 obj-$(CONFIG_SND_SOC_MAX98088)	+= snd-soc-max98088.o
 obj-$(CONFIG_SND_SOC_MAX98095)	+= snd-soc-max98095.o
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_SND_SOC_MAX98504)	+= snd-soc-max98504.o
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 obj-$(CONFIG_SND_SOC_MAX9850)	+= snd-soc-max9850.o
 obj-$(CONFIG_SND_SOC_PCM3008)	+= snd-soc-pcm3008.o
 obj-$(CONFIG_SND_SOC_RT5631)	+= snd-soc-rt5631.o

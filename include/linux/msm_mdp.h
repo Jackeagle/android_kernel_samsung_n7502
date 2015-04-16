@@ -1,7 +1,11 @@
 /* include/linux/msm_mdp.h
  *
  * Copyright (C) 2007 Google Incorporated
+<<<<<<< HEAD
  * Copyright (c) 2012-2014 The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2012-2013 The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -156,7 +160,10 @@ enum {
 
 #define MDSS_MDP_ROT_ONLY		0x80
 #define MDSS_MDP_RIGHT_MIXER		0x100
+<<<<<<< HEAD
 #define MDSS_MDP_DUAL_PIPE		0x200
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* mdp_blit_req flag values */
 #define MDP_ROT_NOP 0
@@ -169,7 +176,10 @@ enum {
 #define MDP_BLUR 0x10
 #define MDP_BLEND_FG_PREMULT 0x20000
 #define MDP_IS_FG 0x40000
+<<<<<<< HEAD
 #define MDP_SOLID_FILL 0x0000100
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define MDP_DEINTERLACE 0x80000000
 #define MDP_SHARPENING  0x40000000
 #define MDP_NO_DMA_BARRIER_START	0x20000000
@@ -189,7 +199,10 @@ enum {
 #define MDP_BACKEND_COMPOSITION		0x00040000
 #define MDP_BORDERFILL_SUPPORTED	0x00010000
 #define MDP_SECURE_OVERLAY_SESSION      0x00008000
+<<<<<<< HEAD
 #define MDP_SECURE_DISPLAY_OVERLAY_SESSION	0x00002000
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define MDP_OV_PIPE_FORCE_DMA		0x00004000
 #define MDP_MEMORY_ID_TYPE_FB		0x00001000
 #define MDP_BWC_EN			0x00000400
@@ -255,6 +268,7 @@ struct mdp_csc {
 
 #define MDP_BLIT_REQ_VERSION 2
 
+<<<<<<< HEAD
 struct color {
 	uint32_t r;
 	uint32_t g;
@@ -262,12 +276,17 @@ struct color {
 	uint32_t alpha;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct mdp_blit_req {
 	struct mdp_img src;
 	struct mdp_img dst;
 	struct mdp_rect src_rect;
 	struct mdp_rect dst_rect;
+<<<<<<< HEAD
 	struct color const_color;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	uint32_t alpha;
 	uint32_t transp_mask;
 	uint32_t flags;
@@ -320,6 +339,7 @@ struct msmfb_writeback_data {
 #define MDP_PP_IGC_FLAG_ROM0	0x10
 #define MDP_PP_IGC_FLAG_ROM1	0x20
 
+<<<<<<< HEAD
 #define MDP_PP_PA_HUE_ENABLE		0x10
 #define MDP_PP_PA_SAT_ENABLE		0x20
 #define MDP_PP_PA_VAL_ENABLE		0x40
@@ -341,6 +361,8 @@ struct msmfb_writeback_data {
 #define MDP_PP_PA_MEM_PROTECT_EN	0x400000
 #define MDP_PP_PA_SAT_ZERO_EXP_EN	0x800000
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define MDSS_PP_DSPP_CFG	0x000
 #define MDSS_PP_SSPP_CFG	0x100
 #define MDSS_PP_LM_CFG	0x200
@@ -385,7 +407,10 @@ struct mdp_qseed_cfg_data {
 #define MDP_OVERLAY_PP_SHARP_CFG       0x10
 #define MDP_OVERLAY_PP_HIST_CFG        0x20
 #define MDP_OVERLAY_PP_HIST_LUT_CFG    0x40
+<<<<<<< HEAD
 #define MDP_OVERLAY_PP_PA_V2_CFG       0x80
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define MDP_CSC_FLAG_ENABLE	0x1
 #define MDP_CSC_FLAG_YUV_IN	0x2
@@ -414,6 +439,7 @@ struct mdp_pa_cfg {
 	uint32_t cont_adj;
 };
 
+<<<<<<< HEAD
 struct mdp_pa_mem_col_cfg {
 	uint32_t color_adjust_p0;
 	uint32_t color_adjust_p1;
@@ -440,6 +466,8 @@ struct mdp_pa_v2_data {
 	struct mdp_pa_mem_col_cfg fol_cfg;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct mdp_igc_lut_data {
 	uint32_t block;
 	uint32_t len, ops;
@@ -467,7 +495,10 @@ struct mdp_overlay_pp_params {
 	struct mdp_csc_cfg csc_cfg;
 	struct mdp_qseed_cfg qseed_cfg[2];
 	struct mdp_pa_cfg pa_cfg;
+<<<<<<< HEAD
 	struct mdp_pa_v2_data pa_v2_cfg;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct mdp_igc_lut_data igc_cfg;
 	struct mdp_sharp_cfg sharp_cfg;
 	struct mdp_histogram_cfg hist_cfg;
@@ -501,6 +532,7 @@ enum mdss_mdp_blend_op {
 	BLEND_OP_MAX,
 };
 
+<<<<<<< HEAD
 #define MAX_PLANES	4
 struct mdp_scale_data {
 	uint8_t enable_pxl_ext;
@@ -572,6 +604,8 @@ struct mdp_scale_data {
  * @overlay_pp_cfg: Overlay post processing configuration, for more information
  *		see struct mdp_overlay_pp_params.
  */
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct mdp_overlay {
 	struct msmfb_img src;
 	struct mdp_rect src_rect;
@@ -583,12 +617,19 @@ struct mdp_overlay {
 	uint32_t transp_mask;
 	uint32_t flags;
 	uint32_t id;
+<<<<<<< HEAD
 	uint32_t user_data[6];
 	uint32_t bg_color;
 	uint8_t horz_deci;
 	uint8_t vert_deci;
 	struct mdp_overlay_pp_params overlay_pp_cfg;
 	struct mdp_scale_data scale;
+=======
+	uint32_t user_data[7];
+	uint8_t horz_deci;
+	uint8_t vert_deci;
+	struct mdp_overlay_pp_params overlay_pp_cfg;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct msmfb_overlay_3d {
@@ -614,21 +655,33 @@ struct mdp_histogram {
 	uint32_t *b;
 };
 
+<<<<<<< HEAD
 #define MISR_CRC_BATCH_SIZE 32
 enum {
 	DISPLAY_MISR_EDP = 0,
+=======
+enum {
+	DISPLAY_MISR_EDP,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	DISPLAY_MISR_DSI0,
 	DISPLAY_MISR_DSI1,
 	DISPLAY_MISR_HDMI,
 	DISPLAY_MISR_LCDC,
+<<<<<<< HEAD
 	DISPLAY_MISR_MDP,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	DISPLAY_MISR_ATV,
 	DISPLAY_MISR_DSI_CMD,
 	DISPLAY_MISR_MAX
 };
 
 enum {
+<<<<<<< HEAD
 	MISR_OP_NONE = 0,
+=======
+	MISR_OP_NONE,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	MISR_OP_SFM,
 	MISR_OP_MFM,
 	MISR_OP_BM,
@@ -639,7 +692,11 @@ struct mdp_misr {
 	uint32_t block_id;
 	uint32_t frame_count;
 	uint32_t crc_op_mode;
+<<<<<<< HEAD
 	uint32_t crc_value[MISR_CRC_BATCH_SIZE];
+=======
+	uint32_t crc_value[32];
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /*
@@ -755,11 +812,14 @@ struct mdp_pa_cfg_data {
 	struct mdp_pa_cfg pa_data;
 };
 
+<<<<<<< HEAD
 struct mdp_pa_v2_cfg_data {
 	uint32_t block;
 	struct mdp_pa_v2_data pa_v2_data;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct mdp_dither_cfg_data {
 	uint32_t block;
 	uint32_t flags;
@@ -801,6 +861,7 @@ enum {
 	DCM_ENTER,
 	DCM_EXIT,
 	DCM_BLANK,
+<<<<<<< HEAD
 	DTM_ENTER,
 	DTM_EXIT,
 };
@@ -811,6 +872,12 @@ enum {
 
 #define MDSS_MAX_BL_BRIGHTNESS 255
 #define AD_BL_LIN_LEN 256
+=======
+};
+
+#define MDSS_MAX_BL_BRIGHTNESS 255
+#define AD_BL_LIN_LEN (MDSS_MAX_BL_BRIGHTNESS + 1)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define MDSS_AD_MODE_AUTO_BL	0x0
 #define MDSS_AD_MODE_AUTO_STR	0x1
@@ -894,7 +961,10 @@ enum {
 	mdp_op_qseed_cfg,
 	mdp_bl_scale_cfg,
 	mdp_op_pa_cfg,
+<<<<<<< HEAD
 	mdp_op_pa_v2_cfg,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mdp_op_dither_cfg,
 	mdp_op_gamut_cfg,
 	mdp_op_calib_cfg,
@@ -926,7 +996,10 @@ struct msmfb_mdp_pp {
 		struct mdp_qseed_cfg_data qseed_cfg_data;
 		struct mdp_bl_scale_data bl_scale_data;
 		struct mdp_pa_cfg_data pa_cfg_data;
+<<<<<<< HEAD
 		struct mdp_pa_v2_cfg_data pa_v2_cfg_data;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		struct mdp_dither_cfg_data dither_cfg_data;
 		struct mdp_gamut_cfg_data gamut_cfg_data;
 		struct mdp_calib_config_data calib_cfg;
@@ -945,7 +1018,10 @@ enum {
 	metadata_op_frame_rate,
 	metadata_op_vic,
 	metadata_op_wb_format,
+<<<<<<< HEAD
 	metadata_op_wb_secure,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	metadata_op_get_caps,
 	metadata_op_crc,
 	metadata_op_max
@@ -978,7 +1054,10 @@ struct msmfb_metadata {
 		uint32_t panel_frame_rate;
 		uint32_t video_info_code;
 		struct mdss_hw_caps caps;
+<<<<<<< HEAD
 		uint8_t secure_en;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	} data;
 };
 
@@ -1069,7 +1148,10 @@ int msm_fb_writeback_dequeue_buffer(struct fb_info *info,
 int msm_fb_writeback_stop(struct fb_info *info);
 int msm_fb_writeback_terminate(struct fb_info *info);
 int msm_fb_writeback_set_secure(struct fb_info *info, int enable);
+<<<<<<< HEAD
 int msm_fb_writeback_iommu_ref(struct fb_info *info, int enable);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif
 
 #endif /*_MSM_MDP_H_*/

@@ -113,15 +113,21 @@ struct irq_chip msm_gpio_irq_extn = {
  * as wakeup sources.  When the device is suspended, interrupts which are
  * not wakeup sources are disabled.
  *
+<<<<<<< HEAD
  * @dual_edge_irqs: a bitmap used to track which irqs are configured
  * as dual-edge, as this is not supported by the hardware and requires
  * some special handling in the driver.
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  */
 struct msm_gpio_dev {
 	struct gpio_chip gpio_chip;
 	unsigned long *enabled_irqs;
 	unsigned long *wake_irqs;
+<<<<<<< HEAD
 	unsigned long *dual_edge_irqs;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct irq_domain *domain;
 };
 
@@ -219,6 +225,7 @@ static struct msm_gpio_dev msm_gpio = {
 	},
 };
 
+<<<<<<< HEAD
 static void switch_mpm_config(struct irq_data *d, unsigned val)
 {
 	/* switch the configuration in the mpm as well */
@@ -270,13 +277,18 @@ static void msm_gpio_update_dual_edge_pos(struct irq_data *d, unsigned gpio)
 	       __func__, val, val2);
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static void msm_gpio_irq_ack(struct irq_data *d)
 {
 	int gpio = msm_irq_to_gpio(&msm_gpio.gpio_chip, d->irq);
 
 	__msm_gpio_set_intr_status(gpio);
+<<<<<<< HEAD
 	if (test_bit(gpio, msm_gpio.dual_edge_irqs))
 		msm_gpio_update_dual_edge_pos(d, gpio);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mb();
 }
 
@@ -329,6 +341,7 @@ static int msm_gpio_irq_set_type(struct irq_data *d, unsigned int flow_type)
 
 	if (flow_type & IRQ_TYPE_EDGE_BOTH) {
 		__irq_set_handler_locked(d->irq, handle_edge_irq);
+<<<<<<< HEAD
 		if ((flow_type & IRQ_TYPE_EDGE_BOTH) == IRQ_TYPE_EDGE_BOTH)
 			__set_bit(gpio, msm_gpio.dual_edge_irqs);
 		else
@@ -336,10 +349,15 @@ static int msm_gpio_irq_set_type(struct irq_data *d, unsigned int flow_type)
 	} else {
 		__irq_set_handler_locked(d->irq, handle_level_irq);
 		__clear_bit(gpio, msm_gpio.dual_edge_irqs);
+=======
+	} else {
+		__irq_set_handler_locked(d->irq, handle_level_irq);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	__msm_gpio_set_intr_cfg_type(gpio, flow_type);
 
+<<<<<<< HEAD
 	if ((flow_type & IRQ_TYPE_EDGE_BOTH) == IRQ_TYPE_EDGE_BOTH)
 		msm_gpio_update_dual_edge_pos(d, gpio);
 
@@ -350,6 +368,13 @@ static int msm_gpio_irq_set_type(struct irq_data *d, unsigned int flow_type)
 		if (msm_gpio_irq_extn.irq_set_type)
 			msm_gpio_irq_extn.irq_set_type(d, flow_type);
 	}
+=======
+	mb();
+	spin_unlock_irqrestore(&tlmm_lock, irq_flags);
+
+	if (msm_gpio_irq_extn.irq_set_type)
+		msm_gpio_irq_extn.irq_set_type(d, flow_type);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return 0;
 }
@@ -372,9 +397,25 @@ static irqreturn_t msm_summary_irq_handler(int irq, void *data)
 	for (i = find_first_bit(msm_gpio.enabled_irqs, ngpio);
 	     i < ngpio;
 	     i = find_next_bit(msm_gpio.enabled_irqs, ngpio, i + 1)) {
+<<<<<<< HEAD
 		if (__msm_gpio_get_intr_status(i))
 			generic_handle_irq(msm_gpio_to_irq(&msm_gpio.gpio_chip,
 							   i));
+=======
+		
+		if (__msm_gpio_get_intr_status(i))	{
+
+#if defined(CONFIG_MACH_BAFFIN2_CHN_CMCC)	// for debugging mdm_status_irq issue
+			if (i == 27 || i == 49)
+				pr_err("[msm_summary_irq_handler] gpio:%d, status:%d, config:%d\n", 
+					(int)i, 
+					(int)__msm_gpio_get_intr_status(i), 
+					(int)__msm_gpio_get_intr_config(i));
+#endif			
+			generic_handle_irq(msm_gpio_to_irq(&msm_gpio.gpio_chip,
+							   i));
+		}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	chained_irq_exit(chip, desc);
@@ -444,8 +485,13 @@ void msm_gpio_show_resume_irq(void)
 		intstat = __msm_gpio_get_intr_status(i);
 		if (intstat) {
 			irq = msm_gpio_to_irq(&msm_gpio.gpio_chip, i);
+<<<<<<< HEAD
 			pr_warning("%s: %d triggered\n",
 				__func__, irq);
+=======
+			pr_warning("%s: %d(%d) triggered\n",
+				__func__, irq, i);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 	}
 	spin_unlock_irqrestore(&tlmm_lock, irq_flags);
@@ -609,6 +655,7 @@ static int __devinit msm_gpio_probe(struct platform_device *pdev)
 				, __func__);
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 	msm_gpio.dual_edge_irqs = devm_kzalloc(&pdev->dev, sizeof(unsigned long)
 					* BITS_TO_LONGS(ngpio), GFP_KERNEL);
 	if (!msm_gpio.dual_edge_irqs) {
@@ -620,6 +667,12 @@ static int __devinit msm_gpio_probe(struct platform_device *pdev)
 	bitmap_zero(msm_gpio.enabled_irqs, ngpio);
 	bitmap_zero(msm_gpio.wake_irqs, ngpio);
 	bitmap_zero(msm_gpio.dual_edge_irqs, ngpio);
+=======
+
+	bitmap_zero(msm_gpio.enabled_irqs, ngpio);
+	bitmap_zero(msm_gpio.wake_irqs, ngpio);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ret = gpiochip_add(&msm_gpio.gpio_chip);
 	if (ret < 0)
 		return ret;

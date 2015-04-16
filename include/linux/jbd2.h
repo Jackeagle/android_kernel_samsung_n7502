@@ -597,6 +597,19 @@ struct transaction_s
 	 */
 	unsigned int t_synchronous_commit:1;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * This transaction's callback is invoked [j_list_lock]
+	 */
+	unsigned int t_callbacked:1;
+
+	/*
+	 * This transaction is dropped [j_list_lock]
+	 */
+	unsigned int t_dropped:1;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* Disk flush needs to be sent to fs partition [no locking] */
 	int			t_need_data_flush;
 
@@ -1091,7 +1104,10 @@ extern int	   jbd2_journal_destroy    (journal_t *);
 extern int	   jbd2_journal_recover    (journal_t *journal);
 extern int	   jbd2_journal_wipe       (journal_t *, int);
 extern int	   jbd2_journal_skip_recovery	(journal_t *);
+<<<<<<< HEAD
 extern void	   jbd2_journal_update_sb_errno(journal_t *);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 extern void	   jbd2_journal_update_sb_log_tail	(journal_t *, tid_t,
 				unsigned long, int);
 extern void	   __jbd2_journal_abort_hard	(journal_t *);

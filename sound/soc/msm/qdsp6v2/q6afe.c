@@ -2879,6 +2879,7 @@ int afe_close(int port_id)
 	uint16_t port_index;
 
 	if (this_afe.apr == NULL) {
+<<<<<<< HEAD
 		pr_err("%s: AFE is already closed\n", __func__);
 		if ((port_id == RT_PROXY_DAI_001_RX) ||
 		    (port_id == RT_PROXY_DAI_002_TX))
@@ -2887,6 +2888,9 @@ int afe_close(int port_id)
 		    (port_id == RT_PROXY_DAI_001_TX))
 			proxy_afe_instance[port_id & 0x1] = 0;
 		afe_close_done[port_id & 0x1] = true;
+=======
+		pr_err("AFE is already closed\n");
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		ret = -EINVAL;
 		goto fail_cmd;
 	}

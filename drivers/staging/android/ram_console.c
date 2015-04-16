@@ -23,6 +23,10 @@
 #include <linux/uaccess.h>
 #include <linux/io.h>
 #include "ram_console.h"
+<<<<<<< HEAD
+=======
+#include <linux/of.h>
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static struct persistent_ram_zone *ram_console_zone;
 static const char *bootinfo;
@@ -52,19 +56,48 @@ void ram_console_enable_console(int enabled)
 
 static int __devinit ram_console_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct ram_console_platform_data *pdata = pdev->dev.platform_data;
 	struct persistent_ram_zone *prz;
 
 	prz = persistent_ram_init_ringbuffer(&pdev->dev, true);
+=======
+	struct ram_console_platform_data pdata ;
+	struct persistent_ram_zone *prz;
+	int rc;
+
+	if(!pdev->dev.of_node)
+	{
+		pr_err( "%s:%d, pdev->dev.of_node is NULL \n",__func__, __LINE__);
+		
+		return -EINVAL;
+	}
+	
+	rc = of_property_read_string(pdev->dev.of_node, "bootinfo", &pdata.bootinfo);
+	if (rc) {
+
+		pr_err("%s:%d, bootinfo not specified\n",
+						__func__, __LINE__);
+		return -EINVAL;
+	}
+
+	prz = persistent_ram_init_ringbuffer(&pdev->dev, false);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (IS_ERR(prz))
 		return PTR_ERR(prz);
 
 
+<<<<<<< HEAD
 	if (pdata) {
 		bootinfo = kstrdup(pdata->bootinfo, GFP_KERNEL);
 		if (bootinfo)
 			bootinfo_size = strlen(bootinfo);
 	}
+=======
+	bootinfo = kstrdup(pdata.bootinfo, GFP_KERNEL);
+	if (bootinfo)
+		bootinfo_size = strlen(bootinfo);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	ram_console_zone = prz;
 	ram_console.data = prz;
@@ -74,9 +107,21 @@ static int __devinit ram_console_probe(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct platform_driver ram_console_driver = {
 	.driver		= {
 		.name	= "ram_console",
+=======
+static const struct of_device_id ram_console_match[] = {
+	{.compatible = "ram_console"},
+	{}
+};
+
+static struct platform_driver ram_console_driver = {
+	.driver		= {
+		.name	= "ram_console",
+		.of_match_table = ram_console_match,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	.probe = ram_console_probe,
 };

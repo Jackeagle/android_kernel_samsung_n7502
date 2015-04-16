@@ -385,6 +385,7 @@ struct smsc_hub_platform_data *msm_hub_dt_to_pdata(
 static int __devinit smsc_hub_probe(struct platform_device *pdev)
 {
 	int ret = 0;
+<<<<<<< HEAD
 	struct smsc_hub_platform_data *pdata;
 	struct device_node *node = pdev->dev.of_node;
 	struct i2c_adapter *i2c_adap;
@@ -402,10 +403,31 @@ static int __devinit smsc_hub_probe(struct platform_device *pdev)
 	}
 
 	if (!pdata) {
+=======
+	const struct smsc_hub_platform_data *pdata;
+	struct device_node *node = pdev->dev.of_node;
+	struct i2c_adapter *i2c_adap;
+	struct i2c_board_info i2c_info;
+
+	if (pdev->dev.of_node) {
+		dev_dbg(&pdev->dev, "device tree enabled\n");
+		pdev->dev.platform_data = msm_hub_dt_to_pdata(pdev);
+		if (IS_ERR(pdev->dev.platform_data))
+			return PTR_ERR(pdev->dev.platform_data);
+
+		dev_set_name(&pdev->dev, smsc_hub_driver.driver.name);
+	}
+
+	if (!pdev->dev.platform_data) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		dev_err(&pdev->dev, "No platform data\n");
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
+=======
+	pdata = pdev->dev.platform_data;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!pdata->hub_reset)
 		return -EINVAL;
 
@@ -414,7 +436,11 @@ static int __devinit smsc_hub_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	smsc_hub->dev = &pdev->dev;
+<<<<<<< HEAD
 	smsc_hub->pdata = pdata;
+=======
+	smsc_hub->pdata = pdev->dev.platform_data;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	smsc_hub->hub_vbus_reg = devm_regulator_get(&pdev->dev, "hub_vbus");
 	ret = PTR_ERR(smsc_hub->hub_vbus_reg);
@@ -495,7 +521,11 @@ static int __devinit smsc_hub_probe(struct platform_device *pdev)
 	i2c_put_adapter(i2c_adap);
 
 i2c_add_fail:
+<<<<<<< HEAD
 	ret = of_platform_populate(node, NULL, hsic_host_auxdata, &pdev->dev);
+=======
+	ret = of_platform_populate(node, NULL, NULL, &pdev->dev);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (ret) {
 		dev_err(&pdev->dev, "failed to add child node, ret=%d\n", ret);
 		goto uninit_gpio;
@@ -524,7 +554,11 @@ static int smsc_hub_remove(struct platform_device *pdev)
 {
 	const struct smsc_hub_platform_data *pdata;
 
+<<<<<<< HEAD
 	pdata = smsc_hub->pdata;
+=======
+	pdata = pdev->dev.platform_data;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (smsc_hub->client) {
 		i2c_unregister_device(smsc_hub->client);
 		smsc_hub->client = NULL;

@@ -128,4 +128,13 @@ source "drivers/media/radio/Kconfig"
 
 source "drivers/media/dvb/Kconfig"
 
+<<<<<<< HEAD
+=======
+#
+# TDMB drivers
+#
+
+source "drivers/media/tdmb/Kconfig"
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 endif # MEDIA_SUPPORT

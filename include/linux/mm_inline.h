@@ -2,7 +2,10 @@
 #define LINUX_MM_INLINE_H
 
 #include <linux/huge_mm.h>
+<<<<<<< HEAD
 #include <linux/swap.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /**
  * page_is_file_cache - should the page be on a file LRU or anon LRU?

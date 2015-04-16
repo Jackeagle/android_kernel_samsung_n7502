@@ -116,6 +116,28 @@ rtc_sysfs_show_hctosys(struct device *dev, struct device_attribute *attr,
 		return sprintf(buf, "0\n");
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_RTC_AUTO_PWRON
+extern int rtc_get_bootalarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm);
+static ssize_t
+rtc_sysfs_show_alarm_boot(struct device *dev, struct device_attribute *attr,
+		char *buf)
+{
+	ssize_t retval;
+	struct rtc_wkalrm alm;
+
+	retval = rtc_get_bootalarm(to_rtc_device(dev), &alm);
+	if (retval) {
+		retval = sprintf(buf, "%d", alm.enabled);
+		pr_info("%s [SAPA] rtc_sysfs_show_wakealarm enabled? : %d\n",__func__,alm.enabled);
+		return retval;
+	}
+
+	return retval;
+}
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static struct device_attribute rtc_attrs[] = {
 	__ATTR(name, S_IRUGO, rtc_sysfs_show_name, NULL),
 	__ATTR(date, S_IRUGO, rtc_sysfs_show_date, NULL),
@@ -124,6 +146,12 @@ static struct device_attribute rtc_attrs[] = {
 	__ATTR(max_user_freq, S_IRUGO | S_IWUSR, rtc_sysfs_show_max_user_freq,
 			rtc_sysfs_set_max_user_freq),
 	__ATTR(hctosys, S_IRUGO, rtc_sysfs_show_hctosys, NULL),
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_RTC_AUTO_PWRON
+	__ATTR(alarm_boot, S_IRUGO, rtc_sysfs_show_alarm_boot, NULL),
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	{ },
 };
 

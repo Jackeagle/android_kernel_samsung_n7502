@@ -41,6 +41,13 @@
  * Example user-space utilities: http://people.redhat.com/sgrubb/audit/
  */
 
+<<<<<<< HEAD
+=======
+/**
+ * @knox SEAndroid
+ */
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <linux/init.h>
 #include <asm/types.h>
 #include <linux/atomic.h>
@@ -64,6 +71,13 @@
 
 #include "audit.h"
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PROC_AVC
+#include <linux/proc_avc.h>
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* No auditing will take place until audit_initialized == AUDIT_INITIALIZED.
  * (Initialization happens after skb_init is called.) */
 #define AUDIT_DISABLED		-1
@@ -80,7 +94,11 @@ int		audit_ever_enabled;
 EXPORT_SYMBOL_GPL(audit_enabled);
 
 /* Default state when kernel boots without any parameters. */
+<<<<<<< HEAD
 static int	audit_default;
+=======
+static int	audit_default = 1;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* If auditing cannot proceed, audit_failure selects what happens. */
 static int	audit_failure = AUDIT_FAIL_PRINTK;
@@ -181,7 +199,10 @@ void audit_panic(const char *message)
 	case AUDIT_FAIL_SILENT:
 		break;
 	case AUDIT_FAIL_PRINTK:
+<<<<<<< HEAD
 		if (printk_ratelimit())
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			printk(KERN_ERR "audit: %s\n", message);
 		break;
 	case AUDIT_FAIL_PANIC:
@@ -252,7 +273,10 @@ void audit_log_lost(const char *message)
 	}
 
 	if (print) {
+<<<<<<< HEAD
 		if (printk_ratelimit())
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			printk(KERN_WARNING
 				"audit: audit_lost=%d audit_rate_limit=%d "
 				"audit_backlog_limit=%d\n",
@@ -384,6 +408,7 @@ static void audit_hold_skb(struct sk_buff *skb)
 static void audit_printk_skb(struct sk_buff *skb)
 {
 	struct nlmsghdr *nlh = nlmsg_hdr(skb);
+<<<<<<< HEAD
 	char *data = NLMSG_DATA(nlh);
 
 	if (nlh->nlmsg_type != AUDIT_EOE) {
@@ -394,6 +419,21 @@ static void audit_printk_skb(struct sk_buff *skb)
 	}
 
 	audit_hold_skb(skb);
+=======
+#ifdef CONFIG_PROC_AVC
+	char *data = NLMSG_DATA(nlh);
+#endif
+
+	if (nlh->nlmsg_type != AUDIT_EOE) {
+#ifdef CONFIG_PROC_AVC
+		sec_avc_log("%s\n", data);
+#endif
+	}
+#ifndef CONFIG_SAMSUNG_PRODUCT_SHIP
+	// Do not hold skb on SHIP Binary, only print to avc msg.
+	audit_hold_skb(skb);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static void kauditd_send_skb(struct sk_buff *skb)
@@ -409,10 +449,26 @@ static void kauditd_send_skb(struct sk_buff *skb)
 		audit_pid = 0;
 		/* we might get lucky and get this in the next auditd */
 		audit_hold_skb(skb);
+<<<<<<< HEAD
 	} else
 		/* drop the extra reference if sent ok */
 		consume_skb(skb);
 }
+=======
+	} else {
+#ifdef CONFIG_PROC_AVC
+		struct nlmsghdr *nlh = nlmsg_hdr(skb);
+		char *data = NLMSG_DATA(nlh);
+	
+		if (nlh->nlmsg_type != AUDIT_EOE) {
+			sec_avc_log("%s\n", data);
+		}
+#endif
+		/* drop the extra reference if sent ok */
+		consume_skb(skb);
+}
+}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static int kauditd_thread(void *dummy)
 {
@@ -1178,7 +1234,11 @@ struct audit_buffer *audit_log_start(struct audit_context *ctx, gfp_t gfp_mask,
 			remove_wait_queue(&audit_backlog_wait, &wait);
 			continue;
 		}
+<<<<<<< HEAD
 		if (audit_rate_check() && printk_ratelimit())
+=======
+		if (audit_rate_check())
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			printk(KERN_WARNING
 			       "audit: audit_backlog=%d > "
 			       "audit_backlog_limit=%d\n",

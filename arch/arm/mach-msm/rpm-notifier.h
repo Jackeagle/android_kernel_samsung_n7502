@@ -42,11 +42,18 @@ int msm_rpm_unregister_notifier(struct notifier_block *nb);
  * msm_rpm_enter_sleep - Notify RPM driver to prepare for entering sleep
  *
  * @bool - flag to enable print contents of sleep buffer.
+<<<<<<< HEAD
  * @cpumask - cpumask of next wakeup cpu
  *
  * return 0 on success errno on failure.
  */
 int msm_rpm_enter_sleep(bool print, const struct cpumask *cpumask);
+=======
+ *
+ * return 0 on success errno on failure.
+ */
+int msm_rpm_enter_sleep(bool print);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /**
  * msm_rpm_exit_sleep - Notify RPM driver about resuming from power collapse

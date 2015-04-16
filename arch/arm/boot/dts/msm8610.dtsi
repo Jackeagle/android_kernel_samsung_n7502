@@ -43,7 +43,10 @@
 /include/ "msm8610-smp2p.dtsi"
 /include/ "msm8610-bus.dtsi"
 /include/ "msm8610-mdss.dtsi"
+<<<<<<< HEAD
 /include/ "msm-rdbg.dtsi"
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 &soc {
 	#address-cells = <1>;
@@ -183,7 +186,11 @@
 		compatible = "qcom,msm-vidc";
 		qcom,vidc-ns-map = <0x40000000 0x40000000>;
 		qcom,buffer-type-tz-usage-map = <0x1 0x1>,
+<<<<<<< HEAD
 						<0x7fe 0x2>;
+=======
+						<0x1fe 0x2>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,hfi = "q6";
 		qcom,max-hw-load = <244800>; /* 1080p @ 30 * 1 */
 		qcom,vidc-iommu-domains {
@@ -240,8 +247,11 @@
 		qcom,hsusb-otg-otg-control = <2>;
 		qcom,hsusb-otg-disable-reset;
 		qcom,dp-manual-pullup;
+<<<<<<< HEAD
 		qcom,ahb-async-bridge-bypass;
 		qcom,disable-retention-with-vdd-min;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		qcom,msm-bus,name = "usb2";
 		qcom,msm-bus,num-cases = <2>;
@@ -256,6 +266,7 @@
 		compatible = "qcom,android-usb";
 		reg = <0xfe8050c8 0xc8>;
 		qcom,android-usb-swfi-latency = <1>;
+<<<<<<< HEAD
 		qcom,streaming-func = "rndis";
 	};
 
@@ -275,6 +286,8 @@
 		compatible = "qcom,sharedmem-uio";
 		reg = <0x0dc60000 0x00020000>;
 		reg-names = "rfsa_mdm";
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 
 	sdcc1: qcom,sdcc@f9824000 {
@@ -293,6 +306,10 @@
 
 		vdd-io-supply = <&pm8110_l6>;
 		qcom,vdd-io-always-on;
+<<<<<<< HEAD
+=======
+		qcom,vdd-io-lpm-sup;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,vdd-io-voltage-level = <1800000 1800000>;
 		qcom,vdd-io-current-level = <9000 60000>;
 
@@ -444,6 +461,10 @@
 		compatible = "qcom,rpm-smd";
 		rpm-channel-name = "rpm_requests";
 		rpm-channel-type = <15>; /* SMD_APPS_RPM */
+<<<<<<< HEAD
+=======
+		rpm-standalone;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 
 	qcom,bcl {
@@ -531,6 +552,7 @@
                 qcom,master-id = <86>;
 	};
 
+<<<<<<< HEAD
 
 	i2c@f9924000 { /* BLSP-1 QUP-3 */
 		cell-index = <2>;
@@ -546,6 +568,8 @@
 		qcom,master-id = <86>;
 	};
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	i2c@f9925000 { /* BLSP-1 QUP-3 */
 		cell-index = <0>;
 		compatible = "qcom,i2c-qup";
@@ -615,6 +639,7 @@
 		qcom,model = "msm8x10-snd-card";
 	};
 
+<<<<<<< HEAD
 	qti,msm-pcm {
 		compatible = "qti,msm-pcm-dsp";
 		qti,msm-pcm-dsp-id = <0>;
@@ -625,6 +650,17 @@
 		qti,msm-pcm-dsp-id = <1>;
 		qti,msm-pcm-low-latency;
 		qti,latency-level = "ultra";
+=======
+	qcom,msm-pcm {
+		compatible = "qcom,msm-pcm-dsp";
+		qcom,msm-pcm-dsp-id = <0>;
+	};
+
+	qcom,msm-pcm-low-latency {
+		compatible = "qcom,msm-pcm-dsp";
+		qcom,msm-pcm-dsp-id = <1>;
+		qcom,msm-pcm-low-latency;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 
 	qcom,msm-pcm-routing {
@@ -639,10 +675,13 @@
 		compatible = "qcom,msm-compr-dsp";
 	};
 
+<<<<<<< HEAD
 	qcom,msm-compress-dsp {
 		compatible = "qcom,msm-compress-dsp";
 	};
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	qcom,msm-voip-dsp {
 		compatible = "qcom,msm-voip-dsp";
 	};
@@ -875,16 +914,25 @@
 		qcom,disk-encrypt-pipe-pair = <2>;
 		qcom,hlos-ce-hw-instance = <0>;
 		qcom,qsee-ce-hw-instance = <0>;
+<<<<<<< HEAD
 		qcom,support-bus-scaling;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,msm-bus,name = "qseecom-noc";
 		qcom,msm-bus,num-cases = <4>;
 		qcom,msm-bus,active-only = <0>;
 		qcom,msm-bus,num-paths = <1>;
 		qcom,msm-bus,vectors-KBps =
 				<55 512 0 0>,
+<<<<<<< HEAD
 				<55 512 0 0>,
 				<55 512 120000 1200000>,
 				<55 512 393600 3936000>;
+=======
+				<55 512 3936000 393600>,
+				<55 512 3936000 393600>,
+				<55 512 3936000 393600>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 
         qcom,msm-rng@f9bff000 {
@@ -895,8 +943,13 @@
                 qcom,msm-bus,num-cases = <2>;
                 qcom,msm-bus,num-paths = <1>;
                 qcom,msm-bus,vectors-KBps =
+<<<<<<< HEAD
                                 <54 618 0 0>,
                                 <54 618 0 800>;
+=======
+                                <1 618 0 0>,
+                                <1 618 0 800>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
         };
 
 	qcom,msm-rtb {

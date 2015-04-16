@@ -32,6 +32,12 @@
 #include <linux/prefetch.h>
 
 #include <trace/events/kmem.h>
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SEC_DEBUG_DOUBLE_FREE
+#include <mach/sec_debug.h>
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /*
  * Lock order:
@@ -2310,6 +2316,10 @@ static __always_inline void *slab_alloc(struct kmem_cache *s,
 		return NULL;
 
 redo:
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/*
 	 * Must read kmem_cache cpu data via this cpu ptr. Preemption is
 	 * enabled. We may switch back and forth between cpus while
@@ -2319,7 +2329,11 @@ redo:
 	 * Preemption is disabled for the retrieval of the tid because that
 	 * must occur from the current processor. We cannot allow rescheduling
 	 * on a different processor between the determination of the pointer
+<<<<<<< HEAD
 	 * and the retrieval of the tid.
+=======
+	 * and the retrieval of the tid. 	 
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	 */
 	preempt_disable();
 	c = __this_cpu_ptr(s->cpu_slab);
@@ -3461,12 +3475,33 @@ out_unlock:
 }
 EXPORT_SYMBOL(verify_mem_not_deleted);
 #endif
+<<<<<<< HEAD
 
 void kfree(const void *x)
 {
 	struct page *page;
 	void *object = (void *)x;
 
+=======
+#ifdef CONFIG_SEC_DEBUG_DOUBLE_FREE
+void kfree(const void *y)
+#else
+void kfree(const void *x)
+#endif
+{
+	struct page *page;
+#ifdef CONFIG_SEC_DEBUG_DOUBLE_FREE
+	void *x = (void *)y;
+#endif
+	void *object = (void *)x;
+
+#ifdef CONFIG_SEC_DEBUG_DOUBLE_FREE
+	object = x = kfree_hook(x, __builtin_return_address(0));
+	if (!x)
+		return;
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	trace_kfree(_RET_IP_, x);
 
 	if (unlikely(ZERO_OR_NULL_PTR(x)))

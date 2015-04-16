@@ -1113,10 +1113,13 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
 		if (copy_from_user(&cmap, argp, sizeof(cmap)))
 			return -EFAULT;
 		ret = fb_set_user_cmap(&cmap, info);
+<<<<<<< HEAD
 		if (ret) {
 			if (info)
 				fb_dealloc_cmap(&info->cmap);
 		}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		break;
 	case FBIOGETCMAP:
 		if (copy_from_user(&cmap, argp, sizeof(cmap)))
@@ -1363,15 +1366,22 @@ fb_mmap(struct file *file, struct vm_area_struct * vma)
 {
 	struct fb_info *info = file_fb_info(file);
 	struct fb_ops *fb;
+<<<<<<< HEAD
 	unsigned long off;
+=======
+	unsigned long mmio_pgoff;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	unsigned long start;
 	u32 len;
 
 	if (!info)
 		return -ENODEV;
+<<<<<<< HEAD
 	if (vma->vm_pgoff > (~0UL >> PAGE_SHIFT))
 		return -EINVAL;
 	off = vma->vm_pgoff << PAGE_SHIFT;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	fb = info->fbops;
 	if (!fb)
 		return -ENODEV;
@@ -1382,6 +1392,7 @@ fb_mmap(struct file *file, struct vm_area_struct * vma)
 		mutex_unlock(&info->mm_lock);
 		return res;
 	}
+<<<<<<< HEAD
 
 	/* frame buffer memory */
 	start = info->fix.smem_start;
@@ -1410,6 +1421,30 @@ fb_mmap(struct file *file, struct vm_area_struct * vma)
 			     vma->vm_end - vma->vm_start, vma->vm_page_prot))
 		return -EAGAIN;
 	return 0;
+=======
+	 /*
+        * Ugh. This can be either the frame buffer mapping, or
+        * if pgoff points past it, the mmio mapping.
+        */
+	start = info->fix.smem_start;
+	len = info->fix.smem_len;
+	mmio_pgoff = PAGE_ALIGN((start & ~PAGE_MASK) + len) >> PAGE_SHIFT;
+	  if (vma->vm_pgoff >= mmio_pgoff) {
+		vma->vm_pgoff -= mmio_pgoff;
+
+		start = info->fix.mmio_start;
+		 len = info->fix.mmio_len;
+	}
+	mutex_unlock(&info->mm_lock);
+	/* This is an IO map - tell maydump to skip this VMA */
+	vma->vm_flags |= VM_IO | VM_RESERVED;
+	vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
+	fb_pgprotect(file, vma, start);
+
+       		return vm_iomap_memory(vma, start, len);
+
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int

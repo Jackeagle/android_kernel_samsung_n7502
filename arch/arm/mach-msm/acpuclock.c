@@ -17,6 +17,23 @@
 
 static struct acpuclk_data *acpuclk_data;
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SEC_DEBUG_VERBOSE_SUMMARY_HTML
+unsigned int acpuclk_get_voltage(int cpu)
+{
+	if(!acpuclk_data || !acpuclk_data->get_voltage)
+		return 0;
+	return acpuclk_data->get_voltage(cpu);
+}
+#else
+unsigned int acpuclk_get_voltage(int cpu)
+{
+	return 0;
+}
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 unsigned long acpuclk_get_rate(int cpu)
 {
 	if (!acpuclk_data || !acpuclk_data->get_rate)

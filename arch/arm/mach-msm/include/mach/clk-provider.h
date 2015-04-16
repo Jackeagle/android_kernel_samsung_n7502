@@ -17,13 +17,19 @@
 #define __MACH_CLK_PROVIDER_H
 
 #include <linux/types.h>
+<<<<<<< HEAD
 #include <linux/err.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <linux/list.h>
 #include <linux/clkdev.h>
 #include <linux/spinlock.h>
 #include <linux/mutex.h>
 #include <linux/regulator/consumer.h>
+<<<<<<< HEAD
 #include <linux/seq_file.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <mach/clk.h>
 
 /*
@@ -42,6 +48,7 @@
 #define ENABLE_VOTED	4	/* Bit pol: 1 = running; delay on disable */
 #define DELAY		5	/* No bit to check, just delay */
 
+<<<<<<< HEAD
 struct clk_register_data {
 	char *name;
 	u32 offset;
@@ -57,6 +64,8 @@ static inline void clk_debug_print_hw(struct clk *clk, struct seq_file *f) {}
 	WARN(cond, "%s: " fmt, (clk)->dbg_name, ##__VA_ARGS__);		\
 } while (0)
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /**
  * struct clk_vdd_class - Voltage scaling class
  * @class_name: name of the class
@@ -110,6 +119,7 @@ struct clk_vdd_class {
 		.lock = __MUTEX_INITIALIZER(_name.lock) \
 	}
 
+<<<<<<< HEAD
 #define DEFINE_VDD_REGS_INIT(_name, _num_regulators) \
 	struct clk_vdd_class _name = { \
 		.class_name = #_name, \
@@ -118,6 +128,8 @@ struct clk_vdd_class {
 		.lock = __MUTEX_INITIALIZER(_name.lock) \
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 enum handoff {
 	HANDOFF_ENABLED_CLK,
 	HANDOFF_DISABLED_CLK,
@@ -145,8 +157,11 @@ struct clk_ops {
 	int (*set_parent)(struct clk *clk, struct clk *parent);
 	struct clk *(*get_parent)(struct clk *clk);
 	bool (*is_local)(struct clk *clk);
+<<<<<<< HEAD
 	void __iomem *(*list_registers)(struct clk *clk, int n,
 				struct clk_register_data **regs, u32 *size);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /**
@@ -215,6 +230,7 @@ extern struct clk_ops clk_ops_dummy;
 
 #define CLK_LOOKUP(con, c, dev) { .con_id = con, .clk = &c, .dev_id = dev }
 
+<<<<<<< HEAD
 static inline bool is_better_rate(unsigned long req, unsigned long best,
 				  unsigned long new)
 {
@@ -224,4 +240,6 @@ static inline bool is_better_rate(unsigned long req, unsigned long best,
 	return (req <= new && new < best) || (best < req && best < new);
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif

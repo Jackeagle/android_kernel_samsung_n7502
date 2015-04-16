@@ -272,6 +272,7 @@ static unsigned long cached_align;
 
 static unsigned long vmap_area_pcpu_hole;
 
+<<<<<<< HEAD
 #ifdef CONFIG_ENABLE_VMALLOC_SAVING
 #define POSSIBLE_VMALLOC_START	PAGE_OFFSET
 
@@ -313,6 +314,8 @@ EXPORT_SYMBOL(is_vmalloc_addr);
 
 
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static struct vmap_area *__find_vmap_area(unsigned long addr)
 {
 	struct rb_node *n = vmap_area_root.rb_node;
@@ -2684,9 +2687,12 @@ static int s_show(struct seq_file *m, void *p)
 	if (v->flags & VM_VPAGES)
 		seq_printf(m, " vpages");
 
+<<<<<<< HEAD
 	if (v->flags & VM_LOWMEM)
 		seq_printf(m, " lowmem");
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	show_numa_info(m, v);
 	seq_putc(m, '\n');
 	return 0;

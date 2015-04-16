@@ -16,6 +16,7 @@
  */
 
 #include <linux/err.h>
+<<<<<<< HEAD
 #include <linux/freezer.h>
 #include <linux/ion.h>
 #include <linux/kthread.h>
@@ -26,6 +27,12 @@
 #include <linux/vmalloc.h>
 #include <linux/slab.h>
 #include <linux/highmem.h>
+=======
+#include <linux/ion.h>
+#include <linux/mm.h>
+#include <linux/scatterlist.h>
+#include <linux/vmalloc.h>
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include "ion_priv.h"
 
 void *ion_heap_map_kernel(struct ion_heap *heap,
@@ -100,6 +107,7 @@ int ion_heap_map_user(struct ion_heap *heap, struct ion_buffer *buffer,
 	return 0;
 }
 
+<<<<<<< HEAD
 #define MAX_VMAP_RETRIES 10
 
 /**
@@ -249,6 +257,11 @@ int ion_heap_buffer_zero(struct ion_buffer *buffer)
 int ion_heap_buffer_zero_old(struct ion_buffer *buffer)
 {
 	struct sg_table *table = buffer->sg_table;
+=======
+int ion_heap_buffer_zero(struct ion_buffer *buffer)
+{
+	struct sg_table *table = buffer->sg_table;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	pgprot_t pgprot;
 	struct scatterlist *sg;
 	struct vm_struct *vm_struct;
@@ -283,6 +296,7 @@ end:
 	return ret;
 }
 
+<<<<<<< HEAD
 void ion_heap_free_page(struct ion_buffer *buffer, struct page *page,
 		       unsigned int order)
 {
@@ -399,6 +413,8 @@ int ion_heap_init_deferred_free(struct ion_heap *heap)
 	return 0;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct ion_heap *ion_heap_create(struct ion_platform_heap *heap_data)
 {
 	struct ion_heap *heap = NULL;

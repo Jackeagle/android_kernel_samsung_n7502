@@ -64,11 +64,14 @@
 #define IPA_RESOURCE_NAME_MAX 20
 
 /**
+<<<<<<< HEAD
  * max number of interface properties
  */
 #define IPA_NUM_PROPS_MAX 20
 
 /**
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * size of the mac address
  */
 #define IPA_MAC_ADDR_SIZE  6

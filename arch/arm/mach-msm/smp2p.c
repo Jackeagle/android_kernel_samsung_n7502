@@ -1722,7 +1722,11 @@ void msm_smp2p_interrupt_handler(int remote_pid)
 static int __devinit msm_smp2p_probe(struct platform_device *pdev)
 {
 	struct resource *r;
+<<<<<<< HEAD
 	void *irq_out_ptr;
+=======
+	void *irq_out_ptr = NULL;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	char *key;
 	uint32_t edge;
 	int ret;
@@ -1771,9 +1775,18 @@ static int __devinit msm_smp2p_probe(struct platform_device *pdev)
 	}
 
 	ret = enable_irq_wake(irq_line);
+<<<<<<< HEAD
 	if (ret < 0)
 		SMP2P_ERR("%s: enable_irq_wake() failed on %d (edge %d)\n",
 				__func__, irq_line, edge);
+=======
+	if (ret < 0){
+		SMP2P_ERR("%s: enable_irq_wake() failed on %d (edge %d)\n",
+				__func__, irq_line, edge);
+		free_irq(irq_line, (void *)edge);
+		goto fail;
+		}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/*
 	 * Set entry (keep is_configured last to prevent usage before
@@ -1788,6 +1801,11 @@ static int __devinit msm_smp2p_probe(struct platform_device *pdev)
 missing_key:
 	SMP2P_ERR("%s: missing '%s' for edge %d\n", __func__, key, edge);
 fail:
+<<<<<<< HEAD
+=======
+	if (irq_out_ptr)
+		iounmap(irq_out_ptr);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return -ENODEV;
 }
 

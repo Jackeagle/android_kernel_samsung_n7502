@@ -24,7 +24,10 @@
 #include <mach/msm_smem.h>
 
 typedef struct smd_channel smd_channel_t;
+<<<<<<< HEAD
 struct cpumask;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define SMD_MAX_CH_NAME_LEN 20 /* includes null char at end */
 
@@ -218,15 +221,22 @@ void smd_disable_read_intr(smd_channel_t *ch);
  * particular channel.
  * @ch:      open channel handle to use for the edge
  * @mask:    1 = mask interrupts; 0 = unmask interrupts
+<<<<<<< HEAD
  * @cpumask  cpumask for the next cpu scheduled to be woken up
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * @returns: 0 for success; < 0 for failure
  *
  * Note that this enables/disables all interrupts from the remote subsystem for
  * all channels.  As such, it should be used with care and only for specific
  * use cases such as power-collapse sequencing.
  */
+<<<<<<< HEAD
 int smd_mask_receive_interrupt(smd_channel_t *ch, bool mask,
 		const struct cpumask *cpumask);
+=======
+int smd_mask_receive_interrupt(smd_channel_t *ch, bool mask);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* Starts a packet transaction.  The size of the packet may exceed the total
  * size of the smd ring buffer.
@@ -414,8 +424,12 @@ static inline void smd_disable_read_intr(smd_channel_t *ch)
 {
 }
 
+<<<<<<< HEAD
 static inline int smd_mask_receive_interrupt(smd_channel_t *ch, bool mask,
 		struct cpumask *cpumask)
+=======
+static inline int smd_mask_receive_interrupt(smd_channel_t *ch, bool mask)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	return -ENODEV;
 }

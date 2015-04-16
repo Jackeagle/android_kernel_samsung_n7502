@@ -13,7 +13,11 @@
 
 /dts-v1/;
 /include/ "apq8026-v1.dtsi"
+<<<<<<< HEAD
 /include/ "msm8226-720p-cdp.dtsi"
+=======
+/include/ "msm8226-cdp.dtsi"
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 / {
 	model = "Qualcomm APQ 8026 XPM";

@@ -375,6 +375,10 @@ struct zone {
 	 * free areas of different sizes
 	 */
 	spinlock_t		lock;
+<<<<<<< HEAD
+=======
+	int                     all_unreclaimable; /* All pages pinned */
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #if defined CONFIG_COMPACTION || defined CONFIG_CMA
 	/* Set to true when the PG_migrate_skip bits should be cleared */
 	bool			compact_blockskip_flush;

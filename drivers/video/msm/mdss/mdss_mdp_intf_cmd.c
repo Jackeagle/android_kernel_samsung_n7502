@@ -52,11 +52,18 @@ struct mdss_mdp_cmd_ctx {
 	u16 vporch;	/* vertical porches */
 	u16 start_threshold;
 	u32 vclk_line;	/* vsync clock per line */
+<<<<<<< HEAD
 	struct mdss_panel_recovery recovery;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct mdss_mdp_cmd_ctx mdss_mdp_cmd_ctx_list[MAX_SESSIONS];
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static inline u32 mdss_mdp_cmd_line_count(struct mdss_mdp_ctl *ctl)
 {
 	struct mdss_mdp_mixer *mixer;
@@ -196,14 +203,20 @@ static int mdss_mdp_cmd_tearcheck_setup(struct mdss_mdp_ctl *ctl, int enable)
 static inline void mdss_mdp_cmd_clk_on(struct mdss_mdp_cmd_ctx *ctx)
 {
 	unsigned long flags;
+<<<<<<< HEAD
 	struct mdss_data_type *mdata = mdss_mdp_get_mdata();
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mutex_lock(&ctx->clk_mtx);
 	if (!ctx->clk_enabled) {
 		ctx->clk_enabled = 1;
 		mdss_mdp_ctl_intf_event
 			(ctx->ctl, MDSS_EVENT_PANEL_CLK_CTRL, (void *)1);
 		mdss_mdp_clk_ctrl(MDP_BLOCK_POWER_ON, false);
+<<<<<<< HEAD
 		mdss_mdp_hist_intr_setup(&mdata->hist_intr, MDSS_IRQ_RESUME);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	spin_lock_irqsave(&ctx->clk_lock, flags);
 	if (!ctx->rdptr_enabled)
@@ -216,7 +229,10 @@ static inline void mdss_mdp_cmd_clk_on(struct mdss_mdp_cmd_ctx *ctx)
 static inline void mdss_mdp_cmd_clk_off(struct mdss_mdp_cmd_ctx *ctx)
 {
 	unsigned long flags;
+<<<<<<< HEAD
 	struct mdss_data_type *mdata = mdss_mdp_get_mdata();
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int set_clk_off = 0;
 
 	mutex_lock(&ctx->clk_mtx);
@@ -225,9 +241,18 @@ static inline void mdss_mdp_cmd_clk_off(struct mdss_mdp_cmd_ctx *ctx)
 		set_clk_off = 1;
 	spin_unlock_irqrestore(&ctx->clk_lock, flags);
 
+<<<<<<< HEAD
 	if (ctx->clk_enabled && set_clk_off) {
 		ctx->clk_enabled = 0;
 		mdss_mdp_hist_intr_setup(&mdata->hist_intr, MDSS_IRQ_SUSPEND);
+=======
+#if defined(CONFIG_LCD_CONNECTION_CHECK)
+	if ((ctx->clk_enabled && set_clk_off) || (is_lcd_attached() == 0)){
+#else
+	if (ctx->clk_enabled && set_clk_off){
+#endif
+		ctx->clk_enabled = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		mdss_mdp_ctl_intf_event
 			(ctx->ctl, MDSS_EVENT_PANEL_CLK_CTRL, (void *)0);
 		mdss_mdp_clk_ctrl(MDP_BLOCK_POWER_OFF, false);
@@ -271,6 +296,7 @@ static void mdss_mdp_cmd_readptr_done(void *arg)
 	spin_unlock(&ctx->clk_lock);
 }
 
+<<<<<<< HEAD
 static void mdss_mdp_cmd_underflow_recovery(void *data)
 {
 	struct mdss_mdp_cmd_ctx *ctx = data;
@@ -296,6 +322,8 @@ static void mdss_mdp_cmd_underflow_recovery(void *data)
 	spin_unlock_irqrestore(&ctx->clk_lock, flags);
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static void mdss_mdp_cmd_pingpong_done(void *arg)
 {
 	struct mdss_mdp_ctl *ctl = arg;
@@ -431,6 +459,10 @@ int mdss_mdp_cmd_reconfigure_splash_done(struct mdss_mdp_ctl *ctl, bool handoff)
 			NULL);
 
 	mdss_mdp_ctl_intf_event(ctl, MDSS_EVENT_PANEL_CLK_CTRL, (void *)0);
+<<<<<<< HEAD
+=======
+	mdss_mdp_clk_ctrl(MDP_BLOCK_POWER_OFF, false);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return ret;
 }
@@ -504,7 +536,16 @@ int mdss_mdp_cmd_kickoff(struct mdss_mdp_ctl *ctl, void *arg)
 	if (ctx->panel_on == 0) {
 		rc = mdss_mdp_ctl_intf_event(ctl, MDSS_EVENT_UNBLANK, NULL);
 		WARN(rc, "intf %d unblank error (%d)\n", ctl->intf_num, rc);
+<<<<<<< HEAD
 
+=======
+#if defined(CONFIG_LCD_CONNECTION_CHECK)
+	if (is_lcd_attached() == 0) {
+				pr_err("%s : lcd is not attached..\n",__func__);
+				return 0;
+	}
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		ctx->panel_on++;
 
 		rc = mdss_mdp_ctl_intf_event(ctl, MDSS_EVENT_PANEL_ON, NULL);
@@ -513,6 +554,7 @@ int mdss_mdp_cmd_kickoff(struct mdss_mdp_ctl *ctl, void *arg)
 
 	mdss_mdp_cmd_set_partial_roi(ctl);
 
+<<<<<<< HEAD
 	mdss_mdp_cmd_clk_on(ctx);
 
 	/*
@@ -520,6 +562,14 @@ int mdss_mdp_cmd_kickoff(struct mdss_mdp_ctl *ctl, void *arg)
 	 */
 	mdss_mdp_ctl_intf_event(ctl, MDSS_EVENT_DSI_CMDLIST_KOFF,
 						(void *)&ctx->recovery);
+=======
+	/*
+	 * tx dcs command if had any
+	 */
+	mdss_mdp_ctl_intf_event(ctl, MDSS_EVENT_DSI_CMDLIST_KOFF, NULL);
+
+	mdss_mdp_cmd_clk_on(ctx);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	INIT_COMPLETION(ctx->pp_comp);
 	mdss_mdp_irq_enable(MDSS_MDP_IRQ_PING_PONG_COMP, ctx->pp_num);
@@ -535,7 +585,10 @@ int mdss_mdp_cmd_kickoff(struct mdss_mdp_ctl *ctl, void *arg)
 int mdss_mdp_cmd_stop(struct mdss_mdp_ctl *ctl)
 {
 	struct mdss_mdp_cmd_ctx *ctx;
+<<<<<<< HEAD
 	struct mdss_panel_info *pinfo;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	unsigned long flags;
 	struct mdss_mdp_vsync_handler *tmp, *handle;
 	int need_wait = 0;
@@ -559,6 +612,7 @@ int mdss_mdp_cmd_stop(struct mdss_mdp_ctl *ctl)
 
 	if (need_wait)
 		if (wait_for_completion_timeout(&ctx->stop_comp, STOP_TIMEOUT)
+<<<<<<< HEAD
 		    <= 0) {
 			WARN(1, "stop cmd time out\n");
 
@@ -576,6 +630,11 @@ int mdss_mdp_cmd_stop(struct mdss_mdp_ctl *ctl)
 			}
 		}
 
+=======
+		    <= 0)
+			WARN(1, "stop cmd time out\n");
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (cancel_work_sync(&ctx->clk_work))
 		pr_debug("no pending clk work\n");
 
@@ -653,9 +712,12 @@ int mdss_mdp_cmd_start(struct mdss_mdp_ctl *ctl)
 	atomic_set(&ctx->pp_done_cnt, 0);
 	INIT_LIST_HEAD(&ctx->vsync_handlers);
 
+<<<<<<< HEAD
 	ctx->recovery.fxn = mdss_mdp_cmd_underflow_recovery;
 	ctx->recovery.data = ctx;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	pr_debug("%s: ctx=%p num=%d mixer=%d\n", __func__,
 				ctx, ctx->pp_num, mixer->num);
 

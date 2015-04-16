@@ -1706,8 +1706,11 @@ int tspp_close_channel(u32 dev, u32 channel_id)
 	dma_free_coherent(NULL, config->desc.size, config->desc.base,
 		config->desc.phys_base);
 
+<<<<<<< HEAD
 	sps_free_endpoint(channel->pipe);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	tspp_destroy_buffers(channel_id, channel);
 	if (channel->dma_pool) {
 		dma_pool_destroy(channel->dma_pool);
@@ -1823,7 +1826,11 @@ int tspp_add_filter(u32 dev, u32 channel_id,
 	}
 
 	if (filter->priority >= TSPP_NUM_PRIORITIES) {
+<<<<<<< HEAD
 		pr_err("tspp invalid filter priority");
+=======
+		pr_err("tspp invalid source");
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return -ENOSR;
 	}
 
@@ -1952,10 +1959,13 @@ int tspp_remove_filter(u32 dev, u32 channel_id,
 		pr_err("tspp_remove: can't find device %i", dev);
 		return -ENODEV;
 	}
+<<<<<<< HEAD
 	if (filter->priority >= TSPP_NUM_PRIORITIES) {
 		pr_err("tspp invalid filter priority");
 		return -ENOSR;
 	}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	channel = &pdev->channels[channel_id];
 
 	src = channel->src;

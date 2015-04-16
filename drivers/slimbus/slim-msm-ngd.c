@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2011-2013, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -282,7 +286,11 @@ static int ngd_xfer_msg(struct slim_controller *ctrl, struct slim_msg_txn *txn)
 				return -EREMOTEIO;
 			timeout = wait_for_completion_timeout(&dev->ctrl_up,
 							HZ);
+<<<<<<< HEAD
 			if (!timeout)
+=======
+			if (!timeout && dev->state == MSM_CTRL_DOWN)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				return -ETIMEDOUT;
 		}
 		msm_slim_get_ctrl(dev);
@@ -728,9 +736,18 @@ static void ngd_slim_rx(struct msm_slim_ctrl *dev, u8 *buf)
 		}
 capability_retry:
 		txn.rl = 8;
+<<<<<<< HEAD
 		ret = ngd_xfer_msg(&dev->ctrl, &txn);
 		if (!ret) {
 			enum msm_ctrl_state prev_state = dev->state;
+=======
+		pr_info("send report satellite\n");
+		ret = ngd_xfer_msg(&dev->ctrl, &txn);
+		pr_info("%s capability_retry ret = [%d]\n",__func__, ret);
+		if (!ret) {
+			enum msm_ctrl_state prev_state = dev->state;
+			pr_info("%s capability_retry prev_state = [%d]\n",__func__, prev_state);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			dev->state = MSM_CTRL_AWAKE;
 			if (prev_state >= MSM_CTRL_ASLEEP)
 				complete(&dev->reconf);
@@ -740,6 +757,10 @@ capability_retry:
 			/* ADSP SSR, send device_up notifications */
 			if (prev_state == MSM_CTRL_DOWN)
 				schedule_work(&dev->slave_notify);
+<<<<<<< HEAD
+=======
+			pr_info("complete report satellite\n");
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		} else if (ret == -EIO) {
 			pr_info("capability message NACKed, retrying");
 			if (retries < INIT_MX_RETRIES) {
@@ -972,10 +993,19 @@ static void ngd_laddr_lookup(struct work_struct *work)
 		container_of(work, struct msm_slim_ctrl, slave_notify);
 	struct slim_controller *ctrl = &dev->ctrl;
 	struct slim_device *sbdev;
+<<<<<<< HEAD
 	int i;
 	mutex_lock(&ctrl->m_ctrl);
 	list_for_each_entry(sbdev, &ctrl->devs, dev_list) {
 		int ret = 0;
+=======
+	struct list_head *pos, *next;
+	int i;
+	mutex_lock(&ctrl->m_ctrl);
+	list_for_each_safe(pos, next, &ctrl->devs) {
+		int ret = 0;
+		sbdev = list_entry(pos, struct slim_device, dev_list);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		mutex_unlock(&ctrl->m_ctrl);
 		for (i = 0; i < LADDR_RETRY; i++) {
 			ret = slim_get_logical_addr(sbdev, sbdev->e_addr,

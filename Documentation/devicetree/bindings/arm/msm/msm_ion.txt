@@ -17,6 +17,7 @@ configurations.
 Required properties for Ion heaps
 
 - reg: The ID of the ION heap.
+<<<<<<< HEAD
 - qcom,ion-heap-type: The heap type to use for this heap. Should be one of
   the following:
     - "SYSTEM"
@@ -27,6 +28,8 @@ Required properties for Ion heaps
     - "DMA"
     - "SECURE_DMA"
     - "REMOVED"
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 Optional properties for Ion heaps
 
@@ -37,8 +40,11 @@ Optional properties for Ion heaps
 - qcom,memory-reservation-size: size of reserved memory for the ION heap.
 - qcom,memory-reservation-type: type of memory to be reserved
 (see memory-reserve.txt for information about memory reservations)
+<<<<<<< HEAD
 - qcom,default-prefetch-size: Based value to be used for prefetching
   optimizations. Ignored if the heap does not support prefetching.
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 Example:
 	qcom,ion {
@@ -46,17 +52,27 @@ Example:
                  #address-cells = <1>;
                  #size-cells = <0>;
 
+<<<<<<< HEAD
                  qcom,ion-heap@25 {
                          reg = <25>;
                          qcom,ion-heap-type = "SYSTEM";
+=======
+                 qcom,ion-heap@30 { /* SYSTEM HEAP */
+                         reg = <30>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
                  };
 
                  qcom,ion-heap@8 { /* CP_MM HEAP */
                          compatible = "qcom,msm-ion-reserve";
                          reg = <8>;
                          qcom,heap-align = <0x1000>;
+<<<<<<< HEAD
                          linux,contiguous-region = <&secure_mem>;
                          qcom,ion-heap-type = "SECURE_DMA";
+=======
+                         qcom,memory-reservation-type = "EBI1"; /* reserve EBI memory */
+                         qcom,memory-reservation-size = <0x7800000>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
                  };
 
                  qcom,ion-heap@29 { /* FIRMWARE HEAP */
@@ -66,6 +82,10 @@ Example:
                          qcom,heap-adjacent = <8>;
                          qcom,memory-reservation-type = "EBI1"; /* reserve EBI memory */
                          qcom,memory-reservation-size = <0xA00000>;
+<<<<<<< HEAD
                          qcom,ion-heap-type = "CARVEOUT";
                  };
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};

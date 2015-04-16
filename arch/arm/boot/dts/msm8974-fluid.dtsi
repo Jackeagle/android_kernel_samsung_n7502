@@ -30,7 +30,10 @@
 
 	qcom,mdss_mdp@fd900000 {
 		qcom,mdss-pref-prim-intf = "dsi";
+<<<<<<< HEAD
 		batfet-supply = <&pm8941_chg_batif>;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 
 	qcom,hdmi_tx@fd922100 {

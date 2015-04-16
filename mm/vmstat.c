@@ -19,9 +19,12 @@
 #include <linux/math64.h>
 #include <linux/writeback.h>
 #include <linux/compaction.h>
+<<<<<<< HEAD
 #include <linux/mm_inline.h>
 
 #include "internal.h"
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #ifdef CONFIG_VM_EVENT_COUNTERS
 DEFINE_PER_CPU(struct vm_event_state, vm_event_states) = {{0}};
@@ -1030,7 +1033,11 @@ static void zoneinfo_show_print(struct seq_file *m, pg_data_t *pgdat,
 		   "\n  all_unreclaimable: %u"
 		   "\n  start_pfn:         %lu"
 		   "\n  inactive_ratio:    %u",
+<<<<<<< HEAD
 		   !zone_reclaimable(zone),
+=======
+		   zone->all_unreclaimable,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		   zone->zone_start_pfn,
 		   zone->inactive_ratio);
 	seq_putc(m, '\n');

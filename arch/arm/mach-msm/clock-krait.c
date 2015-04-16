@@ -29,7 +29,10 @@
 
 static DEFINE_SPINLOCK(kpss_clock_reg_lock);
 
+<<<<<<< HEAD
 #define LPL_SHIFT	8
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static void __kpss_mux_set_sel(struct mux_clk *mux, int sel)
 {
 	unsigned long flags;
@@ -39,10 +42,13 @@ static void __kpss_mux_set_sel(struct mux_clk *mux, int sel)
 	regval = get_l2_indirect_reg(mux->offset);
 	regval &= ~(mux->mask << mux->shift);
 	regval |= (sel & mux->mask) << mux->shift;
+<<<<<<< HEAD
 	if (mux->priv) {
 		regval &= ~(mux->mask << (mux->shift + LPL_SHIFT));
 		regval |= (sel & mux->mask) << (mux->shift + LPL_SHIFT);
 	}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	set_l2_indirect_reg(mux->offset, regval);
 	spin_unlock_irqrestore(&kpss_clock_reg_lock, flags);
 
@@ -100,10 +106,15 @@ static int kpss_div2_get_div(struct div_clk *div)
 
 	spin_lock_irqsave(&kpss_clock_reg_lock, flags);
 	regval = get_l2_indirect_reg(div->offset);
+<<<<<<< HEAD
 	val = (regval >> div->shift) & div->mask;
 	regval &= ~(div->mask << div->shift);
 	if (div->priv)
 		regval &= ~(div->mask << (div->shift + LPL_SHIFT));
+=======
+	val = (regval >> div->shift) && div->mask;
+	regval &= ~(div->mask << div->shift);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	set_l2_indirect_reg(div->offset, regval);
 	spin_unlock_irqrestore(&kpss_clock_reg_lock, flags);
 
@@ -130,8 +141,12 @@ static void __hfpll_clk_init_once(struct clk *c)
 		return;
 
 	/* Configure PLL parameters for integer mode. */
+<<<<<<< HEAD
 	if (hd->config_val)
 		writel_relaxed(hd->config_val, h->base + hd->config_offset);
+=======
+	writel_relaxed(hd->config_val, h->base + hd->config_offset);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	writel_relaxed(0, h->base + hd->m_offset);
 	writel_relaxed(1, h->base + hd->n_offset);
 
@@ -142,7 +157,11 @@ static void __hfpll_clk_init_once(struct clk *c)
 		rate = readl_relaxed(h->base + hd->l_offset) * h->src_rate;
 
 		/* Pick the right VCO. */
+<<<<<<< HEAD
 		if (hd->user_vco_mask && rate > hd->low_vco_max_rate)
+=======
+		if (rate > hd->low_vco_max_rate)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			regval |= hd->user_vco_mask;
 		writel_relaxed(regval, h->base + hd->user_offset);
 	}
@@ -251,7 +270,11 @@ static int hfpll_clk_set_rate(struct clk *c, unsigned long rate)
 		hfpll_clk_disable(c);
 
 	/* Pick the right VCO. */
+<<<<<<< HEAD
 	if (hd->user_offset && hd->user_vco_mask) {
+=======
+	if (hd->user_offset) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		u32 regval;
 		regval = readl_relaxed(h->base + hd->user_offset);
 		if (rate <= hd->low_vco_max_rate)
@@ -402,6 +425,12 @@ static int kpss_cpu_pre_set_rate(struct clk *c, unsigned long new_rate)
 	struct kpss_core_clk *cpu = to_kpss_core_clk(c);
 	u32 dscr = find_dscr(cpu->avs_tbl, c->rate);
 
+<<<<<<< HEAD
+=======
+	if (!c->prepare_count)
+		return -ENODEV;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (dscr)
 		AVS_DISABLE(cpu->id);
 	return 0;
@@ -417,6 +446,12 @@ static long kpss_core_round_rate(struct clk *c, unsigned long rate)
 
 static int kpss_core_set_rate(struct clk *c, unsigned long rate)
 {
+<<<<<<< HEAD
+=======
+	if (!c->prepare_count)
+		return -ENODEV;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return clk_set_rate(c->parent, rate);
 }
 

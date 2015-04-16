@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -20,7 +24,11 @@
 #endif
 
 #define JPEG_PR_ERR   pr_err
+<<<<<<< HEAD
 #define JPEG_DBG_HIGH   pr_debug
+=======
+#define JPEG_DBG_HIGH   pr_err
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 enum JPEG_MODE {
 	JPEG_MODE_DISABLE,

@@ -271,6 +271,7 @@ err:
 	return NULL;
 }
 
+<<<<<<< HEAD
 static u64 *get_th_params(struct platform_device *pdev,
 		const struct device_node *node, const char *prop,
 		int *nports)
@@ -319,6 +320,8 @@ err:
 	return NULL;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static struct msm_bus_node_info *get_nodes(struct device_node *of_node,
 	struct platform_device *pdev,
 	struct msm_bus_fabric_registration *pdata)
@@ -326,7 +329,11 @@ static struct msm_bus_node_info *get_nodes(struct device_node *of_node,
 	struct msm_bus_node_info *info;
 	struct device_node *child_node = NULL;
 	int i = 0, ret;
+<<<<<<< HEAD
 	int num_bw = 0;
+=======
+	u32 temp;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	for_each_child_of_node(of_node, child_node) {
 		i++;
@@ -401,6 +408,7 @@ static struct msm_bus_node_info *get_nodes(struct device_node *of_node,
 		of_property_read_u32(child_node, "qcom,buswidth",
 			&info[i].buswidth);
 		of_property_read_u32(child_node, "qcom,ws", &info[i].ws);
+<<<<<<< HEAD
 
 		info[i].dual_conf =
 			of_property_read_bool(child_node, "qcom,dual-conf");
@@ -419,16 +427,34 @@ static struct msm_bus_node_info *get_nodes(struct device_node *of_node,
 				__func__, info[i].name);
 			goto err;
 		}
+=======
+		ret = of_property_read_u32(child_node, "qcom,thresh",
+			&temp);
+		if (!ret)
+			info[i].th = (uint64_t)KBTOB(temp);
+
+		ret = of_property_read_u32(child_node, "qcom,bimc,bw",
+			&temp);
+		if (!ret)
+			info[i].bimc_bw = (uint64_t)KBTOB(temp);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		of_property_read_u32(child_node, "qcom,bimc,gp",
 			&info[i].bimc_gp);
 		of_property_read_u32(child_node, "qcom,bimc,thmp",
 			&info[i].bimc_thmp);
+<<<<<<< HEAD
 
 		ret = of_property_read_string(child_node, "qcom,mode-thresh",
 			&sel_str);
 		if (ret)
 			info[i].mode_thresh = 0;
+=======
+		ret = of_property_read_string(child_node, "qcom,mode",
+			&sel_str);
+		if (ret)
+			info[i].mode = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		else {
 			ret = get_num(mode_sel_name, sel_str);
 			if (ret < 0) {
@@ -436,6 +462,7 @@ static struct msm_bus_node_info *get_nodes(struct device_node *of_node,
 				goto err;
 			}
 
+<<<<<<< HEAD
 			info[i].mode_thresh = ret;
 			MSM_BUS_DBG("AXI: THreshold mode set: %d\n",
 					info[i].mode_thresh);
@@ -445,6 +472,18 @@ static struct msm_bus_node_info *get_nodes(struct device_node *of_node,
 				&sel_str);
 		if (ret)
 			info[i].mode = 0;
+=======
+			info[i].mode = ret;
+		}
+
+		info[i].dual_conf =
+			of_property_read_bool(child_node, "qcom,dual-conf");
+
+		ret = of_property_read_string(child_node, "qcom,mode-thresh",
+			&sel_str);
+		if (ret)
+			info[i].mode_thresh = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		else {
 			ret = get_num(mode_sel_name, sel_str);
 			if (ret < 0) {
@@ -452,7 +491,13 @@ static struct msm_bus_node_info *get_nodes(struct device_node *of_node,
 				goto err;
 			}
 
+<<<<<<< HEAD
 			info[i].mode = ret;
+=======
+			info[i].mode_thresh = ret;
+			MSM_BUS_DBG("AXI: THreshold mode set: %d\n",
+				info[i].mode_thresh);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 
 		ret = of_property_read_string(child_node, "qcom,perm-mode",

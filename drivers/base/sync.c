@@ -92,6 +92,7 @@ static void sync_timeline_free(struct kref *kref)
 void sync_timeline_destroy(struct sync_timeline *obj)
 {
 	obj->destroyed = true;
+<<<<<<< HEAD
 	smp_wmb();
 
 	/*
@@ -100,6 +101,16 @@ void sync_timeline_destroy(struct sync_timeline *obj)
 	sync_timeline_signal(obj);
 
 	kref_put(&obj->kref, sync_timeline_free);
+=======
+
+	/*
+	 * If this is not the last reference, signal any children
+	 * that their parent is going away.
+	 */
+
+	if (!kref_put(&obj->kref, sync_timeline_free))
+		sync_timeline_signal(obj);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 EXPORT_SYMBOL(sync_timeline_destroy);
 

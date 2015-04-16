@@ -6,26 +6,35 @@
 #endif
 #include <linux/videodev2.h>
 #include <linux/types.h>
+<<<<<<< HEAD
 #include <media/msmb_generic_buf_mgr.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* Should be same as VIDEO_MAX_PLANES in videodev2.h */
 #define MAX_PLANES VIDEO_MAX_PLANES
 
 #define MAX_NUM_CPP_STRIPS 8
 #define MSM_CPP_MAX_NUM_PLANES 3
+<<<<<<< HEAD
 #define MSM_CPP_MAX_FRAME_LENGTH 1024
 #define MSM_CPP_MAX_FW_NAME_LEN 32
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 enum msm_cpp_frame_type {
 	MSM_CPP_OFFLINE_FRAME,
 	MSM_CPP_REALTIME_FRAME,
 };
 
+<<<<<<< HEAD
 enum msm_vpe_frame_type {
 	MSM_VPE_OFFLINE_FRAME,
 	MSM_VPE_REALTIME_FRAME,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct msm_cpp_frame_strip_info {
 	int scale_v_en;
 	int scale_h_en;
@@ -90,7 +99,10 @@ struct msm_cpp_buffer_info_t {
 	uint32_t offset;
 	uint8_t native_buff;
 	uint8_t processed_divert;
+<<<<<<< HEAD
 	uint32_t identity;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct msm_cpp_stream_buff_info_t {
@@ -128,6 +140,7 @@ struct cpp_hw_info {
 	uint32_t cpp_hw_caps;
 };
 
+<<<<<<< HEAD
 struct msm_vpe_frame_strip_info {
 	uint32_t src_w;
 	uint32_t src_h;
@@ -183,6 +196,8 @@ struct msm_pproc_queue_buf_info {
 	uint8_t is_buf_dirty;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define VIDIOC_MSM_CPP_CFG \
 	_IOWR('V', BASE_VIDIOC_PRIVATE, struct msm_camera_v4l2_ioctl_t)
 
@@ -207,6 +222,7 @@ struct msm_pproc_queue_buf_info {
 #define VIDIOC_MSM_CPP_DEQUEUE_STREAM_BUFF_INFO \
 	_IOWR('V', BASE_VIDIOC_PRIVATE + 7, struct msm_camera_v4l2_ioctl_t)
 
+<<<<<<< HEAD
 
 #define VIDIOC_MSM_VPE_CFG \
 	_IOWR('V', BASE_VIDIOC_PRIVATE + 8, struct msm_camera_v4l2_ioctl_t)
@@ -231,6 +247,15 @@ struct msm_pproc_queue_buf_info {
 
 #define V4L2_EVENT_CPP_FRAME_DONE  (V4L2_EVENT_PRIVATE_START + 0)
 #define V4L2_EVENT_VPE_FRAME_DONE  (V4L2_EVENT_PRIVATE_START + 1)
+=======
+#define VIDIOC_MSM_CPP_APPEND_STREAM_BUFF_INFO \
+	_IOWR('V', BASE_VIDIOC_PRIVATE + 15, struct msm_camera_v4l2_ioctl_t)
+
+#define VIDIOC_MSM_CPP_SET_CLOCK \
+	_IOWR('V', BASE_VIDIOC_PRIVATE + 16, struct msm_camera_v4l2_ioctl_t)	
+	
+#define V4L2_EVENT_CPP_FRAME_DONE  (V4L2_EVENT_PRIVATE_START + 0)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 struct msm_camera_v4l2_ioctl_t {
 	uint32_t id;

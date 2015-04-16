@@ -25,7 +25,10 @@ enum android_alarm_type {
 	ANDROID_ALARM_RTC,
 	ANDROID_ALARM_ELAPSED_REALTIME_WAKEUP,
 	ANDROID_ALARM_ELAPSED_REALTIME,
+<<<<<<< HEAD
 	ANDROID_ALARM_RTC_POWEROFF_WAKEUP,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ANDROID_ALARM_SYSTEMTIME,
 
 	ANDROID_ALARM_TYPE_COUNT,
@@ -76,6 +79,12 @@ ktime_t alarm_get_elapsed_realtime(void);
 
 /* set rtc while preserving elapsed realtime */
 int alarm_set_rtc(const struct timespec ts);
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_RTC_AUTO_PWRON
+int alarm_set_alarm(char *alarm_data);
+#endif /* CONFIG_AUTO_PWRON */
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void alarm_update_timedelta(struct timespec tv, struct timespec ts);
 
 #endif
@@ -87,7 +96,10 @@ enum android_alarm_return_flags {
 				1U << ANDROID_ALARM_ELAPSED_REALTIME_WAKEUP,
 	ANDROID_ALARM_ELAPSED_REALTIME_MASK =
 				1U << ANDROID_ALARM_ELAPSED_REALTIME,
+<<<<<<< HEAD
 	ANDROID_ALARM_RTC_POWEROFF_WAKEUP_MASK = 1U << ANDROID_ALARM_RTC_POWEROFF_WAKEUP,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ANDROID_ALARM_SYSTEMTIME_MASK = 1U << ANDROID_ALARM_SYSTEMTIME,
 	ANDROID_ALARM_TIME_CHANGE_MASK = 1U << 16
 };
@@ -104,6 +116,12 @@ enum android_alarm_return_flags {
 #define ANDROID_ALARM_SET_AND_WAIT(type)    ALARM_IOW(3, type, struct timespec)
 #define ANDROID_ALARM_GET_TIME(type)        ALARM_IOW(4, type, struct timespec)
 #define ANDROID_ALARM_SET_RTC               _IOW('a', 5, struct timespec)
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_RTC_AUTO_PWRON
+#define ANDROID_ALARM_SET_ALARM             _IOW('a', 7, struct timespec)
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define ANDROID_ALARM_BASE_CMD(cmd)         (cmd & ~(_IOC(0, 0, 0xf0, 0)))
 #define ANDROID_ALARM_IOCTL_TO_TYPE(cmd)    (_IOC_NR(cmd) >> 4)
 

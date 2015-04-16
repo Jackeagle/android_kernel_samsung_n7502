@@ -24,10 +24,53 @@ enum {
 	MSM_SPM_L2_MODE_DISABLED = MSM_SPM_MODE_DISABLED,
 	MSM_SPM_L2_MODE_RETENTION,
 	MSM_SPM_L2_MODE_GDHS,
+<<<<<<< HEAD
 	MSM_SPM_L2_MODE_PC_NO_RPM,
 	MSM_SPM_L2_MODE_POWER_COLLAPSE,
 };
 
+=======
+	MSM_SPM_L2_MODE_POWER_COLLAPSE,
+};
+
+#if defined(CONFIG_MSM_SPM_V1)
+
+enum {
+	MSM_SPM_REG_SAW_AVS_CTL,
+	MSM_SPM_REG_SAW_CFG,
+	MSM_SPM_REG_SAW_SPM_CTL,
+	MSM_SPM_REG_SAW_SPM_SLP_TMR_DLY,
+	MSM_SPM_REG_SAW_SPM_WAKE_TMR_DLY,
+	MSM_SPM_REG_SAW_SLP_CLK_EN,
+	MSM_SPM_REG_SAW_SLP_HSFS_PRECLMP_EN,
+	MSM_SPM_REG_SAW_SLP_HSFS_POSTCLMP_EN,
+	MSM_SPM_REG_SAW_SLP_CLMP_EN,
+	MSM_SPM_REG_SAW_SLP_RST_EN,
+	MSM_SPM_REG_SAW_SPM_MPM_CFG,
+	MSM_SPM_REG_NR_INITIALIZE,
+
+	MSM_SPM_REG_SAW_VCTL = MSM_SPM_REG_NR_INITIALIZE,
+	MSM_SPM_REG_SAW_STS,
+	MSM_SPM_REG_SAW_SPM_PMIC_CTL,
+	MSM_SPM_REG_NR
+};
+
+struct msm_spm_platform_data {
+	void __iomem *reg_base_addr;
+	uint32_t reg_init_values[MSM_SPM_REG_NR_INITIALIZE];
+
+	uint8_t awake_vlevel;
+	uint8_t retention_vlevel;
+	uint8_t collapse_vlevel;
+	uint8_t retention_mid_vlevel;
+	uint8_t collapse_mid_vlevel;
+
+	uint32_t vctl_timeout_us;
+};
+
+#elif defined(CONFIG_MSM_SPM_V2)
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 enum {
 	MSM_SPM_REG_SAW2_CFG,
 	MSM_SPM_REG_SAW2_AVS_CTL,
@@ -85,8 +128,14 @@ struct msm_spm_platform_data {
 	uint32_t num_modes;
 	struct msm_spm_seq_entry *modes;
 };
+<<<<<<< HEAD
 
 #if defined(CONFIG_MSM_SPM_V2)
+=======
+#endif
+
+#if defined(CONFIG_MSM_SPM_V1) || defined(CONFIG_MSM_SPM_V2)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* Public functions */
 
@@ -149,7 +198,11 @@ static inline int msm_spm_enable_fts_lpm(uint32_t mode)
 	return -ENOSYS;
 }
 #endif /* defined(CONFIG_MSM_L2_SPM) */
+<<<<<<< HEAD
 #else /* defined(CONFIG_MSM_SPM_V2) */
+=======
+#else /* defined(CONFIG_MSM_SPM_V1) || defined(CONFIG_MSM_SPM_V2) */
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static inline int msm_spm_set_low_power_mode(unsigned int mode, bool notify_rpm)
 {
 	return -ENOSYS;
@@ -180,5 +233,9 @@ static inline int msm_spm_device_init(void)
 	return -ENOSYS;
 }
 
+<<<<<<< HEAD
 #endif  /* defined (CONFIG_MSM_SPM_V2) */
+=======
+#endif  /*defined(CONFIG_MSM_SPM_V1) || defined (CONFIG_MSM_SPM_V2) */
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif  /* __ARCH_ARM_MACH_MSM_SPM_H */

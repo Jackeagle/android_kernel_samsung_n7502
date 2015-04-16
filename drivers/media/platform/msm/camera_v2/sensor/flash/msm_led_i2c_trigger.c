@@ -19,7 +19,10 @@
 #include "msm_camera_io_util.h"
 #include "../msm_sensor.h"
 #include "msm_led_flash.h"
+<<<<<<< HEAD
 #include <linux/debugfs.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define FLASH_NAME "camera-led-flash"
 
@@ -486,6 +489,7 @@ static struct msm_camera_i2c_fn_t msm_sensor_qup_func_tbl = {
 		msm_camera_qup_i2c_write_table_w_microdelay,
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_FS
 static int set_led_status(void *data, u64 val)
 {
@@ -516,14 +520,20 @@ DEFINE_SIMPLE_ATTRIBUTE(ledflashdbg_fops,
 	NULL, set_led_status, "%llu\n");
 #endif
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int msm_flash_i2c_probe(struct i2c_client *client,
 		const struct i2c_device_id *id)
 {
 	int rc = 0;
 	struct msm_led_flash_ctrl_t *fctrl = NULL;
+<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_FS
 	struct dentry *dentry;
 #endif
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
 		pr_err("i2c_check_functionality failed\n");
 		goto probe_failure;
@@ -562,12 +572,15 @@ int msm_flash_i2c_probe(struct i2c_client *client,
 			&msm_sensor_qup_func_tbl;
 
 	rc = msm_led_i2c_flash_create_v4lsubdev(fctrl);
+<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_FS
 	dentry = debugfs_create_file("ledflash", S_IRUGO, NULL, (void *)fctrl,
 		&ledflashdbg_fops);
 	if (!dentry)
 		pr_err("Failed to create the debugfs ledflash file");
 #endif
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	CDBG("%s:%d probe success\n", __func__, __LINE__);
 	return 0;
 

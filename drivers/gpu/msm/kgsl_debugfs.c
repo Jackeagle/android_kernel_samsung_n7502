@@ -122,6 +122,10 @@ KGSL_DEBUGFS_LOG(cmd_log);
 KGSL_DEBUGFS_LOG(ctxt_log);
 KGSL_DEBUGFS_LOG(mem_log);
 KGSL_DEBUGFS_LOG(pwr_log);
+<<<<<<< HEAD
+=======
+KGSL_DEBUGFS_LOG(ft_log);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static int memfree_hist_print(struct seq_file *s, void *unused)
 {
@@ -190,6 +194,11 @@ void kgsl_device_debugfs_init(struct kgsl_device *device)
 				&pwr_log_fops);
 	debugfs_create_file("memfree_history", 0444, device->d_debugfs, device,
 				&memfree_hist_fops);
+<<<<<<< HEAD
+=======
+	debugfs_create_file("log_level_ft", 0644, device->d_debugfs, device,
+				&ft_log_fops);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/* Create postmortem dump control files */
 

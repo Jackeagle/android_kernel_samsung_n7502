@@ -1,6 +1,10 @@
 /*
  * Copyright (C) 2009 Google, Inc.
+<<<<<<< HEAD
  * Copyright (c) 2010-2013, The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2010-2012, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * Author: Brian Swetland <swetland@google.com>
  *
  * This software is licensed under the terms of the GNU General Public
@@ -260,7 +264,10 @@ static long pcm_out_ioctl(struct file *file, unsigned int cmd,
 	case AUDIO_GET_CONFIG: {
 		struct msm_audio_config config;
 		pr_debug("%s: AUDIO_GET_CONFIG\n", __func__);
+<<<<<<< HEAD
 		memset(&config, 0, sizeof(config));
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		config.buffer_size = pcm->buffer_size;
 		config.buffer_count = pcm->buffer_count;
 		config.sample_rate = pcm->sample_rate;

@@ -207,8 +207,11 @@ struct venus_hfi_device {
 	u32 register_base;
 	u32 register_size;
 	u32 irq;
+<<<<<<< HEAD
 	int clk_cnt;
 	int pwr_cnt;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct venus_resources resources;
 	struct msm_vidc_platform_resources *res;
 	struct regulator *gdsc;

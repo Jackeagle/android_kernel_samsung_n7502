@@ -20,6 +20,10 @@ header-y += netfilter_ipv6/
 header-y += usb/
 header-y += wimax/
 header-y += mfd/
+<<<<<<< HEAD
+=======
+header-y += tima/
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 objhdr-y += version.h
 
@@ -99,6 +103,10 @@ header-y += comstats.h
 header-y += connector.h
 header-y += const.h
 header-y += cramfs_fs.h
+<<<<<<< HEAD
+=======
+header-y += csdio.h
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 header-y += cuda.h
 header-y += cyclades.h
 header-y += cycx_cfm.h
@@ -324,7 +332,10 @@ header-y += ptp_clock.h
 header-y += ptrace.h
 header-y += qnx4_fs.h
 header-y += qnxtypes.h
+<<<<<<< HEAD
 header-y += qrng.h
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 header-y += quota.h
 header-y += radeonfb.h
 header-y += random.h
@@ -453,4 +464,7 @@ header-y += ci-bridge-spi.h
 header-y += msm_audio_amrwbplus.h
 header-y += avtimer.h
 header-y += msm_ipa.h
+<<<<<<< HEAD
 header-y += msm_thermal_ioctl.h
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60

@@ -5,6 +5,7 @@
 
 enum msm_ion_heap_types {
 	ION_HEAP_TYPE_MSM_START = ION_HEAP_TYPE_CUSTOM + 1,
+<<<<<<< HEAD
 	ION_HEAP_TYPE_DMA = ION_HEAP_TYPE_MSM_START,
 	ION_HEAP_TYPE_CP,
 	ION_HEAP_TYPE_SECURE_DMA,
@@ -13,6 +14,13 @@ enum msm_ion_heap_types {
 	 * if you add a heap type here you should also add it to
 	 * heap_types_info[] in msm_ion.c
 	 */
+=======
+	ION_HEAP_TYPE_IOMMU = ION_HEAP_TYPE_MSM_START,
+	ION_HEAP_TYPE_DMA,
+	ION_HEAP_TYPE_CP,
+	ION_HEAP_TYPE_SECURE_DMA,
+	ION_HEAP_TYPE_REMOVED,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /**
@@ -34,16 +42,25 @@ enum ion_heap_ids {
 	ION_ADSP_HEAP_ID = 22,
 	ION_PIL1_HEAP_ID = 23, /* Currently used for other PIL images */
 	ION_SF_HEAP_ID = 24,
+<<<<<<< HEAD
 	ION_SYSTEM_HEAP_ID = 25,
+=======
+	ION_IOMMU_HEAP_ID = 25,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ION_PIL2_HEAP_ID = 26, /* Currently used for modem firmware images */
 	ION_QSECOM_HEAP_ID = 27,
 	ION_AUDIO_HEAP_ID = 28,
 
 	ION_MM_FIRMWARE_HEAP_ID = 29,
+<<<<<<< HEAD
+=======
+	ION_SYSTEM_HEAP_ID = 30,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	ION_HEAP_ID_RESERVED = 31 /** Bit reserved for ION_FLAG_SECURE flag */
 };
 
+<<<<<<< HEAD
 /*
  * The IOMMU heap is deprecated! Here are some aliases for backwards
  * compatibility:
@@ -51,6 +68,8 @@ enum ion_heap_ids {
 #define ION_IOMMU_HEAP_ID ION_SYSTEM_HEAP_ID
 #define ION_HEAP_TYPE_IOMMU ION_HEAP_TYPE_SYSTEM
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 enum ion_fixed_position {
 	NOT_FIXED,
 	FIXED_LOW,
@@ -99,8 +118,12 @@ enum cp_mem_usage {
 #define ION_HEAP(bit) (1 << (bit))
 
 #define ION_ADSP_HEAP_NAME	"adsp"
+<<<<<<< HEAD
 #define ION_SYSTEM_HEAP_NAME	"system"
 #define ION_VMALLOC_HEAP_NAME	ION_SYSTEM_HEAP_NAME
+=======
+#define ION_VMALLOC_HEAP_NAME	"vmalloc"
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define ION_KMALLOC_HEAP_NAME	"kmalloc"
 #define ION_AUDIO_HEAP_NAME	"audio"
 #define ION_SF_HEAP_NAME	"sf"
@@ -197,6 +220,7 @@ struct ion_co_heap_pdata {
 	enum ion_memory_types memory_type;
 };
 
+<<<<<<< HEAD
 /*
  * struct ion_cma_pdata - extra data for CMA regions
  * @default_prefetch_size - default size to use for prefetching
@@ -205,6 +229,8 @@ struct ion_cma_pdata {
 	unsigned long default_prefetch_size;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #ifdef CONFIG_ION
 /**
  *  msm_ion_client_create - allocate a client using the ion_device specified in
@@ -512,11 +538,14 @@ struct ion_flush_data {
 	unsigned int length;
 };
 
+<<<<<<< HEAD
 struct ion_prefetch_data {
        int heap_id;
        unsigned long len;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define ION_IOC_MSM_MAGIC 'M'
 
 /**
@@ -541,10 +570,13 @@ struct ion_prefetch_data {
 #define ION_IOC_CLEAN_INV_CACHES	_IOWR(ION_IOC_MSM_MAGIC, 2, \
 						struct ion_flush_data)
 
+<<<<<<< HEAD
 #define ION_IOC_PREFETCH               _IOWR(ION_IOC_MSM_MAGIC, 3, \
                                                struct ion_prefetch_data)
 
 #define ION_IOC_DRAIN                  _IOWR(ION_IOC_MSM_MAGIC, 4, \
                                                struct ion_prefetch_data)
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2013-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -109,9 +113,14 @@ static void msm_buf_mngr_sd_shutdown(struct msm_buf_mngr_device *buf_mngr_dev)
 	if (!list_empty(&buf_mngr_dev->buf_qhead)) {
 		list_for_each_entry_safe(bufs,
 			save, &buf_mngr_dev->buf_qhead, entry) {
+<<<<<<< HEAD
 			pr_err("%s: Error delete invalid bufs =%x, ses_id=%d, str_id=%d, idx=%d\n",
 				__func__, (unsigned int)bufs, bufs->session_id,
 				bufs->stream_id, bufs->vb2_buf->v4l2_buf.index);
+=======
+			pr_err("%s: Delete invalid bufs =%x\n", __func__,
+				(unsigned int)bufs);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			list_del_init(&bufs->entry);
 			kfree(bufs);
 		}
@@ -119,6 +128,7 @@ static void msm_buf_mngr_sd_shutdown(struct msm_buf_mngr_device *buf_mngr_dev)
 	spin_unlock_irqrestore(&buf_mngr_dev->buf_q_spinlock, flags);
 }
 
+<<<<<<< HEAD
 static int msm_generic_buf_mngr_open(struct v4l2_subdev *sd,
 	struct v4l2_subdev_fh *fh)
 {
@@ -145,6 +155,8 @@ static int msm_generic_buf_mngr_close(struct v4l2_subdev *sd,
 	return rc;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static long msm_buf_mngr_subdev_ioctl(struct v4l2_subdev *sd,
 	unsigned int cmd, void *arg)
 {
@@ -168,12 +180,15 @@ static long msm_buf_mngr_subdev_ioctl(struct v4l2_subdev *sd,
 	case VIDIOC_MSM_BUF_MNGR_PUT_BUF:
 		rc = msm_buf_mngr_put_buf(buf_mngr_dev, argp);
 		break;
+<<<<<<< HEAD
 	case VIDIOC_MSM_BUF_MNGR_INIT:
 		rc = msm_generic_buf_mngr_open(sd, NULL);
 		break;
 	case VIDIOC_MSM_BUF_MNGR_DEINIT:
 		rc = msm_generic_buf_mngr_close(sd, NULL);
 		break;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	case MSM_SD_SHUTDOWN:
 		msm_buf_mngr_sd_shutdown(buf_mngr_dev);
 		break;
@@ -187,12 +202,15 @@ static struct v4l2_subdev_core_ops msm_buf_mngr_subdev_core_ops = {
 	.ioctl = msm_buf_mngr_subdev_ioctl,
 };
 
+<<<<<<< HEAD
 static const struct v4l2_subdev_internal_ops
 	msm_generic_buf_mngr_subdev_internal_ops = {
 	.open  = msm_generic_buf_mngr_open,
 	.close = msm_generic_buf_mngr_close,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static const struct v4l2_subdev_ops msm_buf_mngr_subdev_ops = {
 	.core = &msm_buf_mngr_subdev_core_ops,
 };
@@ -222,13 +240,20 @@ static int __init msm_buf_mngr_init(void)
 	msm_buf_mngr_dev->subdev.sd.entity.type = MEDIA_ENT_T_V4L2_SUBDEV;
 	msm_buf_mngr_dev->subdev.sd.entity.group_id =
 		MSM_CAMERA_SUBDEV_BUF_MNGR;
+<<<<<<< HEAD
 	msm_buf_mngr_dev->subdev.sd.internal_ops =
 		&msm_generic_buf_mngr_subdev_internal_ops;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	msm_buf_mngr_dev->subdev.close_seq = MSM_SD_CLOSE_4TH_CATEGORY;
 	rc = msm_sd_register(&msm_buf_mngr_dev->subdev);
 	if (rc != 0) {
 		pr_err("%s: msm_sd_register error = %d\n", __func__, rc);
+<<<<<<< HEAD
 		goto end;
+=======
+		goto register_error;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	v4l2_subdev_notify(&msm_buf_mngr_dev->subdev.sd, MSM_SD_NOTIFY_REQ_CB,
@@ -236,8 +261,16 @@ static int __init msm_buf_mngr_init(void)
 
 	INIT_LIST_HEAD(&msm_buf_mngr_dev->buf_qhead);
 	spin_lock_init(&msm_buf_mngr_dev->buf_q_spinlock);
+<<<<<<< HEAD
 end:
 	return rc;
+=======
+	return rc;
+    
+register_error:
+    kfree(msm_buf_mngr_dev); 
+    return rc;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static void __exit msm_buf_mngr_exit(void)

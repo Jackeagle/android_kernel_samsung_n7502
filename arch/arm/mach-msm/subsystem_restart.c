@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2011-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -39,6 +43,12 @@
 #include <mach/socinfo.h>
 #include <mach/subsystem_notif.h>
 #include <mach/subsystem_restart.h>
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SEC_DEBUG
+#include <mach/sec_debug.h>
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #include "smd_private.h"
 
@@ -163,6 +173,13 @@ struct subsys_device {
 	char miscdevice_name[32];
 	struct completion err_ready;
 	bool crashed;
+<<<<<<< HEAD
+=======
+
+#if defined(CONFIG_MACH_BAFFIN2_SGLTE)
+	bool flag_skip_ramdump;
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 static struct subsys_device *to_subsys(struct device *d)
@@ -215,6 +232,17 @@ int subsys_get_restart_level(struct subsys_device *dev)
 }
 EXPORT_SYMBOL(subsys_get_restart_level);
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_MACH_BAFFIN2_SGLTE)
+int subsys_set_flag_skip_ramdump(struct subsys_device *dev, bool flag)
+{
+	return dev->flag_skip_ramdump = flag;
+}
+EXPORT_SYMBOL(subsys_set_flag_skip_ramdump);
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static void subsys_set_state(struct subsys_device *subsys,
 			     enum subsys_state state)
 {
@@ -262,6 +290,12 @@ static int enable_ramdumps;
 module_param(enable_ramdumps, int, S_IRUGO | S_IWUSR);
 
 struct workqueue_struct *ssr_wq;
+<<<<<<< HEAD
+=======
+struct workqueue_struct *panic_wq;
+struct delayed_work panic_dwork;
+char subsys_name[20];
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static LIST_HEAD(restart_log_list);
 static DEFINE_MUTEX(soc_order_reg_lock);
@@ -466,6 +500,7 @@ static void subsystem_powerup(struct subsys_device *dev, void *data)
 
 	pr_info("[%p]: Powering up %s\n", current, name);
 	init_completion(&dev->err_ready);
+<<<<<<< HEAD
 
 	if (dev->desc->powerup(dev->desc) < 0) {
 		notify_each_subsys_device(&dev, 1, SUBSYS_POWERUP_FAILURE,
@@ -480,6 +515,15 @@ static void subsystem_powerup(struct subsys_device *dev, void *data)
 		panic("[%p]: Timed out waiting for error ready: %s!",
 			current, name);
 	}
+=======
+	if (dev->desc->powerup(dev->desc) < 0)
+		panic("[%p]: Powerup error: %s!", current, name);
+
+	ret = wait_for_err_ready(dev);
+	if (ret)
+		panic("[%p]: Timed out waiting for error ready: %s!",
+			current, name);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	subsys_set_state(dev, SUBSYS_ONLINE);
 }
 
@@ -507,11 +551,16 @@ static int subsys_start(struct subsys_device *subsys)
 
 	init_completion(&subsys->err_ready);
 	ret = subsys->desc->start(subsys->desc);
+<<<<<<< HEAD
 	if (ret){
 		notify_each_subsys_device(&subsys, 1, SUBSYS_POWERUP_FAILURE,
 									NULL);
 		return ret;
 	}
+=======
+	if (ret)
+		return ret;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (subsys->desc->is_not_loadable) {
 		subsys_set_state(subsys, SUBSYS_ONLINE);
@@ -519,6 +568,7 @@ static int subsys_start(struct subsys_device *subsys)
 	}
 
 	ret = wait_for_err_ready(subsys);
+<<<<<<< HEAD
 	if (ret) {
 		/* pil-boot succeeded but we need to shutdown
 		 * the device because error ready timed out.
@@ -527,6 +577,14 @@ static int subsys_start(struct subsys_device *subsys)
 									NULL);
 		subsys->desc->stop(subsys->desc);
 	} else
+=======
+	if (ret)
+		/* pil-boot succeeded but we need to shutdown
+		 * the device because error ready timed out.
+		 */
+		subsys->desc->stop(subsys->desc);
+	else
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		subsys_set_state(subsys, SUBSYS_ONLINE);
 
 	return ret;
@@ -626,9 +684,28 @@ void subsystem_put(void *subsystem)
 			subsys->desc->name, __func__))
 		goto err_out;
 	if (!--subsys->count) {
+<<<<<<< HEAD
 		subsys_stop(subsys);
 		if (subsys->do_ramdump_on_put)
 			subsystem_ramdump(subsys, NULL);
+=======
+		//pr_err("subsys: %s put stop %d by %d[%s]\n", subsys->desc->name, subsys->count, current->pid, current->comm);
+#if 0
+		subsys_stop(subsys);
+		if (subsys->do_ramdump_on_put)
+			subsystem_ramdump(subsys, NULL);
+#else
+		if (strncmp(subsys->desc->name, "modem", 5)) {
+			subsys_stop(subsys);
+			if (subsys->do_ramdump_on_put)
+				subsystem_ramdump(subsys, NULL);
+		}
+		else {
+			pr_err("subsys: block modem put stop for stabilty\n");
+			subsys->count++;
+		}
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	mutex_unlock(&track->lock);
 
@@ -681,7 +758,11 @@ static void subsystem_restart_wq_func(struct work_struct *work)
 	 */
 	mutex_lock(&soc_order_reg_lock);
 
+<<<<<<< HEAD
 	pr_debug("[%p]: Starting restart sequence for %s\n", current,
+=======
+	pr_info("[%p]: Starting restart sequence for %s\n", current,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			desc->name);
 	notify_each_subsys_device(list, count, SUBSYS_BEFORE_SHUTDOWN, NULL);
 	for_each_subsys_device(list, count, NULL, subsystem_shutdown);
@@ -756,6 +837,26 @@ int subsystem_restart_dev(struct subsys_device *dev)
 
 	name = dev->desc->name;
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SEC_DEBUG
+#ifdef CONFIG_SEC_SSR_DEBUG_LEVEL_CHK
+	if (!sec_debug_is_enabled_for_ssr()) {
+#else
+	if (!sec_debug_is_enabled()) {
+#endif
+		pr_info("Restart sequence requested for %s, restart_level = %s.\n",
+				name, restart_levels[dev->restart_level]);
+
+		dev->restart_level = RESET_SUBSYS_COUPLED; //Why is it delete the RESET_SUBSYS_INDEPENDENT on MSM8974 ?
+		}
+	else {
+		dev->restart_level = RESET_SOC;
+			pr_info("Restart sequence requested for %s, restart_level = %s.\n",
+			name, restart_levels[dev->restart_level]);
+	}
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/*
 	 * If a system reboot/shutdown is underway, ignore subsystem errors.
 	 * However, print a message so that we know that a subsystem behaved
@@ -767,6 +868,51 @@ int subsystem_restart_dev(struct subsys_device *dev)
 		return -EBUSY;
 	}
 
+<<<<<<< HEAD
+=======
+
+
+#ifdef CONFIG_SEC_DEBUG
+#ifdef CONFIG_SEC_DEBUG_MDM_FILE_INFO
+	if (strncmp(name, _order_8x60_all[0], 14) != 0) {
+#endif
+#ifdef CONFIG_SEC_SSR_DEBUG_LEVEL_CHK
+	if (!sec_debug_is_enabled_for_ssr()) {
+			dev->restart_level = RESET_SUBSYS_COUPLED; //Why is it delete the RESET_SUBSYS_INDEPENDENT on MSM8974 ?
+					pr_info("Restart sequence requested for %s, restart_level = %s.\n",
+				name, restart_levels[dev->restart_level]);
+	}	
+	else {
+		dev->restart_level = RESET_SOC;
+				pr_info("Restart sequence requested for %s, restart_level = %s.\n",
+			name, restart_levels[dev->restart_level]);
+	}
+
+#endif
+#ifdef CONFIG_SEC_DEBUG_MDM_FILE_INFO
+	}
+#if defined(CONFIG_MACH_BAFFIN2_SGLTE)
+	if (strncmp(name, _order_8x60_all[0], 14) == 0) {
+		if (dev->flag_skip_ramdump) {		// to skip ramdump if status pin did go to HIGH.
+			enable_ramdumps = 0;
+			dev->flag_skip_ramdump = false;
+		} else
+			enable_ramdumps = sec_debug_is_enabled()? 1 : 0;
+		dev->restart_level = RESET_SUBSYS_COUPLED;
+		pr_info("Restart sequence requested for %s, restart_level = %s, enable_ramdumps = %d. \n",
+				name, restart_levels[dev->restart_level], enable_ramdumps);
+	}
+	if (strncmp(name, _order_8x60_all[1], 5) == 0) {
+		enable_ramdumps = sec_debug_is_enabled()? 1 : 0;
+		dev->restart_level = RESET_SUBSYS_COUPLED;
+		pr_info("Restart sequence requested for %s, restart_level = %s, enable_ramdumps = %d. \n",
+				name, restart_levels[dev->restart_level], enable_ramdumps);
+	}
+#endif
+#endif
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	pr_info("Restart sequence requested for %s, restart_level = %s.\n",
 		name, restart_levels[dev->restart_level]);
 
@@ -776,7 +922,33 @@ int subsystem_restart_dev(struct subsys_device *dev)
 		__subsystem_restart_dev(dev);
 		break;
 	case RESET_SOC:
+<<<<<<< HEAD
 		panic("subsys-restart: Resetting the SoC - %s crashed.", name);
+=======
+#ifdef CONFIG_SEC_DEBUG
+		/*
+		 * If the silent log function is enabled for CP and CP is in
+		 * trouble, diag_mdlog (APP) should be terminated before
+		 * a panic occurs, since it can flush logs to SD card
+		 * when it is over.
+		 * We should guarantee time the App needs for saving logs
+		 * as well, so we use a delayed workqueue.
+		 */
+		if(silent_log_panic_handler())
+		{
+			pr_err("%s crashed: subsys-restart: Resetting the SoC\n",
+				name);
+			strncpy(subsys_name, name, sizeof(subsys_name)-1);
+			subsys_name[sizeof(subsys_name)-1] = '\0';
+			queue_delayed_work(panic_wq, &panic_dwork, 300);
+			dump_stack();
+		} else
+			panic("%s crashed: subsys-restart: Resetting the SoC",
+				name);
+#else
+		panic("subsys-restart: Resetting the SoC - %s crashed.", name);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		break;
 	default:
 		panic("subsys-restart: Unknown restart level!\n");
@@ -1258,10 +1430,21 @@ static int __init ssr_init_soc_restart_orders(void)
 		n_restart_orders = ARRAY_SIZE(orders_8x60_all);
 	}
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_MACH_BAFFIN2_SGLTE)
+		restart_orders = restart_orders_8960_sglte;
+		n_restart_orders = ARRAY_SIZE(restart_orders_8960_sglte);
+#else
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (socinfo_get_platform_subtype() == PLATFORM_SUBTYPE_SGLTE) {
 		restart_orders = restart_orders_8960_sglte;
 		n_restart_orders = ARRAY_SIZE(restart_orders_8960_sglte);
 	}
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	for (i = 0; i < n_restart_orders; i++) {
 		mutex_init(&restart_orders[i]->track.lock);
@@ -1271,13 +1454,41 @@ static int __init ssr_init_soc_restart_orders(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __init subsys_restart_init(void)
 {
 	int ret;
+=======
+static void panic_for_silentLog_work(struct work_struct *work)
+{
+	panic("%s crashed: subsys-restart: Resetting the SoC", subsys_name);
+}
+
+static int __init subsys_restart_init(void)
+{
+	int ret;
+#if 0 //It shoud be modified with dev struct for CONFIG_SEC_DEBUG on MSM8947
+#ifdef CONFIG_SEC_SSR_DEBUG_LEVEL_CHK
+	if (!sec_debug_is_enabled_for_ssr())
+#else
+	if (!sec_debug_is_enabled())
+#endif
+		dev->restart_level = RESET_SUBSYS_INDEPENDENT;
+	else
+		dev->restart_level = RESET_SOC;
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	ssr_wq = alloc_workqueue("ssr_wq", WQ_CPU_INTENSIVE, 0);
 	BUG_ON(!ssr_wq);
 
+<<<<<<< HEAD
+=======
+	panic_wq = create_singlethread_workqueue("subsys_panic_wq");
+	BUG_ON(!panic_wq);
+	INIT_DELAYED_WORK(&panic_dwork, panic_for_silentLog_work);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ret = bus_register(&subsys_bus_type);
 	if (ret)
 		goto err_bus;
@@ -1295,6 +1506,10 @@ err_debugfs:
 	bus_unregister(&subsys_bus_type);
 err_bus:
 	destroy_workqueue(ssr_wq);
+<<<<<<< HEAD
+=======
+	destroy_workqueue(panic_wq);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return ret;
 }
 arch_initcall(subsys_restart_init);

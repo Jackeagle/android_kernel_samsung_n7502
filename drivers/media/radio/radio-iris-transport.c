@@ -105,7 +105,10 @@ static void send_disable_event(struct work_struct *worker)
 	skb = alloc_skb(len, GFP_ATOMIC);
 	if (!skb) {
 		FMDERR("Memory not allocated for the socket");
+<<<<<<< HEAD
 		kfree(worker);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return;
 	}
 
@@ -154,6 +157,7 @@ static int radio_hci_smd_register_dev(struct radio_data *hsmd)
 	struct radio_hci_dev *hdev;
 	int rc;
 
+<<<<<<< HEAD
 	if (hsmd == NULL)
 		return -ENODEV;
 
@@ -161,6 +165,9 @@ static int radio_hci_smd_register_dev(struct radio_data *hsmd)
 	if (hdev == NULL)
 		return -ENODEV;
 
+=======
+	hdev = kmalloc(sizeof(struct radio_hci_dev), GFP_KERNEL);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	hsmd->hdev = hdev;
 	tasklet_init(&hsmd->rx_task, radio_hci_smd_recv_event,
 		(unsigned long) hsmd);
@@ -173,7 +180,10 @@ static int radio_hci_smd_register_dev(struct radio_data *hsmd)
 
 	if (rc < 0) {
 		FMDERR("Cannot open the command channel");
+<<<<<<< HEAD
 		hsmd->hdev = NULL;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		kfree(hdev);
 		return -ENODEV;
 	}
@@ -182,8 +192,11 @@ static int radio_hci_smd_register_dev(struct radio_data *hsmd)
 
 	if (radio_hci_register_dev(hdev) < 0) {
 		FMDERR("Can't register HCI device");
+<<<<<<< HEAD
 		smd_close(hsmd->fm_channel);
 		hsmd->hdev = NULL;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		kfree(hdev);
 		return -ENODEV;
 	}

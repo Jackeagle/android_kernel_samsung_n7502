@@ -284,7 +284,10 @@ const char * const *v4l2_ctrl_get_menu(u32 id)
 		"4.2",
 		"5",
 		"5.1",
+<<<<<<< HEAD
 		"5.2",
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		NULL,
 	};
 	static const char * const h264_loop_filter[] = {
@@ -310,7 +313,10 @@ const char * const *v4l2_ctrl_get_menu(u32 id)
 		"Scalable High",
 		"Scalable High Intra",
 		"Multiview High",
+<<<<<<< HEAD
 		"Constrained High",
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		NULL,
 	};
 	static const char * const vui_sar_idc[] = {
@@ -599,8 +605,11 @@ const char *v4l2_ctrl_get_name(u32 id)
 	case V4L2_CID_MPEG_VIDC_VIDEO_CIR_MBS: return "Intra Refresh CIR MBS";
 	case V4L2_CID_MPEG_VIDC_VIDEO_VP8_PROFILE_LEVEL:
 		return "VP8 Profile Level";
+<<<<<<< HEAD
 	case V4L2_CID_MPEG_VIDC_VIDEO_DEINTERLACE:
 		return "Deinterlace for encoder";
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/* CAMERA controls */
 	/* Keep the order of the 'case's the same as in videodev2.h! */
@@ -810,6 +819,7 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
 		*min = 0;
 		*max = *step = 1;
 		break;
+<<<<<<< HEAD
 	case V4L2_CID_MPEG_VIDC_VIDEO_DEINTERLACE:
 		*type = V4L2_CTRL_TYPE_BOOLEAN;
 		*min = 0;
@@ -820,6 +830,8 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
 		*min = 0;
 		*max = *step = 1;
 		break;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	default:
 		*type = V4L2_CTRL_TYPE_INTEGER;
 		break;

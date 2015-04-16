@@ -277,7 +277,11 @@ config HID_LOGITECH
 config HID_LOGITECH_DJ
 	tristate "Logitech Unifying receivers full support"
 	depends on HID_LOGITECH
+<<<<<<< HEAD
 	default m
+=======
+	default y
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	---help---
 	Say Y if you want support for Logitech Unifying receivers and devices.
 	Unifying receivers are capable of pairing up to 6 Logitech compliant
@@ -522,7 +526,11 @@ config HID_SAITEK
 
 config HID_SAMSUNG
 	tristate "Samsung InfraRed remote control or keyboards"
+<<<<<<< HEAD
 	depends on USB_HID
+=======
+	depends on (USB_HID || BT_HIDP)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	---help---
 	Support for Samsung InfraRed remote control or keyboards.
 

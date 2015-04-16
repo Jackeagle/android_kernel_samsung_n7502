@@ -125,6 +125,10 @@ static int __update_sensor_thresholds(struct sensor_info *sensor)
 		if (pos->trip == THERMAL_TRIP_CONFIGURABLE_LOW) {
 			if (pos->temp > max_of_low_thresh)
 				max_of_low_thresh = pos->temp;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 		if (pos->trip == THERMAL_TRIP_CONFIGURABLE_HI) {
 			if (pos->temp < min_of_high_thresh)
@@ -156,6 +160,10 @@ static int __update_sensor_thresholds(struct sensor_info *sensor)
 		pr_err("sensor %d: Unable to activate high threshold %d",
 			sensor->sensor_id, ret);
 		goto update_done;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	if ((max_of_low_thresh != sensor->threshold_min) &&
@@ -186,6 +194,10 @@ static int __update_sensor_thresholds(struct sensor_info *sensor)
 
 update_done:
 	return ret;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static void sensor_update_work(struct work_struct *work)
@@ -281,6 +293,10 @@ int sensor_set_trip(uint32_t sensor_id, struct sensor_threshold *threshold)
 		INIT_LIST_HEAD(&threshold->list);
 		list_add(&threshold->list, &sensor->threshold_list);
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	threshold->active = 0; /* Do not allow active threshold right away */
 	mutex_unlock(&sensor->lock);
 
@@ -339,15 +355,25 @@ static void get_trip_threshold(struct thermal_zone_device *tz, int trip,
 		*threshold = NULL;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int sensor_set_trip_temp(struct thermal_zone_device *tz,
 		int trip, long temp)
 {
 	int ret = 0;
 	struct sensor_threshold *threshold = NULL;
 
+<<<<<<< HEAD
 	if (!tz->ops->get_trip_type)
 		return -EPERM;
 
+=======
+
+	if (!tz->ops->get_trip_type)
+		return -EPERM;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	get_trip_threshold(tz, trip, &threshold);
 	if (threshold) {
 		threshold->temp = temp;
@@ -547,6 +573,10 @@ trip_point_type_activate(struct device *dev, struct device_attribute *attr,
 		goto trip_activate_exit;
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!strcmp(buf, "enabled")) {
 		activate = true;
 	} else if (!strcmp(buf, "disabled")) {
@@ -564,7 +594,11 @@ trip_point_type_activate(struct device *dev, struct device_attribute *attr,
 		result = tz->ops->activate_trip_type(tz, trip,
 			activate ? THERMAL_TRIP_ACTIVATION_ENABLED :
 			THERMAL_TRIP_ACTIVATION_DISABLED);
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 trip_activate_exit:
 	if (result)
 		return result;

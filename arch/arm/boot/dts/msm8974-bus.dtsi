@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2013-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -1175,10 +1179,17 @@
 			qcom,prio-rd = <0>;
 			qcom,prio-wr = <0>;
 			qcom,mode-thresh = "Fixed";
+<<<<<<< HEAD
 			qcom,thresh = <2000000 2456000>;
 			qcom,dual-conf;
 			qcom,bimc,bw = <300000 450000>;
 			qcom,bimc,gp = <5000>;
+=======
+			qcom,thresh = <2000000>;
+			qcom,dual-conf;
+			qcom,bimc,bw = <300000>;
+			qcom,bimc,gp = <5>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			qcom,bimc,thmp = <50>;
 		};
 
@@ -1195,10 +1206,17 @@
 			qcom,prio-rd = <0>;
 			qcom,prio-wr = <0>;
 			qcom,mode-thresh = "Fixed";
+<<<<<<< HEAD
 			qcom,thresh = <2000000 2456000>;
 			qcom,dual-conf;
 			qcom,bimc,bw = <300000 450000>;
 			qcom,bimc,gp = <5000>;
+=======
+			qcom,thresh = <2000000>;
+			qcom,dual-conf;
+			qcom,bimc,bw = <300000>;
+			qcom,bimc,gp = <5>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			qcom,bimc,thmp = <50>;
 		};
 

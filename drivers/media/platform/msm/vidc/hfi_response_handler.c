@@ -163,6 +163,7 @@ static void hfi_process_sess_evt_seq_changed(
 	callback(VIDC_EVENT_CHANGE, &cmd_done);
 }
 
+<<<<<<< HEAD
 static void hfi_process_evt_release_buffer_ref(
 		msm_vidc_callback callback, u32 device_id,
 		struct hfi_msg_event_notify_packet *pkt)
@@ -195,6 +196,8 @@ static void hfi_process_evt_release_buffer_ref(
 	callback(VIDC_EVENT_CHANGE, &cmd_done);
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static void hfi_process_sys_error(
 		msm_vidc_callback callback, u32 device_id)
 {
@@ -212,6 +215,7 @@ static void hfi_process_session_error(
 	cmd_done.device_id = device_id;
 	cmd_done.session_id = ((struct hal_session *) pkt->session_id)->
 		session_id;
+<<<<<<< HEAD
 	dprintk(VIDC_INFO, "Received : SESSION_ERROR with event id : %d\n",
 		pkt->event_data1);
 	switch (pkt->event_data1) {
@@ -225,6 +229,9 @@ static void hfi_process_session_error(
 		callback(SESSION_ERROR, &cmd_done);
 		break;
 	}
+=======
+	callback(SESSION_ERROR, &cmd_done);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 static void hfi_process_event_notify(
 		msm_vidc_callback callback, u32 device_id,
@@ -248,7 +255,11 @@ static void hfi_process_event_notify(
 		hfi_process_sys_error(callback, device_id);
 		break;
 	case HFI_EVENT_SESSION_ERROR:
+<<<<<<< HEAD
 		dprintk(VIDC_INFO, "HFI_EVENT_SESSION_ERROR");
+=======
+		dprintk(VIDC_ERR, "HFI_EVENT_SESSION_ERROR");
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (!validate_session_pkt(sessions, sess, session_lock))
 			hfi_process_session_error(callback, device_id, pkt);
 		break;
@@ -261,12 +272,15 @@ static void hfi_process_event_notify(
 	case HFI_EVENT_SESSION_PROPERTY_CHANGED:
 		dprintk(VIDC_INFO, "HFI_EVENT_SESSION_PROPERTY_CHANGED");
 		break;
+<<<<<<< HEAD
 	case HFI_EVENT_RELEASE_BUFFER_REFERENCE:
 		dprintk(VIDC_INFO, "HFI_EVENT_RELEASE_BUFFER_REFERENCE\n");
 		if (!validate_session_pkt(sessions, sess, session_lock))
 			hfi_process_evt_release_buffer_ref(callback,
 				device_id, pkt);
 		break;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	default:
 		dprintk(VIDC_WARN, "hal_process_event_notify:unkown_event_id");
 		break;
@@ -582,6 +596,7 @@ enum vidc_status hfi_process_sess_init_done_prop_read(
 			num_properties--;
 			break;
 		}
+<<<<<<< HEAD
 		case HFI_PROPERTY_PARAM_BUFFER_ALLOC_MODE_SUPPORTED:
 		{
 			struct hfi_buffer_alloc_mode_supported *prop =
@@ -615,6 +630,8 @@ enum vidc_status hfi_process_sess_init_done_prop_read(
 			num_properties--;
 			break;
 		}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		default:
 			dprintk(VIDC_DBG,
 				"%s default case - 0x%x", __func__, prop_id);
@@ -959,7 +976,10 @@ static void hfi_process_session_ftb_done(
 		data_done.output_done.packet_buffer1 = pkt->packet_buffer;
 		data_done.output_done.extra_data_buffer =
 			pkt->extra_data_buffer;
+<<<<<<< HEAD
 		data_done.output_done.buffer_type = HAL_BUFFER_OUTPUT;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		dprintk(VIDC_DBG, "FBD: Received buf: %p, of len: %d\n",
 				   pkt->packet_buffer, pkt->filled_len);
 	} else if (is_decoder == 1) {
@@ -1185,13 +1205,19 @@ static void hfi_process_session_get_seq_hdr_done(
 	callback(SESSION_GET_SEQ_HDR_DONE, &data_done);
 }
 
+<<<<<<< HEAD
 static void hfi_process_sys_get_prop_image_version(
 		struct hfi_msg_sys_property_info_packet *pkt)
+=======
+void hfi_process_sys_property_info(
+		struct hfi_property_sys_image_version_info_type *pkt)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	int i = 0;
 	u32 smem_block_size = 0;
 	u8 *smem_table_ptr;
 	char version[256];
+<<<<<<< HEAD
 	const u32 version_string_size = 128;
 	const u32 smem_image_index_venus = 14 * 128;
 	u8 *str_image_version;
@@ -1257,6 +1283,37 @@ static void hfi_process_sys_property_info(
 				"hfi_process_sys_property_info:unknown_prop_id: %d\n",
 				pkt->rg_property_data[0]);
 	}
+=======
+	const u32 smem_image_index_venus = 14 * 128;
+
+	if (!pkt || !pkt->string_size) {
+		dprintk(VIDC_ERR, "%s: invalid param\n", __func__);
+		return;
+	}
+
+	if (pkt->string_size < sizeof(version)) {
+		/*
+		 * The version string returned by firmware includes null
+		 * characters at the start and in between. Replace the null
+		 * characters with space, to print the version info.
+		 */
+		for (i = 0; i < pkt->string_size; i++) {
+			if (pkt->str_image_version[i] != '\0')
+				version[i] = pkt->str_image_version[i];
+			else
+				version[i] = ' ';
+		}
+		version[i] = '\0';
+		dprintk(VIDC_INFO, "F/W version: %s\n", version);
+	}
+
+	smem_table_ptr = smem_get_entry(SMEM_IMAGE_VERSION_TABLE,
+						&smem_block_size);
+	if (smem_table_ptr &&
+		((smem_image_index_venus + 128) <= smem_block_size))
+		memcpy(smem_table_ptr + smem_image_index_venus,
+			   (u8 *)pkt->str_image_version, 128);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 u32 hfi_process_msg_packet(
@@ -1301,7 +1358,11 @@ u32 hfi_process_msg_packet(
 		break;
 	case HFI_MSG_SYS_PROPERTY_INFO:
 		hfi_process_sys_property_info(
+<<<<<<< HEAD
 		   (struct hfi_msg_sys_property_info_packet *)
+=======
+		   (struct hfi_property_sys_image_version_info_type *)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			msg_hdr);
 		break;
 	case HFI_MSG_SYS_SESSION_END_DONE:

@@ -1,7 +1,11 @@
 /*
  * f_audio.c -- USB Audio class function driver
  *
+<<<<<<< HEAD
  * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2012, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * Copyright (C) 2008 Bryan Wu <cooloney@kernel.org>
  * Copyright (C) 2008 Analog Devices, Inc
  *
@@ -439,7 +443,11 @@ static void f_audio_buffer_free(struct f_audio_buf *audio_buf)
 	if (audio_buf) {
 		kfree(audio_buf->buf);
 		audio_buf->buf = NULL;
+<<<<<<< HEAD
 		kfree(audio_buf);
+=======
+		kfree(audio_buf);	
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		audio_buf = NULL;
 	}
 }

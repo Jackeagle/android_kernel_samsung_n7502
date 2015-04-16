@@ -21,73 +21,121 @@ static struct msm_sensor_power_setting ov12830_power_setting[] = {
 		.seq_type = SENSOR_VREG,
 		.seq_val = CAM_VIO,
 		.config_val = 0,
+<<<<<<< HEAD
 		.delay = 1,
+=======
+		.delay = 5,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_VREG,
 		.seq_val = CAM_VANA,
 		.config_val = 0,
+<<<<<<< HEAD
 		.delay = 1,
+=======
+		.delay = 5,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_VDIG,
 		.config_val = GPIO_OUT_LOW,
+<<<<<<< HEAD
 		.delay = 5,
+=======
+		.delay = 40,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_VDIG,
 		.config_val = GPIO_OUT_HIGH,
+<<<<<<< HEAD
 		.delay = 5,
+=======
+		.delay = 40,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_VREG,
 		.seq_val = CAM_VAF,
 		.config_val = 0,
+<<<<<<< HEAD
 		.delay = 5,
+=======
+		.delay = 15,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_STANDBY,
 		.config_val = GPIO_OUT_LOW,
+<<<<<<< HEAD
 		.delay = 1,
+=======
+		.delay = 15,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_RESET,
 		.config_val = GPIO_OUT_LOW,
+<<<<<<< HEAD
 		.delay = 5,
+=======
+		.delay = 40,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_AF_PWDM,
 		.config_val = GPIO_OUT_LOW,
+<<<<<<< HEAD
 		.delay = 5,
+=======
+		.delay = 40,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_STANDBY,
 		.config_val = GPIO_OUT_HIGH,
+<<<<<<< HEAD
 		.delay = 5,
+=======
+		.delay = 40,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_RESET,
 		.config_val = GPIO_OUT_HIGH,
+<<<<<<< HEAD
 		.delay = 10,
+=======
+		.delay = 40,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_AF_PWDM,
 		.config_val = GPIO_OUT_HIGH,
+<<<<<<< HEAD
 		.delay = 5,
+=======
+		.delay = 40,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_CLK,
 		.seq_val = SENSOR_CAM_MCLK,
 		.config_val = 24000000,
+<<<<<<< HEAD
 		.delay = 10,
+=======
+		.delay = 5,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 	{
 		.seq_type = SENSOR_I2C_MUX,

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -143,7 +147,10 @@ struct kgsl_iommu_register_list {
  * are on, else the clocks are off
  * fault: Flag when set indicates that this iommu device has caused a page
  * fault
+<<<<<<< HEAD
  * @clk_enable_count: The ref count of clock enable calls
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  */
 struct kgsl_iommu_device {
 	struct device *dev;
@@ -153,7 +160,10 @@ struct kgsl_iommu_device {
 	bool clk_enabled;
 	struct kgsl_device *kgsldev;
 	int fault;
+<<<<<<< HEAD
 	atomic_t clk_enable_count;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /*
@@ -184,6 +194,13 @@ struct kgsl_iommu_unit {
  * iommu contexts owned by graphics cores
  * @unit_count: Number of IOMMU units that are available for this
  * instance of the IOMMU driver
+<<<<<<< HEAD
+=======
+ * @iommu_last_cmd_ts: The timestamp of last command submitted that
+ * aceeses iommu registers
+ * @clk_event_queued: Indicates whether an event to disable clocks
+ * is already queued or not
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * @device: Pointer to kgsl device
  * @ctx_offset: The context offset to be added to base address when
  * accessing IOMMU registers
@@ -199,6 +216,11 @@ struct kgsl_iommu_unit {
 struct kgsl_iommu {
 	struct kgsl_iommu_unit iommu_units[KGSL_IOMMU_MAX_UNITS];
 	unsigned int unit_count;
+<<<<<<< HEAD
+=======
+	unsigned int iommu_last_cmd_ts;
+	bool clk_event_queued;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct kgsl_device *device;
 	unsigned int ctx_offset;
 	struct kgsl_iommu_register_list *iommu_reg_list;
@@ -218,6 +240,7 @@ struct kgsl_iommu_pt {
 	struct kgsl_iommu *iommu;
 };
 
+<<<<<<< HEAD
 /*
  * struct kgsl_iommu_disable_clk_param - Parameter struct for disble clk event
  * @mmu: The mmu pointer
@@ -232,4 +255,6 @@ struct kgsl_iommu_disable_clk_param {
 	unsigned int ts;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif

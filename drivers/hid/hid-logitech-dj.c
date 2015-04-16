@@ -26,6 +26,10 @@
 #include <linux/hid.h>
 #include <linux/module.h>
 #include <linux/usb.h>
+<<<<<<< HEAD
+=======
+#include <asm/unaligned.h>
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include "usbhid/usbhid.h"
 #include "hid-ids.h"
 #include "hid-logitech-dj.h"
@@ -184,6 +188,10 @@ static struct hid_ll_driver logi_dj_ll_driver;
 static int logi_dj_output_hidraw_report(struct hid_device *hid, u8 * buf,
 					size_t count,
 					unsigned char report_type);
+<<<<<<< HEAD
+=======
+static int logi_dj_recv_query_paired_devices(struct dj_receiver_dev *djrcv_dev);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static void logi_dj_recv_destroy_djhid_device(struct dj_receiver_dev *djrcv_dev,
 						struct dj_report *dj_report)
@@ -224,6 +232,10 @@ static void logi_dj_recv_add_djhid_device(struct dj_receiver_dev *djrcv_dev,
 	if (dj_report->report_params[DEVICE_PAIRED_PARAM_SPFUNCTION] &
 	    SPFUNCTION_DEVICE_LIST_EMPTY) {
 		dbg_hid("%s: device list is empty\n", __func__);
+<<<<<<< HEAD
+=======
+		djrcv_dev->querying_devices = false;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return;
 	}
 
@@ -234,6 +246,15 @@ static void logi_dj_recv_add_djhid_device(struct dj_receiver_dev *djrcv_dev,
 		return;
 	}
 
+<<<<<<< HEAD
+=======
+	if (djrcv_dev->paired_dj_devices[dj_report->device_index]) {
+		/* The device is already known. No need to reallocate it. */
+		dbg_hid("%s: device is already known\n", __func__);
+		return;
+	}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	dj_hiddev = hid_allocate_device();
 	if (IS_ERR(dj_hiddev)) {
 		dev_err(&djrcv_hdev->dev, "%s: hid_allocate_device failed\n",
@@ -265,8 +286,13 @@ static void logi_dj_recv_add_djhid_device(struct dj_receiver_dev *djrcv_dev,
 		goto dj_device_allocate_fail;
 	}
 
+<<<<<<< HEAD
 	dj_dev->reports_supported = le32_to_cpu(
 		dj_report->report_params[DEVICE_PAIRED_RF_REPORT_TYPE]);
+=======
+	dj_dev->reports_supported = get_unaligned_le32(
+		dj_report->report_params + DEVICE_PAIRED_RF_REPORT_TYPE);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	dj_dev->hdev = dj_hiddev;
 	dj_dev->dj_receiver_dev = djrcv_dev;
 	dj_dev->device_index = dj_report->device_index;
@@ -297,6 +323,10 @@ static void delayedwork_callback(struct work_struct *work)
 	struct dj_report dj_report;
 	unsigned long flags;
 	int count;
+<<<<<<< HEAD
+=======
+	int retval;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	dbg_hid("%s\n", __func__);
 
@@ -329,6 +359,28 @@ static void delayedwork_callback(struct work_struct *work)
 		logi_dj_recv_destroy_djhid_device(djrcv_dev, &dj_report);
 		break;
 	default:
+<<<<<<< HEAD
+=======
+	/* A normal report (i. e. not belonging to a pair/unpair notification)
+	 * arriving here, means that the report arrived but we did not have a
+	 * paired dj_device associated to the report's device_index, this
+	 * means that the original "device paired" notification corresponding
+	 * to this dj_device never arrived to this driver. The reason is that
+	 * hid-core discards all packets coming from a device while probe() is
+	 * executing. */
+	if (!djrcv_dev->paired_dj_devices[dj_report.device_index]) {
+		/* ok, we don't know the device, just re-ask the
+		 * receiver for the list of connected devices. */
+		retval = logi_dj_recv_query_paired_devices(djrcv_dev);
+		if (!retval) {
+			/* everything went fine, so just leave */
+			break;
+		}
+		dev_err(&djrcv_dev->hdev->dev,
+			"%s:logi_dj_recv_query_paired_devices "
+			"error:%d\n", __func__, retval);
+		}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		dbg_hid("%s: unexpected report type\n", __func__);
 	}
 }
@@ -359,6 +411,15 @@ static void logi_dj_recv_forward_null_report(struct dj_receiver_dev *djrcv_dev,
 	if (!djdev) {
 		dbg_hid("djrcv_dev->paired_dj_devices[dj_report->device_index]"
 			" is NULL, index %d\n", dj_report->device_index);
+<<<<<<< HEAD
+=======
+		kfifo_in(&djrcv_dev->notif_fifo, dj_report, sizeof(struct dj_report));
+
+		if (schedule_work(&djrcv_dev->work) == 0) {
+			dbg_hid("%s: did not schedule the work item, was already "
+			"queued\n", __func__);
+		}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return;
 	}
 
@@ -389,6 +450,15 @@ static void logi_dj_recv_forward_report(struct dj_receiver_dev *djrcv_dev,
 	if (dj_device == NULL) {
 		dbg_hid("djrcv_dev->paired_dj_devices[dj_report->device_index]"
 			" is NULL, index %d\n", dj_report->device_index);
+<<<<<<< HEAD
+=======
+		kfifo_in(&djrcv_dev->notif_fifo, dj_report, sizeof(struct dj_report));
+
+		if (schedule_work(&djrcv_dev->work) == 0) {
+			dbg_hid("%s: did not schedule the work item, was already "
+			"queued\n", __func__);
+		}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return;
 	}
 
@@ -410,6 +480,7 @@ static int logi_dj_recv_send_report(struct dj_receiver_dev *djrcv_dev,
 				    struct dj_report *dj_report)
 {
 	struct hid_device *hdev = djrcv_dev->hdev;
+<<<<<<< HEAD
 	int sent_bytes;
 
 	if (!hdev->hid_output_raw_report) {
@@ -423,6 +494,27 @@ static int logi_dj_recv_send_report(struct dj_receiver_dev *djrcv_dev,
 						 HID_OUTPUT_REPORT);
 
 	return (sent_bytes < 0) ? sent_bytes : 0;
+=======
+	struct hid_report *report;
+	struct hid_report_enum *output_report_enum;
+	u8 *data = (u8 *)(&dj_report->device_index);
+	int i;
+
+	output_report_enum = &hdev->report_enum[HID_OUTPUT_REPORT];
+	report = output_report_enum->report_id_hash[REPORT_ID_DJ_SHORT];
+
+	if (!report) {
+		dev_err(&hdev->dev, "%s: unable to find dj report\n", __func__);
+		return -ENODEV;
+	}
+
+	for (i = 0; i < report->field[0]->report_count; i++)
+		report->field[0]->value[i] = data[i];
+
+	usbhid_submit_report(hdev, report, USB_DIR_OUT);
+
+	return 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int logi_dj_recv_query_paired_devices(struct dj_receiver_dev *djrcv_dev)
@@ -436,6 +528,10 @@ static int logi_dj_recv_query_paired_devices(struct dj_receiver_dev *djrcv_dev)
 	return logi_dj_recv_send_report(djrcv_dev, &dj_report);
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int logi_dj_recv_switch_to_dj_mode(struct dj_receiver_dev *djrcv_dev,
 					  unsigned timeout)
 {

@@ -54,7 +54,11 @@ struct msm_rpmstats_private_data{
 	u32 num_records;
 	u32 read_idx;
 	u32 len;
+<<<<<<< HEAD
 	char buf[320];
+=======
+	char buf[256];
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct msm_rpmstats_platform_data *platform_data;
 };
 
@@ -64,8 +68,12 @@ struct msm_rpm_stats_data_v2 {
 	u64 last_entered_at;
 	u64 last_exited_at;
 	u64 accumulated;
+<<<<<<< HEAD
 	u32 client_votes;
 	u32 reserved[3];
+=======
+	u32 reserved[4];
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 static inline u64 get_time_in_sec(u64 counter)
@@ -99,12 +107,19 @@ static inline int msm_rpmstats_append_data_to_buf(char *buf,
 	actual_last_sleep = get_time_in_msec(data->accumulated);
 
 	return  snprintf(buf , buflength,
+<<<<<<< HEAD
 		"RPM Mode:%s\n\t count:%d\ntime in last mode(msec):%llu\n"
 		"time since last mode(sec):%llu\nactual last sleep(msec):%llu\n"
 		"client votes: %#010x\n\n",
 		stat_type, data->count, time_in_last_mode,
 		time_since_last_mode, actual_last_sleep,
 		data->client_votes);
+=======
+		"RPM Mode:%s\n\t count:%d\n time in last mode(msec):%llu\n"
+		"time since last mode(sec):%llu\n actual last sleep(msec):%llu\n",
+		stat_type, data->count, time_in_last_mode,
+		time_since_last_mode, actual_last_sleep);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static inline u32 msm_rpmstats_read_long_register_v2(void __iomem *regbase,
@@ -150,9 +165,12 @@ static inline int msm_rpmstats_copy_stats_v2(
 		data.accumulated = msm_rpmstats_read_quad_register_v2(reg,
 				i, offsetof(struct msm_rpm_stats_data_v2,
 					accumulated));
+<<<<<<< HEAD
 		data.client_votes = msm_rpmstats_read_long_register_v2(reg,
 				i, offsetof(struct msm_rpm_stats_data_v2,
 					client_votes));
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		length += msm_rpmstats_append_data_to_buf(prvdata->buf + length,
 				&data, sizeof(prvdata->buf) - length);
 		prvdata->read_idx++;

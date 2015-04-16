@@ -46,14 +46,20 @@ struct mux_clk {
 	struct clk	*safe_parent;
 	int		safe_sel;
 	struct clk_mux_ops *ops;
+<<<<<<< HEAD
 	/* Recursively search for the requested parent. */
 	bool		rec_set_par;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/* Fields not used by helper function. */
 	void *const __iomem *base;
 	u32		offset;
+<<<<<<< HEAD
 	u32		en_offset;
 	int		en_reg;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	u32		mask;
 	u32		shift;
 	u32		en_mask;
@@ -67,8 +73,11 @@ static inline struct mux_clk *to_mux_clk(struct clk *c)
 	return container_of(c, struct mux_clk, c);
 }
 
+<<<<<<< HEAD
 int parent_to_src_sel(struct clk_src *parents, int num_parents, struct clk *p);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 extern struct clk_ops clk_ops_gen_mux;
 
 /* ==================== Divider clock ==================== */
@@ -83,6 +92,7 @@ struct clk_div_ops {
 	void (*disable)(struct div_clk *clk);
 };
 
+<<<<<<< HEAD
 struct div_data {
 	unsigned int div;
 	unsigned int min_div;
@@ -93,6 +103,13 @@ struct div_data {
 struct div_clk {
 	struct div_data data;
 
+=======
+struct div_clk {
+	unsigned int	div;
+	unsigned int	min_div;
+	unsigned int	max_div;
+	unsigned long	rate_margin;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* Optional */
 	struct clk_div_ops *ops;
 
@@ -114,6 +131,7 @@ static inline struct div_clk *to_div_clk(struct clk *c)
 extern struct clk_ops clk_ops_div;
 extern struct clk_ops clk_ops_slave_div;
 
+<<<<<<< HEAD
 struct ext_clk {
 	struct clk c;
 };
@@ -125,6 +143,11 @@ static struct div_clk clk_name = {	\
 	.data = {				\
 		.div = _div,			\
 	},					\
+=======
+#define DEFINE_FIXED_DIV_CLK(clk_name, _div, _parent) \
+static struct div_clk clk_name = {	\
+	.div = _div,				\
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.c = {					\
 		.parent = _parent,		\
 		.dbg_name = #clk_name,		\
@@ -135,9 +158,13 @@ static struct div_clk clk_name = {	\
 
 #define DEFINE_FIXED_SLAVE_DIV_CLK(clk_name, _div, _parent) \
 static struct div_clk clk_name = {	\
+<<<<<<< HEAD
 	.data = {				\
 		.div = _div,			\
 	},					\
+=======
+	.div = _div,				\
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.c = {					\
 		.parent = _parent,		\
 		.dbg_name = #clk_name,		\
@@ -146,6 +173,7 @@ static struct div_clk clk_name = {	\
 	}					\
 }
 
+<<<<<<< HEAD
 #define DEFINE_EXT_CLK(clk_name, _parent) \
 static struct ext_clk clk_name = {		\
 	.c = {					\
@@ -232,4 +260,6 @@ static inline struct mux_div_clk *to_mux_div_clk(struct clk *clk)
 
 extern struct clk_ops clk_ops_mux_div_clk;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif

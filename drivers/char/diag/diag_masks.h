@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2013-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -15,6 +19,7 @@
 
 #include "diagfwd.h"
 
+<<<<<<< HEAD
 struct diag_log_mask_t {
 	uint8_t equip_id;
 	uint32_t num_items;
@@ -25,6 +30,13 @@ void diag_send_event_mask_update(struct diag_smd_info *smd_info, int num_bytes);
 void diag_send_msg_mask_update(struct diag_smd_info *smd_info, int ssid_first,
 					 int ssid_last, int proc);
 void diag_send_log_mask_update(struct diag_smd_info *smd_info, int);
+=======
+int chk_equip_id_and_mask(int equip_id, uint8_t *buf);
+void diag_send_event_mask_update(smd_channel_t *, int num_bytes);
+void diag_send_msg_mask_update(smd_channel_t *, int ssid_first,
+					 int ssid_last, int proc);
+void diag_send_log_mask_update(smd_channel_t *, int);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void diag_mask_update_fn(struct work_struct *work);
 void diag_send_feature_mask_update(struct diag_smd_info *smd_info);
 int diag_process_apps_masks(unsigned char *buf, int len);

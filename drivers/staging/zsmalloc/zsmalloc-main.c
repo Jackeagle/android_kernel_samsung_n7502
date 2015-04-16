@@ -75,6 +75,7 @@
 #include <linux/cpumask.h>
 #include <linux/cpu.h>
 #include <linux/vmalloc.h>
+<<<<<<< HEAD
 #include <linux/hardirq.h>
 #include <linux/spinlock.h>
 #include <linux/types.h>
@@ -208,6 +209,11 @@ struct zs_pool {
 
 	gfp_t flags;	/* allocation flags used when growing pool */
 };
+=======
+
+#include "zsmalloc.h"
+#include "zsmalloc_int.h"
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /*
  * A zspage's class index and fullness group
@@ -218,6 +224,7 @@ struct zs_pool {
 #define CLASS_IDX_MASK	((1 << CLASS_IDX_BITS) - 1)
 #define FULLNESS_MASK	((1 << FULLNESS_BITS) - 1)
 
+<<<<<<< HEAD
 /*
  * By default, zsmalloc uses a copy-based object mapping method to access
  * allocations that span two pages. However, if a particular architecture
@@ -240,6 +247,8 @@ struct mapping_area {
 };
 
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* per-cpu VM mapping areas for zspage accesses that cross page boundaries */
 static DEFINE_PER_CPU(struct mapping_area, zs_map_area);
 
@@ -423,19 +432,27 @@ static struct page *get_next_page(struct page *page)
 	if (is_last_page(page))
 		next = NULL;
 	else if (is_first_page(page))
+<<<<<<< HEAD
 		next = (struct page *)page_private(page);
+=======
+		next = (struct page *)page->private;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	else
 		next = list_entry(page->lru.next, struct page, lru);
 
 	return next;
 }
 
+<<<<<<< HEAD
 /*
  * Encode <page, obj_idx> as a single handle value.
  * On hardware platforms with physical memory starting at 0x0 the pfn
  * could be 0 so we ensure that the handle will never be 0 by adjusting the
  * encoded obj_idx value before encoding.
  */
+=======
+/* Encode <page, obj_idx> as a single handle value */
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static void *obj_location_to_handle(struct page *page, unsigned long obj_idx)
 {
 	unsigned long handle;
@@ -446,21 +463,33 @@ static void *obj_location_to_handle(struct page *page, unsigned long obj_idx)
 	}
 
 	handle = page_to_pfn(page) << OBJ_INDEX_BITS;
+<<<<<<< HEAD
 	handle |= ((obj_idx + 1) & OBJ_INDEX_MASK);
+=======
+	handle |= (obj_idx & OBJ_INDEX_MASK);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return (void *)handle;
 }
 
+<<<<<<< HEAD
 /*
  * Decode <page, obj_idx> pair from the given object handle. We adjust the
  * decoded obj_idx back to its original value since it was adjusted in
  * obj_location_to_handle().
  */
+=======
+/* Decode <page, obj_idx> pair from the given object handle */
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static void obj_handle_to_location(unsigned long handle, struct page **page,
 				unsigned long *obj_idx)
 {
 	*page = pfn_to_page(handle >> OBJ_INDEX_BITS);
+<<<<<<< HEAD
 	*obj_idx = (handle & OBJ_INDEX_MASK) - 1;
+=======
+	*obj_idx = handle & OBJ_INDEX_MASK;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static unsigned long obj_idx_to_offset(struct page *page,
@@ -590,7 +619,11 @@ static struct page *alloc_zspage(struct size_class *class, gfp_t flags)
 			first_page->inuse = 0;
 		}
 		if (i == 1)
+<<<<<<< HEAD
 			set_page_private(first_page, (unsigned long)page);
+=======
+			first_page->private = (unsigned long)page;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (i >= 1)
 			page->first_page = first_page;
 		if (i >= 2)
@@ -631,6 +664,7 @@ static struct page *find_get_zspage(struct size_class *class)
 	return page;
 }
 
+<<<<<<< HEAD
 #ifdef USE_PGTABLE_MAPPING
 static inline int __zs_cpu_up(struct mapping_area *area)
 {
@@ -705,6 +739,18 @@ static void *__zs_map_object(struct mapping_area *area,
 	/* no read fastpath */
 	if (area->vm_mm == ZS_MM_WO)
 		goto out;
+=======
+static void zs_copy_map_object(char *buf, struct page *firstpage,
+				int off, int size)
+{
+	struct page *pages[2];
+	int sizes[2];
+	void *addr;
+
+	pages[0] = firstpage;
+	pages[1] = get_next_page(firstpage);
+	BUG_ON(!pages[1]);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	sizes[0] = PAGE_SIZE - off;
 	sizes[1] = size - sizes[0];
@@ -716,6 +762,7 @@ static void *__zs_map_object(struct mapping_area *area,
 	addr = kmap_atomic(pages[1]);
 	memcpy(buf + sizes[0], addr, sizes[1]);
 	kunmap_atomic(addr);
+<<<<<<< HEAD
 out:
 	return area->vm_buf;
 }
@@ -730,6 +777,20 @@ static void __zs_unmap_object(struct mapping_area *area,
 	/* no write fastpath */
 	if (area->vm_mm == ZS_MM_RO)
 		goto out;
+=======
+}
+
+static void zs_copy_unmap_object(char *buf, struct page *firstpage,
+				int off, int size)
+{
+	struct page *pages[2];
+	int sizes[2];
+	void *addr;
+
+	pages[0] = firstpage;
+	pages[1] = get_next_page(firstpage);
+	BUG_ON(!pages[1]);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	sizes[0] = PAGE_SIZE - off;
 	sizes[1] = size - sizes[0];
@@ -741,6 +802,7 @@ static void __zs_unmap_object(struct mapping_area *area,
 	addr = kmap_atomic(pages[1]);
 	memcpy(addr, buf + sizes[0], sizes[1]);
 	kunmap_atomic(addr);
+<<<<<<< HEAD
 
 out:
 	/* enable page faults to match kunmap_atomic() return conditions */
@@ -753,19 +815,46 @@ static int zs_cpu_notifier(struct notifier_block *nb, unsigned long action,
 				void *pcpu)
 {
 	int ret, cpu = (long)pcpu;
+=======
+}
+
+static int zs_cpu_notifier(struct notifier_block *nb, unsigned long action,
+				void *pcpu)
+{
+	int cpu = (long)pcpu;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct mapping_area *area;
 
 	switch (action) {
 	case CPU_UP_PREPARE:
 		area = &per_cpu(zs_map_area, cpu);
+<<<<<<< HEAD
 		ret = __zs_cpu_up(area);
 		if (ret)
 			return notifier_from_errno(ret);
+=======
+		/*
+		 * Make sure we don't leak memory if a cpu UP notification
+		 * and zs_init() race and both call zs_cpu_up() on the same cpu
+		 */
+		if (area->vm_buf)
+			return 0;
+		area->vm_buf = (char *)__get_free_page(GFP_KERNEL);
+		if (!area->vm_buf)
+			return -ENOMEM;
+		return 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		break;
 	case CPU_DEAD:
 	case CPU_UP_CANCELED:
 		area = &per_cpu(zs_map_area, cpu);
+<<<<<<< HEAD
 		__zs_cpu_down(area);
+=======
+		if (area->vm_buf)
+			free_page((unsigned long)area->vm_buf);
+		area->vm_buf = NULL;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		break;
 	}
 
@@ -801,6 +890,7 @@ fail:
 	return notifier_to_errno(ret);
 }
 
+<<<<<<< HEAD
 /**
  * zs_create_pool - Creates an allocation pool to work from.
  * @flags: allocation flags used to allocate pool metadata
@@ -812,10 +902,19 @@ fail:
  * otherwise NULL.
  */
 struct zs_pool *zs_create_pool(gfp_t flags)
+=======
+struct zs_pool *zs_create_pool(const char *name, gfp_t flags)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	int i, ovhd_size;
 	struct zs_pool *pool;
 
+<<<<<<< HEAD
+=======
+	if (!name)
+		return NULL;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ovhd_size = roundup(sizeof(*pool), PAGE_SIZE);
 	pool = kzalloc(ovhd_size, GFP_KERNEL);
 	if (!pool)
@@ -838,6 +937,10 @@ struct zs_pool *zs_create_pool(gfp_t flags)
 	}
 
 	pool->flags = flags;
+<<<<<<< HEAD
+=======
+	pool->name = name;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return pool;
 }
@@ -853,7 +956,12 @@ void zs_destroy_pool(struct zs_pool *pool)
 
 		for (fg = 0; fg < _ZS_NR_FULLNESS_GROUPS; fg++) {
 			if (class->fullness_list[fg]) {
+<<<<<<< HEAD
 				pr_info("Freeing non-empty class with size %db, fullness group %d\n",
+=======
+				pr_info("Freeing non-empty class with size "
+					"%db, fullness group %d\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					class->size, fg);
 			}
 		}
@@ -976,7 +1084,11 @@ EXPORT_SYMBOL_GPL(zs_free);
  * against nested mappings.
  *
  * This function returns with preemption and page faults disabled.
+<<<<<<< HEAD
  */
+=======
+*/
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void *zs_map_object(struct zs_pool *pool, unsigned long handle,
 			enum zs_mapmode mm)
 {
@@ -987,6 +1099,7 @@ void *zs_map_object(struct zs_pool *pool, unsigned long handle,
 	enum fullness_group fg;
 	struct size_class *class;
 	struct mapping_area *area;
+<<<<<<< HEAD
 	struct page *pages[2];
 
 	BUG_ON(!handle);
@@ -998,25 +1111,43 @@ void *zs_map_object(struct zs_pool *pool, unsigned long handle,
 	 */
 	BUG_ON(in_interrupt());
 
+=======
+
+	BUG_ON(!handle);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	obj_handle_to_location(handle, &page, &obj_idx);
 	get_zspage_mapping(get_first_page(page), &class_idx, &fg);
 	class = &pool->size_class[class_idx];
 	off = obj_idx_to_offset(page, obj_idx, class->size);
 
 	area = &get_cpu_var(zs_map_area);
+<<<<<<< HEAD
 	area->vm_mm = mm;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (off + class->size <= PAGE_SIZE) {
 		/* this object is contained entirely within a page */
 		area->vm_addr = kmap_atomic(page);
 		return area->vm_addr + off;
 	}
 
+<<<<<<< HEAD
 	/* this object spans two pages */
 	pages[0] = page;
 	pages[1] = get_next_page(page);
 	BUG_ON(!pages[1]);
 
 	return __zs_map_object(area, pages, off, class->size);
+=======
+	/* disable page faults to match kmap_atomic() return conditions */
+	pagefault_disable();
+
+	if (mm != ZS_MM_WO)
+		zs_copy_map_object(area->vm_buf, page, off, class->size);
+	area->vm_addr = NULL;
+	return area->vm_buf;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 EXPORT_SYMBOL_GPL(zs_map_object);
 
@@ -1030,6 +1161,20 @@ void zs_unmap_object(struct zs_pool *pool, unsigned long handle)
 	struct size_class *class;
 	struct mapping_area *area;
 
+<<<<<<< HEAD
+=======
+	area = &__get_cpu_var(zs_map_area);
+	/* single-page object fastpath */
+	if (area->vm_addr) {
+		kunmap_atomic(area->vm_addr);
+		goto out;
+	}
+
+	/* no write fastpath */
+	if (area->vm_mm == ZS_MM_RO)
+		goto pfenable;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	BUG_ON(!handle);
 
 	obj_handle_to_location(handle, &page, &obj_idx);
@@ -1037,6 +1182,7 @@ void zs_unmap_object(struct zs_pool *pool, unsigned long handle)
 	class = &pool->size_class[class_idx];
 	off = obj_idx_to_offset(page, obj_idx, class->size);
 
+<<<<<<< HEAD
 	area = &__get_cpu_var(zs_map_area);
 	if (off + class->size <= PAGE_SIZE)
 		kunmap_atomic(area->vm_addr);
@@ -1049,6 +1195,14 @@ void zs_unmap_object(struct zs_pool *pool, unsigned long handle)
 
 		__zs_unmap_object(area, pages, off, class->size);
 	}
+=======
+	zs_copy_unmap_object(area->vm_buf, page, off, class->size);
+
+pfenable:
+	/* enable page faults to match kunmap_atomic() return conditions */
+	pagefault_enable();
+out:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	put_cpu_var(zs_map_area);
 }
 EXPORT_SYMBOL_GPL(zs_unmap_object);

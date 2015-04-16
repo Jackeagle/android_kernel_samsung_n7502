@@ -51,6 +51,10 @@ obj-$(CONFIG_EARLY_PRINTK_DBGP)	+= early/
 
 obj-$(CONFIG_USB_ATM)		+= atm/
 obj-$(CONFIG_USB_SPEEDTOUCH)	+= atm/
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_USB_HOST_NOTIFY)  += notify/
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 obj-$(CONFIG_USB_MUSB_HDRC)	+= musb/
 obj-$(CONFIG_USB_RENESAS_USBHS)	+= renesas_usbhs/

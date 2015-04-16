@@ -441,11 +441,14 @@ static void transfer_results(struct kgsl_device *device,
 					profile, *(ptr + buf_off++));
 			if (assigns_list == NULL) {
 				*log_ptr = (unsigned int) -1;
+<<<<<<< HEAD
 
 				shared_buf_inc(profile->shared_size,
 					&profile->shared_tail,
 					SIZE_SHARED_ENTRY(cnt));
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				goto err;
 			} else {
 				*log_ptr = assigns_list->groupid << 16 |
@@ -602,7 +605,11 @@ static void _add_assignment(struct adreno_device *adreno_dev,
 static char *_parse_next_assignment(struct adreno_device *adreno_dev,
 		char *str, int *groupid, int *countable, bool *remove)
 {
+<<<<<<< HEAD
 	char *groupid_str, *countable_str, *next_str = NULL;
+=======
+	char *groupid_str, *countable_str;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int ret;
 
 	*groupid = -EINVAL;
@@ -640,6 +647,7 @@ static char *_parse_next_assignment(struct adreno_device *adreno_dev,
 	if (countable_str == str)
 		return NULL;
 
+<<<<<<< HEAD
 	/*
 	 * If we have reached the end of the original string then make sure we
 	 * return NULL from this function or we could accidently overrun
@@ -649,6 +657,10 @@ static char *_parse_next_assignment(struct adreno_device *adreno_dev,
 		*str = '\0';
 		next_str = str + 1;
 	}
+=======
+	*str = '\0';
+	str++;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/* set results */
 	*groupid = adreno_perfcounter_get_groupid(adreno_dev,
@@ -659,7 +671,11 @@ static char *_parse_next_assignment(struct adreno_device *adreno_dev,
 	if (ret)
 		return NULL;
 
+<<<<<<< HEAD
 	return next_str;
+=======
+	return str;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static ssize_t profile_assignments_write(struct file *filep,
@@ -671,7 +687,11 @@ static ssize_t profile_assignments_write(struct file *filep,
 	size_t size = 0;
 	char *buf, *pbuf;
 	bool remove_assignment = false;
+<<<<<<< HEAD
 	int groupid, countable, ret;
+=======
+	int groupid, countable;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (len >= PAGE_SIZE || len == 0)
 		return -EINVAL;
@@ -686,9 +706,13 @@ static ssize_t profile_assignments_write(struct file *filep,
 		goto error_unlock;
 	}
 
+<<<<<<< HEAD
 	ret = kgsl_active_count_get(device);
 	if (ret)
 		return -EINVAL;
+=======
+	kgsl_active_count_get(device);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/*
 	 * When adding/removing assignments, ensure that the GPU is done with

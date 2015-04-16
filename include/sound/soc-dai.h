@@ -19,7 +19,10 @@
 
 struct snd_pcm_substream;
 struct snd_soc_dapm_widget;
+<<<<<<< HEAD
 struct snd_compr_stream;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /*
  * DAI hardware audio formats.
@@ -213,8 +216,11 @@ struct snd_soc_dai_driver {
 	int (*remove)(struct snd_soc_dai *dai);
 	int (*suspend)(struct snd_soc_dai *dai);
 	int (*resume)(struct snd_soc_dai *dai);
+<<<<<<< HEAD
 	/* compress dai */
 	bool compress_dai;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/* ops */
 	const struct snd_soc_dai_ops *ops;

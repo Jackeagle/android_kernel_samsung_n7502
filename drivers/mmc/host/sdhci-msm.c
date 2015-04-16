@@ -149,7 +149,11 @@
 #define CORE_DEBUG_REG_AHB_HTRANS       (3 << 12)
 
 /* 8KB descriptors */
+<<<<<<< HEAD
 #define SDHCI_MSM_MAX_SEGMENTS  (1 << 13)
+=======
+#define SDHCI_MSM_MAX_SEGMENTS  (1 << 10)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define SDHCI_MSM_MMC_CLK_GATE_DELAY	200 /* msecs */
 
 #define CORE_FREQ_100MHZ	(100 * 1000 * 1000)
@@ -317,7 +321,10 @@ struct sdhci_msm_host {
 	bool tuning_done;
 	bool calibration_done;
 	u8 saved_tuning_phase;
+<<<<<<< HEAD
 	atomic_t controller_clock;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 enum vdd_io_level {
@@ -2214,6 +2221,7 @@ static unsigned int sdhci_msm_get_sup_clk_rate(struct sdhci_host *host,
 	return sel_clk;
 }
 
+<<<<<<< HEAD
 static int sdhci_msm_enable_controller_clock(struct sdhci_host *host)
 {
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
@@ -2258,6 +2266,8 @@ out:
 
 
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int sdhci_msm_prepare_clocks(struct sdhci_host *host, bool enable)
 {
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
@@ -2268,6 +2278,7 @@ static int sdhci_msm_prepare_clocks(struct sdhci_host *host, bool enable)
 		pr_debug("%s: request to enable clocks\n",
 				mmc_hostname(host->mmc));
 
+<<<<<<< HEAD
 		/*
 		 * The bus-width or the clock rate might have changed
 		 * after controller clocks are enbaled, update bus vote
@@ -2279,21 +2290,48 @@ static int sdhci_msm_prepare_clocks(struct sdhci_host *host, bool enable)
 		rc = sdhci_msm_enable_controller_clock(host);
 		if (rc)
 			goto remove_vote;
+=======
+		sdhci_msm_bus_voting(host, 1);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		if (!IS_ERR_OR_NULL(msm_host->bus_clk)) {
 			rc = clk_prepare_enable(msm_host->bus_clk);
 			if (rc) {
 				pr_err("%s: %s: failed to enable the bus-clock with error %d\n",
 					mmc_hostname(host->mmc), __func__, rc);
+<<<<<<< HEAD
 				goto disable_controller_clk;
 			}
 		}
+=======
+				goto remove_vote;
+			}
+		}
+		if (!IS_ERR(msm_host->pclk)) {
+			rc = clk_prepare_enable(msm_host->pclk);
+			if (rc) {
+				pr_err("%s: %s: failed to enable the pclk with error %d\n",
+					mmc_hostname(host->mmc), __func__, rc);
+				goto disable_bus_clk;
+			}
+		}
+		rc = clk_prepare_enable(msm_host->clk);
+		if (rc) {
+			pr_err("%s: %s: failed to enable the host-clk with error %d\n",
+				mmc_hostname(host->mmc), __func__, rc);
+			goto disable_pclk;
+		}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (!IS_ERR(msm_host->ff_clk)) {
 			rc = clk_prepare_enable(msm_host->ff_clk);
 			if (rc) {
 				pr_err("%s: %s: failed to enable the ff_clk with error %d\n",
 					mmc_hostname(host->mmc), __func__, rc);
+<<<<<<< HEAD
 				goto disable_bus_clk;
+=======
+				goto disable_clk;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			}
 		}
 		if (!IS_ERR(msm_host->sleep_clk)) {
@@ -2321,7 +2359,10 @@ static int sdhci_msm_prepare_clocks(struct sdhci_host *host, bool enable)
 		if (!IS_ERR_OR_NULL(msm_host->bus_clk))
 			clk_disable_unprepare(msm_host->bus_clk);
 
+<<<<<<< HEAD
 		atomic_set(&msm_host->controller_clock, 0);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		sdhci_msm_bus_voting(host, 0);
 	}
 	atomic_set(&msm_host->clks_on, enable);
@@ -2329,6 +2370,7 @@ static int sdhci_msm_prepare_clocks(struct sdhci_host *host, bool enable)
 disable_ff_clk:
 	if (!IS_ERR_OR_NULL(msm_host->ff_clk))
 		clk_disable_unprepare(msm_host->ff_clk);
+<<<<<<< HEAD
 disable_bus_clk:
 	if (!IS_ERR_OR_NULL(msm_host->bus_clk))
 		clk_disable_unprepare(msm_host->bus_clk);
@@ -2338,6 +2380,17 @@ disable_controller_clk:
 	if (!IS_ERR_OR_NULL(msm_host->pclk))
 		clk_disable_unprepare(msm_host->pclk);
 	atomic_set(&msm_host->controller_clock, 0);
+=======
+disable_clk:
+	if (!IS_ERR_OR_NULL(msm_host->clk))
+		clk_disable_unprepare(msm_host->clk);
+disable_pclk:
+	if (!IS_ERR_OR_NULL(msm_host->pclk))
+		clk_disable_unprepare(msm_host->pclk);
+disable_bus_clk:
+	if (!IS_ERR_OR_NULL(msm_host->bus_clk))
+		clk_disable_unprepare(msm_host->bus_clk);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 remove_vote:
 	if (msm_host->msm_bus_vote.client_handle)
 		sdhci_msm_bus_cancel_work_and_set_vote(host, 0);
@@ -2352,7 +2405,10 @@ static void sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
 	struct sdhci_msm_host *msm_host = pltfm_host->priv;
 	struct mmc_ios	curr_ios = host->mmc->ios;
 	u32 sup_clock, ddr_clock;
+<<<<<<< HEAD
 	bool curr_pwrsave;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (!clock) {
 		sdhci_msm_prepare_clocks(host, false);
@@ -2364,6 +2420,7 @@ static void sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
 	if (rc)
 		return;
 
+<<<<<<< HEAD
 	curr_pwrsave = !!(readl_relaxed(host->ioaddr + CORE_VENDOR_SPEC) &
 			  CORE_CLK_PWRSAVE);
 	if ((clock > 400000) &&
@@ -2380,6 +2437,8 @@ static void sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
 				& ~CORE_CLK_PWRSAVE,
 				host->ioaddr + CORE_VENDOR_SPEC);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	sup_clock = sdhci_msm_get_sup_clk_rate(host, clock);
 	if ((curr_ios.timing == MMC_TIMING_UHS_DDR50) ||
 		(curr_ios.timing == MMC_TIMING_MMC_HS400)) {
@@ -2600,9 +2659,54 @@ static struct sdhci_ops sdhci_msm_ops = {
 	.get_min_clock = sdhci_msm_get_min_clock,
 	.get_max_clock = sdhci_msm_get_max_clock,
 	.disable_data_xfer = sdhci_msm_disable_data_xfer,
+<<<<<<< HEAD
 	.enable_controller_clock = sdhci_msm_enable_controller_clock,
 };
 
+=======
+};
+
+/* SYSFS about SD Card Detection */
+extern struct class *sec_class;
+static struct device *t_flash_detect_dev;
+
+static ssize_t t_flash_detect_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	struct sdhci_msm_host *msm_host = dev_get_drvdata(dev);
+#ifdef CONFIG_MMC_MSM_CARD_HW_DETECTION
+	unsigned int detect;
+
+	if (gpio_is_valid(msm_host->pdata->status_gpio))
+		detect = gpio_get_value(msm_host->pdata->status_gpio);
+
+	else {
+		pr_info("%s : External  SD detect pin Error\n", __func__);
+		return sprintf(buf, "Error\n");
+	}
+
+	pr_info("%s : detect = %d.\n", __func__, detect);
+	if (!detect) {
+		printk(KERN_DEBUG "sdcc2: card inserted.\n");
+		return sprintf(buf, "Insert\n");
+	} else {
+		printk(KERN_DEBUG "sdcc2: card removed.\n");
+		return sprintf(buf, "Remove\n");
+	}
+#else
+	if (msm_host->mmc->card) {
+		printk(KERN_DEBUG "sdcc2: card inserted.\n");
+		return sprintf(buf, "Insert\n");
+	} else {
+		printk(KERN_DEBUG "sdcc2: card removed.\n");
+		return sprintf(buf, "Remove\n");
+	}
+#endif
+}
+
+static DEVICE_ATTR(status, 0444, t_flash_detect_show, NULL);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int __devinit sdhci_msm_probe(struct platform_device *pdev)
 {
 	struct sdhci_host *host;
@@ -2680,7 +2784,10 @@ static int __devinit sdhci_msm_probe(struct platform_device *pdev)
 		if (ret)
 			goto bus_clk_disable;
 	}
+<<<<<<< HEAD
 	atomic_set(&msm_host->controller_clock, 1);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/* Setup SDC MMC clock */
 	msm_host->clk = devm_clk_get(&pdev->dev, "core_clk");
@@ -2874,6 +2981,7 @@ static int __devinit sdhci_msm_probe(struct platform_device *pdev)
 
 	msm_host->mmc->caps2 |= msm_host->pdata->caps2;
 	msm_host->mmc->caps2 |= MMC_CAP2_CORE_RUNTIME_PM;
+<<<<<<< HEAD
 	msm_host->mmc->caps2 |= MMC_CAP2_PACKED_WR;
 	msm_host->mmc->caps2 |= MMC_CAP2_PACKED_WR_CONTROL;
 	msm_host->mmc->caps2 |= (MMC_CAP2_BOOTPART_NOACC |
@@ -2885,6 +2993,21 @@ static int __devinit sdhci_msm_probe(struct platform_device *pdev)
 	msm_host->mmc->caps2 |= MMC_CAP2_STOP_REQUEST;
 	msm_host->mmc->caps2 |= MMC_CAP2_ASYNC_SDIO_IRQ_4BIT_MODE;
 	msm_host->mmc->caps2 |= MMC_CAP2_CORE_PM;
+=======
+/*
+	msm_host->mmc->caps2 |= MMC_CAP2_PACKED_WR;
+	msm_host->mmc->caps2 |= MMC_CAP2_PACKED_WR_CONTROL;
+*/
+	msm_host->mmc->caps2 |= (MMC_CAP2_BOOTPART_NOACC |
+				MMC_CAP2_DETECT_ON_ERR);
+	msm_host->mmc->caps2 |= MMC_CAP2_CACHE_CTRL;
+	msm_host->mmc->caps2 |= MMC_CAP2_POWEROFF_NOTIFY;
+#if !defined(CONFIG_MACH_CRATERQ_CHN_OPEN) && !defined(CONFIG_MACH_CRATERQ_CHN_CMCC)  //disable clk scaling mode by hw request
+	msm_host->mmc->caps2 |= MMC_CAP2_CLK_SCALE;
+#endif	
+	msm_host->mmc->caps2 |= MMC_CAP2_STOP_REQUEST;
+	msm_host->mmc->caps2 |= MMC_CAP2_ASYNC_SDIO_IRQ_4BIT_MODE;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	msm_host->mmc->pm_caps |= MMC_PM_KEEP_POWER;
 
 	if (msm_host->pdata->nonremovable)
@@ -2904,6 +3027,30 @@ static int __devinit sdhci_msm_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	/* SYSFS about SD Card Detection by soonil.lim */
+#ifdef CONFIG_MMC_MSM_CARD_HW_DETECTION
+	if (t_flash_detect_dev == NULL && gpio_is_valid(msm_host->pdata->status_gpio)) {
+#else
+	if (t_flash_detect_dev == NULL && !strcmp(host->hw_name, "msm_sdcc.2")) {
+#endif
+		printk(KERN_DEBUG "%s : Change sysfs Card Detect\n", __func__);
+
+		t_flash_detect_dev = device_create(sec_class,
+					NULL, 0, NULL, "sdcard");
+		if (IS_ERR(t_flash_detect_dev))
+			pr_err("%s : Failed to create device!\n", __func__);
+
+		if (device_create_file(t_flash_detect_dev,
+			&dev_attr_status) < 0)
+			pr_err("%s : Failed to create device file(%s)!\n",
+					__func__, dev_attr_status.attr.name);
+
+		dev_set_drvdata(t_flash_detect_dev, msm_host);
+	}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (dma_supported(mmc_dev(host->mmc), DMA_BIT_MASK(32))) {
 		host->dma_mask = DMA_BIT_MASK(32);
 		mmc_dev(host->mmc)->dma_mask = &host->dma_mask;
@@ -2941,7 +3088,11 @@ static int __devinit sdhci_msm_probe(struct platform_device *pdev)
 	if (ret)
 		pr_err("%s: %s: pm_runtime_set_active failed: err: %d\n",
 		       mmc_hostname(host->mmc), __func__, ret);
+<<<<<<< HEAD
 	else if (mmc_use_core_runtime_pm(host->mmc))
+=======
+	else
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		pm_runtime_enable(&pdev->dev);
 
 	/* Successful initialization */
@@ -3113,7 +3264,10 @@ static const struct dev_pm_ops sdhci_msm_pmops = {
 #endif
 static const struct of_device_id sdhci_msm_dt_match[] = {
 	{.compatible = "qcom,sdhci-msm"},
+<<<<<<< HEAD
 	{ /* sentinel */ }
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 MODULE_DEVICE_TABLE(of, sdhci_msm_dt_match);
 

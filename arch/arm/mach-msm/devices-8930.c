@@ -31,6 +31,10 @@
 #include "rpm_stats.h"
 #include "rpm_rbcpr_stats.h"
 #include "footswitch.h"
+<<<<<<< HEAD
+=======
+#include "acpuclock-krait.h"
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include "pm.h"
 
 #ifdef CONFIG_MSM_MPM
@@ -674,9 +678,22 @@ struct platform_device msm8627_device_acpuclk = {
 	.id		= -1,
 };
 
+<<<<<<< HEAD
 struct platform_device msm8930_device_acpuclk = {
 	.name		= "acpuclk-8930",
 	.id		= -1,
+=======
+static struct acpuclk_platform_data acpuclk_8930_pdata = {
+	.uses_pm8917 = false,
+};
+
+struct platform_device msm8930_device_acpuclk = {
+	.name		= "acpuclk-8930",
+	.id		= -1,
+	.dev = {
+		.platform_data = &acpuclk_8930_pdata,
+	},
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct platform_device msm8930aa_device_acpuclk = {
@@ -684,9 +701,22 @@ struct platform_device msm8930aa_device_acpuclk = {
 	.id		= -1,
 };
 
+<<<<<<< HEAD
 struct platform_device msm8930ab_device_acpuclk = {
 	.name		= "acpuclk-8930ab",
 	.id		= -1,
+=======
+static struct acpuclk_platform_data acpuclk_8930ab_pdata = {
+	.uses_pm8917 = false,
+};
+
+struct platform_device msm8930ab_device_acpuclk = {
+	.name		= "acpuclk-8930ab",
+	.id		= -1,
+	.dev = {
+		.platform_data = &acpuclk_8930ab_pdata,
+	},
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 static struct fs_driver_data gfx3d_fs_data = {

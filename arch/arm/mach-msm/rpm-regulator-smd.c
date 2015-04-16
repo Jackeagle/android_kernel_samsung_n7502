@@ -163,7 +163,10 @@ struct rpm_vreg {
 	struct mutex		mlock;
 	unsigned long		flags;
 	bool			sleep_request_sent;
+<<<<<<< HEAD
 	bool			apps_only;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct msm_rpm_request	*handle_active;
 	struct msm_rpm_request	*handle_sleep;
 };
@@ -242,6 +245,7 @@ static inline bool rpm_vreg_active_or_sleep_enabled(struct rpm_vreg *rpm_vreg)
 					& BIT(RPM_REGULATOR_PARAM_ENABLE)));
 }
 
+<<<<<<< HEAD
 static inline bool rpm_vreg_shared_active_or_sleep_enabled_valid
 						(struct rpm_vreg *rpm_vreg)
 {
@@ -252,6 +256,8 @@ static inline bool rpm_vreg_shared_active_or_sleep_enabled_valid
 					& BIT(RPM_REGULATOR_PARAM_ENABLE)));
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /*
  * This is used when voting for LPM or HPM by subtracting or adding to the
  * hpm_min_load of a regulator.  It has units of uA.
@@ -671,8 +677,12 @@ static int rpm_vreg_set_voltage(struct regulator_dev *rdev, int min_uV,
 	 * if the regulator has been configured to always send voltage updates.
 	 */
 	if (reg->always_send_voltage
+<<<<<<< HEAD
 	    || rpm_vreg_active_or_sleep_enabled(reg->rpm_vreg)
 	    || rpm_vreg_shared_active_or_sleep_enabled_valid(reg->rpm_vreg))
+=======
+	    || rpm_vreg_active_or_sleep_enabled(reg->rpm_vreg))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rc = rpm_vreg_aggregate_requests(reg);
 
 	if (rc) {
@@ -731,8 +741,12 @@ static int rpm_vreg_set_voltage_corner(struct regulator_dev *rdev, int min_uV,
 	 * updates.
 	 */
 	if (reg->always_send_voltage
+<<<<<<< HEAD
 	    || rpm_vreg_active_or_sleep_enabled(reg->rpm_vreg)
 	    || rpm_vreg_shared_active_or_sleep_enabled_valid(reg->rpm_vreg))
+=======
+	    || rpm_vreg_active_or_sleep_enabled(reg->rpm_vreg))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rc = rpm_vreg_aggregate_requests(reg);
 
 	if (rc) {
@@ -787,8 +801,12 @@ static int rpm_vreg_set_voltage_floor_corner(struct regulator_dev *rdev,
 	 * voltage updates.
 	 */
 	if (reg->always_send_voltage
+<<<<<<< HEAD
 	    || rpm_vreg_active_or_sleep_enabled(reg->rpm_vreg)
 	    || rpm_vreg_shared_active_or_sleep_enabled_valid(reg->rpm_vreg))
+=======
+	    || rpm_vreg_active_or_sleep_enabled(reg->rpm_vreg))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rc = rpm_vreg_aggregate_requests(reg);
 
 	if (rc) {
@@ -843,8 +861,12 @@ static int rpm_vreg_set_mode(struct regulator_dev *rdev, unsigned int mode)
 	 * current updates.
 	 */
 	if (reg->always_send_current
+<<<<<<< HEAD
 	    || rpm_vreg_active_or_sleep_enabled(reg->rpm_vreg)
 	    || rpm_vreg_shared_active_or_sleep_enabled_valid(reg->rpm_vreg))
+=======
+	    || rpm_vreg_active_or_sleep_enabled(reg->rpm_vreg))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rc = rpm_vreg_aggregate_requests(reg);
 
 	if (rc) {
@@ -879,7 +901,11 @@ static unsigned int rpm_vreg_get_optimum_mode(struct regulator_dev *rdev,
 		load_mA = params[RPM_REGULATOR_PARAM_CURRENT].max;
 
 	rpm_vreg_lock(reg->rpm_vreg);
+<<<<<<< HEAD
 	RPM_VREG_SET_PARAM(reg, CURRENT, load_mA);
+=======
+	RPM_VREG_SET_PARAM(reg, CURRENT, MICRO_TO_MILLI(load_uA));
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	rpm_vreg_unlock(reg->rpm_vreg);
 
 	return (load_uA >= reg->rpm_vreg->hpm_min_load)
@@ -932,6 +958,10 @@ struct rpm_regulator *rpm_regulator_get(struct device *dev, const char *supply)
 	if (priv_reg == NULL) {
 		vreg_err(framework_reg, "could not allocate memory for "
 			"regulator\n");
+<<<<<<< HEAD
+=======
+		rpm_vreg_unlock(rpm_vreg);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return ERR_PTR(-ENOMEM);
 	}
 
@@ -944,6 +974,10 @@ struct rpm_regulator *rpm_regulator_get(struct device *dev, const char *supply)
 		vreg_err(framework_reg, "could not allocate memory for "
 			"regulator_dev\n");
 		kfree(priv_reg);
+<<<<<<< HEAD
+=======
+		rpm_vreg_unlock(rpm_vreg);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return ERR_PTR(-ENOMEM);
 	}
 	priv_reg->rdev->reg_data	= priv_reg;
@@ -1279,6 +1313,7 @@ static int __devexit rpm_vreg_device_remove(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct rpm_regulator *reg;
+<<<<<<< HEAD
 	struct rpm_vreg *rpm_vreg;
 
 	reg = platform_get_drvdata(pdev);
@@ -1289,6 +1324,16 @@ static int __devexit rpm_vreg_device_remove(struct platform_device *pdev)
 		list_del(&reg->list);
 		kfree(reg);
 		rpm_vreg_unlock(rpm_vreg);
+=======
+
+	reg = platform_get_drvdata(pdev);
+	if (reg) {
+		rpm_vreg_lock(reg->rpm_vreg);
+		regulator_unregister(reg->rdev);
+		list_del(&reg->list);
+		kfree(reg);
+		rpm_vreg_unlock(reg->rpm_vreg);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	} else {
 		dev_err(dev, "%s: drvdata missing\n", __func__);
 		return -EINVAL;
@@ -1594,7 +1639,10 @@ static int __devinit rpm_vreg_resource_probe(struct platform_device *pdev)
 	of_property_read_u32(node, "qcom,enable-time", &rpm_vreg->enable_time);
 	of_property_read_u32(node, "qcom,hpm-min-load",
 		&rpm_vreg->hpm_min_load);
+<<<<<<< HEAD
 	rpm_vreg->apps_only = of_property_read_bool(node, "qcom,apps-only");
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	rpm_vreg->handle_active = msm_rpm_create_request(RPM_SET_ACTIVE,
 		resource_type, rpm_vreg->resource_id, RPM_REGULATOR_PARAM_MAX);

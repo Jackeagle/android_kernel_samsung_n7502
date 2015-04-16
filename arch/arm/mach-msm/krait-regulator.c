@@ -222,7 +222,10 @@ struct krait_power_vreg {
 	int				ldo_threshold_uV;
 	int				ldo_delta_uV;
 	int				cpu_num;
+<<<<<<< HEAD
 	bool				ldo_disable;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int				coeff1;
 	int				coeff2;
 	bool				reg_en;
@@ -657,9 +660,12 @@ static void __switch_to_using_ldo(void *info)
 {
 	struct krait_power_vreg *kvreg = info;
 
+<<<<<<< HEAD
 	if (kvreg->ldo_disable)
 		return;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/*
 	 * if the krait is in ldo mode and a voltage change is requested on the
 	 * ldo switch to using hs before changing ldo voltage
@@ -1056,7 +1062,10 @@ static int krait_regulator_cpu_callback(struct notifier_block *nfb,
 			(int)action, cpu, cpu_online(cpu));
 	switch (action & ~CPU_TASKS_FROZEN) {
 	case CPU_UP_PREPARE:
+<<<<<<< HEAD
 	case CPU_UP_CANCELED:
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		mutex_lock(&pvreg->krait_power_vregs_lock);
 		kvreg->force_bhs = true;
 		/*
@@ -1067,6 +1076,10 @@ static int krait_regulator_cpu_callback(struct notifier_block *nfb,
 		__switch_to_using_bhs(kvreg);
 		mutex_unlock(&pvreg->krait_power_vregs_lock);
 		break;
+<<<<<<< HEAD
+=======
+	case CPU_UP_CANCELED:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	case CPU_ONLINE:
 		mutex_lock(&pvreg->krait_power_vregs_lock);
 		kvreg->force_bhs = false;
@@ -1177,9 +1190,12 @@ static void online_at_probe(struct krait_power_vreg *kvreg)
 			& readl_relaxed(kvreg->reg_base + CPU_PWR_CTL);
 	kvreg->online_at_probe
 		= online ? (WAIT_FOR_LOAD | WAIT_FOR_VOLTAGE) : 0x0;
+<<<<<<< HEAD
 
 	if (online)
 		kvreg->force_bhs = false;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static void glb_init(void __iomem *apcs_gcc_base)
@@ -1204,7 +1220,10 @@ static int __devinit krait_power_probe(struct platform_device *pdev)
 	int headroom_uV, retention_uV, ldo_default_uV, ldo_threshold_uV;
 	int ldo_delta_uV;
 	int cpu_num;
+<<<<<<< HEAD
 	bool ldo_disable = false;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (pdev->dev.of_node) {
 		/* Get init_data from device tree. */
@@ -1288,9 +1307,12 @@ static int __devinit krait_power_probe(struct platform_device *pdev)
 			pr_err("bad cpu-num= %d specified\n", cpu_num);
 			return -EINVAL;
 		}
+<<<<<<< HEAD
 
 		ldo_disable = of_property_read_bool(pdev->dev.of_node,
 					"qcom,ldo-disable");
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	if (!init_data) {
@@ -1344,8 +1366,11 @@ static int __devinit krait_power_probe(struct platform_device *pdev)
 	kvreg->ldo_threshold_uV = ldo_threshold_uV;
 	kvreg->ldo_delta_uV	= ldo_delta_uV;
 	kvreg->cpu_num		= cpu_num;
+<<<<<<< HEAD
 	kvreg->ldo_disable	= ldo_disable;
 	kvreg->force_bhs	= true;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	platform_set_drvdata(pdev, kvreg);
 
@@ -1443,6 +1468,7 @@ static int __devinit krait_pdn_phase_scaling_init(struct pmic_gang_vreg *pvreg,
 {
 	struct resource *res;
 	void __iomem *efuse;
+<<<<<<< HEAD
 	u32 efuse_data, efuse_version, efuse_version_data;
 	bool sf_valid, use_efuse;
 	int sf_pos, sf_mask;
@@ -1454,6 +1480,13 @@ static int __devinit krait_pdn_phase_scaling_init(struct pmic_gang_vreg *pvreg,
 
 	use_efuse = of_property_read_bool(node,
 				"qcom,use-phase-scaling-factor");
+=======
+	u32 efuse_data, efuse_version;
+	bool scaling_factor_valid, use_efuse;
+
+	use_efuse = of_property_read_bool(pdev->dev.of_node,
+					  "qcom,use-phase-scaling-factor");
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/*
 	 * Allow usage of the eFuse phase scaling factor if it is enabled in
 	 * either device tree or by module parameter.
@@ -1468,7 +1501,10 @@ static int __devinit krait_pdn_phase_scaling_init(struct pmic_gang_vreg *pvreg,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	/* Read efuse registers */
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	efuse = ioremap(res->start, 8);
 	if (!efuse) {
 		pr_err("could not map phase scaling eFuse address\n");
@@ -1476,6 +1512,7 @@ static int __devinit krait_pdn_phase_scaling_init(struct pmic_gang_vreg *pvreg,
 	}
 
 	efuse_data = readl_relaxed(efuse);
+<<<<<<< HEAD
 	efuse_version_data = readl_relaxed(efuse + 4);
 	iounmap(efuse);
 
@@ -1511,12 +1548,31 @@ static int __devinit krait_pdn_phase_scaling_init(struct pmic_gang_vreg *pvreg,
 		pvreg->efuse_phase_scaling_factor
 			= ((efuse_data & sf_mask)
 				>> sf_pos) + 1;
+=======
+	efuse_version = readl_relaxed(efuse + 4);
+
+	iounmap(efuse);
+
+	scaling_factor_valid
+		= ((efuse_version & PHASE_SCALING_EFUSE_VERSION_MASK) >>
+				PHASE_SCALING_EFUSE_VERSION_POS)
+			== PHASE_SCALING_EFUSE_VERSION_SET;
+
+	if (scaling_factor_valid)
+		pvreg->efuse_phase_scaling_factor
+			= ((efuse_data & PHASE_SCALING_EFUSE_VALUE_MASK)
+				>> PHASE_SCALING_EFUSE_VALUE_POS) + 1;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	else
 		pvreg->efuse_phase_scaling_factor = PHASE_SCALING_REF;
 
 	pr_info("eFuse phase scaling factor = %d/%d%s\n",
 		pvreg->efuse_phase_scaling_factor, PHASE_SCALING_REF,
+<<<<<<< HEAD
 		sf_valid ? "" : " (eFuse not blown)");
+=======
+		scaling_factor_valid ? "" : " (eFuse not blown)");
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	pr_info("initial phase scaling factor = %d/%d%s\n",
 		use_efuse_phase_scaling_factor
 			? pvreg->efuse_phase_scaling_factor : PHASE_SCALING_REF,
@@ -1665,12 +1721,15 @@ void secondary_cpu_hs_init(void *base_ptr, int cpu)
 	void *mdd_base;
 	struct krait_power_vreg *kvreg;
 
+<<<<<<< HEAD
 	if (version == 0) {
 		gcc_base_ptr = ioremap_nocache(GCC_BASE, SZ_4K);
 		version = readl_relaxed(gcc_base_ptr + VERSION);
 		iounmap(gcc_base_ptr);
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* Turn on the BHS, turn off LDO Bypass and power down LDO */
 	reg_val =  BHS_CNT_DEFAULT << BHS_CNT_BIT_POS
 		| LDO_PWR_DWN_MASK
@@ -1678,6 +1737,7 @@ void secondary_cpu_hs_init(void *base_ptr, int cpu)
 		| BHS_EN_MASK;
 	writel_relaxed(reg_val, base_ptr + APC_PWR_GATE_CTL);
 
+<<<<<<< HEAD
 	/* complete the above write before the delay */
 	mb();
 	/* wait for the bhs to settle */
@@ -1686,6 +1746,25 @@ void secondary_cpu_hs_init(void *base_ptr, int cpu)
 	/* Turn on BHS segments */
 	reg_val |= BHS_SEG_EN_DEFAULT << BHS_SEG_EN_BIT_POS;
 	writel_relaxed(reg_val, base_ptr + APC_PWR_GATE_CTL);
+=======
+	if (version == 0) {
+		gcc_base_ptr = ioremap_nocache(GCC_BASE, SZ_4K);
+		version = readl_relaxed(gcc_base_ptr + VERSION);
+		iounmap(gcc_base_ptr);
+	}
+
+	/* Turn on the BHS segments only for version < 2 */
+	if (version <= KPSS_VERSION_2P0) {
+		/* complete the above write before the delay */
+		mb();
+		/* wait for the bhs to settle */
+		udelay(BHS_SETTLING_DELAY_US);
+
+		/* Turn on BHS segments */
+		reg_val |= BHS_SEG_EN_DEFAULT << BHS_SEG_EN_BIT_POS;
+		writel_relaxed(reg_val, base_ptr + APC_PWR_GATE_CTL);
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/* complete the above write before the delay */
 	mb();

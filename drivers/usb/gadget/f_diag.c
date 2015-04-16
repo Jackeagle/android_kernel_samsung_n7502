@@ -34,9 +34,20 @@ static struct usb_interface_descriptor intf_desc = {
 	.bLength            =	sizeof intf_desc,
 	.bDescriptorType    =	USB_DT_INTERFACE,
 	.bNumEndpoints      =	2,
+<<<<<<< HEAD
 	.bInterfaceClass    =	0xFF,
 	.bInterfaceSubClass =	0xFF,
 	.bInterfaceProtocol =	0xFF,
+=======
+	.bInterfaceClass    =   0xFF,
+#ifdef CONFIG_USB_ANDROID_SAMSUNG_COMPOSITE
+	.bInterfaceSubClass =	0x10,
+	.bInterfaceProtocol =	0x01,
+#else
+	.bInterfaceSubClass =	0xFF,
+	.bInterfaceProtocol =	0xFF,
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 static struct usb_endpoint_descriptor hs_bulk_in_desc = {
@@ -837,6 +848,7 @@ static const struct file_operations debug_fdiag_ops = {
 struct dentry *dent_diag;
 static void fdiag_debugfs_init(void)
 {
+<<<<<<< HEAD
 	struct dentry *dent_diag_status;
 	dent_diag = debugfs_create_dir("usb_diag", 0);
 	if (!dent_diag || IS_ERR(dent_diag))
@@ -859,6 +871,19 @@ static void fdiag_debugfs_remove(void)
 #else
 static inline void fdiag_debugfs_init(void) {}
 static inline void fdiag_debugfs_remove(void) {}
+=======
+	dent_diag = debugfs_create_dir("usb_diag", 0);
+	if (IS_ERR(dent_diag))
+		return;
+
+	debugfs_create_file("status", 0444, dent_diag, 0, &debug_fdiag_ops);
+}
+#else
+static void fdiag_debugfs_init(void)
+{
+	return;
+}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif
 
 static void diag_cleanup(void)
@@ -867,7 +892,11 @@ static void diag_cleanup(void)
 	struct usb_diag_ch *_ch;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	fdiag_debugfs_remove();
+=======
+	debugfs_remove_recursive(dent_diag);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	list_for_each_safe(act, tmp, &usb_diag_ch_list) {
 		_ch = list_entry(act, struct usb_diag_ch, list);

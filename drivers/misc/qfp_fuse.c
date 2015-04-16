@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2011, 2014 The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2011, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -28,7 +32,11 @@
 /*
  * Time QFPROM requires to reliably burn a fuse.
  */
+<<<<<<< HEAD
 #define QFPROM_BLOW_TIMEOUT_US      20
+=======
+#define QFPROM_BLOW_TIMEOUT_US      10
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define QFPROM_BLOW_TIMER_OFFSET    0x2038
 /*
  * Denotes number of cycles required to blow the fuse.
@@ -42,10 +50,13 @@
 #define QFP_FUSE_READY              0x01
 #define QFP_FUSE_OFF                0x00
 
+<<<<<<< HEAD
 #define QFP_FUSE_BUF_SIZE           64
 #define UINT32_MAX                  (0xFFFFFFFFU)
 
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct qfp_priv_t {
 	uint32_t base;
 	uint32_t end;
@@ -57,6 +68,7 @@ struct qfp_priv_t {
 /* We need only one instance of this for the driver */
 static struct qfp_priv_t *qfp_priv;
 
+<<<<<<< HEAD
 static inline bool is_usr_req_valid(const struct qfp_fuse_req *req)
 {
 	uint32_t size = qfp_priv->end - qfp_priv->base;
@@ -74,6 +86,8 @@ static inline bool is_usr_req_valid(const struct qfp_fuse_req *req)
 
 	return true;
 }
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static int qfp_fuse_open(struct inode *inode, struct file *filp)
 {
@@ -198,9 +212,13 @@ qfp_fuse_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
 	int err = 0;
 	struct qfp_fuse_req req;
+<<<<<<< HEAD
 	u32 fuse_buf[QFP_FUSE_BUF_SIZE];
 	u32 *buf = fuse_buf;
 	u32 *ptr = NULL;
+=======
+	u32 *buf = NULL;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int i;
 
 	/* Verify user arguments. */
@@ -222,6 +240,7 @@ qfp_fuse_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		}
 
 		/* Check for limits */
+<<<<<<< HEAD
 		if (is_usr_req_valid(&req) == false) {
 			pr_err("Invalid request\n");
 			err = -EINVAL;
@@ -237,6 +256,27 @@ qfp_fuse_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 				break;
 			}
 			buf = ptr;
+=======
+		if (!req.size) {
+			pr_err("Request size zero.\n");
+			err = -EFAULT;
+			break;
+		}
+
+		if (qfp_priv->base + req.offset + (req.size - 1) * 4 >
+				qfp_priv->end) {
+			pr_err("Req size exceeds QFPROM addr space\n");
+			err = -EFAULT;
+			break;
+		}
+
+		/* Allocate memory for buffer */
+		buf = kzalloc(req.size * 4, GFP_KERNEL);
+		if (buf == NULL) {
+			pr_alert("No memory for data\n");
+			err = -ENOMEM;
+			break;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 
 		if (mutex_lock_interruptible(&qfp_priv->lock)) {
@@ -270,6 +310,7 @@ qfp_fuse_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			break;
 		}
 		/* Check for limits */
+<<<<<<< HEAD
 		if (is_usr_req_valid(&req) == false) {
 			pr_err("Invalid request\n");
 			err = -EINVAL;
@@ -285,6 +326,26 @@ qfp_fuse_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 				break;
 			}
 			buf = ptr;
+=======
+		if (!req.size) {
+			pr_err("Request size zero.\n");
+			err = -EFAULT;
+			break;
+		}
+		if (qfp_priv->base + req.offset + (req.size - 1) * 4 >
+				qfp_priv->end) {
+			pr_err("Req size exceeds QFPROM space\n");
+			err = -EFAULT;
+			break;
+		}
+
+		/* Allocate memory for buffer */
+		buf = kzalloc(4 * (req.size), GFP_KERNEL);
+		if (buf == NULL) {
+			pr_alert("No memory for data\n");
+			err = -ENOMEM;
+			break;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 
 		/* Copy user data to local buffer */
@@ -312,7 +373,11 @@ qfp_fuse_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		pr_err("Invalid ioctl command.\n");
 		return -ENOTTY;
 	}
+<<<<<<< HEAD
 	kfree(ptr);
+=======
+	kfree(buf);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return err;
 }
 

@@ -162,6 +162,12 @@ struct interrupt_data {
 /* Length of a SCSI Command Data Block */
 #define MAX_COMMAND_SIZE	16
 
+<<<<<<< HEAD
+=======
+/* SCSI commands that we recognize */
+#define READ_CD				0xbe
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* SCSI Sense Key/Additional Sense Code/ASC Qualifier values */
 #define SS_NO_SENSE				0
 #define SS_COMMUNICATION_FAILURE		0x040800
@@ -925,7 +931,11 @@ static ssize_t fsg_store_file(struct device *dev, struct device_attribute *attr,
 	int		rc = 0;
 
 
+<<<<<<< HEAD
 #if !defined(CONFIG_USB_G_ANDROID)
+=======
+#ifndef CONFIG_USB_ANDROID_MASS_STORAGE
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* disabled in android because we need to allow closing the backing file
 	 * if the media was removed
 	 */

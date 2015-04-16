@@ -899,10 +899,14 @@ static void receive_file_work(struct work_struct *data)
 				dev->rx_done || dev->state != STATE_BUSY);
 			if (dev->state == STATE_CANCELED
 					|| dev->state == STATE_OFFLINE) {
+<<<<<<< HEAD
 				if (dev->state == STATE_OFFLINE)
 					r = -EIO;
 				else
 					r = -ECANCELED;
+=======
+				r = -ECANCELED;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				if (!dev->rx_done)
 					usb_ep_dequeue(dev->ep_out, read_req);
 				break;

@@ -78,8 +78,11 @@
 
 #define KGSL_MEMFREE_HIST_SIZE	((int)(PAGE_SIZE * 2))
 
+<<<<<<< HEAD
 #define KGSL_MAX_NUMIBS 100000
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct kgsl_memfree_hist_elem {
 	unsigned int pid;
 	unsigned int gpuaddr;
@@ -143,7 +146,10 @@ extern struct kgsl_driver kgsl_driver;
 
 struct kgsl_pagetable;
 struct kgsl_memdesc;
+<<<<<<< HEAD
 struct kgsl_cmdbatch;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 struct kgsl_memdesc_ops {
 	int (*vmflags)(struct kgsl_memdesc *);
@@ -200,7 +206,10 @@ struct kgsl_mem_entry {
 	struct kgsl_process_private *priv;
 	/* Initialized to 0, set to 1 when entry is marked for freeing */
 	int pending_free;
+<<<<<<< HEAD
 	struct kgsl_device_private *dev_priv;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 #ifdef CONFIG_MSM_KGSL_MMU_PAGE_FAULT
@@ -209,6 +218,10 @@ struct kgsl_mem_entry {
 #define MMU_CONFIG 1
 #endif
 
+<<<<<<< HEAD
+=======
+void kgsl_hang_check(struct work_struct *work);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void kgsl_mem_entry_destroy(struct kref *kref);
 int kgsl_postmortem_dump(struct kgsl_device *device, int manual);
 
@@ -240,7 +253,11 @@ void kgsl_trace_regwrite(struct kgsl_device *device, unsigned int offset,
 		unsigned int value);
 
 void kgsl_trace_issueibcmds(struct kgsl_device *device, int id,
+<<<<<<< HEAD
 		struct kgsl_cmdbatch *cmdbatch,
+=======
+		struct kgsl_ibdesc *ibdesc, int numibs,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		unsigned int timestamp, unsigned int flags,
 		int result, unsigned int type);
 
@@ -270,7 +287,11 @@ static inline int kgsl_gpuaddr_in_memdesc(const struct kgsl_memdesc *memdesc,
 		size = 1;
 
 	/* don't overflow */
+<<<<<<< HEAD
 	if (size > UINT_MAX - gpuaddr)
+=======
+	if ((gpuaddr + size) < gpuaddr)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return 0;
 
 	if (gpuaddr >= memdesc->gpuaddr &&
@@ -321,10 +342,17 @@ static inline int timestamp_cmp(unsigned int a, unsigned int b)
 	return ((a > b) && (a - b <= KGSL_TIMESTAMP_WINDOW)) ? 1 : -1;
 }
 
+<<<<<<< HEAD
 static inline int
 kgsl_mem_entry_get(struct kgsl_mem_entry *entry)
 {
 	return kref_get_unless_zero(&entry->refcount);
+=======
+static inline void
+kgsl_mem_entry_get(struct kgsl_mem_entry *entry)
+{
+	kref_get(&entry->refcount);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static inline void

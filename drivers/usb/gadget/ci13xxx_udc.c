@@ -70,6 +70,13 @@
 #include <mach/usb_trace.h>
 #include "ci13xxx_udc.h"
 
+<<<<<<< HEAD
+=======
+/* Turns on streaming. overrides CI13XXX_DISABLE_STREAMING */
+static unsigned int streaming;
+module_param(streaming, uint, S_IRUGO | S_IWUSR);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /******************************************************************************
  * DEFINE
  *****************************************************************************/
@@ -388,6 +395,7 @@ static int hw_device_reset(struct ci13xxx *udc)
 static int hw_device_state(u32 dma)
 {
 	struct ci13xxx *udc = _udc;
+<<<<<<< HEAD
 	struct usb_gadget *gadget = &udc->gadget;
 
 	if (dma) {
@@ -401,12 +409,23 @@ static int hw_device_state(u32 dma)
 			pr_debug("%s(): streaming mode is disabled. USBMODE:%x\n",
 				__func__, hw_cread(CAP_USBMODE, ~0));
 		}
+=======
+
+	if (dma) {
+		if (streaming || !(udc->udc_driver->flags &
+				CI13XXX_DISABLE_STREAMING))
+			hw_cwrite(CAP_USBMODE, USBMODE_SDIS, 0);
+		else
+			hw_cwrite(CAP_USBMODE, USBMODE_SDIS, USBMODE_SDIS);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		hw_cwrite(CAP_ENDPTLISTADDR, ~0, dma);
 
 		if (udc->udc_driver->notify_event)
 			udc->udc_driver->notify_event(udc,
 				CI13XXX_CONTROLLER_CONNECT_EVENT);
 
+<<<<<<< HEAD
 		/* Set BIT(31) to enable AHB2AHB Bypass functionality */
 		if (udc->udc_driver->flags & CI13XXX_ENABLE_AHB2AHB_BYPASS) {
 			hw_awrite(ABS_AHBMODE, AHB2AHB_BYPASS, AHB2AHB_BYPASS);
@@ -414,6 +433,8 @@ static int hw_device_state(u32 dma)
 					__func__, hw_aread(ABS_AHBMODE, ~0));
 		}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/* interrupt, error, port change, reset, sleep/suspend */
 		hw_cwrite(CAP_USBINTR, ~0,
 			     USBi_UI|USBi_UEI|USBi_PCI|USBi_URI|USBi_SLI);
@@ -421,12 +442,15 @@ static int hw_device_state(u32 dma)
 	} else {
 		hw_cwrite(CAP_USBCMD, USBCMD_RS, 0);
 		hw_cwrite(CAP_USBINTR, ~0, 0);
+<<<<<<< HEAD
 		/* Clear BIT(31) to disable AHB2AHB Bypass functionality */
 		if (udc->udc_driver->flags & CI13XXX_ENABLE_AHB2AHB_BYPASS) {
 			hw_awrite(ABS_AHBMODE, AHB2AHB_BYPASS, 0);
 			pr_debug("%s(): ByPass Mode is disabled. AHBMODE:%x\n",
 					__func__, hw_aread(ABS_AHBMODE, ~0));
 		}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	return 0;
 }

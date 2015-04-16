@@ -436,28 +436,40 @@ config CPU_32v3
 	select TLS_REG_EMUL if SMP || !MMU
 	select NEEDS_SYSCALL_FOR_CMPXCHG if SMP
 	select CPU_USE_DOMAINS if MMU
+<<<<<<< HEAD
 	select NEED_KUSER_HELPERS
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 config CPU_32v4
 	bool
 	select TLS_REG_EMUL if SMP || !MMU
 	select NEEDS_SYSCALL_FOR_CMPXCHG if SMP
 	select CPU_USE_DOMAINS if MMU
+<<<<<<< HEAD
 	select NEED_KUSER_HELPERS
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 config CPU_32v4T
 	bool
 	select TLS_REG_EMUL if SMP || !MMU
 	select NEEDS_SYSCALL_FOR_CMPXCHG if SMP
 	select CPU_USE_DOMAINS if MMU
+<<<<<<< HEAD
 	select NEED_KUSER_HELPERS
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 config CPU_32v5
 	bool
 	select TLS_REG_EMUL if SMP || !MMU
 	select NEEDS_SYSCALL_FOR_CMPXCHG if SMP
 	select CPU_USE_DOMAINS if MMU
+<<<<<<< HEAD
 	select NEED_KUSER_HELPERS
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 config CPU_32v6
 	bool
@@ -796,7 +808,10 @@ config CPU_BPREDICT_DISABLE
 
 config TLS_REG_EMUL
 	bool
+<<<<<<< HEAD
 	select NEED_KUSER_HELPERS
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	help
 	  An SMP system using a pre-ARMv6 processor (there are apparently
 	  a few prototypes like that in existence) and therefore access to
@@ -804,12 +819,16 @@ config TLS_REG_EMUL
 
 config NEEDS_SYSCALL_FOR_CMPXCHG
 	bool
+<<<<<<< HEAD
 	select NEED_KUSER_HELPERS
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	help
 	  SMP on a pre-ARMv6 processor?  Well OK then.
 	  Forget about fast user space cmpxchg support.
 	  It is just not possible.
 
+<<<<<<< HEAD
 config NEED_KUSER_HELPERS
 	bool
 
@@ -841,6 +860,8 @@ config KUSER_HELPERS
 	  Say N here only if you are absolutely certain that you do not
 	  need these helpers; otherwise, the safe option is to say Y.
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 config DMA_CACHE_RWFO
 	bool "Enable read/write for ownership DMA cache maintenance"
 	depends on CPU_V6K && SMP

@@ -20,7 +20,11 @@
 		compatible = "atmel,mxt-ts";
 		reg = <0x4a>;
 		interrupt-parent = <&msmgpio>;
+<<<<<<< HEAD
 		interrupts = <1 0x2002>;
+=======
+		interrupts = <1 0x2>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		vdd_ana-supply = <&pm8110_l19>;
 		vcc_i2c-supply = <&pm8110_l14>;
 		atmel,reset-gpio = <&msmgpio 0 0x00>;
@@ -76,6 +80,7 @@
 				];
 			};
 		};
+<<<<<<< HEAD
 
 		synaptics@20 {
 			compatible = "synaptics,rmi4";
@@ -91,6 +96,8 @@
 			synaptics,power-down;
 			synaptics,disable-gpios;
 		};
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 
 	gen-vkeys {
@@ -143,11 +150,15 @@
 			"MIC BIAS External", "Handset Mic",
 			"MIC BIAS Internal2", "Headset Mic",
 			"AMIC1", "MIC BIAS External",
+<<<<<<< HEAD
 			"AMIC2", "MIC BIAS Internal2",
 			"MIC BIAS External", "Digital Mic1",
 			"MIC BIAS External", "Digital Mic2",
 			"DMIC1", "MIC BIAS External",
 			"DMIC2", "MIC BIAS External";
+=======
+			"AMIC2", "MIC BIAS Internal2";
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,headset-jack-type-NC;
     };
 };
@@ -181,9 +192,14 @@
 		qcom,cdc-vdd-mic-bias-voltage = <3075000 3075000>;
 		qcom,cdc-vdd-mic-bias-current = <25000>;
 
+<<<<<<< HEAD
 		qcom,cdc-micbias-ldoh-v = <0x3>;
 		qcom,cdc-micbias-cfilt-sel = <0x0>;
 		qcom,cdc-micbias-cfilt-mv = <2700>;
+=======
+		qcom,cdc-micbias-cfilt-sel = <0x0>;
+		qcom,cdc-micbias-cfilt-mv = <1800000>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,cdc-mclk-clk-rate = <12288000>;
 
 		qcom,cdc-static-supplies = "cdc-vdda-h",
@@ -265,6 +281,10 @@
 
 	vdd-io-supply = <&pm8110_l6>;
 	qcom,vdd-io-always-on;
+<<<<<<< HEAD
+=======
+	qcom,vdd-io-lpm-sup;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	qcom,vdd-io-voltage-level = <1800000 1800000>;
 	qcom,vdd-io-current-level = <200 60000>;
 

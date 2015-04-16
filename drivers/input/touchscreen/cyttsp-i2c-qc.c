@@ -2873,6 +2873,7 @@ fail_regulator_hpm:
 	return rc;
 }
 
+<<<<<<< HEAD
 static void cyttsp_release_all(struct cyttsp *ts)
 {
 	int id;
@@ -2888,6 +2889,8 @@ static void cyttsp_release_all(struct cyttsp *ts)
 	input_sync(ts->input);
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* Function to manage power-on resume */
 static int cyttsp_resume(struct device *dev)
 {
@@ -2993,8 +2996,11 @@ static int cyttsp_suspend(struct device *dev)
 	else
 		disable_irq(ts->client->irq);
 
+<<<<<<< HEAD
 	cyttsp_release_all(ts);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!(retval < CY_OK)) {
 		if (ts->platform_data->use_sleep &&
 			(ts->platform_data->power_state == CY_ACTIVE_STATE)) {

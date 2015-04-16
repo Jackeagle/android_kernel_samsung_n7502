@@ -134,6 +134,15 @@ extern struct bms_battery_data  desay_5200_data;
 extern struct bms_battery_data  oem_batt_data;
 extern struct bms_battery_data QRD_4v35_2000mAh_data;
 extern struct bms_battery_data  qrd_4v2_1300mah_data;
+<<<<<<< HEAD
+=======
+extern struct bms_battery_data  Samsung_8x26_2600mAh_data;
+extern struct bms_battery_data  Samsung_8x26_CT01_3200mAh_data;
+extern struct bms_battery_data  Samsung_8x26_S3LITE_2100mAh_data;
+extern struct bms_battery_data  Samsung_8x26_CS03Q_2000mAh_data;
+extern struct bms_battery_data  Samsung_8x26_CRATERQ_2000mAh_data;
+extern struct bms_battery_data  Samsung_8x26_HL3GDS_3100mAh_data;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 int interpolate_fcc(struct single_row_lut *fcc_temp_lut, int batt_temp);
 int interpolate_scalingfactor(struct sf_lut *sf_lut, int row_entry, int pc);

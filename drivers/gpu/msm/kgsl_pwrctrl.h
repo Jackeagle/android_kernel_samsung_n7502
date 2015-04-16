@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2010-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2010-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -27,9 +31,12 @@
 
 #define KGSL_MAX_CLKS 6
 
+<<<<<<< HEAD
 /* Only two supported levels, min & max */
 #define KGSL_CONSTRAINT_PWR_MAXLEVELS 2
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct platform_device;
 
 struct kgsl_clk_stats {
@@ -43,6 +50,7 @@ struct kgsl_clk_stats {
 	unsigned int elapsed_old;
 };
 
+<<<<<<< HEAD
 struct kgsl_pwr_constraint {
 	unsigned int type;
 	unsigned int sub_type;
@@ -53,6 +61,8 @@ struct kgsl_pwr_constraint {
 	} hint;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /**
  * struct kgsl_pwrctrl - Power control settings for a KGSL device
  * @interrupt_num - The interrupt number for the device
@@ -77,10 +87,14 @@ struct kgsl_pwr_constraint {
  * @clk_stats - structure of clock statistics
  * @pm_qos_req_dma - the power management quality of service structure
  * @pm_qos_latency - allowed CPU latency in microseconds
+<<<<<<< HEAD
  * @bus_control - true if the bus calculation is independent
  * @bus_index - default bus index into the bus_ib table
  * @bus_ib - the set of unique ib requests needed for the bus calculation
  * @constraint - currently active power constraint
+=======
+ * @step_mul - multiplier for moving between power levels
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  */
 
 struct kgsl_pwrctrl {
@@ -104,6 +118,7 @@ struct kgsl_pwrctrl {
 	uint32_t pcl;
 	unsigned int idle_needed;
 	const char *irq_name;
+<<<<<<< HEAD
 	bool irq_last;
 	struct kgsl_clk_stats clk_stats;
 	struct pm_qos_request pm_qos_req_dma;
@@ -113,6 +128,14 @@ struct kgsl_pwrctrl {
 	unsigned int bus_index[KGSL_MAX_PWRLEVELS];
 	uint64_t bus_ib[KGSL_MAX_PWRLEVELS];
 	struct kgsl_pwr_constraint constraint;
+=======
+	s64 time;
+	struct kgsl_clk_stats clk_stats;
+	struct pm_qos_request pm_qos_req_dma;
+	unsigned int pm_qos_latency;
+	unsigned int step_mul;
+	unsigned int irq_last;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 void kgsl_pwrctrl_irq(struct kgsl_device *device, int state);
@@ -122,11 +145,17 @@ void kgsl_timer(unsigned long data);
 void kgsl_idle_check(struct work_struct *work);
 void kgsl_pre_hwaccess(struct kgsl_device *device);
 int kgsl_pwrctrl_sleep(struct kgsl_device *device);
+<<<<<<< HEAD
 int kgsl_pwrctrl_wake(struct kgsl_device *device, int priority);
 void kgsl_pwrctrl_pwrlevel_change(struct kgsl_device *device,
 	unsigned int level);
 void kgsl_pwrctrl_buslevel_update(struct kgsl_device *device,
 	bool on);
+=======
+int kgsl_pwrctrl_wake(struct kgsl_device *device);
+void kgsl_pwrctrl_pwrlevel_change(struct kgsl_device *device,
+	unsigned int level);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int kgsl_pwrctrl_init_sysfs(struct kgsl_device *device);
 void kgsl_pwrctrl_uninit_sysfs(struct kgsl_device *device);
 void kgsl_pwrctrl_enable(struct kgsl_device *device);
@@ -138,6 +167,7 @@ static inline unsigned long kgsl_get_clkrate(struct clk *clk)
 	return (clk != NULL) ? clk_get_rate(clk) : 0;
 }
 
+<<<<<<< HEAD
 /*
  * kgsl_pwrctrl_active_freq - get currently configured frequency
  * @pwr: kgsl_pwrctrl structure for the device
@@ -155,6 +185,13 @@ void kgsl_pwrctrl_request_state(struct kgsl_device *device, unsigned int state);
 
 int __must_check kgsl_active_count_get(struct kgsl_device *device);
 int __must_check kgsl_active_count_get_light(struct kgsl_device *device);
+=======
+void kgsl_pwrctrl_set_state(struct kgsl_device *device, unsigned int state);
+void kgsl_pwrctrl_request_state(struct kgsl_device *device, unsigned int state);
+
+int kgsl_active_count_get(struct kgsl_device *device);
+int kgsl_active_count_get_light(struct kgsl_device *device);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void kgsl_active_count_put(struct kgsl_device *device);
 int kgsl_active_count_wait(struct kgsl_device *device, int count);
 

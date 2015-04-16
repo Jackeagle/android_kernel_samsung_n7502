@@ -84,6 +84,7 @@ struct msm_sync_pt_data {
 	char *fence_name;
 	u32 acq_fen_cnt;
 	struct sync_fence *acq_fen[MDP_MAX_FENCE_FD];
+<<<<<<< HEAD
 
 	struct sw_sync_timeline *timeline;
 	int timeline_value;
@@ -93,6 +94,14 @@ struct msm_sync_pt_data {
 	bool flushed;
 	bool async_wait_fences;
 
+=======
+	struct sw_sync_timeline *timeline;
+	int timeline_value;
+	u32 threshold;
+	atomic_t commit_cnt;
+	bool flushed;
+	bool async_wait_fences;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct mutex sync_mutex;
 	struct notifier_block notifier;
 };
@@ -106,6 +115,10 @@ struct msm_mdp_interface {
 	int (*on_fnc)(struct msm_fb_data_type *mfd);
 	int (*off_fnc)(struct msm_fb_data_type *mfd);
 	/* called to release resources associated to the process */
+<<<<<<< HEAD
+=======
+	//int (*release_fnc)(struct msm_fb_data_type *mfd);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int (*release_fnc)(struct msm_fb_data_type *mfd, bool release_all);
 	int (*kickoff_fnc)(struct msm_fb_data_type *mfd,
 					struct mdp_display_commit *data);
@@ -161,6 +174,10 @@ struct msm_fb_data_type {
 	int panel_reconfig;
 
 	u32 dst_format;
+<<<<<<< HEAD
+=======
+	int resume_state;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int panel_power_on;
 	struct disp_info_type_suspend suspend;
 
@@ -195,11 +212,17 @@ struct msm_fb_data_type {
 	struct msm_sync_pt_data mdp_sync_pt_data;
 
 	/* for non-blocking */
+<<<<<<< HEAD
 	struct task_struct *disp_thread;
 	atomic_t commits_pending;
 	wait_queue_head_t commit_wait_q;
 	wait_queue_head_t idle_wait_q;
 	bool shutdown_pending;
+=======
+	atomic_t commits_pending;
+	wait_queue_head_t commit_wait_q;
+	wait_queue_head_t idle_wait_q;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	struct msm_fb_backup_type msm_fb_backup;
 	struct completion power_set_comp;
@@ -227,6 +250,14 @@ static inline void mdss_fb_update_notify_update(struct msm_fb_data_type *mfd)
 		mutex_unlock(&mfd->no_update.lock);
 	}
 }
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_FB_MSM_CAMERA_CSC
+extern u8 prev_csc_update;
+extern u8 csc_update;
+//extern u8 pre_csc_update;
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 int mdss_fb_get_phys_info(unsigned long *start, unsigned long *len, int fb_num);
 void mdss_fb_set_backlight(struct msm_fb_data_type *mfd, u32 bkl_lvl);
@@ -234,5 +265,9 @@ void mdss_fb_update_backlight(struct msm_fb_data_type *mfd);
 void mdss_fb_wait_for_fence(struct msm_sync_pt_data *sync_pt_data);
 void mdss_fb_signal_timeline(struct msm_sync_pt_data *sync_pt_data);
 int mdss_fb_register_mdp_instance(struct msm_mdp_interface *mdp);
+<<<<<<< HEAD
+=======
+void mdss_negative_color(int is_negative_on);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int mdss_fb_dcm(struct msm_fb_data_type *mfd, int req_state);
 #endif /* MDSS_FB_H */

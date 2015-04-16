@@ -107,16 +107,23 @@ enum mdss_mdp_ctl_index {
 	MDSS_MDP_MAX_CTL
 };
 
+<<<<<<< HEAD
 #define MDSS_MDP_CTL_ADDRESS_OFFSET			0x100
 #define MDSS_MDP_REG_CTL_OFFSET(ctl) (0x00600 + ((ctl) * \
 					 MDSS_MDP_CTL_ADDRESS_OFFSET))
+=======
+#define MDSS_MDP_REG_CTL_OFFSET(ctl) (0x00600 + ((ctl) * 0x100))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define MDSS_MDP_REG_CTL_LAYER(lm)			((lm) * 0x004)
 #define MDSS_MDP_REG_CTL_TOP				0x014
 #define MDSS_MDP_REG_CTL_FLUSH				0x018
 #define MDSS_MDP_REG_CTL_START				0x01C
 #define MDSS_MDP_REG_CTL_PACK_3D			0x020
+<<<<<<< HEAD
 #define MDSS_MDP_REG_CTL_SW_RESET			0x030
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define MDSS_MDP_CTL_OP_VIDEO_MODE		(0 << 17)
 #define MDSS_MDP_CTL_OP_CMD_MODE		(1 << 17)
@@ -160,10 +167,14 @@ enum mdss_mdp_sspp_chroma_samp_type {
 	MDSS_MDP_CHROMA_420
 };
 
+<<<<<<< HEAD
 
 #define MDSS_MDP_SSPP_ADDRESS_OFFSET			0x400
 #define MDSS_MDP_REG_SSPP_OFFSET(pipe) (0x01200 + ((pipe) * \
 					MDSS_MDP_SSPP_ADDRESS_OFFSET))
+=======
+#define MDSS_MDP_REG_SSPP_OFFSET(pipe) (0x01200 + ((pipe) * 0x400))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define MDSS_MDP_REG_SSPP_SRC_SIZE			0x000
 #define MDSS_MDP_REG_SSPP_SRC_IMG_SIZE			0x004
@@ -179,7 +190,10 @@ enum mdss_mdp_sspp_chroma_samp_type {
 #define MDSS_MDP_REG_SSPP_STILE_FRAME_SIZE		0x02C
 #define MDSS_MDP_REG_SSPP_SRC_FORMAT			0x030
 #define MDSS_MDP_REG_SSPP_SRC_UNPACK_PATTERN		0x034
+<<<<<<< HEAD
 #define MDSS_MDP_REG_SSPP_SRC_CONSTANT_COLOR		0x03C
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define MDSS_MDP_REG_SSPP_REQPRIO_FIFO_WM_0		0x050
 #define MDSS_MDP_REG_SSPP_REQPRIO_FIFO_WM_1		0x054
 #define MDSS_MDP_REG_SSPP_REQPRIO_FIFO_WM_2		0x058
@@ -207,9 +221,12 @@ enum mdss_mdp_sspp_chroma_samp_type {
 #define MDSS_MDP_REG_SSPP_CURRENT_SRC2_ADDR		0x0AC
 #define MDSS_MDP_REG_SSPP_CURRENT_SRC3_ADDR		0x0B0
 #define MDSS_MDP_REG_SSPP_DECIMATION_CONFIG		0x0B4
+<<<<<<< HEAD
 #define MDSS_MDP_REG_SSPP_SW_PIX_EXT_C0_LR		0x100
 #define MDSS_MDP_REG_SSPP_SW_PIX_EXT_C0_TB		0x104
 #define MDSS_MDP_REG_SSPP_SW_PIX_EXT_C0_REQ_PIXELS	0x108
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define MDSS_MDP_REG_VIG_OP_MODE			0x200
 #define MDSS_MDP_REG_VIG_QSEED2_CONFIG			0x204
@@ -222,6 +239,7 @@ enum mdss_mdp_sspp_chroma_samp_type {
 #define MDSS_MDP_REG_VIG_QSEED2_C12_INIT_PHASEX		0x228
 #define MDSS_MDP_REG_VIG_QSEED2_C12_INIT_PHASEY		0x22C
 #define MDSS_MDP_REG_VIG_QSEED2_SHARP			0x230
+<<<<<<< HEAD
 #define MDSS_MDP_REG_VIG_MEM_COL_BASE			0x288
 #define MDSS_MDP_REG_VIG_PA_BASE			0x310
 
@@ -236,6 +254,10 @@ enum mdss_mdp_sspp_chroma_samp_type {
 #define MDSS_MDP_VIG_OP_PA_VAL_MASK			BIT(27)
 #define MDSS_MDP_VIG_OP_PA_CONT_MASK			BIT(28)
 
+=======
+#define MDSS_MDP_REG_VIG_PA_BASE			0x310
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define MDSS_MDP_REG_SCALE_CONFIG			0x204
 #define MDSS_MDP_REG_SCALE_PHASE_STEP_X			0x210
 #define MDSS_MDP_REG_SCALE_PHASE_STEP_Y			0x214
@@ -285,9 +307,14 @@ enum mdss_mdp_stage_index {
 	MDSS_MDP_MAX_STAGE
 };
 
+<<<<<<< HEAD
 #define MDSS_MDP_LM_ADDRESS_OFFSET			0x400
 #define MDSS_MDP_REG_LM_OFFSET(lm) (0x03200 + ((lm) * \
 					MDSS_MDP_LM_ADDRESS_OFFSET))
+=======
+#define MDSS_MDP_REG_LM_OFFSET(lm) (0x03200 + ((lm) * 0x400))
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define MDSS_MDP_REG_LM_OP_MODE				0x000
 #define MDSS_MDP_REG_LM_OUT_SIZE			0x004
 #define MDSS_MDP_REG_LM_BORDER_COLOR_0			0x008
@@ -378,8 +405,11 @@ enum mdss_mdp_writeback_index {
 #define MDSS_MDP_REG_WB_CSC_BASE			0x260
 #define MDSS_MDP_REG_WB_DST_ADDR_SW_STATUS		0x2B0
 
+<<<<<<< HEAD
 #define MDSS_MDP_MAX_AD_AL	65535
 #define MDSS_MDP_MAX_AD_STR	255
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define MDSS_MDP_REG_AD_BYPASS				0x000
 #define MDSS_MDP_REG_AD_CTRL_0				0x004
@@ -415,11 +445,14 @@ enum mdss_mdp_writeback_index {
 #define MDSS_MDP_REG_AD_STR_OUT				0x14C
 #define MDSS_MDP_REG_AD_BL_OUT				0x154
 #define MDSS_MDP_REG_AD_CALC_DONE			0x158
+<<<<<<< HEAD
 #define MDSS_MDP_REG_AD_FRAME_END			0x15C
 #define MDSS_MDP_REG_AD_PROCS_END			0x160
 #define MDSS_MDP_REG_AD_FRAME_START			0x164
 #define MDSS_MDP_REG_AD_PROCS_START			0x168
 #define MDSS_MDP_REG_AD_TILE_CTRL			0x16C
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 enum mdss_mdp_dspp_index {
 	MDSS_MDP_DSPP0,
@@ -429,9 +462,13 @@ enum mdss_mdp_dspp_index {
 	MDSS_MDP_MAX_DSPP
 };
 
+<<<<<<< HEAD
 #define MDSS_MDP_DSPP_ADDRESS_OFFSET			0x400
 #define MDSS_MDP_REG_DSPP_OFFSET(pipe)	(0x4600 + ((pipe) * \
 					MDSS_MDP_DSPP_ADDRESS_OFFSET))
+=======
+#define MDSS_MDP_REG_DSPP_OFFSET(pipe)	(0x4600 + ((pipe) * 0x400))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define MDSS_MDP_REG_DSPP_OP_MODE			0x000
 #define MDSS_MDP_REG_DSPP_PCC_BASE			0x030
 #define MDSS_MDP_REG_DSPP_DITHER_DEPTH			0x150
@@ -441,6 +478,7 @@ enum mdss_mdp_dspp_index {
 #define MDSS_MDP_REG_DSPP_GAMUT_BASE			0x2DC
 #define MDSS_MDP_REG_DSPP_GC_BASE			0x2B0
 
+<<<<<<< HEAD
 #define MDSS_MDP_DSPP_OP_IGC_LUT_EN			BIT(0)
 #define MDSS_MDP_DSPP_OP_PA_SAT_ZERO_EXP_EN		BIT(1)
 #define MDSS_MDP_DSPP_OP_PA_MEM_PROTECT_EN		BIT(2)
@@ -463,6 +501,8 @@ enum mdss_mdp_dspp_index {
 #define MDSS_MDP_DSPP_OP_PA_SIX_ZONE_SAT_MASK		BIT(30)
 #define MDSS_MDP_DSPP_OP_PA_SIX_ZONE_VAL_MASK		BIT(31)
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 enum mdss_mpd_intf_index {
 	MDSS_MDP_NO_INTF,
 	MDSS_MDP_INTF0,

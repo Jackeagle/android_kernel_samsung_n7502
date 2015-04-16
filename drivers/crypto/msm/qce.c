@@ -1949,12 +1949,15 @@ int qce_aead_req(void *handle, struct qce_req *q_req)
 	else
 		q_req->cryptlen = areq->cryptlen - authsize;
 
+<<<<<<< HEAD
 	if ((q_req->cryptlen > ULONG_MAX - ivsize) ||
 		(q_req->cryptlen + ivsize > ULONG_MAX - areq->assoclen)) {
 		pr_err("Integer overflow on total aead req length.\n");
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	totallen = q_req->cryptlen + ivsize + areq->assoclen;
 	pad_len = ALIGN(totallen, ADM_CE_BLOCK_SIZE) - totallen;
 

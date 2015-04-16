@@ -20,8 +20,11 @@
 #include "kgsl_iommu.h"
 #include <mach/ocmem.h>
 
+<<<<<<< HEAD
 #include "a3xx_reg.h"
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define DEVICE_3D_NAME "kgsl-3d"
 #define DEVICE_3D0_NAME "kgsl-3d0"
 
@@ -37,12 +40,22 @@
 #define ADRENO_CHIPID_PATCH(_id) ((_id) & 0xFF)
 
 /* Flags to control command packet settings */
+<<<<<<< HEAD
 #define KGSL_CMD_FLAGS_NONE             0
 #define KGSL_CMD_FLAGS_PMODE		BIT(0)
 #define KGSL_CMD_FLAGS_INTERNAL_ISSUE   BIT(1)
 #define KGSL_CMD_FLAGS_WFI              BIT(2)
 #define KGSL_CMD_FLAGS_PROFILE		BIT(3)
 #define KGSL_CMD_FLAGS_PWRON_FIXUP      BIT(4)
+=======
+#define KGSL_CMD_FLAGS_NONE             0x00000000
+#define KGSL_CMD_FLAGS_PMODE		0x00000001
+#define KGSL_CMD_FLAGS_INTERNAL_ISSUE	0x00000002
+#define KGSL_CMD_FLAGS_GET_INT		0x00000004
+#define KGSL_CMD_FLAGS_PROFILE		0x00000008
+#define KGSL_CMD_FLAGS_PWRON_FIXUP	0x00000010
+#define KGSL_CMD_FLAGS_EOF	        0x00000100
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* Command identifiers */
 #define KGSL_CONTEXT_TO_MEM_IDENTIFIER	0x2EADBEEF
@@ -64,7 +77,10 @@
 #define ADRENO_DEFAULT_PWRSCALE_POLICY  NULL
 #endif
 
+<<<<<<< HEAD
 void adreno_debugfs_init(struct kgsl_device *device);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define ADRENO_ISTORE_START 0x5000 /* Istore offset */
 
@@ -99,6 +115,7 @@ enum coresight_debug_reg {
 	TRACE_BUS_CTL,
 };
 
+<<<<<<< HEAD
 #define ADRENO_SOFT_FAULT BIT(0)
 #define ADRENO_HARD_FAULT BIT(1)
 #define ADRENO_TIMEOUT_FAULT BIT(2)
@@ -157,6 +174,10 @@ struct adreno_busy_data {
 	unsigned int vbif_starved_ram;
 };
 
+=======
+struct adreno_gpudev;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct adreno_device {
 	struct kgsl_device dev;    /* Must be first field in this struct */
 	unsigned long priv;
@@ -179,11 +200,16 @@ struct adreno_device {
 	unsigned int wait_timeout;
 	unsigned int pm4_jt_idx;
 	unsigned int pm4_jt_addr;
+<<<<<<< HEAD
 	unsigned int pm4_bstrp_size;
 	unsigned int pfp_jt_idx;
 	unsigned int pfp_jt_addr;
 	unsigned int pfp_bstrp_size;
 	unsigned int pfp_bstrp_ver;
+=======
+	unsigned int pfp_jt_idx;
+	unsigned int pfp_jt_addr;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	unsigned int istore_size;
 	unsigned int pix_shader_start;
 	unsigned int instruction_size;
@@ -197,6 +223,7 @@ struct adreno_device {
 	unsigned int gpulist_index;
 	struct ocmem_buf *ocmem_hdl;
 	unsigned int ocmem_base;
+<<<<<<< HEAD
 	struct adreno_profile profile;
 	struct kgsl_memdesc pwron_fixup;
 	unsigned int pwron_fixup_dwords;
@@ -206,6 +233,12 @@ struct adreno_device {
 	struct work_struct start_work;
 	struct work_struct input_work;
 	unsigned int ram_cycles_lo;
+=======
+	unsigned int gpu_cycles;
+	struct adreno_profile profile;
+	struct kgsl_memdesc pwron_fixup;
+	unsigned int pwron_fixup_dwords;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /**
@@ -217,8 +250,11 @@ struct adreno_device {
 enum adreno_device_flags {
 	ADRENO_DEVICE_PWRON = 0,
 	ADRENO_DEVICE_PWRON_FIXUP = 1,
+<<<<<<< HEAD
 	ADRENO_DEVICE_INITIALIZED = 2,
 	ADRENO_DEVICE_STARTED = 3,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 #define PERFCOUNTER_FLAG_NONE 0x0
@@ -232,18 +268,24 @@ enum adreno_device_flags {
  * @kernelcount: number of user space users of the register
  * @usercount: number of kernel users of the register
  * @offset: register hardware offset
+<<<<<<< HEAD
  * @load_bit: The bit number in LOAD register which corresponds to this counter
  * @select: The countable register offset
  * @value: The 64 bit countable register value
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  */
 struct adreno_perfcount_register {
 	unsigned int countable;
 	unsigned int kernelcount;
 	unsigned int usercount;
 	unsigned int offset;
+<<<<<<< HEAD
 	int load_bit;
 	unsigned int select;
 	uint64_t value;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /**
@@ -256,6 +298,7 @@ struct adreno_perfcount_group {
 	struct adreno_perfcount_register *regs;
 	unsigned int reg_count;
 	const char *name;
+<<<<<<< HEAD
 	unsigned long flags;
 };
 
@@ -269,6 +312,10 @@ struct adreno_perfcount_group {
 
 #define ADRENO_PERFCOUNTER_GROUP_FIXED BIT(0)
 
+=======
+};
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /**
  * adreno_perfcounts: all available perfcounter groups
  * @groups: available groups for this device
@@ -279,6 +326,7 @@ struct adreno_perfcounters {
 	unsigned int group_count;
 };
 
+<<<<<<< HEAD
 #define ADRENO_PERFCOUNTER_GROUP(core, name) { core##_perfcounters_##name, \
 	ARRAY_SIZE(core##_perfcounters_##name), __stringify(name), 0 }
 
@@ -286,6 +334,8 @@ struct adreno_perfcounters {
 	{ core##_perfcounters_##name, \
 	ARRAY_SIZE(core##_perfcounters_##name), __stringify(name), flags }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /**
  * adreno_regs: List of registers that are used in kgsl driver for all
  * 3D devices. Each device type has different offset value for the same
@@ -342,8 +392,11 @@ enum adreno_regs {
 	ADRENO_REG_SQ_INST_STORE_MANAGMENT,
 	ADRENO_REG_TC_CNTL_STATUS,
 	ADRENO_REG_TP0_CHICKEN,
+<<<<<<< HEAD
 	ADRENO_REG_RBBM_RBBM_CTL,
 	ADRENO_REG_UCHE_INVALIDATE0,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ADRENO_REG_REGISTER_MAX,
 };
 
@@ -375,11 +428,19 @@ struct adreno_gpudev {
 
 	/* GPU specific function hooks */
 	int (*ctxt_create)(struct adreno_device *, struct adreno_context *);
+<<<<<<< HEAD
+=======
+	void (*ctxt_save)(struct adreno_device *, struct adreno_context *);
+	void (*ctxt_restore)(struct adreno_device *, struct adreno_context *);
+	void (*ctxt_draw_workaround)(struct adreno_device *,
+					struct adreno_context *);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	irqreturn_t (*irq_handler)(struct adreno_device *);
 	void (*irq_control)(struct adreno_device *, int);
 	unsigned int (*irq_pending)(struct adreno_device *);
 	void * (*snapshot)(struct adreno_device *, void *, int *, int);
 	int (*rb_init)(struct adreno_device *, struct adreno_ringbuffer *);
+<<<<<<< HEAD
 	int (*perfcounter_init)(struct adreno_device *);
 	void (*perfcounter_close)(struct adreno_device *);
 	void (*perfcounter_save)(struct adreno_device *);
@@ -394,6 +455,16 @@ struct adreno_gpudev {
 		unsigned int group, unsigned int counter);
 	void (*perfcounter_write)(struct adreno_device *adreno_dev,
 		unsigned int group, unsigned int counter);
+=======
+	void (*perfcounter_init)(struct adreno_device *);
+	void (*start)(struct adreno_device *);
+	unsigned int (*busy_cycles)(struct adreno_device *);
+	void (*perfcounter_enable)(struct adreno_device *, unsigned int group,
+		unsigned int counter, unsigned int countable);
+	uint64_t (*perfcounter_read)(struct adreno_device *adreno_dev,
+		unsigned int group, unsigned int counter,
+		unsigned int offset);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int (*coresight_enable) (struct kgsl_device *device);
 	void (*coresight_disable) (struct kgsl_device *device);
 	void (*coresight_config_debug_reg) (struct kgsl_device *device,
@@ -402,7 +473,51 @@ struct adreno_gpudev {
 	void (*postmortem_dump)(struct adreno_device *adreno_dev);
 };
 
+<<<<<<< HEAD
 #define FT_DETECT_REGS_COUNT 14
+=======
+/*
+ * struct adreno_ft_data - Structure that contains all information to
+ * perform gpu fault tolerance
+ * @ib1 - IB1 that the GPU was executing when hang happened
+ * @context_id - Context which caused the hang
+ * @global_eop - eoptimestamp at time of hang
+ * @rb_buffer - Buffer that holds the commands from good contexts
+ * @rb_size - Number of valid dwords in rb_buffer
+ * @bad_rb_buffer - Buffer that holds commands from the hanging context
+ * bad_rb_size - Number of valid dwords in bad_rb_buffer
+ * @good_rb_buffer - Buffer that holds commands from good contexts
+ * good_rb_size - Number of valid dwords in good_rb_buffer
+ * @last_valid_ctx_id - The last context from which commands were placed in
+ * ringbuffer before the GPU hung
+ * @step - Current fault tolerance step being executed
+ * @err_code - Fault tolerance error code
+ * @fault - Indicates whether the hang was caused due to a pagefault
+ * @start_of_replay_cmds - Offset in ringbuffer from where commands can be
+ * replayed during fault tolerance
+ * @replay_for_snapshot - Offset in ringbuffer where IB's can be saved for
+ * replaying with snapshot
+ */
+struct adreno_ft_data {
+	unsigned int ib1;
+	unsigned int context_id;
+	unsigned int global_eop;
+	unsigned int *rb_buffer;
+	unsigned int rb_size;
+	unsigned int *bad_rb_buffer;
+	unsigned int bad_rb_size;
+	unsigned int *good_rb_buffer;
+	unsigned int good_rb_size;
+	unsigned int last_valid_ctx_id;
+	unsigned int status;
+	unsigned int ft_policy;
+	unsigned int err_code;
+	unsigned int start_of_replay_cmds;
+	unsigned int replay_for_snapshot;
+};
+
+#define FT_DETECT_REGS_COUNT 12
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 struct log_field {
 	bool show;
@@ -410,6 +525,7 @@ struct log_field {
 };
 
 /* Fault Tolerance policy flags */
+<<<<<<< HEAD
 #define  KGSL_FT_OFF                      0
 #define  KGSL_FT_REPLAY                   1
 #define  KGSL_FT_SKIPIB                   2
@@ -420,12 +536,22 @@ struct log_field {
 
 /* This internal bit is used to skip the PM dump on replayed command batches */
 #define  KGSL_FT_SKIP_PMDUMP              31
+=======
+#define  KGSL_FT_OFF                      BIT(0)
+#define  KGSL_FT_REPLAY                   BIT(1)
+#define  KGSL_FT_SKIPIB                   BIT(2)
+#define  KGSL_FT_SKIPFRAME                BIT(3)
+#define  KGSL_FT_DISABLE                  BIT(4)
+#define  KGSL_FT_TEMP_DISABLE             BIT(5)
+#define  KGSL_FT_DEFAULT_POLICY           (KGSL_FT_REPLAY + KGSL_FT_SKIPIB)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* Pagefault policy flags */
 #define KGSL_FT_PAGEFAULT_INT_ENABLE         BIT(0)
 #define KGSL_FT_PAGEFAULT_GPUHALT_ENABLE     BIT(1)
 #define KGSL_FT_PAGEFAULT_LOG_ONE_PER_PAGE   BIT(2)
 #define KGSL_FT_PAGEFAULT_LOG_ONE_PER_INT    BIT(3)
+<<<<<<< HEAD
 #define KGSL_FT_PAGEFAULT_DEFAULT_POLICY     KGSL_FT_PAGEFAULT_INT_ENABLE
 
 #define ADRENO_FT_TYPES \
@@ -435,6 +561,10 @@ struct log_field {
 	{ BIT(KGSL_FT_SKIPFRAME), "skipframe" }, \
 	{ BIT(KGSL_FT_DISABLE), "disable" }, \
 	{ BIT(KGSL_FT_TEMP_DISABLE), "temp" }
+=======
+#define KGSL_FT_PAGEFAULT_DEFAULT_POLICY     (KGSL_FT_PAGEFAULT_INT_ENABLE + \
+					KGSL_FT_PAGEFAULT_GPUHALT_ENABLE)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 extern struct adreno_gpudev adreno_a2xx_gpudev;
 extern struct adreno_gpudev adreno_a3xx_gpudev;
@@ -465,7 +595,10 @@ void adreno_coresight_remove(struct platform_device *pdev);
 int adreno_coresight_init(struct platform_device *pdev);
 
 int adreno_idle(struct kgsl_device *device);
+<<<<<<< HEAD
 bool adreno_isidle(struct kgsl_device *device);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 void adreno_shadermem_regread(struct kgsl_device *device,
 						unsigned int offsetwords,
@@ -492,6 +625,7 @@ struct kgsl_memdesc *adreno_find_ctxtmem(struct kgsl_device *device,
 void *adreno_snapshot(struct kgsl_device *device, void *snapshot, int *remain,
 		int hang);
 
+<<<<<<< HEAD
 void adreno_dispatcher_start(struct kgsl_device *device);
 int adreno_dispatcher_init(struct adreno_device *adreno_dev);
 void adreno_dispatcher_close(struct adreno_device *adreno_dev);
@@ -509,6 +643,15 @@ void adreno_dispatcher_pause(struct adreno_device *adreno_dev);
 void adreno_dispatcher_queue_context(struct kgsl_device *device,
 	struct adreno_context *drawctxt);
 int adreno_reset(struct kgsl_device *device);
+=======
+int adreno_dump_and_exec_ft(struct kgsl_device *device);
+
+void adreno_dump_rb(struct kgsl_device *device, const void *buf,
+			 size_t len, int start, int size);
+
+unsigned int adreno_ft_detect(struct kgsl_device *device,
+						unsigned int *prev_reg_val);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 int adreno_ft_init_sysfs(struct kgsl_device *device);
 void adreno_ft_uninit_sysfs(struct kgsl_device *device);
@@ -626,7 +769,13 @@ static inline int adreno_context_timestamp(struct kgsl_context *k_ctxt,
 {
 	if (k_ctxt) {
 		struct adreno_context *a_ctxt = ADRENO_CONTEXT(k_ctxt);
+<<<<<<< HEAD
 		return a_ctxt->timestamp;
+=======
+
+		if (a_ctxt->flags & CTXT_FLAGS_PER_CONTEXT_TS)
+			return a_ctxt->timestamp;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	return rb->global_ts;
 }
@@ -715,11 +864,14 @@ static inline int adreno_add_read_cmds(struct kgsl_device *device,
 	*cmds++ = val;
 	*cmds++ = 0xFFFFFFFF;
 	*cmds++ = 0xFFFFFFFF;
+<<<<<<< HEAD
 
 	/* WAIT_REG_MEM turns back on protected mode - push it off */
 	*cmds++ = cp_type3_packet(CP_SET_PROTECTED_MODE, 1);
 	*cmds++ = 0;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	cmds += __adreno_add_idle_indirect_cmds(cmds, nop_gpuaddr);
 	return cmds - start;
 }
@@ -835,6 +987,7 @@ void adreno_debugfs_init(struct kgsl_device *device);
 static inline void adreno_debugfs_init(struct kgsl_device *device) { }
 #endif
 
+<<<<<<< HEAD
 /**
  * adreno_gpu_fault() - Return the current state of the GPU
  * @adreno_dev: A ponter to the adreno_device to query
@@ -947,4 +1100,6 @@ void adreno_debugfs_init(struct kgsl_device *device);
 static inline void adreno_debugfs_init(struct kgsl_device *device) { }
 #endif
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif /*__ADRENO_H */

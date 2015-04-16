@@ -222,8 +222,12 @@ config VECTORS_BASE
 	default DRAM_BASE if REMAP_VECTORS_TO_RAM
 	default 0x00000000
 	help
+<<<<<<< HEAD
 	  The base address of exception vectors.  This must be two pages
 	  in size.
+=======
+	  The base address of exception vectors.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 config ARM_PATCH_PHYS_VIRT
 	bool "Patch physical to virtual translations at runtime" if EMBEDDED
@@ -1853,6 +1857,7 @@ config ARCH_MEMORY_REMOVE
 config ENABLE_DMM
 	def_bool n
 
+<<<<<<< HEAD
 choice
 	prompt "Virtual Memory Reclaim"
 	default NO_VM_RECLAIM
@@ -1883,6 +1888,15 @@ config NO_VM_RECLAIM
 	  reclaimed by using any of the other two config options.
 
 endchoice
+=======
+config DONT_MAP_HOLE_AFTER_MEMBANK0
+	def_bool n
+	depends on ENABLE_VMALLOC_SAVING=n
+
+config ENABLE_VMALLOC_SAVING
+	def_bool n
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 config HOLES_IN_ZONE
 	def_bool n

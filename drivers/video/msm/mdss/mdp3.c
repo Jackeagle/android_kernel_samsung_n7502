@@ -38,7 +38,11 @@
 #include <linux/major.h>
 #include <linux/bootmem.h>
 #include <linux/memblock.h>
+<<<<<<< HEAD
 #include <linux/iopoll.h>
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <mach/board.h>
 #include <mach/clk.h>
 #include <mach/hardware.h>
@@ -55,10 +59,13 @@
 #include "mdp3_ppp.h"
 #include "mdss_debug.h"
 
+<<<<<<< HEAD
 #define MISR_POLL_SLEEP                 2000
 #define MISR_POLL_TIMEOUT               32000
 #define MDP3_REG_CAPTURED_DSI_PCLK_MASK 1
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define MDP_CORE_HW_VERSION	0x03040310
 struct mdp3_hw_resource *mdp3_res;
 
@@ -186,6 +193,7 @@ static irqreturn_t mdp3_irq_handler(int irq, void *ptr)
 	int i = 0;
 	struct mdp3_hw_resource *mdata = (struct mdp3_hw_resource *)ptr;
 	u32 mdp_interrupt = 0;
+<<<<<<< HEAD
 	u32 mdp_status = 0;
 
 	spin_lock(&mdata->irq_lock);
@@ -197,6 +205,18 @@ static irqreturn_t mdp3_irq_handler(int irq, void *ptr)
 
 	mdp_status = MDP3_REG_READ(MDP3_REG_INTR_STATUS);
 	mdp_interrupt = mdp_status;
+=======
+
+	spin_lock(&mdata->irq_lock);
+	if (!mdata->irq_mask) {
+		pr_err("spurious interrupt\n");
+		spin_unlock(&mdata->irq_lock);
+		return IRQ_HANDLED;
+	}
+
+	mdp_interrupt = MDP3_REG_READ(MDP3_REG_INTR_STATUS);
+	MDP3_REG_WRITE(MDP3_REG_INTR_CLEAR, mdp_interrupt);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	pr_debug("mdp3_irq_handler irq=%d\n", mdp_interrupt);
 
 	mdp_interrupt &= mdata->irq_mask;
@@ -207,11 +227,14 @@ static irqreturn_t mdp3_irq_handler(int irq, void *ptr)
 		mdp_interrupt = mdp_interrupt >> 1;
 		i++;
 	}
+<<<<<<< HEAD
 	MDP3_REG_WRITE(MDP3_REG_INTR_CLEAR, mdp_status);
 
 	clk_disable(mdp3_res->clocks[MDP3_CLK_AHB]);
 	clk_disable(mdp3_res->clocks[MDP3_CLK_CORE]);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	spin_unlock(&mdata->irq_lock);
 
 	return IRQ_HANDLED;
@@ -291,6 +314,11 @@ void mdp3_irq_deregister(void)
 	spin_lock_irqsave(&mdp3_res->irq_lock, flag);
 	memset(mdp3_res->irq_ref_count, 0, sizeof(u32) * MDP3_MAX_INTR);
 	mdp3_res->irq_mask = 0;
+<<<<<<< HEAD
+=======
+	MDP3_REG_WRITE(MDP3_REG_INTR_ENABLE, 0);
+	MDP3_REG_WRITE(MDP3_REG_INTR_CLEAR, 0xfffffff);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	disable_irq_nosync(mdp3_res->irq);
 	spin_unlock_irqrestore(&mdp3_res->irq_lock, flag);
 }
@@ -423,10 +451,17 @@ static int mdp3_clk_update(u32 clk_idx, u32 enable)
 	count = mdp3_res->clock_ref_count[clk_idx];
 	if (count == 1 && enable) {
 		pr_debug("clk=%d en=%d\n", clk_idx, enable);
+<<<<<<< HEAD
 		ret = clk_enable(clk);
 	} else if (count == 0) {
 		pr_debug("clk=%d disable\n", clk_idx);
 		clk_disable(clk);
+=======
+		ret = clk_prepare_enable(clk);
+	} else if (count == 0) {
+		pr_debug("clk=%d disable\n", clk_idx);
+		clk_disable_unprepare(clk);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		ret = 0;
 	} else if (count < 0) {
 		pr_err("clk=%d count=%d\n", clk_idx, count);
@@ -562,7 +597,11 @@ static void mdp3_clk_remove(void)
 		clk_put(mdp3_res->clocks[MDP3_CLK_DSI]);
 }
 
+<<<<<<< HEAD
 int mdp3_clk_enable(int enable, int dsi_clk)
+=======
+int mdp3_clk_enable(int enable)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	int rc;
 
@@ -572,6 +611,7 @@ int mdp3_clk_enable(int enable, int dsi_clk)
 	rc = mdp3_clk_update(MDP3_CLK_AHB, enable);
 	rc |= mdp3_clk_update(MDP3_CLK_CORE, enable);
 	rc |= mdp3_clk_update(MDP3_CLK_VSYNC, enable);
+<<<<<<< HEAD
 	if (dsi_clk)
 		rc |= mdp3_clk_update(MDP3_CLK_DSI, enable);
 	mutex_unlock(&mdp3_res->res_mutex);
@@ -645,6 +685,9 @@ int mdp3_put_mdp_dsi_clk(void)
 	mutex_lock(&mdp3_res->res_mutex);
 	rc = mdp3_clk_update(MDP3_CLK_DSI, 0);
 	clk_unprepare(mdp3_res->clocks[MDP3_CLK_DSI]);
+=======
+	rc |= mdp3_clk_update(MDP3_CLK_DSI, enable);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mutex_unlock(&mdp3_res->res_mutex);
 	return rc;
 }
@@ -666,6 +709,44 @@ static int mdp3_irq_setup(void)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+struct reg_dump {
+	int start_addr;
+	int num_reads;
+};
+
+struct reg_dump ppp_reg[] = {
+	{0x10108, 3},
+	{0x10118, 6},
+	{0x10138, 9},
+	{0x10158, 1},
+	{0x10164, 7},
+	{0x1019C, 1},
+	{0x101b8, 2},
+	{0x101c0, 8},
+};
+
+static int mdp3_iommu_fault_handler(struct iommu_domain *domain,
+		struct device *dev, unsigned long iova, int flags, void *token)
+{
+	unsigned int addr, val;
+	int i, j;
+	pr_err("MDP IOMMU page fault: iova 0x%lx\n", iova);
+	for (i = 0; i < ARRAY_SIZE(ppp_reg); i++) {
+		for (j = 0; j < ppp_reg[i].num_reads; j++) {
+			addr = ppp_reg[i].start_addr + (j*4);
+			val = MDP3_REG_READ(addr);
+			pr_err("TMsg: Addr= 0x%08x, val= 0x%08x\n",
+				(unsigned int)addr, (unsigned int)val);
+		}
+	}
+	panic("PPP pagefault, shutting down for easier debugging\n");
+	return 0;
+}
+
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int mdp3_iommu_attach(int context)
 {
 	struct mdp3_iommu_ctx_map *context_map;
@@ -741,6 +822,12 @@ int mdp3_iommu_domain_init(void)
 			else
 				return PTR_ERR(mdp3_iommu_domains[i].domain);
 		}
+<<<<<<< HEAD
+=======
+		iommu_set_fault_handler(mdp3_iommu_domains[i].domain,
+			mdp3_iommu_fault_handler,
+			NULL);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	mdp3_res->domains = mdp3_iommu_domains;
@@ -951,7 +1038,11 @@ static int mdp3_get_pan_cfg(struct mdss_panel_cfg *pan_cfg)
 {
 	char *t = NULL;
 	char pan_intf_str[MDSS_MAX_PANEL_LEN];
+<<<<<<< HEAD
 	int rc, i, panel_len;
+=======
+	int rc, i;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	char pan_name[MDSS_MAX_PANEL_LEN];
 
 	if (!pan_cfg)
@@ -988,6 +1079,7 @@ static int mdp3_get_pan_cfg(struct mdss_panel_cfg *pan_cfg)
 	strlcpy(&pan_cfg->arg_cfg[0], t, sizeof(pan_cfg->arg_cfg));
 	pr_debug("%s:%d: t=[%s] panel name=[%s]\n", __func__, __LINE__,
 		t, pan_cfg->arg_cfg);
+<<<<<<< HEAD
 
 	panel_len = strlen(pan_cfg->arg_cfg);
 	if (!panel_len) {
@@ -996,6 +1088,8 @@ static int mdp3_get_pan_cfg(struct mdss_panel_cfg *pan_cfg)
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	rc = mdp3_get_pan_intf(pan_intf_str);
 	pan_cfg->pan_intf = (rc < 0) ?  MDSS_PANEL_INTF_INVALID : rc;
 	return 0;
@@ -1079,10 +1173,17 @@ static int mdp3_parse_bootarg(struct platform_device *pdev)
 	of_node_put(chosen_node);
 
 	rc = mdp3_get_pan_cfg(pan_cfg);
+<<<<<<< HEAD
 	if (!rc) {
 		pan_cfg->init_done = true;
 		return rc;
 	}
+=======
+	if (!rc)
+		pan_cfg->init_done = true;
+
+	return rc;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 get_dt_pan:
 	rc = mdp3_parse_dt_pan_intf(pdev);
@@ -1100,7 +1201,10 @@ get_dt_pan:
 static int mdp3_parse_dt(struct platform_device *pdev)
 {
 	struct resource *res;
+<<<<<<< HEAD
 	struct property *prop = NULL;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int rc;
 
 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "mdp_phys");
@@ -1135,6 +1239,7 @@ static int mdp3_parse_dt(struct platform_device *pdev)
 		return rc;
 	}
 
+<<<<<<< HEAD
 	prop = of_find_property(pdev->dev.of_node, "batfet-supply", NULL);
 	mdp3_res->batfet_required = prop ? true : false;
 
@@ -1173,6 +1278,11 @@ void mdp3_batfet_ctrl(int enable)
 		pr_err("%s: reg enable/disable failed", __func__);
 }
 
+=======
+	return 0;
+}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static void mdp3_iommu_heap_unmap_iommu(struct mdp3_iommu_meta *meta)
 {
 	unsigned int domain_num;
@@ -1453,9 +1563,13 @@ int mdp3_self_map_iommu(struct ion_client *client, struct ion_handle *handle,
 			ret = 0;
 		} else {
 			ret = PTR_ERR(iommu_meta);
+<<<<<<< HEAD
 			mutex_unlock(&mdp3_res->iommu_lock);
 			pr_err("%s: meta_create failed err=%d", __func__, ret);
 			return ret;
+=======
+			goto out_unlock;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 	} else {
 		if (iommu_meta->flags != iommu_flags) {
@@ -1638,6 +1752,7 @@ int mdp3_iommu_is_attached(int client)
 static int mdp3_init(struct msm_fb_data_type *mfd)
 {
 	int rc;
+<<<<<<< HEAD
 
 	rc = mdp3_ctrl_init(mfd);
 	if (rc) {
@@ -1649,6 +1764,10 @@ static int mdp3_init(struct msm_fb_data_type *mfd)
 	if (rc)
 		pr_err("mdp3 ppp res init fail\n");
 
+=======
+	rc = mdp3_ctrl_init(mfd);
+	rc |= mdp3_ppp_res_init(mfd);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return rc;
 }
 
@@ -1806,11 +1925,14 @@ static int mdp3_fb_mem_get_iommu_domain(void)
 	return mdp3_res->domains[MDP3_DMA_IOMMU_DOMAIN].domain_idx;
 }
 
+<<<<<<< HEAD
 int mdp3_get_cont_spash_en(void)
 {
 	return mdp3_res->cont_splash_en;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int mdp3_continuous_splash_copy(struct mdss_panel_data *pdata)
 {
 	unsigned long splash_phys, phys;
@@ -1866,7 +1988,11 @@ static int mdp3_is_display_on(struct mdss_panel_data *pdata)
 		rc = (status == 0x080000);
 	}
 
+<<<<<<< HEAD
 	mdp3_res->splash_mem_addr = MDP3_REG_READ(MDP3_REG_DMA_P_IBUF_ADDR);
+=======
+	mdp3_res->splash_mem_addr = MDP3_REG_READ(MDP3_REG_DMA_S_IBUF_ADDR);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	mdp3_clk_update(MDP3_CLK_AHB, 0);
 	mdp3_clk_update(MDP3_CLK_CORE, 0);
@@ -1880,6 +2006,7 @@ static int mdp3_continuous_splash_on(struct mdss_panel_data *pdata)
 
 	pr_debug("mdp3__continuous_splash_on\n");
 
+<<<<<<< HEAD
 	mdp3_clk_set_rate(MDP3_CLK_VSYNC, MDP_VSYNC_CLK_RATE,
 			MDP3_CLIENT_DMA_P);
 
@@ -1893,6 +2020,11 @@ static int mdp3_continuous_splash_on(struct mdss_panel_data *pdata)
 	if (rc) {
 		pr_err("fail to enable clk\n");
 		mdp3_clk_unprepare();
+=======
+	rc = mdp3_clk_enable(1);
+	if (rc) {
+		pr_err("fail to enable clk\n");
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return rc;
 	}
 
@@ -1926,6 +2058,7 @@ static int mdp3_continuous_splash_on(struct mdss_panel_data *pdata)
 		mdp3_res->intf[MDP3_DMA_OUTPUT_SEL_DSI_VIDEO].active = 1;
 	else
 		mdp3_res->intf[MDP3_DMA_OUTPUT_SEL_DSI_CMD].active = 1;
+<<<<<<< HEAD
 
 	mdp3_batfet_ctrl(true);
 	mdp3_res->cont_splash_en = 1;
@@ -1936,6 +2069,13 @@ splash_on_err:
 		pr_err("%s: Unable to disable mdp3 clocks\n", __func__);
 
 	mdp3_clk_unprepare();
+=======
+	return 0;
+
+splash_on_err:
+	if (mdp3_clk_enable(0))
+		pr_err("%s: Unable to disable mdp3 clocks\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return rc;
 }
 
@@ -1968,6 +2108,7 @@ static int mdp3_debug_dump_stats(void *data, char *buf, int len)
 
 static void mdp3_debug_enable_clock(int on)
 {
+<<<<<<< HEAD
 	if (on) {
 		mdp3_clk_prepare();
 		mdp3_clk_enable(1, 0);
@@ -1975,6 +2116,12 @@ static void mdp3_debug_enable_clock(int on)
 		mdp3_clk_enable(0, 0);
 		mdp3_clk_unprepare();
 	}
+=======
+	if (on)
+		mdp3_clk_enable(1);
+	else
+		mdp3_clk_enable(0);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int mdp3_debug_init(struct platform_device *pdev)
@@ -2017,6 +2164,7 @@ static void mdp3_dma_underrun_intr_handler(int type, void *arg)
 			mdp3_res->underrun_cnt);
 }
 
+<<<<<<< HEAD
 static ssize_t mdp3_show_capabilities(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
@@ -2162,6 +2310,8 @@ int mdp3_misr_set(struct mdp_misr *misr_req)
 	}
 	return ret;
 }
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static int mdp3_probe(struct platform_device *pdev)
 {
@@ -2221,10 +2371,13 @@ static int mdp3_probe(struct platform_device *pdev)
 		goto probe_done;
 	}
 
+<<<<<<< HEAD
 	rc = mdp3_register_sysfs(pdev);
 	if (rc)
 		pr_err("unable to register mdp sysfs nodes\n");
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	rc = mdss_fb_register_mdp_instance(&mdp3_interface);
 	if (rc)
 		pr_err("unable to register mdp instance\n");
@@ -2280,13 +2433,19 @@ int mdp3_panel_get_boot_cfg(void)
 
 static  int mdp3_suspend_sub(struct mdp3_hw_resource *mdata)
 {
+<<<<<<< HEAD
 	mdp3_batfet_ctrl(false);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return 0;
 }
 
 static  int mdp3_resume_sub(struct mdp3_hw_resource *mdata)
 {
+<<<<<<< HEAD
 	mdp3_batfet_ctrl(true);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return 0;
 }
 

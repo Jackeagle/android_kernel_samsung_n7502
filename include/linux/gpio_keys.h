@@ -26,6 +26,12 @@ struct gpio_keys_platform_data {
 	int (*enable)(struct device *dev);
 	void (*disable)(struct device *dev);
 	const char *name;		/* input device name */
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SENSORS_HALL
+	int gpio_flip_cover;
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 #endif

@@ -45,17 +45,30 @@ static ssize_t power_supply_show_property(struct device *dev,
 					  char *buf) {
 	static char *type_text[] = {
 		"Unknown", "Battery", "UPS", "Mains", "USB",
+<<<<<<< HEAD
 		"USB_DCP", "USB_CDP", "USB_ACA"
+=======
+		"USB_DCP", "USB_CDP", "USB_ACA", "BMS", "Misc", "Wireless",
+		"Cardock", "Uartoff", "Deskdock", "Otg"
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 	static char *status_text[] = {
 		"Unknown", "Charging", "Discharging", "Not charging", "Full"
 	};
 	static char *charge_type[] = {
+<<<<<<< HEAD
 		"Unknown", "N/A", "Trickle", "Fast"
 	};
 	static char *health_text[] = {
 		"Unknown", "Good", "Overheat", "Warm", "Dead", "Over voltage",
 		"Unspecified failure", "Cold", "Cool"
+=======
+		"Unknown", "N/A", "Trickle", "Fast", "Slow"
+	};
+	static char *health_text[] = {
+		"Unknown", "Good", "Overheat", "Warm", "Dead", "Over voltage",
+		"Unspecified failure", "Cold", "Cool", "Undervoltage"
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 	static char *technology_text[] = {
 		"Unknown", "NiMH", "Li-ion", "Li-poly", "LiFe", "NiCd",
@@ -152,7 +165,10 @@ static struct device_attribute power_supply_attrs[] = {
 	POWER_SUPPLY_ATTR(current_max),
 	POWER_SUPPLY_ATTR(input_current_max),
 	POWER_SUPPLY_ATTR(input_current_trim),
+<<<<<<< HEAD
 	POWER_SUPPLY_ATTR(input_current_settled),
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	POWER_SUPPLY_ATTR(current_now),
 	POWER_SUPPLY_ATTR(current_avg),
 	POWER_SUPPLY_ATTR(power_now),

@@ -185,6 +185,10 @@ struct sps_pipe {
 	/* System mode control */
 	struct sps_bam_sys_mode sys;
 
+<<<<<<< HEAD
+=======
+	bool disconnecting;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /* BAM device descriptor */

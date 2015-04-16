@@ -219,7 +219,10 @@ enum mmc_blk_status {
 	MMC_BLK_NEW_REQUEST,
 	MMC_BLK_URGENT,
 	MMC_BLK_URGENT_DONE,
+<<<<<<< HEAD
 	MMC_BLK_NO_REQ_TO_STOP,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct mmc_wr_pack_stats {
@@ -392,7 +395,10 @@ struct mmc_card {
 	unsigned int		idle_timeout;
 	struct notifier_block        reboot_notify;
 	bool issue_long_pon;
+<<<<<<< HEAD
 	u8 *cached_ext_csd;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /*

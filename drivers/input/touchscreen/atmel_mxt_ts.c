@@ -1727,7 +1727,11 @@ static int mxt_load_fw(struct device *dev, const char *fn)
 	}
 
 	ret = request_firmware(&fw, fn, dev);
+<<<<<<< HEAD
 	if (ret < 0 || !fw) {
+=======
+	if (ret < 0) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		dev_err(dev, "Unable to open firmware %s\n", fn);
 		goto free_frame;
 	}
@@ -2049,6 +2053,7 @@ static ssize_t mxt_secure_touch_show(struct device *dev,
 	return scnprintf(buf, PAGE_SIZE, "%u", val);
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR(secure_touch_enable, S_IRUGO | S_IWUSR | S_IWGRP ,
 			 mxt_secure_touch_enable_show,
 			 mxt_secure_touch_enable_store);
@@ -2060,6 +2065,16 @@ static DEVICE_ATTR(update_fw, S_IWUSR | S_IWGRP , NULL, mxt_update_fw_store);
 static DEVICE_ATTR(force_cfg_update, S_IWUSR | S_IWGRP ,
 			 NULL,
 			 mxt_force_cfg_update_store);
+=======
+static DEVICE_ATTR(secure_touch_enable, 0666, mxt_secure_touch_enable_show,
+	mxt_secure_touch_enable_store);
+static DEVICE_ATTR(secure_touch, 0444, mxt_secure_touch_show, NULL);
+#endif
+
+static DEVICE_ATTR(object, 0444, mxt_object_show, NULL);
+static DEVICE_ATTR(update_fw, 0664, NULL, mxt_update_fw_store);
+static DEVICE_ATTR(force_cfg_update, 0664, NULL, mxt_force_cfg_update_store);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static struct attribute *mxt_attrs[] = {
 	&dev_attr_object.attr,

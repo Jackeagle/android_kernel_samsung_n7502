@@ -20,7 +20,10 @@
 #include <linux/delay.h>
 #include <linux/i2c.h>
 #include <linux/input.h>
+<<<<<<< HEAD
 #include <linux/sensors.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <linux/interrupt.h>
 #include <linux/module.h>
 #include <linux/slab.h>
@@ -80,6 +83,7 @@
  * The following table lists the maximum appropriate poll interval for each
  * available output data rate.
  */
+<<<<<<< HEAD
 
 static struct sensors_classdev sensors_cdev = {
 	.name = "kxtj9-accel",
@@ -99,6 +103,8 @@ static struct sensors_classdev sensors_cdev = {
 	.sensors_poll_delay = NULL,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static const struct {
 	unsigned int cutoff;
 	u8 mask;
@@ -128,7 +134,10 @@ struct kxtj9_data {
 	bool	power_enabled;
 	struct regulator *vdd;
 	struct regulator *vio;
+<<<<<<< HEAD
 	struct sensors_classdev cdev;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 static int kxtj9_i2c_read(struct kxtj9_data *tj9, u8 addr, u8 *data, int len)
@@ -436,16 +445,28 @@ static int kxtj9_enable(struct kxtj9_data *tj9)
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	tj9->enable = true;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return 0;
 
 fail:
 	kxtj9_device_power_off(tj9);
+<<<<<<< HEAD
+=======
+	tj9->enable = false;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return err;
 }
 
 static void kxtj9_disable(struct kxtj9_data *tj9)
 {
 	kxtj9_device_power_off(tj9);
+<<<<<<< HEAD
+=======
+	tj9->enable = false;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 
@@ -491,6 +512,7 @@ static int __devinit kxtj9_setup_input_device(struct kxtj9_data *tj9)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int kxtj9_enable_set(struct sensors_classdev *sensors_cdev,
 					unsigned int enabled)
 {
@@ -521,6 +543,8 @@ static int kxtj9_enable_set(struct sensors_classdev *sensors_cdev,
 	return 0;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static ssize_t kxtj9_enable_show(struct device *dev,
 				struct device_attribute *attr, char *buf)
 {
@@ -536,16 +560,40 @@ static ssize_t kxtj9_enable_store(struct device *dev,
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct kxtj9_data *tj9 = i2c_get_clientdata(client);
+<<<<<<< HEAD
+=======
+	struct input_dev *input_dev = tj9->input_dev;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	unsigned long data;
 	int error;
 
 	error = kstrtoul(buf, 10, &data);
+<<<<<<< HEAD
 	if (error < 0)
 		return error;
 
 	error = kxtj9_enable_set(&tj9->cdev, data);
 	if (error < 0)
 		return error;
+=======
+	if (error)
+		return error;
+	mutex_lock(&input_dev->mutex);
+	disable_irq(client->irq);
+
+	if (data == 0)
+		kxtj9_disable(tj9);
+	else if (data == 1)
+		kxtj9_enable(tj9);
+	else {
+		dev_err(&tj9->client->dev,
+			"Invalid value of input, input=%ld\n", data);
+	}
+
+	enable_irq(client->irq);
+	mutex_unlock(&input_dev->mutex);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return count;
 }
 
@@ -562,6 +610,7 @@ static DEVICE_ATTR(enable, S_IRUGO|S_IWUSR|S_IWGRP,
  * will be responsible for retrieving data from the input node at the desired
  * interval.
  */
+<<<<<<< HEAD
 static int kxtj9_poll_delay_set(struct sensors_classdev *sensors_cdev,
 					unsigned int delay_msec)
 {
@@ -585,6 +634,8 @@ static int kxtj9_poll_delay_set(struct sensors_classdev *sensors_cdev,
 
 	return 0;
 }
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* Returns currently selected poll interval (in ms) */
 static ssize_t kxtj9_get_poll_delay(struct device *dev,
@@ -603,6 +654,10 @@ static ssize_t kxtj9_set_poll_delay(struct device *dev,
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct kxtj9_data *tj9 = i2c_get_clientdata(client);
+<<<<<<< HEAD
+=======
+	struct input_dev *input_dev = tj9->input_dev;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	unsigned int interval;
 	int error;
 
@@ -610,9 +665,28 @@ static ssize_t kxtj9_set_poll_delay(struct device *dev,
 	if (error < 0)
 		return error;
 
+<<<<<<< HEAD
 	error = kxtj9_poll_delay_set(&tj9->cdev, interval);
 	if (error < 0)
 		return error;
+=======
+	/* Lock the device to prevent races with open/close (and itself) */
+	mutex_lock(&input_dev->mutex);
+
+	disable_irq(client->irq);
+
+	/*
+	 * Set current interval to the greater of the minimum interval or
+	 * the requested interval
+	 */
+	tj9->last_poll_interval = max(interval, tj9->pdata.min_interval);
+
+	kxtj9_update_odr(tj9, tj9->last_poll_interval);
+
+	enable_irq(client->irq);
+	mutex_unlock(&input_dev->mutex);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return count;
 }
 
@@ -629,6 +703,10 @@ static struct attribute_group kxtj9_attribute_group = {
 	.attrs = kxtj9_attributes
 };
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #ifdef CONFIG_INPUT_KXTJ9_POLLED_MODE
 static void kxtj9_poll(struct input_polled_dev *dev)
 {
@@ -884,6 +962,7 @@ static int __devinit kxtj9_probe(struct i2c_client *client,
 	tj9->ctrl_reg1 = tj9->pdata.res_ctl | tj9->pdata.g_range;
 	tj9->last_poll_interval = tj9->pdata.init_interval;
 
+<<<<<<< HEAD
 	tj9->cdev = sensors_cdev;
 	/* The min_delay is used by userspace and the unit is microsecond. */
 	tj9->cdev.min_delay = tj9->pdata.min_interval * 1000;
@@ -896,6 +975,8 @@ static int __devinit kxtj9_probe(struct i2c_client *client,
 		goto err_power_off;
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (client->irq) {
 		/* If in irq mode, populate INT_CTRL_REG1 and enable DRDY. */
 		tj9->int_ctrl |= KXTJ9_IEN | KXTJ9_IEA | KXTJ9_IEL;
@@ -903,7 +984,11 @@ static int __devinit kxtj9_probe(struct i2c_client *client,
 
 		err = kxtj9_setup_input_device(tj9);
 		if (err)
+<<<<<<< HEAD
 			goto err_class_sysfs;
+=======
+			goto err_power_off;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		err = request_threaded_irq(client->irq, NULL, kxtj9_isr,
 					   IRQF_TRIGGER_RISING | IRQF_ONESHOT,
@@ -913,8 +998,11 @@ static int __devinit kxtj9_probe(struct i2c_client *client,
 			goto err_destroy_input;
 		}
 
+<<<<<<< HEAD
 		disable_irq(tj9->client->irq);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		err = sysfs_create_group(&client->dev.kobj, &kxtj9_attribute_group);
 		if (err) {
 			dev_err(&client->dev, "sysfs create failed: %d\n", err);
@@ -924,7 +1012,11 @@ static int __devinit kxtj9_probe(struct i2c_client *client,
 	} else {
 		err = kxtj9_setup_polled_device(tj9);
 		if (err)
+<<<<<<< HEAD
 			goto err_class_sysfs;
+=======
+			goto err_power_off;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	dev_dbg(&client->dev, "%s: kxtj9_probe OK.\n", __func__);
@@ -935,8 +1027,11 @@ err_free_irq:
 	free_irq(client->irq, tj9);
 err_destroy_input:
 	input_unregister_device(tj9->input_dev);
+<<<<<<< HEAD
 err_class_sysfs:
 	sensors_classdev_unregister(&tj9->cdev);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 err_power_off:
 	kxtj9_device_power_off(tj9);
 err_power_deinit:
@@ -983,7 +1078,11 @@ static int kxtj9_suspend(struct device *dev)
 
 	mutex_lock(&input_dev->mutex);
 
+<<<<<<< HEAD
 	if (input_dev->users && tj9->enable)
+=======
+	if (input_dev->users)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		kxtj9_disable(tj9);
 
 	mutex_unlock(&input_dev->mutex);
@@ -999,7 +1098,11 @@ static int kxtj9_resume(struct device *dev)
 
 	mutex_lock(&input_dev->mutex);
 
+<<<<<<< HEAD
 	if (input_dev->users && tj9->enable)
+=======
+	if (input_dev->users)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		kxtj9_enable(tj9);
 
 	mutex_unlock(&input_dev->mutex);

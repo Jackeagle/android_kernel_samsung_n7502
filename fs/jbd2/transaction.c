@@ -100,6 +100,11 @@ jbd2_get_transaction(journal_t *journal, transaction_t *transaction)
 	journal->j_running_transaction = transaction;
 	transaction->t_max_wait = 0;
 	transaction->t_start = jiffies;
+<<<<<<< HEAD
+=======
+	transaction->t_callbacked = 0;
+	transaction->t_dropped = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return transaction;
 }

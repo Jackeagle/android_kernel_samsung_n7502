@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -492,6 +496,7 @@ void *a3xx_snapshot(struct adreno_device *adreno_dev, void *snapshot,
 	/* Reading these will hang the GPU if it isn't already hung */
 
 	if (hang) {
+<<<<<<< HEAD
 		unsigned int reg;
 
 		/*
@@ -508,6 +513,8 @@ void *a3xx_snapshot(struct adreno_device *adreno_dev, void *snapshot,
 		reg |= (1 << 27) | (1 << 28);
 		adreno_writereg(adreno_dev, ADRENO_REG_CP_ME_CNTL, reg);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		snapshot = kgsl_snapshot_add_section(device,
 			KGSL_SNAPSHOT_SECTION_DEBUG, snapshot, remain,
 			a3xx_snapshot_cp_pfp_ram, NULL);

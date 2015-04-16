@@ -38,7 +38,10 @@
 #include <asm/thread_notify.h>
 #include <asm/stacktrace.h>
 #include <asm/mach/time.h>
+<<<<<<< HEAD
 #include <asm/tls.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #ifdef CONFIG_CC_STACKPROTECTOR
 #include <linux/stackprotector.h>
@@ -535,8 +538,12 @@ copy_thread(unsigned long clone_flags, unsigned long stack_start,
 	clear_ptrace_hw_breakpoint(p);
 
 	if (clone_flags & CLONE_SETTLS)
+<<<<<<< HEAD
 		thread->tp_value[0] = childregs->ARM_r3;
 	thread->tp_value[1] = get_tpuser();
+=======
+		thread->tp_value = regs->ARM_r3;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	thread_notify(THREAD_NOTIFY_COPY, thread);
 
@@ -652,11 +659,18 @@ unsigned long arch_randomize_brk(struct mm_struct *mm)
 }
 
 #ifdef CONFIG_MMU
+<<<<<<< HEAD
 #ifdef CONFIG_KUSER_HELPERS
 /*
  * The vectors page is always readable from user space for the
  * atomic helpers. Insert it into the gate_vma so that it is visible
  * through ptrace and /proc/<pid>/mem.
+=======
+/*
+ * The vectors page is always readable from user space for the
+ * atomic helpers and the signal restart code. Insert it into the
+ * gate_vma so that it is visible through ptrace and /proc/<pid>/mem.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  */
 static struct vm_area_struct gate_vma;
 
@@ -685,6 +699,7 @@ int in_gate_area_no_mm(unsigned long addr)
 {
 	return in_gate_area(NULL, addr);
 }
+<<<<<<< HEAD
 #define is_gate_vma(vma)	((vma) == &gate_vma)
 #else
 #define is_gate_vma(vma)	0
@@ -696,11 +711,19 @@ const char *arch_vma_name(struct vm_area_struct *vma)
 		return "[vectors]";
 	else if (vma->vm_mm && vma->vm_start == vma->vm_mm->context.sigpage)
 		return "[sigpage]";
+=======
+
+const char *arch_vma_name(struct vm_area_struct *vma)
+{
+	if (vma == &gate_vma)
+		return "[vectors]";
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	else if (vma == get_user_timers_vma(NULL))
 		return "[timers]";
 	else
 		return NULL;
 }
+<<<<<<< HEAD
 
 static struct page *signal_page;
 extern struct page *get_signal_page(void);
@@ -734,4 +757,6 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
 	up_write(&mm->mmap_sem);
 	return ret;
 }
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif

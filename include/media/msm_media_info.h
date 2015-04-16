@@ -6,6 +6,7 @@
 #endif
 
 enum color_fmts {
+<<<<<<< HEAD
 	/* Venus NV12:
 	 * YUV 4:2:0 image with a plane of 8 bit Y samples followed
 	 * by an interleaved U/V plane containing 8 bit 2x2 subsampled
@@ -76,6 +77,9 @@ enum color_fmts {
 	 * Total size = align((Y_Stride * Y_Scanlines
 	 *          + UV_Stride * UV_Scanlines + 4096), 4096)
 	 */
+=======
+	COLOR_FMT_NV12,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	COLOR_FMT_NV21,
 };
 

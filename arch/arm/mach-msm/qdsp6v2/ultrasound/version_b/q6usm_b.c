@@ -628,12 +628,15 @@ static uint32_t q6usm_ext2int_format(uint32_t ext_format)
 	case FORMAT_USPROX:
 		int_format = US_PROX_FORMAT_V2;
 		break;
+<<<<<<< HEAD
 	case FORMAT_USGES_SYNC:
 		int_format = US_GES_SYNC_FORMAT;
 		break;
 	case FORMAT_USRAW_SYNC:
 		int_format = US_RAW_SYNC_FORMAT;
 		break;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	default:
 		pr_err("%s: Invalid format[%d]\n", __func__, ext_format);
 		break;

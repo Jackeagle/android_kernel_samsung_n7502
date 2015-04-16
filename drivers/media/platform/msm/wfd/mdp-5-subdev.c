@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2011-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License version 2 and
@@ -208,7 +212,10 @@ static int mdp_mmap(struct v4l2_subdev *sd, void *arg)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	msm_fb_writeback_iommu_ref(inst->mdp, true);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (inst->secure) {
 		rc = msm_ion_secure_buffer(mmap->ion_client,
 			mregion->ion_handle, VIDEO_PIXEL, 0);
@@ -232,15 +239,21 @@ static int mdp_mmap(struct v4l2_subdev *sd, void *arg)
 				!inst->secure ? "non" : "", rc);
 		goto iommu_fail;
 	}
+<<<<<<< HEAD
 	msm_fb_writeback_iommu_ref(inst->mdp, false);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return 0;
 iommu_fail:
 	if (inst->secure)
 		msm_ion_unsecure_buffer(mmap->ion_client, mregion->ion_handle);
 secure_fail:
+<<<<<<< HEAD
 	msm_fb_writeback_iommu_ref(inst->mdp, false);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return rc;
 }
 
@@ -255,10 +268,17 @@ static int mdp_munmap(struct v4l2_subdev *sd, void *arg)
 		WFD_MSG_ERR("Invalid argument\n");
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	inst = mmap->cookie;
 	mregion = mmap->mregion;
 
 	msm_fb_writeback_iommu_ref(inst->mdp, true);
+=======
+
+	inst = mmap->cookie;
+	mregion = mmap->mregion;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	domain = msm_fb_get_iommu_domain(inst->mdp,
 			inst->secure ? MDP_IOMMU_DOMAIN_CP :
 					MDP_IOMMU_DOMAIN_NS);
@@ -268,7 +288,10 @@ static int mdp_munmap(struct v4l2_subdev *sd, void *arg)
 
 	if (inst->secure)
 		msm_ion_unsecure_buffer(mmap->ion_client, mregion->ion_handle);
+<<<<<<< HEAD
 	msm_fb_writeback_iommu_ref(inst->mdp, false);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return 0;
 }

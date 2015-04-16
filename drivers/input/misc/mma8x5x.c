@@ -27,7 +27,10 @@
 #include <linux/delay.h>
 #include <linux/i2c.h>
 #include <linux/input-polldev.h>
+<<<<<<< HEAD
 #include <linux/sensors.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <linux/regulator/consumer.h>
 #include <linux/of_gpio.h>
 
@@ -54,6 +57,7 @@
 #define MMA8X5X_BUF_SIZE	7
 
 #define	MMA_SHUTTEDDOWN		(1 << 31)
+<<<<<<< HEAD
 #define MMA_STATE_MASK		(~MMA_SHUTTEDDOWN)
 
 static struct sensors_classdev sensors_cdev = {
@@ -69,6 +73,8 @@ static struct sensors_classdev sensors_cdev = {
 	.fifo_reserved_event_count = 0,
 	.fifo_max_event_count = 0,
 };
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 struct sensor_regulator {
 	struct regulator *vreg;
@@ -320,6 +326,7 @@ static int mma8x5x_device_stop(struct i2c_client *client)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int mma8x5x_device_start(struct i2c_client *client)
 {
 	struct mma8x5x_data *pdata = i2c_get_clientdata(client);
@@ -342,6 +349,8 @@ err_out:
 	return -EIO;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int mma8x5x_read_data(struct i2c_client *client,
 		struct mma8x5x_data_axis *data)
 {
@@ -365,7 +374,11 @@ static void mma8x5x_report_data(struct mma8x5x_data *pdata)
 	struct input_polled_dev *poll_dev = pdata->poll_dev;
 	struct mma8x5x_data_axis data;
 	mutex_lock(&pdata->data_lock);
+<<<<<<< HEAD
 	if ((pdata->active & MMA_STATE_MASK) == MMA_STANDBY) {
+=======
+	if (pdata->active == MMA_STANDBY) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		poll_dev->poll_interval = POLL_STOP_TIME;
 		/* if standby ,set as 10s to slow the poll. */
 		goto out;
@@ -419,12 +432,16 @@ static ssize_t mma8x5x_enable_store(struct device *dev,
 	int ret;
 	unsigned long enable;
 	u8 val = 0;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ret = kstrtoul(buf, 10, &enable);
 	if (ret)
 		return ret;
 	mutex_lock(&pdata->data_lock);
 	enable = (enable > 0) ? 1 : 0;
+<<<<<<< HEAD
 	if (enable) {
 		if (pdata->active & MMA_SHUTTEDDOWN) {
 			ret = mma8x5x_config_regulator(client, 1);
@@ -486,6 +503,29 @@ static ssize_t mma8x5x_enable_store(struct device *dev,
 err_failed:
 	mutex_unlock(&pdata->data_lock);
 	return ret;
+=======
+	if (enable && pdata->active == MMA_STANDBY) {
+		val = i2c_smbus_read_byte_data(client, MMA8X5X_CTRL_REG1);
+		ret = i2c_smbus_write_byte_data(client,
+				MMA8X5X_CTRL_REG1, val|0x01);
+		if (!ret) {
+			pdata->active = MMA_ACTIVED;
+			dev_dbg(dev,
+				"%s:mma enable setting active.\n", __func__);
+		}
+	} else if (enable == 0  && pdata->active == MMA_ACTIVED) {
+		val = i2c_smbus_read_byte_data(client, MMA8X5X_CTRL_REG1);
+		ret = i2c_smbus_write_byte_data(client,
+			MMA8X5X_CTRL_REG1, val & 0xFE);
+		if (!ret) {
+			pdata->active = MMA_STANDBY;
+			dev_dbg(dev,
+				"%s:mma enable setting inactive.\n", __func__);
+		}
+	}
+	mutex_unlock(&pdata->data_lock);
+	return count;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 static ssize_t mma8x5x_position_show(struct device *dev,
 				   struct device_attribute *attr, char *buf)
@@ -659,19 +699,25 @@ static int __devinit mma8x5x_probe(struct i2c_client *client,
 		result = -EINVAL;
 		goto err_create_sysfs;
 	}
+<<<<<<< HEAD
 	result = sensors_classdev_register(&client->dev, &sensors_cdev);
 	if (result) {
 		dev_err(&client->dev, "create class device file failed!\n");
 		result = -EINVAL;
 		goto err_create_class_sysfs;
 	}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	dev_info(&client->dev,
 		"%s:mma8x5x device driver probe successfully, position =%d\n",
 		__func__, pdata->position);
 
 	return 0;
+<<<<<<< HEAD
 err_create_class_sysfs:
 	sysfs_remove_group(&idev->dev.kobj, &mma8x5x_attr_group);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 err_create_sysfs:
 	input_unregister_polled_device(pdata->poll_dev);
 err_register_polled_device:
@@ -704,8 +750,11 @@ static int mma8x5x_suspend(struct device *dev)
 	struct mma8x5x_data *pdata = i2c_get_clientdata(client);
 	if (pdata->active == MMA_ACTIVED)
 		mma8x5x_device_stop(client);
+<<<<<<< HEAD
 	if (pdata->active & MMA_SHUTTEDDOWN)
 		return 0;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!mma8x5x_config_regulator(client, 0))
 		/* The highest bit sotres the power state */
 		pdata->active |= MMA_SHUTTEDDOWN;
@@ -717,16 +766,34 @@ static int mma8x5x_resume(struct device *dev)
 	int val = 0;
 	struct i2c_client *client = to_i2c_client(dev);
 	struct mma8x5x_data *pdata = i2c_get_clientdata(client);
+<<<<<<< HEAD
 
 	/* No need to power on while device is shutdowned from standby state */
 	if (pdata->active == (MMA_SHUTTEDDOWN | MMA_STANDBY))
 		return 0;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (pdata->active & MMA_SHUTTEDDOWN) {
 		if (mma8x5x_config_regulator(client, 1))
 			goto out;
 
+<<<<<<< HEAD
 		if (mma8x5x_device_start(client))
 			goto out;
+=======
+		if (i2c_smbus_write_byte_data(client, MMA8X5X_CTRL_REG1, 0))
+			goto out;
+
+		if (i2c_smbus_write_byte_data(client, MMA8X5X_XYZ_DATA_CFG,
+				pdata->mode))
+			goto out;
+
+		/* The BT(boot time) for mma8x5x is 1.55ms according to
+		Freescale mma8450Q document. Document Number:MMA8450Q
+		Rev: 9.1, 04/2012
+		*/
+		usleep_range(1600, 2000);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		pdata->active &= ~MMA_SHUTTEDDOWN;
 	}
 	if (pdata->active == MMA_ACTIVED) {

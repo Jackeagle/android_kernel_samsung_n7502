@@ -3,7 +3,11 @@
 /* confdata.c */
 P(conf_parse,void,(const char *name));
 P(conf_read,int,(const char *name));
+<<<<<<< HEAD
 P(conf_read_simple,int,(const char *name, int));
+=======
+P(conf_read_simple,int,(const char *name, int, int));
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 P(conf_write_defconfig,int,(const char *name));
 P(conf_write,int,(const char *name));
 P(conf_write_autoconf,int,(void));

@@ -31,7 +31,10 @@
 #include <linux/memcontrol.h>
 #include <linux/poll.h>
 #include <linux/oom.h>
+<<<<<<< HEAD
 #include <linux/export.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #include <asm/pgtable.h>
 #include <asm/tlbflush.h>
@@ -45,11 +48,17 @@ static sector_t map_swap_entry(swp_entry_t, struct block_device**);
 
 static DEFINE_SPINLOCK(swap_lock);
 static unsigned int nr_swapfiles;
+<<<<<<< HEAD
 atomic_long_t nr_swap_pages;
 /* protected with swap_lock. reading in vm_swap_full() doesn't need lock */
 long total_swap_pages;
 static int least_priority;
 static atomic_t highest_priority_index = ATOMIC_INIT(-1);
+=======
+long nr_swap_pages;
+long total_swap_pages;
+static int least_priority;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static const char Bad_file[] = "Bad swap file entry ";
 static const char Unused_file[] = "Unused swap file entry ";
@@ -223,7 +232,11 @@ static unsigned long scan_swap_map(struct swap_info_struct *si,
 			si->lowest_alloc = si->max;
 			si->highest_alloc = 0;
 		}
+<<<<<<< HEAD
 		spin_unlock(&si->lock);
+=======
+		spin_unlock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		/*
 		 * If seek is expensive, start searching for new cluster from
@@ -242,7 +255,11 @@ static unsigned long scan_swap_map(struct swap_info_struct *si,
 			if (si->swap_map[offset])
 				last_in_cluster = offset + SWAPFILE_CLUSTER;
 			else if (offset == last_in_cluster) {
+<<<<<<< HEAD
 				spin_lock(&si->lock);
+=======
+				spin_lock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				offset -= SWAPFILE_CLUSTER - 1;
 				si->cluster_next = offset;
 				si->cluster_nr = SWAPFILE_CLUSTER - 1;
@@ -263,7 +280,11 @@ static unsigned long scan_swap_map(struct swap_info_struct *si,
 			if (si->swap_map[offset])
 				last_in_cluster = offset + SWAPFILE_CLUSTER;
 			else if (offset == last_in_cluster) {
+<<<<<<< HEAD
 				spin_lock(&si->lock);
+=======
+				spin_lock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				offset -= SWAPFILE_CLUSTER - 1;
 				si->cluster_next = offset;
 				si->cluster_nr = SWAPFILE_CLUSTER - 1;
@@ -277,7 +298,11 @@ static unsigned long scan_swap_map(struct swap_info_struct *si,
 		}
 
 		offset = scan_base;
+<<<<<<< HEAD
 		spin_lock(&si->lock);
+=======
+		spin_lock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		si->cluster_nr = SWAPFILE_CLUSTER - 1;
 		si->lowest_alloc = 0;
 	}
@@ -293,9 +318,15 @@ checks:
 	/* reuse swap entry of cache-only swap if not busy. */
 	if (vm_swap_full() && si->swap_map[offset] == SWAP_HAS_CACHE) {
 		int swap_was_freed;
+<<<<<<< HEAD
 		spin_unlock(&si->lock);
 		swap_was_freed = __try_to_reclaim_swap(si, offset);
 		spin_lock(&si->lock);
+=======
+		spin_unlock(&swap_lock);
+		swap_was_freed = __try_to_reclaim_swap(si, offset);
+		spin_lock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/* entry was freed successfully, try to use this again */
 		if (swap_was_freed)
 			goto checks;
@@ -335,13 +366,21 @@ checks:
 			    si->lowest_alloc <= last_in_cluster)
 				last_in_cluster = si->lowest_alloc - 1;
 			si->flags |= SWP_DISCARDING;
+<<<<<<< HEAD
 			spin_unlock(&si->lock);
+=======
+			spin_unlock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 			if (offset < last_in_cluster)
 				discard_swap_cluster(si, offset,
 					last_in_cluster - offset + 1);
 
+<<<<<<< HEAD
 			spin_lock(&si->lock);
+=======
+			spin_lock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			si->lowest_alloc = 0;
 			si->flags &= ~SWP_DISCARDING;
 
@@ -355,10 +394,17 @@ checks:
 			 * could defer that delay until swap_writepage,
 			 * but it's easier to keep this self-contained.
 			 */
+<<<<<<< HEAD
 			spin_unlock(&si->lock);
 			wait_on_bit(&si->flags, ilog2(SWP_DISCARDING),
 				wait_for_discard, TASK_UNINTERRUPTIBLE);
 			spin_lock(&si->lock);
+=======
+			spin_unlock(&swap_lock);
+			wait_on_bit(&si->flags, ilog2(SWP_DISCARDING),
+				wait_for_discard, TASK_UNINTERRUPTIBLE);
+			spin_lock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		} else {
 			/*
 			 * Note pages allocated by racing tasks while
@@ -374,6 +420,7 @@ checks:
 	return offset;
 
 scan:
+<<<<<<< HEAD
 	spin_unlock(&si->lock);
 	while (++offset <= si->highest_bit) {
 		if (!si->swap_map[offset]) {
@@ -382,6 +429,16 @@ scan:
 		}
 		if (vm_swap_full() && si->swap_map[offset] == SWAP_HAS_CACHE) {
 			spin_lock(&si->lock);
+=======
+	spin_unlock(&swap_lock);
+	while (++offset <= si->highest_bit) {
+		if (!si->swap_map[offset]) {
+			spin_lock(&swap_lock);
+			goto checks;
+		}
+		if (vm_swap_full() && si->swap_map[offset] == SWAP_HAS_CACHE) {
+			spin_lock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			goto checks;
 		}
 		if (unlikely(--latency_ration < 0)) {
@@ -392,11 +449,19 @@ scan:
 	offset = si->lowest_bit;
 	while (++offset < scan_base) {
 		if (!si->swap_map[offset]) {
+<<<<<<< HEAD
 			spin_lock(&si->lock);
 			goto checks;
 		}
 		if (vm_swap_full() && si->swap_map[offset] == SWAP_HAS_CACHE) {
 			spin_lock(&si->lock);
+=======
+			spin_lock(&swap_lock);
+			goto checks;
+		}
+		if (vm_swap_full() && si->swap_map[offset] == SWAP_HAS_CACHE) {
+			spin_lock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			goto checks;
 		}
 		if (unlikely(--latency_ration < 0)) {
@@ -404,7 +469,11 @@ scan:
 			latency_ration = LATENCY_LIMIT;
 		}
 	}
+<<<<<<< HEAD
 	spin_lock(&si->lock);
+=======
+	spin_lock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 no_page:
 	si->flags -= SWP_SCANNING;
@@ -417,6 +486,7 @@ swp_entry_t get_swap_page(void)
 	pgoff_t offset;
 	int type, next;
 	int wrapped = 0;
+<<<<<<< HEAD
 	int hp_index;
 
 	spin_lock(&swap_lock);
@@ -445,6 +515,15 @@ swp_entry_t get_swap_page(void)
 			swap_list.next = type;
 		}
 
+=======
+
+	spin_lock(&swap_lock);
+	if (nr_swap_pages <= 0)
+		goto noswap;
+	nr_swap_pages--;
+
+	for (type = swap_list.next; type >= 0 && wrapped < 2; type = next) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		si = swap_info[type];
 		next = si->next;
 		if (next < 0 ||
@@ -453,6 +532,7 @@ swp_entry_t get_swap_page(void)
 			wrapped++;
 		}
 
+<<<<<<< HEAD
 		spin_lock(&si->lock);
 		if (!si->highest_bit) {
 			spin_unlock(&si->lock);
@@ -476,6 +556,24 @@ swp_entry_t get_swap_page(void)
 	}
 
 	atomic_long_inc(&nr_swap_pages);
+=======
+		if (!si->highest_bit)
+			continue;
+		if (!(si->flags & SWP_WRITEOK))
+			continue;
+
+		swap_list.next = next;
+		/* This is called for allocating swap entry for cache */
+		offset = scan_swap_map(si, SWAP_HAS_CACHE);
+		if (offset) {
+			spin_unlock(&swap_lock);
+			return swp_entry(type, offset);
+		}
+		next = swap_list.next;
+	}
+
+	nr_swap_pages++;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 noswap:
 	spin_unlock(&swap_lock);
 	return (swp_entry_t) {0};
@@ -487,6 +585,7 @@ swp_entry_t get_swap_page_of_type(int type)
 	struct swap_info_struct *si;
 	pgoff_t offset;
 
+<<<<<<< HEAD
 	si = swap_info[type];
 	spin_lock(&si->lock);
 	if (si && (si->flags & SWP_WRITEOK)) {
@@ -500,6 +599,21 @@ swp_entry_t get_swap_page_of_type(int type)
 		atomic_long_inc(&nr_swap_pages);
 	}
 	spin_unlock(&si->lock);
+=======
+	spin_lock(&swap_lock);
+	si = swap_info[type];
+	if (si && (si->flags & SWP_WRITEOK)) {
+		nr_swap_pages--;
+		/* This is called for allocating swap entry, not cache */
+		offset = scan_swap_map(si, 1);
+		if (offset) {
+			spin_unlock(&swap_lock);
+			return swp_entry(type, offset);
+		}
+		nr_swap_pages++;
+	}
+	spin_unlock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return (swp_entry_t) {0};
 }
 
@@ -521,7 +635,11 @@ static struct swap_info_struct *swap_info_get(swp_entry_t entry)
 		goto bad_offset;
 	if (!p->swap_map[offset])
 		goto bad_free;
+<<<<<<< HEAD
 	spin_lock(&p->lock);
+=======
+	spin_lock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return p;
 
 bad_free:
@@ -539,6 +657,7 @@ out:
 	return NULL;
 }
 
+<<<<<<< HEAD
 /*
  * This swap type frees swap entry, check if it is the highest priority swap
  * type which just frees swap entry. get_swap_page() uses
@@ -560,6 +679,8 @@ static void set_highest_priority_index(int type)
 		old_hp_index, new_hp_index) != old_hp_index);
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static unsigned char swap_entry_free(struct swap_info_struct *p,
 				     swp_entry_t entry, unsigned char usage)
 {
@@ -603,8 +724,15 @@ static unsigned char swap_entry_free(struct swap_info_struct *p,
 			p->lowest_bit = offset;
 		if (offset > p->highest_bit)
 			p->highest_bit = offset;
+<<<<<<< HEAD
 		set_highest_priority_index(p->type);
 		atomic_long_inc(&nr_swap_pages);
+=======
+		if (swap_list.next >= 0 &&
+		    p->prio > swap_info[swap_list.next]->prio)
+			swap_list.next = p->type;
+		nr_swap_pages++;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		p->inuse_pages--;
 		if ((p->flags & SWP_BLKDEV) &&
 				disk->fops->swap_slot_free_notify)
@@ -625,7 +753,11 @@ void swap_free(swp_entry_t entry)
 	p = swap_info_get(entry);
 	if (p) {
 		swap_entry_free(p, entry, 1);
+<<<<<<< HEAD
 		spin_unlock(&p->lock);
+=======
+		spin_unlock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 }
 
@@ -642,7 +774,11 @@ void swapcache_free(swp_entry_t entry, struct page *page)
 		count = swap_entry_free(p, entry, SWAP_HAS_CACHE);
 		if (page)
 			mem_cgroup_uncharge_swapcache(page, entry, count != 0);
+<<<<<<< HEAD
 		spin_unlock(&p->lock);
+=======
+		spin_unlock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 }
 
@@ -651,7 +787,11 @@ void swapcache_free(swp_entry_t entry, struct page *page)
  * This does not give an exact answer when swap count is continued,
  * but does include the high COUNT_CONTINUED flag to allow for that.
  */
+<<<<<<< HEAD
 int page_swapcount(struct page *page)
+=======
+static inline int page_swapcount(struct page *page)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	int count = 0;
 	struct swap_info_struct *p;
@@ -661,7 +801,11 @@ int page_swapcount(struct page *page)
 	p = swap_info_get(entry);
 	if (p) {
 		count = swap_count(p->swap_map[swp_offset(entry)]);
+<<<<<<< HEAD
 		spin_unlock(&p->lock);
+=======
+		spin_unlock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	return count;
 }
@@ -749,7 +893,11 @@ int free_swap_and_cache(swp_entry_t entry)
 				page = NULL;
 			}
 		}
+<<<<<<< HEAD
 		spin_unlock(&p->lock);
+=======
+		spin_unlock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	if (page) {
 		/*
@@ -878,13 +1026,19 @@ unsigned int count_swap_pages(int type, int free)
 	if ((unsigned int)type < nr_swapfiles) {
 		struct swap_info_struct *sis = swap_info[type];
 
+<<<<<<< HEAD
 		spin_lock(&sis->lock);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (sis->flags & SWP_WRITEOK) {
 			n = sis->pages;
 			if (free)
 				n -= sis->inuse_pages;
 		}
+<<<<<<< HEAD
 		spin_unlock(&sis->lock);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	spin_unlock(&swap_lock);
 	return n;
@@ -1580,7 +1734,11 @@ static void enable_swap_info(struct swap_info_struct *p, int prio,
 		p->prio = --least_priority;
 	p->swap_map = swap_map;
 	p->flags |= SWP_WRITEOK;
+<<<<<<< HEAD
 	atomic_long_add(p->pages, &nr_swap_pages);
+=======
+	nr_swap_pages += p->pages;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	total_swap_pages += p->pages;
 
 	/* insert swap space into swap_list: */
@@ -1657,16 +1815,25 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
 		/* just pick something that's safe... */
 		swap_list.next = swap_list.head;
 	}
+<<<<<<< HEAD
 	spin_lock(&p->lock);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (p->prio < 0) {
 		for (i = p->next; i >= 0; i = swap_info[i]->next)
 			swap_info[i]->prio = p->prio--;
 		least_priority++;
 	}
+<<<<<<< HEAD
 	atomic_long_sub(p->pages, &nr_swap_pages);
 	total_swap_pages -= p->pages;
 	p->flags &= ~SWP_WRITEOK;
 	spin_unlock(&p->lock);
+=======
+	nr_swap_pages -= p->pages;
+	total_swap_pages -= p->pages;
+	p->flags &= ~SWP_WRITEOK;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	spin_unlock(&swap_lock);
 
 	oom_score_adj = test_set_oom_score_adj(OOM_SCORE_ADJ_MAX);
@@ -1691,17 +1858,26 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
 
 	mutex_lock(&swapon_mutex);
 	spin_lock(&swap_lock);
+<<<<<<< HEAD
 	spin_lock(&p->lock);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	drain_mmlist();
 
 	/* wait for anyone still in scan_swap_map */
 	p->highest_bit = 0;		/* cuts scans short */
 	while (p->flags >= SWP_SCANNING) {
+<<<<<<< HEAD
 		spin_unlock(&p->lock);
 		spin_unlock(&swap_lock);
 		schedule_timeout_uninterruptible(1);
 		spin_lock(&swap_lock);
 		spin_lock(&p->lock);
+=======
+		spin_unlock(&swap_lock);
+		schedule_timeout_uninterruptible(1);
+		spin_lock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	swap_file = p->swap_file;
@@ -1710,7 +1886,10 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
 	swap_map = p->swap_map;
 	p->swap_map = NULL;
 	p->flags = 0;
+<<<<<<< HEAD
 	spin_unlock(&p->lock);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	spin_unlock(&swap_lock);
 	mutex_unlock(&swapon_mutex);
 	vfree(swap_map);
@@ -1914,7 +2093,10 @@ static struct swap_info_struct *alloc_swap_info(void)
 	p->flags = SWP_USED;
 	p->next = -1;
 	spin_unlock(&swap_lock);
+<<<<<<< HEAD
 	spin_lock_init(&p->lock);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return p;
 }
@@ -2236,7 +2418,11 @@ void si_swapinfo(struct sysinfo *val)
 		if ((si->flags & SWP_USED) && !(si->flags & SWP_WRITEOK))
 			nr_to_be_unused += si->inuse_pages;
 	}
+<<<<<<< HEAD
 	val->freeswap = atomic_long_read(&nr_swap_pages) + nr_to_be_unused;
+=======
+	val->freeswap = nr_swap_pages + nr_to_be_unused;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	val->totalswap = total_swap_pages + nr_to_be_unused;
 	spin_unlock(&swap_lock);
 }
@@ -2269,7 +2455,11 @@ static int __swap_duplicate(swp_entry_t entry, unsigned char usage)
 	p = swap_info[type];
 	offset = swp_offset(entry);
 
+<<<<<<< HEAD
 	spin_lock(&p->lock);
+=======
+	spin_lock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (unlikely(offset >= p->max))
 		goto unlock_out;
 
@@ -2304,7 +2494,11 @@ static int __swap_duplicate(swp_entry_t entry, unsigned char usage)
 	p->swap_map[offset] = count | has_cache;
 
 unlock_out:
+<<<<<<< HEAD
 	spin_unlock(&p->lock);
+=======
+	spin_unlock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 out:
 	return err;
 
@@ -2351,6 +2545,7 @@ int swapcache_prepare(swp_entry_t entry)
 	return __swap_duplicate(entry, SWAP_HAS_CACHE);
 }
 
+<<<<<<< HEAD
 struct swap_info_struct *page_swap_info(struct page *page)
 {
 	swp_entry_t swap = { .val = page_private(page) };
@@ -2376,6 +2571,8 @@ pgoff_t __page_file_index(struct page *page)
 }
 EXPORT_SYMBOL_GPL(__page_file_index);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /*
  * add_swap_count_continuation - called when a swap count is duplicated
  * beyond SWAP_MAP_MAX, it allocates a new page and links that to the entry's
@@ -2429,7 +2626,11 @@ int add_swap_count_continuation(swp_entry_t entry, gfp_t gfp_mask)
 	}
 
 	if (!page) {
+<<<<<<< HEAD
 		spin_unlock(&si->lock);
+=======
+		spin_unlock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return -ENOMEM;
 	}
 
@@ -2477,7 +2678,11 @@ int add_swap_count_continuation(swp_entry_t entry, gfp_t gfp_mask)
 	list_add_tail(&page->lru, &head->lru);
 	page = NULL;			/* now it's attached, don't free it */
 out:
+<<<<<<< HEAD
 	spin_unlock(&si->lock);
+=======
+	spin_unlock(&swap_lock);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 outer:
 	if (page)
 		__free_page(page);

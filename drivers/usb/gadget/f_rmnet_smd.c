@@ -5,7 +5,11 @@
  * Copyright (C) 2003-2004 Robert Schwebel, Benedikt Spranger
  * Copyright (C) 2003 Al Borchers (alborchers@steinerpoint.com)
  * Copyright (C) 2008 Nokia Corporation
+<<<<<<< HEAD
  * Copyright (c) 2010-2013, The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2010-2012, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1267,17 +1271,31 @@ const struct file_operations rmnet_smd_debug_stats_ops = {
 };
 
 struct dentry *dent_smd;
+<<<<<<< HEAD
 static void rmnet_smd_debugfs_init(struct rmnet_smd_dev *dev)
 {
 	struct dentry *dent_smd_status;
 	dent_smd = debugfs_create_dir("usb_rmnet_smd", 0);
 	if (!dent_smd || IS_ERR(dent_smd))
+=======
+struct dentry *dent_smd_status;
+
+static void rmnet_smd_debugfs_init(struct rmnet_smd_dev *dev)
+{
+
+	dent_smd = debugfs_create_dir("usb_rmnet_smd", 0);
+	if (IS_ERR(dent_smd))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return;
 
 	dent_smd_status = debugfs_create_file("status", 0444, dent_smd, dev,
 			&rmnet_smd_debug_stats_ops);
 
+<<<<<<< HEAD
 	if (!dent_smd_status || IS_ERR(dent_smd_status)) {
+=======
+	if (!dent_smd_status) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		debugfs_remove(dent_smd);
 		dent_smd = NULL;
 		return;
@@ -1285,6 +1303,7 @@ static void rmnet_smd_debugfs_init(struct rmnet_smd_dev *dev)
 
 	return;
 }
+<<<<<<< HEAD
 
 static void rmnet_smd_debugfs_remove(void)
 {
@@ -1293,6 +1312,10 @@ static void rmnet_smd_debugfs_remove(void)
 #else
 static inline void rmnet_smd_debugfs_init(struct rmnet_smd_dev *dev) {}
 static inline void rmnet_smd_debugfs_remove(void){}
+=======
+#else
+static void rmnet_smd_debugfs_init(struct rmnet_smd_dev *dev) {}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif
 
 static void
@@ -1311,9 +1334,13 @@ rmnet_smd_unbind(struct usb_configuration *c, struct usb_function *f)
 	dev->epout = dev->epin = dev->epnotify = NULL; /* release endpoints */
 
 	destroy_workqueue(dev->wq);
+<<<<<<< HEAD
 
 	rmnet_smd_debugfs_remove();
 
+=======
+	debugfs_remove_recursive(dent_smd);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	kfree(dev);
 
 }

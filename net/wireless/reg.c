@@ -302,11 +302,14 @@ static bool is_user_regdom_saved(void)
 	return true;
 }
 
+<<<<<<< HEAD
 static bool is_cfg80211_regdom_intersected(void)
 {
 	return is_intersected_alpha2(cfg80211_regdomain->alpha2);
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int reg_copy_regd(const struct ieee80211_regdomain **dst_regd,
 			 const struct ieee80211_regdomain *src_regd)
 {
@@ -853,6 +856,7 @@ static void handle_channel(struct wiphy *wiphy,
 		    r == -ERANGE)
 			return;
 
+<<<<<<< HEAD
 		if (last_request->initiator == NL80211_REGDOM_SET_BY_DRIVER &&
 		    request_wiphy && request_wiphy == wiphy &&
 		    request_wiphy->flags & WIPHY_FLAG_STRICT_REGULATORY) {
@@ -865,6 +869,10 @@ static void handle_channel(struct wiphy *wiphy,
 			chan->center_freq);
 			chan->flags |= IEEE80211_CHAN_DISABLED;
 		}
+=======
+		REG_DBG_PRINT("Disabling freq %d MHz\n", chan->center_freq);
+		chan->flags = IEEE80211_CHAN_DISABLED;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return;
 	}
 
@@ -1189,10 +1197,14 @@ void regulatory_update(struct wiphy *wiphy,
 		       enum nl80211_reg_initiator setby)
 {
 	mutex_lock(&reg_mutex);
+<<<<<<< HEAD
 	if (last_request)
 		wiphy_update_regulatory(wiphy, last_request->initiator);
 	else
 		wiphy_update_regulatory(wiphy, setby);
+=======
+	wiphy_update_regulatory(wiphy, setby);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mutex_unlock(&reg_mutex);
 }
 
@@ -1248,8 +1260,12 @@ static void handle_channel_custom(struct wiphy *wiphy,
 			      "wide channel\n",
 			      chan->center_freq,
 			      KHZ_TO_MHZ(desired_bw_khz));
+<<<<<<< HEAD
 		chan->orig_flags |= IEEE80211_CHAN_DISABLED;
 		chan->flags = chan->orig_flags;
+=======
+		chan->flags = IEEE80211_CHAN_DISABLED;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return;
 	}
 
@@ -1326,8 +1342,13 @@ static int ignore_request(struct wiphy *wiphy,
 	case NL80211_REGDOM_SET_BY_CORE:
 		return 0;
 	case NL80211_REGDOM_SET_BY_COUNTRY_IE:
+<<<<<<< HEAD
 		if (wiphy->country_ie_pref & NL80211_COUNTRY_IE_IGNORE_CORE)
 			return -EALREADY;
+=======
+                if (wiphy && (wiphy->country_ie_pref & NL80211_COUNTRY_IE_IGNORE_CORE))
+                        return -EALREADY;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		last_wiphy = wiphy_idx_to_wiphy(last_request->wiphy_idx);
 
@@ -1386,6 +1407,7 @@ static int ignore_request(struct wiphy *wiphy,
 		 * Process user requests only after previous user/driver/core
 		 * requests have been processed
 		 */
+<<<<<<< HEAD
 		if ((last_request->initiator == NL80211_REGDOM_SET_BY_CORE ||
 		     last_request->initiator == NL80211_REGDOM_SET_BY_DRIVER ||
 		     last_request->initiator == NL80211_REGDOM_SET_BY_USER)) {
@@ -1395,6 +1417,13 @@ static int ignore_request(struct wiphy *wiphy,
 			} else if (regdom_changes(last_request->alpha2)) {
 				return -EAGAIN;
 			}
+=======
+		if (last_request->initiator == NL80211_REGDOM_SET_BY_CORE ||
+		    last_request->initiator == NL80211_REGDOM_SET_BY_DRIVER ||
+		    last_request->initiator == NL80211_REGDOM_SET_BY_USER) {
+			if (regdom_changes(last_request->alpha2))
+				return -EAGAIN;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 
 		if (!regdom_changes(pending_request->alpha2))
@@ -1522,8 +1551,13 @@ static void reg_process_hint(struct regulatory_request *reg_request,
 	if (wiphy_idx_valid(reg_request->wiphy_idx))
 		wiphy = wiphy_idx_to_wiphy(reg_request->wiphy_idx);
 
+<<<<<<< HEAD
 	if ((reg_initiator == NL80211_REGDOM_SET_BY_DRIVER ||
 	     reg_initiator == NL80211_REGDOM_SET_BY_COUNTRY_IE) && !wiphy) {
+=======
+	if (reg_initiator == NL80211_REGDOM_SET_BY_DRIVER &&
+	    !wiphy) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		kfree(reg_request);
 		return;
 	}
@@ -1685,7 +1719,10 @@ int regulatory_hint_user(const char *alpha2)
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(regulatory_hint_user);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* Driver hints */
 int regulatory_hint(struct wiphy *wiphy, const char *alpha2)
@@ -1727,6 +1764,15 @@ void regulatory_hint_11d(struct wiphy *wiphy,
 	enum environment_cap env = ENVIRON_ANY;
 	struct regulatory_request *request;
 
+<<<<<<< HEAD
+=======
+        /* Driver does not want the CORE to change the channel
+         * flags based on the country IE of connected BSS
+         */
+        if (wiphy->flags & WIPHY_FLAG_DISABLE_11D_HINT_FROM_CORE)
+                return;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	mutex_lock(&reg_mutex);
 
 	if (unlikely(!last_request))
@@ -1918,8 +1964,23 @@ static void restore_regulatory_settings(bool reset_user)
 	world_alpha2[1] = cfg80211_regdomain->alpha2[1];
 
 	list_for_each_entry(rdev, &cfg80211_rdev_list, list) {
+<<<<<<< HEAD
 		if (rdev->wiphy.flags & WIPHY_FLAG_CUSTOM_REGULATORY)
 			restore_custom_reg_settings(&rdev->wiphy);
+=======
+#if 0
+		if (rdev->wiphy.flags & WIPHY_FLAG_CUSTOM_REGULATORY)
+			restore_custom_reg_settings(&rdev->wiphy);
+#else
+		if (rdev->wiphy.flags & WIPHY_FLAG_CUSTOM_REGULATORY &&
+                        !(rdev->wiphy.country_ie_pref & NL80211_COUNTRY_IE_IGNORE_CORE)) {
+                        printk("%s, %d\n", __func__, __LINE__);
+			restore_custom_reg_settings(&rdev->wiphy);
+                } else {
+                        printk("%s, %d, stip restore_custom_reg_settings\n", __func__, __LINE__);
+                }
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	mutex_unlock(&reg_mutex);
@@ -2155,7 +2216,11 @@ static int __set_regdom(const struct ieee80211_regdomain *rd)
 		 * checking if the alpha2 changes if CRDA was already called
 		 */
 		if (!regdom_changes(rd->alpha2))
+<<<<<<< HEAD
 			return -EALREADY;
+=======
+			return -EINVAL;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	/*
@@ -2280,9 +2345,12 @@ int set_regdom(const struct ieee80211_regdomain *rd)
 	/* Note that this doesn't update the wiphys, this is done below */
 	r = __set_regdom(rd);
 	if (r) {
+<<<<<<< HEAD
 		if (r == -EALREADY)
 			reg_set_request_processed();
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		kfree(rd);
 		mutex_unlock(&reg_mutex);
 		return r;

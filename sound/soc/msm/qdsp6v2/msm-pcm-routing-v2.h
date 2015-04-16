@@ -42,8 +42,18 @@
 #define LPASS_BE_SEC_MI2S_TX "SEC_MI2S_TX"
 #define LPASS_BE_PRI_MI2S_RX "PRI_MI2S_RX"
 #define LPASS_BE_PRI_MI2S_TX "PRI_MI2S_TX"
+<<<<<<< HEAD
 #define LPASS_BE_TERT_MI2S_RX "TERTIARY_MI2S_RX"
 #define LPASS_BE_TERT_MI2S_TX "TERTIARY_MI2S_TX"
+=======
+#ifdef CONFIG_SND_SOC_MAX98504
+#define LPASS_BE_TERT_MI2S_RX "TERT_MI2S_RX"
+#define LPASS_BE_TERT_MI2S_TX "TERT_MI2S_TX"
+#else
+#define LPASS_BE_TERT_MI2S_RX "TERTIARY_MI2S_RX"
+#define LPASS_BE_TERT_MI2S_TX "TERTIARY_MI2S_TX"
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define LPASS_BE_AUDIO_I2S_RX "AUDIO_I2S_RX"
 #define LPASS_BE_STUB_RX "STUB_RX"
 #define LPASS_BE_STUB_TX "STUB_TX"
@@ -133,21 +143,29 @@ enum {
 	MSM_BACKEND_DAI_MAX,
 };
 
+<<<<<<< HEAD
 enum msm_pcm_routing_event {
 	MSM_PCM_RT_EVT_BUF_RECFG,
 	MSM_PCM_RT_EVT_DEVSWITCH,
 	MSM_PCM_RT_EVT_MAX,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* dai_id: front-end ID,
  * dspst_id:  DSP audio stream ID
  * stream_type: playback or capture
  */
+<<<<<<< HEAD
 void msm_pcm_routing_reg_phy_stream(int fedai_id, int perf_mode, int dspst_id,
+=======
+void msm_pcm_routing_reg_phy_stream(int fedai_id, bool perf_mode, int dspst_id,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int stream_type);
 void msm_pcm_routing_reg_psthr_stream(int fedai_id, int dspst_id,
 		int stream_type);
 
+<<<<<<< HEAD
 struct msm_pcm_routing_evt {
 	void (*event_func)(enum msm_pcm_routing_event, void *);
 	void *priv_data;
@@ -157,6 +175,8 @@ void msm_pcm_routing_reg_phy_stream_v2(int fedai_id, bool perf_mode,
 				       int dspst_id, int stream_type,
 				       struct msm_pcm_routing_evt event_info);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void msm_pcm_routing_dereg_phy_stream(int fedai_id, int stream_type);
 
 int msm_routing_check_backend_enabled(int fedai_id);

@@ -19,13 +19,17 @@
 #include <linux/mfd/pm8xxx/pm8921.h>
 #include <linux/qpnp/clkdiv.h>
 #include <linux/regulator/consumer.h>
+<<<<<<< HEAD
 #include <linux/io.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <sound/core.h>
 #include <sound/soc.h>
 #include <sound/soc-dapm.h>
 #include <sound/pcm.h>
 #include <sound/jack.h>
 #include <sound/q6afe-v2.h>
+<<<<<<< HEAD
 #include <sound/pcm_params.h>
 #include <asm/mach-types.h>
 #include <mach/subsystem_notif.h>
@@ -35,6 +39,14 @@
 #include "qdsp6v2/q6core.h"
 #include "../codecs/wcd9xxx-common.h"
 #include "../codecs/wcd9320.h"
+=======
+#include <asm/mach-types.h>
+#include <mach/socinfo.h>
+#include <sound/pcm_params.h>
+#include "qdsp6v2/msm-pcm-routing-v2.h"
+#include "../codecs/wcd9320.h"
+#include <linux/io.h>
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define DRV_NAME "apq8074-asoc-taiko"
 
@@ -86,10 +98,13 @@ static int apq8074_auxpcm_rate = 8000;
 
 #define NUM_OF_AUXPCM_GPIOS 4
 
+<<<<<<< HEAD
 static void *adsp_state_notifier;
 
 #define ADSP_STATE_READY_TIMEOUT_MS 3000
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static inline int param_is_mask(int p)
 {
 	return ((p >= SNDRV_PCM_HW_PARAM_FIRST_MASK) &&
@@ -1238,6 +1253,7 @@ static bool apq8074_swap_gnd_mic(struct snd_soc_codec *codec)
 	return true;
 }
 
+<<<<<<< HEAD
 static int msm_afe_set_config(struct snd_soc_codec *codec)
 {
 	int rc;
@@ -1333,6 +1349,8 @@ static int apq8074_taiko_event_cb(struct snd_soc_codec *codec,
 	}
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int msm_audrx_init(struct snd_soc_pcm_runtime *rtd)
 {
 	int err;
@@ -1394,9 +1412,25 @@ static int msm_audrx_init(struct snd_soc_pcm_runtime *rtd)
 				    tx_ch, ARRAY_SIZE(rx_ch), rx_ch);
 
 
+<<<<<<< HEAD
 	err = msm_afe_set_config(codec);
 	if (err) {
 		pr_err("%s: Failed to set AFE config %d\n", __func__, err);
+=======
+	config_data = taiko_get_afe_config(codec, AFE_CDC_REGISTERS_CONFIG);
+	err = afe_set_config(AFE_CDC_REGISTERS_CONFIG, config_data, 0);
+	if (err) {
+		pr_err("%s: Failed to set codec registers config %d\n",
+		       __func__, err);
+		goto out;
+	}
+
+	config_data = taiko_get_afe_config(codec, AFE_SLIMBUS_SLAVE_CONFIG);
+	err = afe_set_config(AFE_SLIMBUS_SLAVE_CONFIG, config_data, 0);
+	if (err) {
+		pr_err("%s: Failed to set slimbus slave config %d\n", __func__,
+		       err);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		goto out;
 	}
 
@@ -1433,10 +1467,16 @@ static int msm_audrx_init(struct snd_soc_pcm_runtime *rtd)
 		err = taiko_hs_detect(codec, &mbhc_cfg);
 		if (err)
 			goto out;
+<<<<<<< HEAD
+=======
+		else
+			return err;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	} else {
 		err = -ENOMEM;
 		goto out;
 	}
+<<<<<<< HEAD
 	adsp_state_notifier =
 	    subsys_notif_register_notifier("adsp",
 					   &adsp_state_notifier_block);
@@ -1450,6 +1490,8 @@ static int msm_audrx_init(struct snd_soc_pcm_runtime *rtd)
 
 	taiko_event_register(apq8074_taiko_event_cb, rtd->codec);
 	return 0;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 out:
 	clk_put(codec_clk);
 	return err;

@@ -30,7 +30,10 @@ struct msm_hdmi_audio_codec_ops {
 		bool down_mix);
 	int (*get_audio_edid_blk) (struct platform_device *pdev,
 		struct msm_hdmi_audio_edid_blk *blk);
+<<<<<<< HEAD
 	int (*hdmi_cable_status) (struct platform_device *pdev, u32 vote);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 int msm_hdmi_register_audio_codec(struct platform_device *pdev,

@@ -69,7 +69,10 @@
 			qcom,s2-timer = <2000>;
 			qcom,s2-type = <1>;
 			linux,code = <114>;
+<<<<<<< HEAD
 			qcom,use-bark;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		};
 
 		qcom,pon_3 {
@@ -79,7 +82,10 @@
 			qcom,s2-timer = <2000>;
 			qcom,s2-type = <7>;
 			qcom,pull-up = <1>;
+<<<<<<< HEAD
 			qcom,use-bark;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		};
 	};
 
@@ -135,7 +141,11 @@
 		qcom,low-voltage-threshold = <3420000>;
 		qcom,tm-temp-margin = <5000>;
 		qcom,low-ocv-correction-limit-uv = <100>;
+<<<<<<< HEAD
 		qcom,high-ocv-correction-limit-uv = <250>;
+=======
+		qcom,high-ocv-correction-limit-uv = <50>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,hold-soc-est = <3>;
 		qcom,bms-vadc = <&pm8941_vadc>;
 		qcom,bms-iadc = <&pm8941_iadc>;
@@ -209,9 +219,13 @@
 		qcom,resume-soc = <99>;
 		qcom,tchg-mins = <150>;
 		qcom,chg-vadc = <&pm8941_vadc>;
+<<<<<<< HEAD
 		qcom,chg-iadc = <&pm8941_iadc>;
 		qcom,chg-adc_tm = <&pm8941_adc_tm>;
 		qcom,ibat-calibration-enabled;
+=======
+		qcom,chg-adc_tm = <&pm8941_adc_tm>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		qcom,chgr@1000 {
 			status = "disabled";
@@ -255,7 +269,11 @@
 						"vdd-loop";
 		};
 
+<<<<<<< HEAD
 		pm8941_chg_batif: qcom,bat-if@1200 {
+=======
+		qcom,bat-if@1200 {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			status = "disabled";
 			reg = <0x1200 0x100>;
 			interrupts =	<0x0 0x12 0x0>,

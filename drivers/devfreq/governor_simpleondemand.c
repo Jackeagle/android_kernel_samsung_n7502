@@ -19,8 +19,12 @@
 #define DFSO_UPTHRESHOLD	(90)
 #define DFSO_DOWNDIFFERENCTIAL	(5)
 static int devfreq_simple_ondemand_func(struct devfreq *df,
+<<<<<<< HEAD
 					unsigned long *freq,
 					u32 *flag)
+=======
+					unsigned long *freq)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	struct devfreq_dev_status stat;
 	int err = df->profile->get_dev_status(df->dev.parent, &stat);

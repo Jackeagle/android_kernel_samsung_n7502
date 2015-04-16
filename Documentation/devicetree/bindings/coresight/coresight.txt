@@ -22,6 +22,7 @@ Required properties:
 	"arm,coresight-cti" for coresight cti devices,
 	"qcom,coresight-hwevent" for coresight hardware event devices
 	"arm,coresight-fuse" for coresight fuse device,
+<<<<<<< HEAD
 	"qcom,coresight-audio-etm" for coresight audio etm trace device,
 	"qcom,coresight-modem-etm" for coresight modem etm trace device,
 	"qcom,coresight-wcn-etm" for coresight wireless etm trace device,
@@ -40,6 +41,12 @@ Required properties:
 	- "qcom,coresight-rpm-etm"
 	The reg-names that need to be used with corresponding compatible string
 	for a coresight device are:
+=======
+- reg : physical base address and length of the register set(s) of the component
+- reg-names : names corresponding to each reg property value. The reg-names that
+	need to be used with corresponding compatible string for a coresight device
+	are:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	- for coresight tmc-etr or tmc-etf device:
 		compatible : should be "arm,coresight-tmc"
 		reg-names  : should be:

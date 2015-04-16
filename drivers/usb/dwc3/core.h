@@ -649,7 +649,10 @@ struct dwc3_scratchpad_array {
 #define DWC3_CONTROLLER_ERROR_EVENT			0
 #define DWC3_CONTROLLER_RESET_EVENT			1
 #define DWC3_CONTROLLER_POST_RESET_EVENT		2
+<<<<<<< HEAD
 #define DWC3_CONTROLLER_POST_INITIALIZATION_EVENT	3
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /**
  * struct dwc3 - representation of our controller
  * @ctrl_req: usb control request which is used for ep0
@@ -781,7 +784,10 @@ struct dwc3 {
 	bool			softconnect;
 	void (*notify_event) (struct dwc3 *, unsigned);
 	int			tx_fifo_size;
+<<<<<<< HEAD
 	bool			tx_fifo_reduced;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /* -------------------------------------------------------------------------- */

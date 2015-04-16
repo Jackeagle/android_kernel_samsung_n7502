@@ -354,7 +354,10 @@ bool check_if_rgb(int color)
 	case MDP_ARGB_8888:
 	case MDP_XRGB_8888:
 	case MDP_RGBX_8888:
+<<<<<<< HEAD
 	case MDP_BGRX_8888:
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rgb = true;
 	default:
 		break;

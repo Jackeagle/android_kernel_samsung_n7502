@@ -370,6 +370,7 @@ struct cpumask *tick_get_broadcast_oneshot_mask(void)
 	return to_cpumask(tick_broadcast_oneshot_mask);
 }
 
+<<<<<<< HEAD
 /*
  * Set broadcast interrupt affinity
  */
@@ -390,14 +391,23 @@ static int tick_broadcast_set_event(struct clock_event_device *bc, int cpu,
 				    ktime_t expires, int force)
 {
 	int ret;
+=======
+static int tick_broadcast_set_event(ktime_t expires, int force)
+{
+	struct clock_event_device *bc = tick_broadcast_device.evtdev;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (bc->mode != CLOCK_EVT_MODE_ONESHOT)
 		clockevents_set_mode(bc, CLOCK_EVT_MODE_ONESHOT);
 
+<<<<<<< HEAD
 	ret = clockevents_program_event(bc, expires, force);
 	if (!ret)
 		tick_broadcast_set_affinity(bc, cpumask_of(cpu));
 	return ret;
+=======
+	return clockevents_program_event(bc, expires, force);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 int tick_resume_broadcast_oneshot(struct clock_event_device *bc)
@@ -426,7 +436,11 @@ static void tick_handle_oneshot_broadcast(struct clock_event_device *dev)
 {
 	struct tick_device *td;
 	ktime_t now, next_event;
+<<<<<<< HEAD
 	int cpu, next_cpu = 0;
+=======
+	int cpu;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	raw_spin_lock(&tick_broadcast_lock);
 again:
@@ -437,12 +451,19 @@ again:
 	/* Find all expired events */
 	for_each_cpu(cpu, tick_get_broadcast_oneshot_mask()) {
 		td = &per_cpu(tick_cpu_device, cpu);
+<<<<<<< HEAD
 		if (td->evtdev->next_event.tv64 <= now.tv64) {
 			cpumask_set_cpu(cpu, to_cpumask(tmpmask));
 		} else if (td->evtdev->next_event.tv64 < next_event.tv64) {
 			next_event.tv64 = td->evtdev->next_event.tv64;
 			next_cpu = cpu;
 		}
+=======
+		if (td->evtdev->next_event.tv64 <= now.tv64)
+			cpumask_set_cpu(cpu, to_cpumask(tmpmask));
+		else if (td->evtdev->next_event.tv64 < next_event.tv64)
+			next_event.tv64 = td->evtdev->next_event.tv64;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	/*
@@ -465,7 +486,11 @@ again:
 		 * Rearm the broadcast device. If event expired,
 		 * repeat the above
 		 */
+<<<<<<< HEAD
 		if (tick_broadcast_set_event(dev, next_cpu, next_event, 0))
+=======
+		if (tick_broadcast_set_event(next_event, 0))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			goto again;
 	}
 	raw_spin_unlock(&tick_broadcast_lock);
@@ -508,7 +533,11 @@ void tick_broadcast_oneshot_control(unsigned long reason)
 			cpumask_set_cpu(cpu, tick_get_broadcast_oneshot_mask());
 			clockevents_set_mode(dev, CLOCK_EVT_MODE_SHUTDOWN);
 			if (dev->next_event.tv64 < bc->next_event.tv64)
+<<<<<<< HEAD
 				tick_broadcast_set_event(bc, cpu, dev->next_event, 1);
+=======
+				tick_broadcast_set_event(dev->next_event, 1);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 	} else {
 		if (cpumask_test_cpu(cpu, tick_get_broadcast_oneshot_mask())) {
@@ -577,7 +606,11 @@ void tick_broadcast_setup_oneshot(struct clock_event_device *bc)
 			clockevents_set_mode(bc, CLOCK_EVT_MODE_ONESHOT);
 			tick_broadcast_init_next_event(to_cpumask(tmpmask),
 						       tick_next_period);
+<<<<<<< HEAD
 			tick_broadcast_set_event(bc, cpu, tick_next_period, 1);
+=======
+			tick_broadcast_set_event(tick_next_period, 1);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		} else
 			bc->next_event.tv64 = KTIME_MAX;
 	} else {

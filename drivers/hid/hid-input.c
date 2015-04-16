@@ -638,10 +638,13 @@ static void hidinput_configure_usage(struct hid_input *hidinput, struct hid_fiel
 			map_key_clear(BTN_STYLUS2);
 			break;
 
+<<<<<<< HEAD
 		case 0x51: /* ContactID */
 			device->quirks |= HID_QUIRK_MULTITOUCH;
 			goto unknown;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		default:  goto unknown;
 		}
 		break;

@@ -107,6 +107,7 @@ void msm_camera_io_memcpy(void __iomem *dest_addr,
 	msm_camera_io_dump(dest_addr, len);
 }
 
+<<<<<<< HEAD
 int msm_cam_clk_sel_src(struct device *dev, struct msm_cam_clk_info *clk_info,
 		struct msm_cam_clk_info *clk_src_info, int num_clk)
 {
@@ -135,6 +136,8 @@ int msm_cam_clk_sel_src(struct device *dev, struct msm_cam_clk_info *clk_info,
 	return rc;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int msm_cam_clk_enable(struct device *dev, struct msm_cam_clk_info *clk_info,
 		struct clk **clk_ptr, int num_clk, int enable)
 {
@@ -151,7 +154,11 @@ int msm_cam_clk_enable(struct device *dev, struct msm_cam_clk_info *clk_info,
 				rc = PTR_ERR(clk_ptr[i]);
 				goto cam_clk_get_err;
 			}
+<<<<<<< HEAD
 			if (clk_info[i].clk_rate > 0) {
+=======
+			if (clk_info[i].clk_rate >= 0) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				rc = clk_set_rate(clk_ptr[i],
 							clk_info[i].clk_rate);
 				if (rc < 0) {
@@ -474,8 +481,18 @@ int msm_camera_config_single_vreg(struct device *dev,
 	struct camera_vreg_t *cam_vreg, struct regulator **reg_ptr, int config)
 {
 	int rc = 0;
+<<<<<<< HEAD
 	if (config) {
 		CDBG("%s enable %s\n", __func__, cam_vreg->reg_name);
+=======
+
+	if (config) {
+		if (cam_vreg->reg_name == NULL) {
+			pr_err("%s : can't find reg name", __func__);
+			goto vreg_get_fail;
+		}
+		pr_info("%s enable %s\n", __func__, cam_vreg->reg_name);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		*reg_ptr = regulator_get(dev, cam_vreg->reg_name);
 		if (IS_ERR(*reg_ptr)) {
 			pr_err("%s: %s get failed\n", __func__,
@@ -511,7 +528,11 @@ int msm_camera_config_single_vreg(struct device *dev,
 		}
 	} else {
 		if (*reg_ptr) {
+<<<<<<< HEAD
 			CDBG("%s disable %s\n", __func__, cam_vreg->reg_name);
+=======
+			pr_info("%s disable %s\n", __func__, cam_vreg->reg_name);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			regulator_disable(*reg_ptr);
 			if (cam_vreg->type == REG_LDO) {
 				if (cam_vreg->op_mode >= 0)
@@ -521,7 +542,12 @@ int msm_camera_config_single_vreg(struct device *dev,
 			}
 			regulator_put(*reg_ptr);
 			*reg_ptr = NULL;
+<<<<<<< HEAD
 		}
+=======
+		} else
+		    pr_err("%s can't disable %s\n", __func__, cam_vreg->reg_name);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	return 0;
 
@@ -544,18 +570,28 @@ vreg_get_fail:
 int msm_camera_request_gpio_table(struct gpio *gpio_tbl, uint8_t size,
 	int gpio_en)
 {
+<<<<<<< HEAD
 	int rc = 0, i = 0, err = 0;
 
 	if (!gpio_tbl || !size) {
 		pr_err("%s:%d invalid gpio_tbl %p / size %d\n", __func__,
 			__LINE__, gpio_tbl, size);
 		return -EINVAL;
+=======
+	int rc = 0, i = 0;
+
+	if (!gpio_tbl || !size) {
+		pr_err("%s:%d invalid gpio_tbl %p / size %d\n", __func__,
+                       __LINE__, gpio_tbl, size);
+            return -EINVAL;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	for (i = 0; i < size; i++) {
 		CDBG("%s:%d i %d, gpio %d dir %ld\n", __func__, __LINE__, i,
 			gpio_tbl[i].gpio, gpio_tbl[i].flags);
 	}
 	if (gpio_en) {
+<<<<<<< HEAD
 		for (i = 0; i < size; i++) {
 			err = gpio_request_one(gpio_tbl[i].gpio,
 				gpio_tbl[i].flags, gpio_tbl[i].label);
@@ -569,6 +605,13 @@ int msm_camera_request_gpio_table(struct gpio *gpio_tbl, uint8_t size,
 					__func__, __LINE__,
 					gpio_tbl[i].gpio, gpio_tbl[i].label);
 			}
+=======
+		rc = gpio_request_array(gpio_tbl, size);
+		if (rc < 0) {
+			pr_err("%s:%d camera gpio request failed\n", __func__,
+				__LINE__);
+			return rc;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 	} else {
 		gpio_free_array(gpio_tbl, size);

@@ -840,6 +840,13 @@ struct fb_info {
 	atomic_t count;
 	int node;
 	int flags;
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_MACH_S3VE) && defined(CONFIG_ESD_ERR_FG_RECOVERY)
+	int esd_active;
+	struct mutex esd_lock;
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct mutex lock;		/* Lock for open/release/ioctl funcs */
 	struct mutex mm_lock;		/* Lock for fb_mmap and smem_* fields */
 	struct fb_var_screeninfo var;	/* Current var */

@@ -33,7 +33,12 @@
 #include "audio_ocmem.h"
 
 #define SHARED_MEM_BUF 2
+<<<<<<< HEAD
 #define VOIP_MAX_Q_LEN 10
+=======
+#define VOIP_MIN_Q_LEN 2
+#define VOIP_MAX_Q_LEN 2
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define VOIP_MAX_VOC_PKT_SIZE 4096
 #define VOIP_MIN_VOC_PKT_SIZE 320
 
@@ -48,9 +53,12 @@
 #define MODE_PCM		0xC
 #define MODE_4GV_NW		0xE
 
+<<<<<<< HEAD
 #define VOIP_MODE_MAX		MODE_4GV_NW
 #define VOIP_RATE_MAX		23850
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 enum format {
 	FORMAT_S16_LE = 2,
 	FORMAT_SPECIAL = 31,
@@ -156,6 +164,7 @@ static int voip_get_rate_type(uint32_t mode,
 				uint32_t rate,
 				uint32_t *rate_type);
 static int voip_config_vocoder(struct snd_pcm_substream *substream);
+<<<<<<< HEAD
 static int msm_voip_mode_config_put(struct snd_kcontrol *kcontrol,
 				    struct snd_ctl_elem_value *ucontrol);
 static int msm_voip_mode_config_get(struct snd_kcontrol *kcontrol,
@@ -164,6 +173,12 @@ static int msm_voip_rate_config_put(struct snd_kcontrol *kcontrol,
 				    struct snd_ctl_elem_value *ucontrol);
 static int msm_voip_rate_config_get(struct snd_kcontrol *kcontrol,
 				    struct snd_ctl_elem_value *ucontrol);
+=======
+static int msm_voip_mode_rate_config_put(struct snd_kcontrol *kcontrol,
+					struct snd_ctl_elem_value *ucontrol);
+static int msm_voip_mode_rate_config_get(struct snd_kcontrol *kcontrol,
+					struct snd_ctl_elem_value *ucontrol);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int msm_voip_evrc_min_max_rate_config_put(struct snd_kcontrol *kcontrol,
 					 struct snd_ctl_elem_value *ucontrol);
 static int msm_voip_evrc_min_max_rate_config_get(struct snd_kcontrol *kcontrol,
@@ -186,7 +201,11 @@ static struct snd_pcm_hardware msm_pcm_hardware = {
 	.buffer_bytes_max =	sizeof(struct voip_buf_node) * VOIP_MAX_Q_LEN,
 	.period_bytes_min =	VOIP_MIN_VOC_PKT_SIZE,
 	.period_bytes_max =	VOIP_MAX_VOC_PKT_SIZE,
+<<<<<<< HEAD
 	.periods_min =		VOIP_MAX_Q_LEN,
+=======
+	.periods_min =		VOIP_MIN_Q_LEN,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.periods_max =		VOIP_MAX_Q_LEN,
 	.fifo_size =            0,
 };
@@ -274,12 +293,20 @@ static struct snd_kcontrol_new msm_voip_controls[] = {
 	SOC_SINGLE_MULTI_EXT("Voip Rx Gain", SND_SOC_NOPM, 0,
 			     MAX_RAMP_DURATION,
 			     0, 2, NULL, msm_voip_gain_put),
+<<<<<<< HEAD
 	SOC_SINGLE_EXT("Voip Mode Config", SND_SOC_NOPM, 0, VOIP_MODE_MAX, 0,
 		       msm_voip_mode_config_get, msm_voip_mode_config_put),
 	SOC_SINGLE_EXT("Voip Rate Config", SND_SOC_NOPM, 0, VOIP_RATE_MAX, 0,
 		       msm_voip_rate_config_get, msm_voip_rate_config_put),
 	SOC_SINGLE_MULTI_EXT("Voip Evrc Min Max Rate Config", SND_SOC_NOPM,
 			     0, VOC_1_RATE, 0, 2, msm_voip_evrc_min_max_rate_config_get,
+=======
+	SOC_SINGLE_MULTI_EXT("Voip Mode Rate Config", SND_SOC_NOPM, 0, 23850,
+			     0, 2, msm_voip_mode_rate_config_get,
+			     msm_voip_mode_rate_config_put),
+	SOC_SINGLE_MULTI_EXT("Voip Evrc Min Max Rate Config", SND_SOC_NOPM,
+			     0, 4, 0, 2, msm_voip_evrc_min_max_rate_config_get,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			     msm_voip_evrc_min_max_rate_config_put),
 	SOC_SINGLE_EXT("Voip Dtx Mode", SND_SOC_NOPM, 0, 1, 0,
 		       msm_voip_dtx_mode_get, msm_voip_dtx_mode_put),
@@ -373,8 +400,15 @@ static void voip_process_ul_pkt(uint8_t *voc_pkt,
 		snd_pcm_period_elapsed(prtd->capture_substream);
 	} else {
 		spin_unlock_irqrestore(&prtd->dsp_ul_lock, dsp_flags);
+<<<<<<< HEAD
 		pr_err("UL data dropped\n");
 	}
+=======
+		if(voc_get_loopback_enable() == 0)	 {
+		pr_err("UL data dropped\n");
+	}
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	wake_up(&prtd->out_wait);
 }
@@ -447,16 +481,26 @@ static void voip_process_dl_pkt(uint8_t *voc_pkt, void *private_data)
 			list_add_tail(&buf_node->list, &prtd->free_in_queue);
 		}
 		}
+<<<<<<< HEAD
 		pr_debug("%s: frame.pktlen=%d\n", __func__, buf_node->frame.pktlen);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		prtd->pcm_playback_irq_pos += prtd->pcm_count;
 		spin_unlock_irqrestore(&prtd->dsp_lock, dsp_flags);
 		snd_pcm_period_elapsed(prtd->playback_substream);
 	} else {
 		*((uint32_t *)voc_pkt) = 0;
 		spin_unlock_irqrestore(&prtd->dsp_lock, dsp_flags);
+<<<<<<< HEAD
 		pr_err("DL data not available\n");
 	}
+=======
+           if(voc_get_loopback_enable() == 0)	{
+		pr_err("DL data not available\n");
+	}
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	wake_up(&prtd->in_wait);
 }
 
@@ -625,7 +669,10 @@ static int msm_pcm_capture_copy(struct snd_pcm_substream *substream,
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct voip_drv_info *prtd = runtime->private_data;
 	unsigned long dsp_flags;
+<<<<<<< HEAD
 	int size;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	count = frames_to_bytes(runtime, frames);
 
@@ -644,6 +691,7 @@ static int msm_pcm_capture_copy(struct snd_pcm_substream *substream,
 					struct voip_buf_node, list);
 			list_del(&buf_node->list);
 			spin_unlock_irqrestore(&prtd->dsp_ul_lock, dsp_flags);
+<<<<<<< HEAD
 			if (prtd->mode == MODE_PCM) {
 				ret = copy_to_user(buf,
 						   &buf_node->frame.voc_pkt,
@@ -657,6 +705,16 @@ static int msm_pcm_capture_copy(struct snd_pcm_substream *substream,
 						   &buf_node->frame,
 						   size);
 			}
+=======
+			if (prtd->mode == MODE_PCM)
+				ret = copy_to_user(buf,
+						   &buf_node->frame.voc_pkt,
+						   count);
+			else
+				ret = copy_to_user(buf,
+						   &buf_node->frame,
+						   count);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			if (ret) {
 				pr_err("%s: Copy to user retuned %d\n",
 					__func__, ret);
@@ -810,6 +868,7 @@ static int voip_config_vocoder(struct snd_pcm_substream *substream)
 	uint32_t evrc_min_rate_type = 0;
 	uint32_t evrc_max_rate_type = 0;
 
+<<<<<<< HEAD
         pr_debug("%s(): mode=%d, playback sample rate=%d, capture sample rate=%d\n",
                   __func__, prtd->mode, prtd->play_samp_rate, prtd->cap_samp_rate);
 
@@ -818,12 +877,31 @@ static int voip_config_vocoder(struct snd_pcm_substream *substream)
 	    (prtd->mode == MODE_IS127) || (prtd->mode == MODE_4GV_NB) ||
 	    (prtd->mode == MODE_4GV_WB) || (prtd->mode == MODE_4GV_NW))) {
 		pr_err("%s(): mode:%d and format:%u are not matched\n",
+=======
+	if ((runtime->format != FORMAT_SPECIAL) &&
+	    ((prtd->mode == MODE_AMR) || (prtd->mode == MODE_AMR_WB) ||
+	    (prtd->mode == MODE_IS127) || (prtd->mode == MODE_4GV_NB) ||
+	    (prtd->mode == MODE_4GV_WB) || (prtd->mode == MODE_4GV_NW))) {
+		pr_err("%s(): mode:%d and format:%u are not mached\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			__func__, prtd->mode, (uint32_t)runtime->format);
 
 		ret =  -EINVAL;
 		goto done;
 	}
 
+<<<<<<< HEAD
+=======
+	if ((runtime->format != FORMAT_S16_LE) &&
+	    (prtd->mode == MODE_PCM)) {
+		pr_err("%s(): mode:%d and format:%u are not mached\n",
+			__func__, prtd->mode, (uint32_t)runtime->format);
+
+		ret = -EINVAL;
+		goto done;
+	}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ret = voip_get_media_type(prtd->mode,
 				  prtd->play_samp_rate,
 				  &media_type);
@@ -1061,24 +1139,39 @@ static int msm_pcm_hw_params(struct snd_pcm_substream *substream,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int msm_voip_mode_config_get(struct snd_kcontrol *kcontrol,
 				    struct snd_ctl_elem_value *ucontrol)
+=======
+static int msm_voip_mode_rate_config_get(struct snd_kcontrol *kcontrol,
+					struct snd_ctl_elem_value *ucontrol)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	mutex_lock(&voip_info.lock);
 
 	ucontrol->value.integer.value[0] = voip_info.mode;
+<<<<<<< HEAD
+=======
+	ucontrol->value.integer.value[1] = voip_info.rate;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	mutex_unlock(&voip_info.lock);
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int msm_voip_mode_config_put(struct snd_kcontrol *kcontrol,
 				    struct snd_ctl_elem_value *ucontrol)
+=======
+static int msm_voip_mode_rate_config_put(struct snd_kcontrol *kcontrol,
+					struct snd_ctl_elem_value *ucontrol)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	mutex_lock(&voip_info.lock);
 
 	voip_info.mode = ucontrol->value.integer.value[0];
+<<<<<<< HEAD
 
 	pr_debug("%s: mode=%d\n", __func__, voip_info.mode);
 
@@ -1107,6 +1200,12 @@ static int msm_voip_rate_config_put(struct snd_kcontrol *kcontrol,
 	voip_info.rate = ucontrol->value.integer.value[0];
 
 	pr_debug("%s: rate=%d\n", __func__, voip_info.rate);
+=======
+	voip_info.rate = ucontrol->value.integer.value[1];
+
+	pr_debug("%s: mode=%d,rate=%d\n", __func__, voip_info.mode,
+		voip_info.rate);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	mutex_unlock(&voip_info.lock);
 

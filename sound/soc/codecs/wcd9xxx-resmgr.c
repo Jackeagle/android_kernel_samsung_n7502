@@ -92,9 +92,12 @@ static char wcd9xxx_event_string[][64] = {
 
 	"WCD9XXX_EVENT_POST_RESUME",
 
+<<<<<<< HEAD
 	"WCD9XXX_EVENT_PRE_TX_3_ON",
 	"WCD9XXX_EVENT_POST_TX_3_OFF",
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	"WCD9XXX_EVENT_LAST",
 };
 
@@ -564,6 +567,7 @@ void wcd9xxx_resmgr_put_clk_block(struct wcd9xxx_resmgr *resmgr,
 		if (--resmgr->clk_rco_users == 0 &&
 		    resmgr->clk_type == WCD9XXX_CLK_RCO) {
 			wcd9xxx_disable_clock_block(resmgr);
+<<<<<<< HEAD
 			/* if RCO is enabled, switch from it */
 			if (snd_soc_read(resmgr->codec, WCD9XXX_A_RC_OSC_FREQ)
 					& 0x80) {
@@ -573,6 +577,8 @@ void wcd9xxx_resmgr_put_clk_block(struct wcd9xxx_resmgr *resmgr,
 						WCD9XXX_A_CLK_BUFF_EN2, 0x02);
 				wcd9xxx_resmgr_enable_config_mode(resmgr, 0);
 			}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			resmgr->clk_type = WCD9XXX_CLK_OFF;
 		}
 		break;
@@ -670,7 +676,11 @@ int wcd9xxx_resmgr_get_k_val(struct wcd9xxx_resmgr *resmgr,
 			     unsigned int cfilt_mv)
 {
 	int rc = -EINVAL;
+<<<<<<< HEAD
 	unsigned int ldoh_v = resmgr->micbias_pdata->ldoh_v;
+=======
+	unsigned int ldoh_v = resmgr->pdata->micbias.ldoh_v;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	unsigned min_mv, max_mv;
 
 	switch (ldoh_v) {
@@ -855,7 +865,10 @@ int wcd9xxx_resmgr_init(struct wcd9xxx_resmgr *resmgr,
 			struct snd_soc_codec *codec,
 			struct wcd9xxx_core_resource *core_res,
 			struct wcd9xxx_pdata *pdata,
+<<<<<<< HEAD
 			struct wcd9xxx_micbias_setting *micbias_pdata,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			struct wcd9xxx_reg_address *reg_addr,
 			enum wcd9xxx_cdc_type cdc_type)
 {
@@ -869,7 +882,10 @@ int wcd9xxx_resmgr_init(struct wcd9xxx_resmgr *resmgr,
 	/* This gives access of core handle to lock/unlock suspend */
 	resmgr->core_res = core_res;
 	resmgr->pdata = pdata;
+<<<<<<< HEAD
 	resmgr->micbias_pdata = micbias_pdata;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	resmgr->reg_addr = reg_addr;
 
 	INIT_LIST_HEAD(&resmgr->update_bit_cond_h);

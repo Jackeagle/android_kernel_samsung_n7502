@@ -52,9 +52,12 @@ struct devfreq_dev_status {
  */
 #define DEVFREQ_FLAG_LEAST_UPPER_BOUND		0x1
 
+<<<<<<< HEAD
 #define DEVFREQ_FLAG_FAST_HINT	0x2
 #define DEVFREQ_FLAG_SLOW_HINT	0x4
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /**
  * struct devfreq_governor_data - mapping to per device governor data
  * @name:		The name of the governor.
@@ -135,8 +138,12 @@ struct devfreq_governor {
 	struct list_head node;
 
 	const char name[DEVFREQ_NAME_LEN];
+<<<<<<< HEAD
 	int (*get_target_freq)(struct devfreq *this, unsigned long *freq,
 				u32 *flag);
+=======
+	int (*get_target_freq)(struct devfreq *this, unsigned long *freq);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int (*event_handler)(struct devfreq *devfreq,
 				unsigned int event, void *data);
 };

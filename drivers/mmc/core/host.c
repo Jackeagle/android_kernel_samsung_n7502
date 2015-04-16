@@ -78,7 +78,11 @@ static int mmc_host_suspend(struct device *dev)
 	struct mmc_host *host = cls_dev_to_mmc_host(dev);
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (!mmc_use_core_pm(host))
+=======
+	if (!mmc_use_core_runtime_pm(host))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return 0;
 
 	if (!pm_runtime_suspended(dev)) {
@@ -95,7 +99,11 @@ static int mmc_host_resume(struct device *dev)
 	struct mmc_host *host = cls_dev_to_mmc_host(dev);
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (!mmc_use_core_pm(host))
+=======
+	if (!mmc_use_core_runtime_pm(host))
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return 0;
 
 	if (!pm_runtime_suspended(dev)) {
@@ -686,6 +694,7 @@ int mmc_add_host(struct mmc_host *host)
 	WARN_ON((host->caps & MMC_CAP_SDIO_IRQ) &&
 		!host->ops->enable_sdio_irq);
 
+<<<<<<< HEAD
 	err = pm_runtime_set_active(&host->class_dev);
 	if (err)
 		pr_err("%s: %s: failed setting runtime active: err: %d\n",
@@ -693,6 +702,16 @@ int mmc_add_host(struct mmc_host *host)
 	else if (mmc_use_core_runtime_pm(host))
 		pm_runtime_enable(&host->class_dev);
 
+=======
+	if (mmc_use_core_runtime_pm(host)) {
+		err = pm_runtime_set_active(&host->class_dev);
+		if (err)
+			pr_err("%s: %s: failed setting runtime active: err: %d\n",
+			       mmc_hostname(host), __func__, err);
+		else
+			pm_runtime_enable(&host->class_dev);
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	err = device_add(&host->class_dev);
 	if (err)
 		return err;

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2011-2013, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -629,6 +633,13 @@ struct slim_pending_ch {
  *  @driver: Device's driver. Pointer to access routines.
  *  @ctrl: Slimbus controller managing the bus hosting this device.
  *  @laddr: 1-byte Logical address of this device.
+<<<<<<< HEAD
+=======
+ *  @reported: Flag to indicate whether this device reported present. The flag
+ *	is set when device reports present, and is reset when it reports
+ *	absent. This flag alongwith notified flag below is used to call
+ *	device_up, or device_down callbacks for driver of this device.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *  @mark_define: List of channels pending definition/activation.
  *  @mark_suspend: List of channels pending suspend.
  *  @mark_removal: List of channels pending removal.
@@ -652,6 +663,10 @@ struct slim_device {
 	struct slim_driver	*driver;
 	struct slim_controller	*ctrl;
 	u8			laddr;
+<<<<<<< HEAD
+=======
+	bool			reported;	
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct list_head	mark_define;
 	struct list_head	mark_suspend;
 	struct list_head	mark_removal;
@@ -1077,7 +1092,11 @@ extern void slim_ctrl_add_boarddevs(struct slim_controller *ctrl);
 extern int slim_register_board_info(struct slim_boardinfo const *info,
 					unsigned n);
 #else
+<<<<<<< HEAD
 static inline int slim_register_board_info(struct slim_boardinfo const *info,
+=======
+int slim_register_board_info(struct slim_boardinfo const *info,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					unsigned n)
 {
 	return 0;

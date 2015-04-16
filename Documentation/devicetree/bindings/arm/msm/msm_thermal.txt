@@ -43,6 +43,7 @@ Optional properties
 - qcpm,cpu-sensors:     List of type names in thermal zone device struct which maps
 			to cpu0, cpu1, cpu2, cpu3 in sequence depending on how many
 			cpus there are.
+<<<<<<< HEAD
 - qcom,freq-mitigation-temp: Threshold temperature to mitigate
 			the CPU max frequency in degC. This will be
 			used when polling based frequency control is disabled.
@@ -66,6 +67,8 @@ Optional properties
 			above four properties (qcom,freq-mitigation-temp; qcom,
 			freq-mitigation-temp-hysteresis; qcom,freq-mitigation-value and
 			qcom,freq-mitigation-control-mask) should be populated.
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 - qcom,vdd-restriction-temp: When temperature is below this threshold, will
 			enable vdd restriction which will set higher voltage on
 			key voltage rails, in degC.
@@ -90,6 +93,7 @@ Optional properties
 			phandle_of_regulator is defined by reuglator device tree.
 
 Optional child nodes
+<<<<<<< HEAD
 - qti,pmic-opt-curr-temp: Threshold temperature for requesting optimum current (request
 			dual phase) for rails with PMIC, in degC. If this property exists,
 			then the properties, qti,pmic-opt-curr-temp-hysteresis and
@@ -104,6 +108,8 @@ Optional child nodes
 			requested. If this property exists, then the properties,
 			qti,pmic-opt-curr-temp and qti,pmic-opt-curr-temp-hysteresis
 			should also be defined to enable this feature.
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 - qcom,<vdd restriction child node name>: Define the name of the child node.
 			If this property exisits, qcom,vdd-rstr-reg, qcom,levels
 			need to exist. qcom,min-level is optional if qcom,freq-req
@@ -134,18 +140,24 @@ Example:
 		qcom,hotplug-temp-hysteresis = <20>;
 		qcom,cpu-sensors = "tsens_tz_sensor5", "tsens_tz_sensor6",
 				"tsens_tz_sensor7", "tsens_tz_sensor8";
+<<<<<<< HEAD
 		qcom,freq-mitigation-temp = <110>;
 		qcom,freq-mitigation-temp-hysteresis = <20>;
 		qcom,freq-mitigation-value = <960000>;
 		qcom,freq-mitigation-control-mask = <0x01>;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,pmic-sw-mode-temp = <90>;
 		qcom,pmic-sw-mode-temp-hysteresis = <80>;
 		qcom,pmic-sw-mode-regs = "vdd-dig";
 		qcom,vdd-restriction-temp = <5>;
 		qcom,vdd-restriction-temp-hysteresis = <10>;
+<<<<<<< HEAD
 		qti,pmic-opt-curr-temp = <85>;
 		qti,pmic-opt-curr-temp-hysteresis = <10>;
 		qti,pmic-opt-curr-regs = "vdd-dig";
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		vdd-dig-supply=<&pm8841_s2_floor_corner>
 
 		qcom,vdd-dig-rstr{

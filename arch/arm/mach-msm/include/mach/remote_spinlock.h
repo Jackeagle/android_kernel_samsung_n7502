@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 /* Copyright (c) 2009, 2011, 2013-2014 The Linux Foundation.
  * All rights reserved.
+=======
+/* Copyright (c) 2009, 2011, 2013 The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -23,9 +27,12 @@
 #include <linux/io.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 #define REMOTE_SPINLOCK_NUM_PID 128
 #define REMOTE_SPINLOCK_TID_START REMOTE_SPINLOCK_NUM_PID
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* Remote spinlock definitions. */
 
 struct dek_spinlock {
@@ -52,8 +59,11 @@ void _remote_spin_unlock(_remote_spinlock_t *lock);
 int _remote_spin_trylock(_remote_spinlock_t *lock);
 int _remote_spin_release(_remote_spinlock_t *lock, uint32_t pid);
 int _remote_spin_owner(_remote_spinlock_t *lock);
+<<<<<<< HEAD
 void _remote_spin_lock_rlock_id(_remote_spinlock_t *lock, uint32_t tid);
 void _remote_spin_unlock_rlock(_remote_spinlock_t *lock);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #else
 static inline
 int _remote_spin_lock_init(remote_spinlock_id_t id, _remote_spinlock_t *lock)
@@ -75,9 +85,12 @@ static inline int _remote_spin_owner(_remote_spinlock_t *lock)
 {
 	return -ENODEV;
 }
+<<<<<<< HEAD
 static inline void _remote_spin_lock_rlock_id(_remote_spinlock_t *lock,
 					      uint32_t tid) {}
 static inline void _remote_spin_unlock_rlock(_remote_spinlock_t *lock) {}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif
 
 

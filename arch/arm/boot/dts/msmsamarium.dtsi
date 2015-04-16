@@ -65,6 +65,7 @@
 		reg = <0xfe805000 0x1000>; /* Address and size of IMEM */
 	};
 
+<<<<<<< HEAD
 	rmtfs_sharedmem {
 		compatible = "qcom,sharedmem-uio";
 		reg = <0x0fd80000 0x00180000>;
@@ -83,6 +84,8 @@
 		reg-names = "rfsa_mdm";
 	};
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	sdcc1: qcom,sdcc@f9824000 {
 		cell-index = <1>; /* SDC1 eMMC slot */
 		compatible = "qcom,msm-sdcc";

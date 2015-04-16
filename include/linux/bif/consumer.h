@@ -311,11 +311,18 @@ enum bif_mipi_object_type {
  * @type:		Object type
  * @version:		Object version
  * @manufacturer_id:	Manufacturer ID number allocated by MIPI
+<<<<<<< HEAD
  * @length:		Length of the entire object including header and CRC;
  *			data length == total length - 8.
  * @data:		Raw byte data found in the object
  * @crc:		CRC of the object calculated using CRC-CCITT
  * @list:		Linked-list connection parameter; internal use only
+=======
+ * @length:		Length of the entire object including header and CRC
+ * @data:		Raw byte data found in the object
+ * @crc:		CRC of the object calculated using CRC-CCITT
+ * @list:		Linked-list connection parameter
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * @addr:		BIF slave address correspond to the start of the object
  *
  * manufacturer_id == 0x0000 if MIPI type and version.
@@ -343,8 +350,11 @@ struct bif_object {
  *				is used to denote a 256 byte buffer.
  * @nvm_base_address:		BIF slave address where NVM begins
  * @nvm_size:			NVM size in bytes
+<<<<<<< HEAD
  * @nvm_lock_offset:		Offset from the beginning of NVM of the first
  *				writable address
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * @object_count:		Number of BIF objects read from NVM
  * @object_list:		List of BIF objects read from NVM
  */
@@ -354,7 +364,10 @@ struct bif_nvm_function {
 	u8			write_buffer_size;
 	u16			nvm_base_address;
 	u16			nvm_size;
+<<<<<<< HEAD
 	u16			nvm_lock_offset;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int			object_count;
 	struct list_head	object_list;
 };
@@ -416,9 +429,12 @@ enum bif_bus_event {
 #define BIF_MATCH_FUNCTION_TYPE		BIT(2)
 #define BIF_MATCH_FUNCTION_VERSION	BIT(3)
 #define BIF_MATCH_IGNORE_PRESENCE	BIT(4)
+<<<<<<< HEAD
 #define BIF_MATCH_OBJ_TYPE		BIT(5)
 #define BIF_MATCH_OBJ_VERSION		BIT(6)
 #define BIF_MATCH_OBJ_MANUFACTURER_ID	BIT(7)
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /**
  * struct bif_match_criteria - specifies the matching criteria that a BIF
@@ -435,6 +451,7 @@ enum bif_bus_event {
  * @ignore_presence:	If true, then slaves that are currently not present
  *			will be successfully matched against.  By default, only
  *			present slaves can be matched.
+<<<<<<< HEAD
  * @obj_type:		Defines the type of a BIF object found in the
  *			non-volatile memory of a slave.
  * @obj_version:	Defines the version of a BIF object found in the
@@ -446,6 +463,8 @@ enum bif_bus_event {
  * match for a single BIF function.  If obj_type and obj_version or
  * obj_manufacturer_id are specified, then all must match for a single BIF
  * object.
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  */
 struct bif_match_criteria {
 	u32	match_mask;
@@ -454,6 +473,7 @@ struct bif_match_criteria {
 	u8	function_type;
 	u8	function_version;
 	bool	ignore_presence;
+<<<<<<< HEAD
 	u8	obj_type;
 	u8	obj_version;
 	u16	obj_manufacturer_id;
@@ -482,6 +502,8 @@ struct bif_obj_match_criteria {
 	u8	type;
 	u8	version;
 	u16	manufacturer_id;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /**
@@ -518,8 +540,11 @@ int bif_free_irq(struct bif_slave *slave, unsigned int task,
 			struct notifier_block *nb);
 
 int bif_trigger_task(struct bif_slave *slave, unsigned int task);
+<<<<<<< HEAD
 int bif_enable_auto_task(struct bif_slave *slave, unsigned int task);
 int bif_disable_auto_task(struct bif_slave *slave, unsigned int task);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int bif_task_is_busy(struct bif_slave *slave, unsigned int task);
 
 int bif_ctrl_count(void);
@@ -529,10 +554,17 @@ void bif_ctrl_put(struct bif_ctrl *ctrl);
 
 int bif_ctrl_signal_battery_changed(struct bif_ctrl *ctrl);
 
+<<<<<<< HEAD
 int bif_slave_match_count(struct bif_ctrl *ctrl,
 			const struct bif_match_criteria *match_criteria);
 
 struct bif_slave *bif_slave_match_get(struct bif_ctrl *ctrl,
+=======
+int bif_slave_match_count(const struct bif_ctrl *ctrl,
+			const struct bif_match_criteria *match_criteria);
+
+struct bif_slave *bif_slave_match_get(const struct bif_ctrl *ctrl,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	unsigned int id, const struct bif_match_criteria *match_criteria);
 
 void bif_slave_put(struct bif_slave *slave);
@@ -548,6 +580,7 @@ struct bif_ctrl *bif_get_ctrl_handle(struct bif_slave *slave);
 int bif_slave_find_function(struct bif_slave *slave, u8 function, u8 *version,
 				u16 *function_pointer);
 
+<<<<<<< HEAD
 int bif_object_match_count(struct bif_slave *slave,
 			const struct bif_obj_match_criteria *match_criteria);
 
@@ -573,6 +606,11 @@ int bif_object_overwrite(struct bif_slave *slave,
 
 int bif_object_delete(struct bif_slave *slave, const struct bif_object *object);
 
+=======
+int bif_slave_read(struct bif_slave *slave, u16 addr, u8 *buf, int len);
+int bif_slave_write(struct bif_slave *slave, u16 addr, u8 *buf, int len);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int bif_slave_is_present(struct bif_slave *slave);
 
 int bif_slave_is_selected(struct bif_slave *slave);
@@ -604,12 +642,15 @@ static inline int bif_free_irq(struct bif_slave *slave, unsigned int task,
 
 static inline int bif_trigger_task(struct bif_slave *slave, unsigned int task)
 { return -EPERM; }
+<<<<<<< HEAD
 static inline int bif_enable_auto_task(struct bif_slave *slave,
 			unsigned int task)
 { return -EPERM; }
 static inline int bif_disable_auto_task(struct bif_slave *slave,
 			unsigned int task)
 { return -EPERM; }
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static inline int bif_task_is_busy(struct bif_slave *slave, unsigned int task)
 { return -EPERM; }
 
@@ -620,6 +661,7 @@ struct bif_ctrl *bif_ctrl_get(struct device *consumer_dev)
 { return ERR_PTR(-EPERM); }
 static inline void bif_ctrl_put(struct bif_ctrl *ctrl) { return; }
 
+<<<<<<< HEAD
 static inline int bif_ctrl_signal_battery_changed(struct bif_ctrl *ctrl)
 { return -EPERM; }
 
@@ -628,6 +670,15 @@ static inline int bif_slave_match_count(struct bif_ctrl *ctrl,
 { return -EPERM; }
 
 static inline struct bif_slave *bif_slave_match_get(struct bif_ctrl *ctrl,
+=======
+int bif_ctrl_signal_battery_changed(struct bif_ctrl *ctrl) { return -EPERM; }
+
+static inline int bif_slave_match_count(const struct bif_ctrl *ctrl,
+			const struct bif_match_criteria *match_criteria)
+{ return -EPERM; }
+
+static inline struct bif_slave *bif_slave_match_get(const struct bif_ctrl *ctrl,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	unsigned int id, const struct bif_match_criteria *match_criteria)
 { return ERR_PTR(-EPERM); }
 
@@ -648,6 +699,7 @@ static inline int bif_slave_find_function(struct bif_slave *slave, u8 function,
 				u8 *version, u16 *function_pointer)
 { return -EPERM; }
 
+<<<<<<< HEAD
 static inline int bif_object_match_count(struct bif_slave *slave,
 			const struct bif_obj_match_criteria *match_criteria)
 { return -EPERM; }
@@ -659,6 +711,8 @@ static inline struct bif_object *bif_object_match_get(struct bif_slave *slave,
 static inline void bif_object_put(struct bif_object *object)
 {}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static inline int bif_slave_read(struct bif_slave *slave, u16 addr, u8 *buf,
 				int len)
 { return -EPERM; }
@@ -666,6 +720,7 @@ static inline int bif_slave_write(struct bif_slave *slave, u16 addr, u8 *buf,
 				int len)
 { return -EPERM; }
 
+<<<<<<< HEAD
 static inline int bif_slave_nvm_raw_read(struct bif_slave *slave, u16 offset,
 				u8 *buf, int len)
 { return -EPERM; }
@@ -702,6 +757,20 @@ static inline int bif_ctrl_raw_transaction_read(struct bif_ctrl *ctrl,
 { return -EPERM; }
 static inline int bif_ctrl_raw_transaction_query(struct bif_ctrl *ctrl,
 				int transaction, u8 data, bool *query_response)
+=======
+int bif_slave_is_present(struct bif_slave *slave) { return -EPERM; }
+
+int bif_slave_is_selected(struct bif_slave *slave) { return -EPERM; }
+int bif_slave_select(struct bif_slave *slave) { return -EPERM; }
+
+int bif_ctrl_raw_transaction(struct bif_ctrl *ctrl, int transaction, u8 data)
+{ return -EPERM; }
+int bif_ctrl_raw_transaction_read(struct bif_ctrl *ctrl, int transaction,
+					u8 data, int *response)
+{ return -EPERM; }
+int bif_ctrl_raw_transaction_query(struct bif_ctrl *ctrl, int transaction,
+		u8 data, bool *query_response)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 { return -EPERM; }
 
 static inline void bif_ctrl_bus_lock(struct bif_ctrl *ctrl)
@@ -713,6 +782,7 @@ static inline u16 bif_crc_ccitt(const u8 *buffer, unsigned int len)
 { return 0; }
 
 static inline int bif_ctrl_measure_rid(struct bif_ctrl *ctrl) { return -EPERM; }
+<<<<<<< HEAD
 static inline int bif_ctrl_get_bus_period(struct bif_ctrl *ctrl)
 { return -EPERM; }
 static inline int bif_ctrl_set_bus_period(struct bif_ctrl *ctrl, int period_ns)
@@ -721,6 +791,13 @@ static inline int bif_ctrl_get_bus_state(struct bif_ctrl *ctrl)
 { return -EPERM; }
 static inline int bif_ctrl_set_bus_state(struct bif_ctrl *ctrl,
 				enum bif_bus_state state)
+=======
+int bif_ctrl_get_bus_period(struct bif_ctrl *ctrl) { return -EPERM; }
+int bif_ctrl_set_bus_period(struct bif_ctrl *ctrl, int period_ns)
+{ return -EPERM; }
+int bif_ctrl_get_bus_state(struct bif_ctrl *ctrl) { return -EPERM; }
+int bif_ctrl_set_bus_state(struct bif_ctrl *ctrl, enum bif_bus_state state)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 { return -EPERM; }
 
 #endif

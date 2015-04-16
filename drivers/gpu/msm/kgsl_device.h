@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2002,2007-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2002,2007-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -13,7 +17,10 @@
 #ifndef __KGSL_DEVICE_H
 #define __KGSL_DEVICE_H
 
+<<<<<<< HEAD
 #include <linux/slab.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <linux/idr.h>
 #include <linux/pm_qos.h>
 #include <linux/sched.h>
@@ -48,6 +55,10 @@
 #define KGSL_STATE_SLEEP	0x00000008
 #define KGSL_STATE_SUSPEND	0x00000010
 #define KGSL_STATE_HUNG		0x00000020
+<<<<<<< HEAD
+=======
+#define KGSL_STATE_DUMP_AND_FT	0x00000040
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define KGSL_STATE_SLUMBER	0x00000080
 
 #define KGSL_GRAPHICS_MEMORY_LOW_WATERMARK  0x1000000
@@ -62,8 +73,11 @@
 #define KGSL_EVENT_TIMESTAMP_RETIRED 0
 #define KGSL_EVENT_CANCELLED 1
 
+<<<<<<< HEAD
 #define KGSL_FLAG_WAKE_ON_TOUCH BIT(0)
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /*
  * "list" of event types for ftrace symbolic magic
  */
@@ -78,7 +92,10 @@ struct kgsl_device_private;
 struct kgsl_context;
 struct kgsl_power_stats;
 struct kgsl_event;
+<<<<<<< HEAD
 struct kgsl_cmdbatch;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 struct kgsl_functable {
 	/* Mandatory functions - these functions must be implemented
@@ -90,10 +107,17 @@ struct kgsl_functable {
 	void (*regwrite) (struct kgsl_device *device,
 		unsigned int offsetwords, unsigned int value);
 	int (*idle) (struct kgsl_device *device);
+<<<<<<< HEAD
 	bool (*isidle) (struct kgsl_device *device);
 	int (*suspend_context) (struct kgsl_device *device);
 	int (*init) (struct kgsl_device *device);
 	int (*start) (struct kgsl_device *device, int priority);
+=======
+	unsigned int (*isidle) (struct kgsl_device *device);
+	int (*suspend_context) (struct kgsl_device *device);
+	int (*init) (struct kgsl_device *device);
+	int (*start) (struct kgsl_device *device);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int (*stop) (struct kgsl_device *device);
 	int (*getproperty) (struct kgsl_device *device,
 		enum kgsl_property_type type, void *value,
@@ -104,8 +128,14 @@ struct kgsl_functable {
 	unsigned int (*readtimestamp) (struct kgsl_device *device,
 		struct kgsl_context *context, enum kgsl_timestamp_type type);
 	int (*issueibcmds) (struct kgsl_device_private *dev_priv,
+<<<<<<< HEAD
 		struct kgsl_context *context, struct kgsl_cmdbatch *cmdbatch,
 		uint32_t *timestamps);
+=======
+		struct kgsl_context *context, struct kgsl_ibdesc *ibdesc,
+		unsigned int sizedwords, uint32_t *timestamp,
+		unsigned int flags);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int (*setup_pt)(struct kgsl_device *device,
 		struct kgsl_pagetable *pagetable);
 	void (*cleanup_pt)(struct kgsl_device *device,
@@ -117,6 +147,7 @@ struct kgsl_functable {
 	void * (*snapshot)(struct kgsl_device *device, void *snapshot,
 		int *remain, int hang);
 	irqreturn_t (*irq_handler)(struct kgsl_device *device);
+<<<<<<< HEAD
 	int (*drain)(struct kgsl_device *device);
 	/* Optional functions - these functions are not mandatory.  The
 	   driver will check that the function pointer is not NULL before
@@ -130,14 +161,31 @@ struct kgsl_functable {
 	long (*ioctl) (struct kgsl_device_private *dev_priv,
 		unsigned int cmd, void *data);
 	int (*setproperty) (struct kgsl_device_private *dev_priv,
+=======
+	/* Optional functions - these functions are not mandatory.  The
+	   driver will check that the function pointer is not NULL before
+	   calling the hook */
+	void (*setstate) (struct kgsl_device *device, unsigned int context_id,
+			uint32_t flags);
+	struct kgsl_context *(*drawctxt_create) (struct kgsl_device_private *,
+						uint32_t *flags);
+	void (*drawctxt_detach) (struct kgsl_context *context);
+	void (*drawctxt_destroy) (struct kgsl_context *context);
+	long (*ioctl) (struct kgsl_device_private *dev_priv,
+		unsigned int cmd, void *data);
+	int (*setproperty) (struct kgsl_device *device,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		enum kgsl_property_type type, void *value,
 		unsigned int sizebytes);
 	int (*postmortem_dump) (struct kgsl_device *device, int manual);
 	int (*next_event)(struct kgsl_device *device,
 		struct kgsl_event *event);
+<<<<<<< HEAD
 	void (*drawctxt_sched)(struct kgsl_device *device,
 		struct kgsl_context *context);
 	void (*resume)(struct kgsl_device *device);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /* MH register values */
@@ -161,6 +209,7 @@ struct kgsl_event {
 	unsigned int created;
 };
 
+<<<<<<< HEAD
 /**
  * struct kgsl_cmdbatch - KGSl command descriptor
  * @device: KGSL GPU device that the command was created for
@@ -211,6 +260,8 @@ enum kgsl_cmdbatch_priv {
 	CMDBATCH_FLAG_FORCE_PREAMBLE,
 	CMDBATCH_FLAG_WFI,
 };
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 struct kgsl_device {
 	struct device *dev;
@@ -244,10 +295,18 @@ struct kgsl_device {
 	struct kgsl_mh mh;
 	struct kgsl_mmu mmu;
 	struct completion hwaccess_gate;
+<<<<<<< HEAD
 	struct completion cmdbatch_gate;
 	const struct kgsl_functable *ftbl;
 	struct work_struct idle_check_ws;
 	struct timer_list idle_timer;
+=======
+	const struct kgsl_functable *ftbl;
+	struct work_struct idle_check_ws;
+	struct work_struct hang_check_ws;
+	struct timer_list idle_timer;
+	struct timer_list hang_timer;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct kgsl_pwrctrl pwrctrl;
 	int open_count;
 
@@ -261,6 +320,10 @@ struct kgsl_device {
 	wait_queue_head_t active_cnt_wq;
 	struct workqueue_struct *work_queue;
 	struct device *parentdev;
+<<<<<<< HEAD
+=======
+	struct completion ft_gate;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct dentry *d_debugfs;
 	struct idr context_idr;
 	rwlock_t context_lock;
@@ -287,13 +350,21 @@ struct kgsl_device {
 	int drv_log;
 	int mem_log;
 	int pwr_log;
+<<<<<<< HEAD
+=======
+	int ft_log;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int pm_dump_enable;
 	struct kgsl_pwrscale pwrscale;
 	struct kobject pwrscale_kobj;
 	struct work_struct ts_expired_ws;
 	struct list_head events;
 	struct list_head events_pending_list;
+<<<<<<< HEAD
 	unsigned int events_last_timestamp;
+=======
+	s64 on_time;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/* Postmortem Control switches */
 	int pm_regs_enabled;
@@ -307,9 +378,17 @@ void kgsl_process_events(struct work_struct *work);
 
 #define KGSL_DEVICE_COMMON_INIT(_dev) \
 	.hwaccess_gate = COMPLETION_INITIALIZER((_dev).hwaccess_gate),\
+<<<<<<< HEAD
 	.cmdbatch_gate = COMPLETION_INITIALIZER((_dev).cmdbatch_gate),\
 	.idle_check_ws = __WORK_INITIALIZER((_dev).idle_check_ws,\
 			kgsl_idle_check),\
+=======
+	.ft_gate = COMPLETION_INITIALIZER((_dev).ft_gate),\
+	.idle_check_ws = __WORK_INITIALIZER((_dev).idle_check_ws,\
+			kgsl_idle_check),\
+	.hang_check_ws = __WORK_INITIALIZER((_dev).hang_check_ws,\
+			kgsl_hang_check),\
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.ts_expired_ws  = __WORK_INITIALIZER((_dev).ts_expired_ws,\
 			kgsl_process_events),\
 	.context_idr = IDR_INIT((_dev).context_idr),\
@@ -329,7 +408,10 @@ void kgsl_process_events(struct work_struct *work);
 /* the context has caused a pagefault */
 #define KGSL_CONTEXT_PAGEFAULT 1
 
+<<<<<<< HEAD
 struct kgsl_process_private;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /**
  * struct kgsl_context - Master structure for a KGSL context object
  * @refcount: kref object for reference counting the context
@@ -346,10 +428,16 @@ struct kgsl_process_private;
  * @events_list: list node for the list of all contexts that have pending events
  * @pid: process that owns this context.
  * @tid: task that created this context.
+<<<<<<< HEAD
  * @pagefault_ts: global timestamp of the pagefault, if KGSL_CONTEXT_PAGEFAULT
  * is set.
  * @flags: flags from userspace controlling the behavior of this context
  * @pwr_constraint: power constraint from userspace for this context
+=======
+ * @pagefault: flag set if this context caused a pagefault.
+ * @pagefault_ts: global timestamp of the pagefault, if KGSL_CONTEXT_PAGEFAULT
+ * is set.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  */
 struct kgsl_context {
 	struct kref refcount;
@@ -357,17 +445,26 @@ struct kgsl_context {
 	pid_t pid;
 	pid_t tid;
 	struct kgsl_device_private *dev_priv;
+<<<<<<< HEAD
 	struct kgsl_process_private *proc_priv;
 	unsigned long priv;
 	struct kgsl_device *device;
+=======
+	unsigned long priv;
+	struct kgsl_device *device;
+	struct kgsl_pagetable *pagetable;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	unsigned int reset_status;
 	bool wait_on_invalid_ts;
 	struct sync_timeline *timeline;
 	struct list_head events;
 	struct list_head events_list;
 	unsigned int pagefault_ts;
+<<<<<<< HEAD
 	unsigned int flags;
 	struct kgsl_pwr_constraint pwr_constraint;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 /**
@@ -421,14 +518,25 @@ struct kgsl_device_private {
 	struct kgsl_process_private *process_priv;
 };
 
+<<<<<<< HEAD
+=======
+struct kgsl_power_stats {
+	s64 total_time;
+	s64 busy_time;
+};
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct kgsl_device *kgsl_get_device(int dev_idx);
 
 int kgsl_add_event(struct kgsl_device *device, u32 id, u32 ts,
 	kgsl_event_func func, void *priv, void *owner);
 
+<<<<<<< HEAD
 void kgsl_cancel_event(struct kgsl_device *device, struct kgsl_context *context,
 		unsigned int timestamp, kgsl_event_func func, void *priv);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static inline void kgsl_process_add_stats(struct kgsl_process_private *priv,
 	unsigned int type, size_t size)
 {
@@ -516,6 +624,11 @@ static inline int kgsl_create_device_workqueue(struct kgsl_device *device)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int kgsl_check_timestamp(struct kgsl_device *device,
 		struct kgsl_context *context, unsigned int timestamp);
 
@@ -542,7 +655,10 @@ void kgsl_context_destroy(struct kref *kref);
 
 int kgsl_context_init(struct kgsl_device_private *, struct kgsl_context
 		*context);
+<<<<<<< HEAD
 int kgsl_context_detach(struct kgsl_context *context);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /**
  * kgsl_context_put() - Release context reference count
@@ -587,7 +703,10 @@ static inline bool kgsl_context_detached(struct kgsl_context *context)
 static inline struct kgsl_context *kgsl_context_get(struct kgsl_device *device,
 		uint32_t id)
 {
+<<<<<<< HEAD
 	int result = 0;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct kgsl_context *context = NULL;
 
 	read_lock(&device->context_lock);
@@ -598,12 +717,19 @@ static inline struct kgsl_context *kgsl_context_get(struct kgsl_device *device,
 	if (kgsl_context_detached(context))
 		context = NULL;
 	else
+<<<<<<< HEAD
 		result = kref_get_unless_zero(&context->refcount);
 
 	read_unlock(&device->context_lock);
 
 	if (!result)
 		return NULL;
+=======
+		kref_get(&context->refcount);
+
+	read_unlock(&device->context_lock);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return context;
 }
 
@@ -615,6 +741,7 @@ static inline struct kgsl_context *kgsl_context_get(struct kgsl_device *device,
 * lightweight way to just increase the refcount on a known context rather than
 * walking through kgsl_context_get and searching the iterator
 */
+<<<<<<< HEAD
 static inline int _kgsl_context_get(struct kgsl_context *context)
 {
 	int ret = 0;
@@ -631,6 +758,12 @@ static inline int _kgsl_context_get(struct kgsl_context *context)
 	}
 
 	return ret;
+=======
+static inline void _kgsl_context_get(struct kgsl_context *context)
+{
+	if (context)
+		kref_get(&context->refcount);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 /**
@@ -687,6 +820,7 @@ static inline void kgsl_cancel_events_timestamp(struct kgsl_device *device,
 {
 	kgsl_signal_event(device, context, timestamp, KGSL_EVENT_CANCELLED);
 }
+<<<<<<< HEAD
 
 void kgsl_cmdbatch_destroy(struct kgsl_cmdbatch *cmdbatch);
 
@@ -742,4 +876,6 @@ static inline int kgsl_sysfs_store(const char *buf, unsigned int *ptr)
 
 	return 0;
 }
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif  /* __KGSL_DEVICE_H */

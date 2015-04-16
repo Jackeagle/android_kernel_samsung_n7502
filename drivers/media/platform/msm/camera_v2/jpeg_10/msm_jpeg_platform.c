@@ -28,6 +28,7 @@
 #include "msm_jpeg_common.h"
 #include "msm_jpeg_hw.h"
 
+<<<<<<< HEAD
 int msm_jpeg_platform_set_clk_rate(struct msm_jpeg_device *pgmn_dev,
 		long clk_rate)
 {
@@ -45,6 +46,9 @@ int msm_jpeg_platform_set_clk_rate(struct msm_jpeg_device *pgmn_dev,
 
 	return rc;
 }
+=======
+#define JPEG_CORE_CLK 266670000
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 void msm_jpeg_platform_p2v(struct msm_jpeg_device *pgmn_dev, struct file  *file,
 	struct ion_handle **ionhandle, int domain_num)
@@ -88,7 +92,11 @@ error1:
 }
 
 static struct msm_cam_clk_info jpeg_8x_clk_info[] = {
+<<<<<<< HEAD
 	{"core_clk", JPEG_CLK_RATE},
+=======
+	{"core_clk", JPEG_CORE_CLK},
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	{"iface_clk", -1},
 	{"bus_clk0", -1},
 	{"camss_top_ahb_clk", -1},
@@ -153,8 +161,13 @@ static struct msm_bus_vectors msm_jpeg_vectors[] = {
 	{
 		.src = MSM_BUS_MASTER_JPEG,
 		.dst = MSM_BUS_SLAVE_EBI_CH0,
+<<<<<<< HEAD
 		.ab  = JPEG_MAX_CLK_RATE * 2.5,
 		.ib  = JPEG_MAX_CLK_RATE * 2.5,
+=======
+		.ab  = JPEG_CORE_CLK * 1.6,
+		.ib  = JPEG_CORE_CLK * 2.5,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	},
 };
 
@@ -190,8 +203,11 @@ int msm_jpeg_platform_init(struct platform_device *pdev,
 	struct msm_jpeg_device *pgmn_dev =
 		(struct msm_jpeg_device *) context;
 
+<<<<<<< HEAD
 	pgmn_dev->state = MSM_JPEG_IDLE;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	jpeg_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	if (!jpeg_mem) {
 		JPEG_PR_ERR("%s: no mem resource?\n", __func__);
@@ -291,7 +307,10 @@ int msm_jpeg_platform_init(struct platform_device *pdev,
 	pgmn_dev->jpeg_client = msm_ion_client_create(-1, "camera/jpeg");
 	JPEG_DBG("%s:%d] success\n", __func__, __LINE__);
 
+<<<<<<< HEAD
 	pgmn_dev->state = MSM_JPEG_INIT;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return rc;
 
 fail_request_irq:
@@ -366,7 +385,10 @@ int msm_jpeg_platform_release(struct resource *mem, void *base, int irq,
 	iounmap(base);
 	release_mem_region(mem->start, resource_size(mem));
 	ion_client_destroy(pgmn_dev->jpeg_client);
+<<<<<<< HEAD
 	pgmn_dev->state = MSM_JPEG_IDLE;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	JPEG_DBG("%s:%d] success\n", __func__, __LINE__);
 	return result;
 }

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2011-2013, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -33,14 +37,23 @@ static ssize_t diag_dbgfs_read_status(struct file *file, char __user *ubuf,
 {
 	char *buf;
 	int ret;
+<<<<<<< HEAD
 	unsigned int buf_size;
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	buf = kzalloc(sizeof(char) * DEBUG_BUF_SIZE, GFP_KERNEL);
 	if (!buf) {
 		pr_err("diag: %s, Error allocating memory\n", __func__);
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 	buf_size = ksize(buf);
 	ret = scnprintf(buf, buf_size,
+=======
+
+	ret = scnprintf(buf, DEBUG_BUF_SIZE,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		"modem ch: 0x%x\n"
 		"lpass ch: 0x%x\n"
 		"riva ch: 0x%x\n"
@@ -105,9 +118,12 @@ static ssize_t diag_dbgfs_read_status(struct file *file, char __user *ubuf,
 		"RIVA CNTL in_buf_1_size: %d\n"
 		"Modem DCI in_buf_1_size: %d\n"
 		"Modem DCI CMD in_buf_1_size: %d\n"
+<<<<<<< HEAD
 		"Received Feature mask from Modem: %d\n"
 		"Received Feature mask from LPASS: %d\n"
 		"Received Feature mask from WCNSS: %d\n"
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		"logging_mode: %d\n"
 		"real_time_mode: %d\n",
 		(unsigned int)driver->smd_data[MODEM_DATA].ch,
@@ -174,14 +190,21 @@ static ssize_t diag_dbgfs_read_status(struct file *file, char __user *ubuf,
 		(unsigned int)driver->smd_cntl[WCNSS_DATA].buf_in_1_size,
 		(unsigned int)driver->smd_dci[MODEM_DATA].buf_in_1_size,
 		(unsigned int)driver->smd_dci_cmd[MODEM_DATA].buf_in_1_size,
+<<<<<<< HEAD
 		driver->rcvd_feature_mask[MODEM_DATA],
 		driver->rcvd_feature_mask[LPASS_DATA],
 		driver->rcvd_feature_mask[WCNSS_DATA],
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		driver->logging_mode,
 		driver->real_time_mode);
 
 #ifdef CONFIG_DIAG_OVER_USB
+<<<<<<< HEAD
 	ret += scnprintf(buf+ret, buf_size-ret,
+=======
+	ret += scnprintf(buf+ret, DEBUG_BUF_SIZE,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		"usb_connected: %d\n",
 		driver->usb_connected);
 #endif
@@ -195,11 +218,17 @@ static ssize_t diag_dbgfs_read_dcistats(struct file *file,
 				char __user *ubuf, size_t count, loff_t *ppos)
 {
 	char *buf = NULL;
+<<<<<<< HEAD
 	unsigned int bytes_remaining, bytes_written = 0;
 	unsigned int bytes_in_buf = 0, i = 0;
 	struct diag_dci_data_info *temp_data = dci_data_smd;
 	unsigned int buf_size;
 	buf_size = (DEBUG_BUF_SIZE < count) ? DEBUG_BUF_SIZE : count;
+=======
+	int bytes_remaining, bytes_written = 0, bytes_in_buf = 0, i = 0;
+	struct diag_dci_data_info *temp_data = dci_data_smd;
+	int buf_size = (DEBUG_BUF_SIZE < count) ? DEBUG_BUF_SIZE : count;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (diag_dbgfs_dci_finished) {
 		diag_dbgfs_dci_finished = 0;
@@ -212,7 +241,10 @@ static ssize_t diag_dbgfs_read_dcistats(struct file *file,
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	buf_size = ksize(buf);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	bytes_remaining = buf_size;
 
 	if (diag_dbgfs_dci_data_index == 0) {
@@ -289,7 +321,10 @@ static ssize_t diag_dbgfs_read_workpending(struct file *file,
 {
 	char *buf;
 	int ret;
+<<<<<<< HEAD
 	unsigned int buf_size;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	buf = kzalloc(sizeof(char) * DEBUG_BUF_SIZE, GFP_KERNEL);
 	if (!buf) {
@@ -297,8 +332,12 @@ static ssize_t diag_dbgfs_read_workpending(struct file *file,
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	buf_size = ksize(buf);
 	ret = scnprintf(buf, buf_size,
+=======
+	ret = scnprintf(buf, DEBUG_BUF_SIZE,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		"Pending status for work_stucts:\n"
 		"diag_drain_work: %d\n"
 		"Modem data diag_read_smd_work: %d\n"
@@ -346,7 +385,11 @@ static ssize_t diag_dbgfs_read_workpending(struct file *file,
 						diag_notify_update_smd_work)));
 
 #ifdef CONFIG_DIAG_OVER_USB
+<<<<<<< HEAD
 	ret += scnprintf(buf+ret, buf_size-ret,
+=======
+	ret += scnprintf(buf+ret, DEBUG_BUF_SIZE,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		"diag_proc_hdlc_work: %d\n"
 		"diag_read_work: %d\n",
 		work_pending(&(driver->diag_proc_hdlc_work)),
@@ -364,11 +407,18 @@ static ssize_t diag_dbgfs_read_table(struct file *file, char __user *ubuf,
 	char *buf;
 	int ret = 0;
 	int i;
+<<<<<<< HEAD
 	unsigned int bytes_remaining;
 	unsigned int bytes_in_buffer = 0;
 	unsigned int bytes_written;
 	unsigned int buf_size;
 	buf_size = (DEBUG_BUF_SIZE < count) ? DEBUG_BUF_SIZE : count;
+=======
+	int bytes_remaining;
+	int bytes_in_buffer = 0;
+	int bytes_written;
+	int buf_size = (DEBUG_BUF_SIZE < count) ? DEBUG_BUF_SIZE : count;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (diag_dbgfs_table_index >= diag_max_reg) {
 		/* Done. Reset to prepare for future requests */
@@ -381,7 +431,11 @@ static ssize_t diag_dbgfs_read_table(struct file *file, char __user *ubuf,
 		pr_err("diag: %s, Error allocating memory\n", __func__);
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 	buf_size = ksize(buf);
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	bytes_remaining = buf_size;
 
 	if (diag_dbgfs_table_index == 0) {
@@ -390,7 +444,10 @@ static ssize_t diag_dbgfs_read_table(struct file *file, char __user *ubuf,
 			"WCNSS: %d, APPS: %d\n",
 			MODEM_DATA, LPASS_DATA, WCNSS_DATA, APPS_DATA);
 		bytes_in_buffer += bytes_written;
+<<<<<<< HEAD
 		bytes_remaining -= bytes_written;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	for (i = diag_dbgfs_table_index; i < diag_max_reg; i++) {
@@ -434,15 +491,24 @@ static ssize_t diag_dbgfs_read_mempool(struct file *file, char __user *ubuf,
 {
 	char *buf = NULL;
 	int ret = 0, i = 0;
+<<<<<<< HEAD
 	unsigned int buf_size;
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	buf = kzalloc(sizeof(char) * DEBUG_BUF_SIZE, GFP_KERNEL);
 	if (ZERO_OR_NULL_PTR(buf)) {
 		pr_err("diag: %s, Error allocating memory\n", __func__);
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 	buf_size = ksize(buf);
 
 	ret = scnprintf(buf, buf_size,
+=======
+
+	ret = scnprintf(buf, DEBUG_BUF_SIZE,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		"POOL_TYPE_COPY: [0x%p : 0x%p] count = %d\n"
 		"POOL_TYPE_HDLC: [0x%p : 0x%p] count = %d\n"
 		"POOL_TYPE_USER: [0x%p : 0x%p] count = %d\n"
@@ -463,7 +529,11 @@ static ssize_t diag_dbgfs_read_mempool(struct file *file, char __user *ubuf,
 	for (i = 0; i < MAX_HSIC_CH; i++) {
 		if (!diag_hsic[i].hsic_inited)
 			continue;
+<<<<<<< HEAD
 		ret += scnprintf(buf+ret, buf_size-ret,
+=======
+		ret += scnprintf(buf+ret, DEBUG_BUF_SIZE-ret,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				"POOL_TYPE_HSIC_%d: [0x%p : 0x%p] count = %d\n",
 				i+1,
 				diag_hsic[i].diag_hsic_pool,
@@ -474,7 +544,11 @@ static ssize_t diag_dbgfs_read_mempool(struct file *file, char __user *ubuf,
 	for (i = 0; i < MAX_HSIC_CH; i++) {
 		if (!diag_hsic[i].hsic_inited)
 			continue;
+<<<<<<< HEAD
 		ret += scnprintf(buf+ret, buf_size-ret,
+=======
+		ret += scnprintf(buf+ret, DEBUG_BUF_SIZE-ret,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				"POOL_TYPE_HSIC_%d_WRITE: [0x%p : 0x%p] count = %d\n",
 				i+1,
 				diag_hsic[i].diag_hsic_write_pool,
@@ -493,7 +567,10 @@ static ssize_t diag_dbgfs_read_mempool(struct file *file, char __user *ubuf,
 {
 	char *buf = NULL;
 	int ret = 0;
+<<<<<<< HEAD
 	unsigned int buf_size;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	buf = kzalloc(sizeof(char) * DEBUG_BUF_SIZE, GFP_KERNEL);
 	if (ZERO_OR_NULL_PTR(buf)) {
@@ -501,8 +578,12 @@ static ssize_t diag_dbgfs_read_mempool(struct file *file, char __user *ubuf,
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	buf_size = ksize(buf);
 	ret = scnprintf(buf, buf_size,
+=======
+	ret = scnprintf(buf, DEBUG_BUF_SIZE,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		"POOL_TYPE_COPY: [0x%p : 0x%p] count = %d\n"
 		"POOL_TYPE_HDLC: [0x%p : 0x%p] count = %d\n"
 		"POOL_TYPE_USER: [0x%p : 0x%p] count = %d\n"
@@ -534,6 +615,7 @@ static ssize_t diag_dbgfs_read_bridge(struct file *file, char __user *ubuf,
 	char *buf;
 	int ret;
 	int i;
+<<<<<<< HEAD
 	unsigned int bytes_remaining;
 	unsigned int bytes_in_buffer = 0;
 	unsigned int bytes_written;
@@ -543,6 +625,15 @@ static ssize_t diag_dbgfs_read_bridge(struct file *file, char __user *ubuf,
 
 	buf_size = (DEBUG_BUF_SIZE < count) ? DEBUG_BUF_SIZE : count;
 
+=======
+	int bytes_remaining;
+	int bytes_in_buffer = 0;
+	int bytes_written;
+	int buf_size = (DEBUG_BUF_SIZE < count) ? DEBUG_BUF_SIZE : count;
+	int bytes_hsic_inited = 45;
+	int bytes_hsic_not_inited = 410;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (diag_dbgfs_finished) {
 		diag_dbgfs_finished = 0;
 		return 0;
@@ -554,7 +645,10 @@ static ssize_t diag_dbgfs_read_bridge(struct file *file, char __user *ubuf,
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	buf_size = ksize(buf);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	bytes_remaining = buf_size;
 
 	/* Only one smux for now */

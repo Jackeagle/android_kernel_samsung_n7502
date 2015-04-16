@@ -170,7 +170,11 @@ static const struct qpnp_bsi_tau qpnp_bsi_tau_period = {
 #define QPNP_BSI_DEFAULT_VID_REF_UV	1800000
 
 /* These have units of tau_bif. */
+<<<<<<< HEAD
 #define QPNP_BSI_MAX_TRANSMIT_CYCLES	46
+=======
+#define QPNP_BSI_MAX_TRANSMIT_CYCLES	36
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define QPNP_BSI_MIN_RECEIVE_CYCLES	24
 #define QPNP_BSI_MAX_BUS_QUERY_CYCLES	17
 
@@ -544,6 +548,15 @@ static int qpnp_bsi_bus_transaction(struct bif_ctrl_dev *bdev, int transaction,
 	struct qpnp_bsi_chip *chip = bdev_get_drvdata(bdev);
 	int rc;
 
+<<<<<<< HEAD
+=======
+	rc = qpnp_bsi_clear_bsi_error(chip);
+	if (rc)
+		return rc;
+
+	qpnp_bsi_clear_irq_flags(chip);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	qpnp_bsi_set_com_mode(chip, QPNP_BSI_COM_MODE_IRQ);
 
 	rc = qpnp_bsi_set_bus_state(bdev, BIF_BUS_STATE_ACTIVE);
@@ -557,12 +570,15 @@ static int qpnp_bsi_bus_transaction(struct bif_ctrl_dev *bdev, int transaction,
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	rc = qpnp_bsi_clear_bsi_error(chip);
 	if (rc)
 		return rc;
 
 	qpnp_bsi_clear_irq_flags(chip);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	rc = qpnp_bsi_issue_transaction_wait_for_tx(chip, transaction, data);
 	if (rc)
 		return rc;
@@ -578,6 +594,15 @@ static int qpnp_bsi_bus_transaction_query(struct bif_ctrl_dev *bdev,
 	struct qpnp_bsi_chip *chip = bdev_get_drvdata(bdev);
 	int rc, timeout;
 
+<<<<<<< HEAD
+=======
+	rc = qpnp_bsi_clear_bsi_error(chip);
+	if (rc)
+		return rc;
+
+	qpnp_bsi_clear_irq_flags(chip);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	qpnp_bsi_set_com_mode(chip, QPNP_BSI_COM_MODE_IRQ);
 
 	rc = qpnp_bsi_set_bus_state(bdev, BIF_BUS_STATE_ACTIVE);
@@ -591,12 +616,15 @@ static int qpnp_bsi_bus_transaction_query(struct bif_ctrl_dev *bdev,
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	rc = qpnp_bsi_clear_bsi_error(chip);
 	if (rc)
 		return rc;
 
 	qpnp_bsi_clear_irq_flags(chip);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	rc = qpnp_bsi_issue_transaction_wait_for_tx(chip, transaction, data);
 	if (rc)
 		return rc;
@@ -624,6 +652,15 @@ static int qpnp_bsi_bus_transaction_read(struct bif_ctrl_dev *bdev,
 	int rc, timeout;
 	u8 buf[3];
 
+<<<<<<< HEAD
+=======
+	rc = qpnp_bsi_clear_bsi_error(chip);
+	if (rc)
+		return rc;
+
+	qpnp_bsi_clear_irq_flags(chip);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	qpnp_bsi_set_com_mode(chip, QPNP_BSI_COM_MODE_IRQ);
 
 	rc = qpnp_bsi_set_bus_state(bdev, BIF_BUS_STATE_ACTIVE);
@@ -637,12 +674,15 @@ static int qpnp_bsi_bus_transaction_read(struct bif_ctrl_dev *bdev,
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	rc = qpnp_bsi_clear_bsi_error(chip);
 	if (rc)
 		return rc;
 
 	qpnp_bsi_clear_irq_flags(chip);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	rc = qpnp_bsi_issue_transaction_wait_for_tx(chip, transaction, data);
 	if (rc)
 		return rc;
@@ -826,10 +866,17 @@ static int qpnp_bsi_send_burst_length(struct qpnp_bsi_chip *chip, int burst_len)
 	/*
 	 * Send burst read length bus commands according to the following:
 	 *
+<<<<<<< HEAD
 	 * 1                     --> No RBE or RBL
 	 * 2  - 15  = x          --> RBLx
 	 * 16 - 255 = 16 * y + x --> RBEy and RBLx (RBL0 not sent)
 	 * 256                   --> RBL0
+=======
+	 * 256                --> RBL0
+	 * 0-255 = 16 * y + x --> RBEy and RBLx
+	 *		RBE0 does not need to be sent
+	 *		RBL0 does not need to be sent
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	 */
 	if (burst_len == 256) {
 		rc = qpnp_bsi_issue_transaction(chip, BIF_TRANS_BC,
@@ -851,7 +898,11 @@ static int qpnp_bsi_send_burst_length(struct qpnp_bsi_chip *chip, int burst_len)
 			return rc;
 	}
 
+<<<<<<< HEAD
 	if (burst_len % 16 && burst_len > 1) {
+=======
+	if (burst_len % 16) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rc = qpnp_bsi_issue_transaction(chip, BIF_TRANS_BC,
 					BIF_CMD_RBL + (burst_len % 16));
 		if (rc)
@@ -906,6 +957,15 @@ static int qpnp_bsi_read_slave_registers(struct bif_ctrl_dev *bdev, u16 addr,
 	int rc, rc2, i, burst_len;
 	u8 buf[3];
 
+<<<<<<< HEAD
+=======
+	rc = qpnp_bsi_clear_bsi_error(chip);
+	if (rc)
+		return rc;
+
+	qpnp_bsi_clear_irq_flags(chip);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	qpnp_bsi_set_com_mode(chip, QPNP_BSI_COM_MODE_POLL);
 
 	rc = qpnp_bsi_set_bus_state(bdev, BIF_BUS_STATE_ACTIVE);
@@ -919,12 +979,15 @@ static int qpnp_bsi_read_slave_registers(struct bif_ctrl_dev *bdev, u16 addr,
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	rc = qpnp_bsi_clear_bsi_error(chip);
 	if (rc)
 		return rc;
 
 	qpnp_bsi_clear_irq_flags(chip);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	while (len > 0) {
 		burst_len = min(len, 256);
 
@@ -1001,6 +1064,15 @@ static int qpnp_bsi_write_slave_registers(struct bif_ctrl_dev *bdev, u16 addr,
 	unsigned long flags;
 	int rc, rc2, i;
 
+<<<<<<< HEAD
+=======
+	rc = qpnp_bsi_clear_bsi_error(chip);
+	if (rc)
+		return rc;
+
+	qpnp_bsi_clear_irq_flags(chip);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	qpnp_bsi_set_com_mode(chip, QPNP_BSI_COM_MODE_POLL);
 
 	rc = qpnp_bsi_set_bus_state(bdev, BIF_BUS_STATE_ACTIVE);
@@ -1014,12 +1086,15 @@ static int qpnp_bsi_write_slave_registers(struct bif_ctrl_dev *bdev, u16 addr,
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	rc = qpnp_bsi_clear_bsi_error(chip);
 	if (rc)
 		return rc;
 
 	qpnp_bsi_clear_irq_flags(chip);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	rc = qpnp_bsi_issue_transaction(chip, BIF_TRANS_ERA, addr >> 8);
 	if (rc)
 		return rc;
@@ -1075,6 +1150,15 @@ static int qpnp_bsi_bus_set_interrupt_mode(struct bif_ctrl_dev *bdev)
 	struct qpnp_bsi_chip *chip = bdev_get_drvdata(bdev);
 	int rc;
 
+<<<<<<< HEAD
+=======
+	rc = qpnp_bsi_clear_bsi_error(chip);
+	if (rc)
+		return rc;
+
+	qpnp_bsi_clear_irq_flags(chip);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	qpnp_bsi_set_com_mode(chip, QPNP_BSI_COM_MODE_IRQ);
 
 	/*
@@ -1099,12 +1183,15 @@ static int qpnp_bsi_bus_set_interrupt_mode(struct bif_ctrl_dev *bdev)
 	 */
 	chip->state = BIF_BUS_STATE_INTERRUPT;
 
+<<<<<<< HEAD
 	rc = qpnp_bsi_clear_bsi_error(chip);
 	if (rc)
 		return rc;
 
 	qpnp_bsi_clear_irq_flags(chip);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* Send EINT bus command. */
 	rc = qpnp_bsi_issue_transaction_wait_for_tx(chip, BIF_TRANS_BC,
 							BIF_CMD_EINT);

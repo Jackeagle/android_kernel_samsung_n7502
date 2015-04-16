@@ -104,7 +104,11 @@
 #define FLASH_LED_TORCH(base)		(base + 0xE4)
 #define FLASH_FAULT_DETECT(base)	(base + 0x51)
 #define FLASH_PERIPHERAL_SUBTYPE(base)	(base + 0x05)
+<<<<<<< HEAD
 #define FLASH_CURRENT_RAMP(base)	(base + 0x54)
+=======
+#define FLASH_CURRENT_RAMP(base)        (base + 0x54)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define FLASH_MAX_LEVEL			0x4F
 #define TORCH_MAX_LEVEL			0x0F
@@ -123,7 +127,11 @@
 #define FLASH_HW_VREG_OK		0x40
 #define FLASH_VREG_MASK			0xC0
 #define FLASH_STARTUP_DLY_MASK		0x02
+<<<<<<< HEAD
 #define FLASH_CURRENT_RAMP_MASK		0xBF
+=======
+#define FLASH_CURRENT_RAMP_MASK     0xBF
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define FLASH_ENABLE_ALL		0xE0
 #define FLASH_ENABLE_MODULE		0x80
@@ -134,7 +142,11 @@
 #define FLASH_ENABLE_LED_1		0xA0
 #define FLASH_INIT_MASK			0xE0
 #define	FLASH_SELFCHECK_ENABLE		0x80
+<<<<<<< HEAD
 #define FLASH_RAMP_STEP_27US		0xBF
+=======
+#define FLASH_RAMP_STEP_27US        0xBF
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define FLASH_STROBE_SW			0xC0
 #define FLASH_STROBE_HW			0x04
@@ -159,8 +171,13 @@
 #define FLASH_SUBTYPE_DUAL		0x01
 #define FLASH_SUBTYPE_SINGLE		0x02
 
+<<<<<<< HEAD
 #define FLASH_RAMP_UP_DELAY_US		1000
 #define FLASH_RAMP_DN_DELAY_US		2160
+=======
+#define FLASH_RAMP_UP_DELAY_US      1000
+#define FLASH_RAMP_DN_DELAY_US      2160
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define LED_TRIGGER_DEFAULT		"none"
 
@@ -222,6 +239,12 @@
 #define KPDBL_MODULE_DIS		0x00
 #define KPDBL_MODULE_EN_MASK		0x80
 
+<<<<<<< HEAD
+=======
+#define SAMSUNG_TKEY_LED_BRIGHTNESS  87
+
+#define DEBUG
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /**
  * enum qpnp_leds - QPNP supported led ids
  * @QPNP_ID_WLED - White led backlight
@@ -713,7 +736,11 @@ static int qpnp_mpp_set(struct qpnp_led_data *led)
 			duty_us = (led->mpp_cfg->pwm_cfg->pwm_period_us *
 					led->cdev.brightness) / LED_FULL;
 			/*config pwm for brightness scaling*/
+<<<<<<< HEAD
 			rc = pwm_config_us(led->mpp_cfg->pwm_cfg->pwm_dev,
+=======
+			rc = pwm_config(led->mpp_cfg->pwm_cfg->pwm_dev,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					duty_us,
 					led->mpp_cfg->pwm_cfg->pwm_period_us);
 			if (rc < 0) {
@@ -905,7 +932,13 @@ regulator_turn_off:
 	}
 	return 0;
 }
+<<<<<<< HEAD
 
+=======
+#if defined(CONFIG_QPNP_SEC_CHARGER)
+extern void change_boost_control(int on);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int qpnp_flash_set(struct qpnp_led_data *led)
 {
 	int rc, error;
@@ -920,6 +953,12 @@ static int qpnp_flash_set(struct qpnp_led_data *led)
 
 	/* Set led current */
 	if (val > 0) {
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_QPNP_SEC_CHARGER)
+		change_boost_control(1);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (led->flash_cfg->torch_enable) {
 			if (led->flash_cfg->peripheral_subtype ==
 							FLASH_SUBTYPE_DUAL) {
@@ -1075,10 +1114,17 @@ static int qpnp_flash_set(struct qpnp_led_data *led)
 				goto error_flash_set;
 			}
 
+<<<<<<< HEAD
 			/*
 			 * Add 1ms delay for bharger enter stable state
 			 */
 			usleep(FLASH_RAMP_UP_DELAY_US);
+=======
+            		/*
+             		 * Add 1ms delay for bharger enter stable state
+           		 */
+            		usleep(FLASH_RAMP_UP_DELAY_US);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 			if (!led->flash_cfg->strobe_type) {
 				rc = qpnp_led_masked_write(led,
@@ -1107,6 +1153,12 @@ static int qpnp_flash_set(struct qpnp_led_data *led)
 			}
 		}
 	} else {
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_QPNP_SEC_CHARGER)
+		change_boost_control(0);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		rc = qpnp_led_masked_write(led,
 			FLASH_LED_STROBE_CTRL(led->base),
 			led->flash_cfg->trigger_flash,
@@ -1161,6 +1213,7 @@ static int qpnp_flash_set(struct qpnp_led_data *led)
 			}
 		} else {
 			/*
+<<<<<<< HEAD
 			 * Disable module after ramp down complete for stable
 			 * behavior
 			 */
@@ -1170,6 +1223,21 @@ static int qpnp_flash_set(struct qpnp_led_data *led)
 				FLASH_ENABLE_CONTROL(led->base),
 				led->flash_cfg->enable_module &
 				~FLASH_ENABLE_MODULE_MASK,
+=======
+             		* Disable module after ramp down complete for stable
+             		* behavior
+             		*/
+            		usleep(FLASH_RAMP_DN_DELAY_US);
+
+			rc = qpnp_led_masked_write(led,
+				FLASH_ENABLE_CONTROL(led->base),
+#if defined(CONFIG_MACH_HLITE_EUR_3GDS) // Sleep current is high after running camera flash
+				led->flash_cfg->enable_module,
+#else
+				led->flash_cfg->enable_module &
+				~FLASH_ENABLE_MODULE_MASK,
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				FLASH_DISABLE_ALL);
 			if (rc) {
 				dev_err(&led->spmi_dev->dev,
@@ -1239,7 +1307,11 @@ static int qpnp_kpdbl_set(struct qpnp_led_data *led)
 		if (led->kpdbl_cfg->pwm_cfg->mode == PWM_MODE) {
 			duty_us = (led->kpdbl_cfg->pwm_cfg->pwm_period_us *
 				led->cdev.brightness) / KPDBL_MAX_LEVEL;
+<<<<<<< HEAD
 			rc = pwm_config_us(led->kpdbl_cfg->pwm_cfg->pwm_dev,
+=======
+			rc = pwm_config(led->kpdbl_cfg->pwm_cfg->pwm_dev,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					duty_us,
 					led->kpdbl_cfg->pwm_cfg->pwm_period_us);
 			if (rc < 0) {
@@ -1261,7 +1333,11 @@ static int qpnp_kpdbl_set(struct qpnp_led_data *led)
 			led->kpdbl_cfg->pwm_cfg->default_mode;
 
 		if (led->kpdbl_cfg->always_on) {
+<<<<<<< HEAD
 			rc = pwm_config_us(led->kpdbl_cfg->pwm_cfg->pwm_dev, 0,
+=======
+			rc = pwm_config(led->kpdbl_cfg->pwm_cfg->pwm_dev, 0,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					led->kpdbl_cfg->pwm_cfg->pwm_period_us);
 			if (rc < 0) {
 				dev_err(&led->spmi_dev->dev,
@@ -1310,8 +1386,12 @@ static int qpnp_rgb_set(struct qpnp_led_data *led)
 		if (led->rgb_cfg->pwm_cfg->mode == PWM_MODE) {
 			duty_us = (led->rgb_cfg->pwm_cfg->pwm_period_us *
 				led->cdev.brightness) / LED_FULL;
+<<<<<<< HEAD
 			rc = pwm_config_us(led->rgb_cfg->pwm_cfg->pwm_dev,
 					duty_us,
+=======
+			rc = pwm_config(led->rgb_cfg->pwm_cfg->pwm_dev, duty_us,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					led->rgb_cfg->pwm_cfg->pwm_period_us);
 			if (rc < 0) {
 				dev_err(&led->spmi_dev->dev,
@@ -1367,7 +1447,16 @@ static void qpnp_led_set(struct led_classdev *led_cdev,
 	if (value > led->cdev.max_brightness)
 		value = led->cdev.max_brightness;
 
+<<<<<<< HEAD
 	led->cdev.brightness = value;
+=======
+	pr_info("[LED]%s: %s value = %d\n", __func__, led_cdev->name, value);
+
+	if(strncmp(led_cdev->name, "button-backlight",  16))
+                led->cdev.brightness = value;
+        else
+                led->cdev.brightness = value?SAMSUNG_TKEY_LED_BRIGHTNESS:0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	schedule_work(&led->work);
 }
 
@@ -2317,11 +2406,19 @@ static int __devinit qpnp_flash_init(struct qpnp_led_data *led)
 	}
 
 	/* Set current ramp */
+<<<<<<< HEAD
 	rc = qpnp_led_masked_write(led, FLASH_CURRENT_RAMP(led->base),
 		FLASH_CURRENT_RAMP_MASK, FLASH_RAMP_STEP_27US);
 	if (rc) {
 		dev_err(&led->spmi_dev->dev,
 			"Current ramp reg write failed(%d)\n", rc);
+=======
+    	rc = qpnp_led_masked_write(led, FLASH_CURRENT_RAMP(led->base),
+			FLASH_CURRENT_RAMP_MASK, FLASH_RAMP_STEP_27US);
+    	if (rc) {
+		dev_err(&led->spmi_dev->dev,
+                     "Current ramp reg write failed(%d)\n", rc);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return rc;
 	}
 
@@ -2671,7 +2768,15 @@ static int __devinit qpnp_get_config_flash(struct qpnp_led_data *led,
 		led->flash_cfg->enable_module = FLASH_ENABLE_LED_0;
 		led->flash_cfg->current_addr = FLASH_LED_0_CURR(led->base);
 		led->flash_cfg->trigger_flash = FLASH_LED_0_OUTPUT;
+<<<<<<< HEAD
 		if (!*reg_set) {
+=======
+#if defined(CONFIG_MACH_HLITE_EUR_3GDS)
+		if (0) {
+#else
+		if (!*reg_set) {
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			led->flash_cfg->flash_boost_reg =
 				regulator_get(&led->spmi_dev->dev,
 							"flash-boost");
@@ -2694,7 +2799,15 @@ static int __devinit qpnp_get_config_flash(struct qpnp_led_data *led,
 		led->flash_cfg->enable_module = FLASH_ENABLE_LED_1;
 		led->flash_cfg->current_addr = FLASH_LED_1_CURR(led->base);
 		led->flash_cfg->trigger_flash = FLASH_LED_1_OUTPUT;
+<<<<<<< HEAD
 		if (!*reg_set) {
+=======
+#if defined(CONFIG_MACH_HLITE_EUR_3GDS)
+		if (0) {
+#else
+		if (!*reg_set) {
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			led->flash_cfg->flash_boost_reg =
 					regulator_get(&led->spmi_dev->dev,
 								"flash-boost");
@@ -2762,7 +2875,11 @@ static int __devinit qpnp_get_config_flash(struct qpnp_led_data *led,
 
 	rc = of_property_read_u32(node, "qcom,duration", &val);
 	if (!rc)
+<<<<<<< HEAD
 		led->flash_cfg->duration = (u8)((val - 10) / 10);
+=======
+		led->flash_cfg->duration = (((u8) val) - 10) / 10;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	else if (rc == -EINVAL)
 		led->flash_cfg->duration = FLASH_DURATION_200ms;
 	else
@@ -3356,6 +3473,10 @@ static int __devinit qpnp_leds_probe(struct spmi_device *spmi)
 		if (led->default_on) {
 			led->cdev.brightness = led->cdev.max_brightness;
 			__qpnp_led_work(led, led->cdev.brightness);
+<<<<<<< HEAD
+=======
+			schedule_work(&led->work);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			if (led->turn_off_delay_ms > 0)
 				qpnp_led_turn_off(led);
 		} else
@@ -3440,6 +3561,7 @@ static int __devexit qpnp_leds_remove(struct spmi_device *spmi)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 #ifdef CONFIG_OF
 static struct of_device_id spmi_match_table[] = {
@@ -3449,6 +3571,12 @@ static struct of_device_id spmi_match_table[] = {
 #else
 #define spmi_match_table NULL
 #endif
+=======
+static struct of_device_id spmi_match_table[] = {
+	{	.compatible = "qcom,leds-qpnp",
+	}
+};
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static struct spmi_driver qpnp_leds_driver = {
 	.driver		= {

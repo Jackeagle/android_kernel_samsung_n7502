@@ -238,7 +238,10 @@ struct mpq_decoder_buffers_desc {
  * with this stream buffer.
  * @patterns: pointer to the framing patterns to look for.
  * @patterns_num: number of framing patterns.
+<<<<<<< HEAD
  * @prev_pattern: holds the trailing data of the last processed video packet.
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * @frame_offset: Saves data buffer offset to which a new frame will be written
  * @last_pattern_offset: Holds the previous pattern offset
  * @pending_pattern_len: Accumulated number of data bytes that will be
@@ -289,7 +292,10 @@ struct mpq_video_feed_info {
 	const struct dvb_dmx_video_patterns
 		*patterns[DVB_DMX_MAX_SEARCH_PATTERN_NUM];
 	int patterns_num;
+<<<<<<< HEAD
 	char prev_pattern[DVB_DMX_MAX_PATTERN_LEN];
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	u32 frame_offset;
 	u32 last_pattern_offset;
 	u32 pending_pattern_len;

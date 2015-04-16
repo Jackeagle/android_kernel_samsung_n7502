@@ -54,12 +54,18 @@ struct hdmi_tx_ctrl {
 	struct hdmi_audio audio_data;
 
 	struct mutex mutex;
+<<<<<<< HEAD
 	struct mutex lut_lock;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct kobject *kobj;
 	struct switch_dev sdev;
 	struct switch_dev audio_sdev;
 	struct workqueue_struct *workq;
+<<<<<<< HEAD
 	spinlock_t hpd_state_lock;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	uint32_t video_resolution;
 
@@ -70,7 +76,10 @@ struct hdmi_tx_ctrl {
 	u32 hpd_off_pending;
 	u32 hpd_feature_on;
 	u32 hpd_initialized;
+<<<<<<< HEAD
 	u32 vote_hdmi_core_on;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	u8  timing_gen_on;
 	u32 mhl_max_pclk;
 	u8  mhl_hpd_on;
@@ -87,9 +96,12 @@ struct hdmi_tx_ctrl {
 
 	struct hdmi_tx_ddc_ctrl ddc_ctrl;
 
+<<<<<<< HEAD
 	void (*hdmi_tx_hpd_done) (void *data);
 	void *downstream_data;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	void *feature_data[HDMI_TX_FEAT_MAX];
 };
 

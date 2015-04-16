@@ -206,7 +206,11 @@ int ocmem_notifier_init(void);
 int check_notifier(int);
 const char *get_name(int);
 int get_tz_id(int);
+<<<<<<< HEAD
 int ocmem_restore_sec_program(int);
+=======
+int ocmem_enable_sec_program(int);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int ocmem_enable_dump(enum ocmem_client, unsigned long, unsigned long);
 int ocmem_disable_dump(enum ocmem_client, unsigned long, unsigned long);
 int check_id(int);

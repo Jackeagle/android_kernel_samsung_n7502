@@ -1339,7 +1339,11 @@ static int qcedev_vbuf_ablk_cipher_max_xfer(struct qcedev_async_req *areq,
 				areq->cipher_op_req.vbuf.src[0].len))
 		return -EFAULT;
 
+<<<<<<< HEAD
 	k_align_src += byteoffset + areq->cipher_op_req.vbuf.src[0].len;
+=======
+	k_align_src += areq->cipher_op_req.vbuf.src[0].len;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	for (i = 1; i < areq->cipher_op_req.entries; i++) {
 		user_src =
@@ -1602,6 +1606,14 @@ static int qcedev_vbuf_ablk_cipher(struct qcedev_async_req *areq,
 static int qcedev_check_cipher_key(struct qcedev_cipher_op_req *req,
 						struct qcedev_control *podev)
 {
+<<<<<<< HEAD
+=======
+
+	if (req->encklen < 0) {
+		pr_err("%s: Invalid key size: %d\n", __func__, req->encklen);
+		return -EINVAL;
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* if intending to use HW key make sure key fields are set
 	 * correctly and HW key is indeed supported in target
 	 */
@@ -1696,6 +1708,7 @@ static int qcedev_check_cipher_params(struct qcedev_cipher_op_req *req,
 			goto error;
 		}
 	}
+<<<<<<< HEAD
 
 	if (req->data_len < req->byteoffset) {
 		pr_err("%s: req data length %u is less than byteoffset %u\n",
@@ -1703,6 +1716,8 @@ static int qcedev_check_cipher_params(struct qcedev_cipher_op_req *req,
 		goto error;
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* Ensure zer ivlen for ECB  mode  */
 	if (req->ivlen > 0) {
 		if ((req->mode == QCEDEV_AES_MODE_ECB) ||
@@ -1718,6 +1733,7 @@ static int qcedev_check_cipher_params(struct qcedev_cipher_op_req *req,
 		}
 	}
 	/* Check for sum of all dst length is equal to data_len  */
+<<<<<<< HEAD
 	for (i = 0; (i < QCEDEV_MAX_BUFFERS) && (total < req->data_len); i++) {
 		if (req->vbuf.dst[i].len > ULONG_MAX - total) {
 			pr_err("%s: Integer overflow on total req dst vbuf length\n",
@@ -1726,12 +1742,17 @@ static int qcedev_check_cipher_params(struct qcedev_cipher_op_req *req,
 		}
 		total += req->vbuf.dst[i].len;
 	}
+=======
+	for (i = 0; (i < QCEDEV_MAX_BUFFERS) && (total < req->data_len); i++)
+		total += req->vbuf.dst[i].len;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (total != req->data_len) {
 		pr_err("%s: Total (i=%d) dst(%d) buf size != data_len (%d)\n",
 			__func__, i, total, req->data_len);
 		goto error;
 	}
 	/* Check for sum of all src length is equal to data_len  */
+<<<<<<< HEAD
 	for (i = 0, total = 0; i < req->entries; i++) {
 		if (req->vbuf.src[i].len > ULONG_MAX - total) {
 			pr_err("%s: Integer overflow on total req src vbuf length\n",
@@ -1740,6 +1761,10 @@ static int qcedev_check_cipher_params(struct qcedev_cipher_op_req *req,
 		}
 		total += req->vbuf.src[i].len;
 	}
+=======
+	for (i = 0, total = 0; i < req->entries; i++)
+		total += req->vbuf.src[i].len;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (total != req->data_len) {
 		pr_err("%s: Total src(%d) buf size != data_len (%d)\n",
 			__func__, total, req->data_len);
@@ -1795,6 +1820,7 @@ static int qcedev_check_sha_params(struct qcedev_sha_op_req *req,
 	}
 
 	/* Check for sum of all src length is equal to data_len  */
+<<<<<<< HEAD
 	for (i = 0, total = 0; i < req->entries; i++) {
 		if (req->data[i].len > ULONG_MAX - total) {
 			pr_err("%s: Integer overflow on total req buf length\n",
@@ -1804,6 +1830,10 @@ static int qcedev_check_sha_params(struct qcedev_sha_op_req *req,
 		total += req->data[i].len;
 	}
 
+=======
+	for (i = 0, total = 0; i < req->entries; i++)
+		total += req->data[i].len;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (total != req->data_len) {
 		pr_err("%s: Total src(%d) buf size != data_len (%d)\n",
 			__func__, total, req->data_len);
@@ -2133,6 +2163,7 @@ static int _disp_stats(int id)
 	int len = 0;
 
 	pstat = &_qcedev_stat;
+<<<<<<< HEAD
 	len = scnprintf(_debug_read_buf, DEBUG_MAX_RW_BUF - 1,
 			"\nQualcomm QCE dev driver %d Statistics:\n",
 				id + 1);
@@ -2148,6 +2179,23 @@ static int _disp_stats(int id)
 					pstat->qcedev_dec_success);
 
 	len += scnprintf(_debug_read_buf + len, DEBUG_MAX_RW_BUF - len - 1,
+=======
+	len = snprintf(_debug_read_buf, DEBUG_MAX_RW_BUF - 1,
+			"\nQualcomm QCE dev driver %d Statistics:\n",
+				id + 1);
+
+	len += snprintf(_debug_read_buf + len, DEBUG_MAX_RW_BUF - len - 1,
+			"   Encryption operation success       : %d\n",
+					pstat->qcedev_enc_success);
+	len += snprintf(_debug_read_buf + len, DEBUG_MAX_RW_BUF - len - 1,
+			"   Encryption operation fail   : %d\n",
+					pstat->qcedev_enc_fail);
+	len += snprintf(_debug_read_buf + len, DEBUG_MAX_RW_BUF - len - 1,
+			"   Decryption operation success     : %d\n",
+					pstat->qcedev_dec_success);
+
+	len += snprintf(_debug_read_buf + len, DEBUG_MAX_RW_BUF - len - 1,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			"   Encryption operation fail          : %d\n",
 					pstat->qcedev_dec_fail);
 

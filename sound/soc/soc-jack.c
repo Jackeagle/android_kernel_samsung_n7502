@@ -76,7 +76,11 @@ void snd_soc_jack_report(struct snd_soc_jack *jack, int status, int mask)
 	codec = jack->codec;
 	dapm =  &codec->dapm;
 
+<<<<<<< HEAD
 	mutex_lock(&jack->mutex);
+=======
+	mutex_lock(&codec->mutex);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	oldstatus = jack->status;
 
@@ -110,7 +114,11 @@ void snd_soc_jack_report(struct snd_soc_jack *jack, int status, int mask)
 	snd_jack_report(jack->jack, jack->status);
 
 out:
+<<<<<<< HEAD
 	mutex_unlock(&jack->mutex);
+=======
+	mutex_unlock(&codec->mutex);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 EXPORT_SYMBOL_GPL(snd_soc_jack_report);
 

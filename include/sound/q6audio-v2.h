@@ -15,6 +15,7 @@
 
 #include <mach/qdsp6v2/apr.h>
 
+<<<<<<< HEAD
 enum {
 	LEGACY_PCM_MODE = 0,
 	LOW_LATENCY_PCM_MODE,
@@ -22,6 +23,8 @@ enum {
 };
 
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int q6audio_get_port_index(u16 port_id);
 
 int q6audio_convert_virtual_to_portid(u16 port_id);

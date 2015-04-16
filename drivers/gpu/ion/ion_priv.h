@@ -85,16 +85,23 @@ struct ion_buffer {
 	char task_comm[TASK_COMM_LEN];
 	pid_t pid;
 };
+<<<<<<< HEAD
 void ion_buffer_destroy(struct ion_buffer *buffer);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /**
  * struct ion_heap_ops - ops to operate on a given heap
  * @allocate:		allocate memory
+<<<<<<< HEAD
  * @free:		free memory. Will be called with
  *			ION_FLAG_FREED_FROM_SHRINKER set in buffer flags when
  *			called from a shrinker. In that case, the pages being
  *			free'd must be truly free'd back to the system, not put
  *			in a page pool or otherwise cached.
+=======
+ * @free:		free memory
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * @phys		get physical address of a buffer (only define on
  *			physically contiguous heaps)
  * @map_dma		map the memory for dma to a scatterlist
@@ -120,7 +127,11 @@ struct ion_heap_ops {
 			 struct vm_area_struct *vma);
 	void (*unmap_user) (struct ion_heap *mapper, struct ion_buffer *buffer);
 	int (*print_debug)(struct ion_heap *heap, struct seq_file *s,
+<<<<<<< HEAD
 			   const struct list_head *mem_map);
+=======
+			   const struct rb_root *mem_map);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int (*secure_heap)(struct ion_heap *heap, int version, void *data);
 	int (*unsecure_heap)(struct ion_heap *heap, int version, void *data);
 	int (*secure_buffer)(struct ion_buffer *buffer, int version,
@@ -144,6 +155,7 @@ struct ion_heap_ops {
  *			allocating.  These are specified by platform data and
  *			MUST be unique
  * @name:		used for debugging
+<<<<<<< HEAD
  * @shrinker:		a shrinker for the heap, if the heap caches system
  *			memory, it must define a shrinker to return it on low
  *			memory conditions, this includes system memory cached
@@ -151,6 +163,10 @@ struct ion_heap_ops {
  * @priv:		private heap data
  * @free_list:		free list head if deferred free is used
  * @free_list_size	size of the deferred free list in bytes
+=======
+ * @priv:		private heap data
+ * @free_list:		free list head if deferred free is used
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * @lock:		protects the free list
  * @waitqueue:		queue to wait on from deferred free thread
  * @task:		task struct of deferred free thread
@@ -170,10 +186,15 @@ struct ion_heap {
 	unsigned long flags;
 	unsigned int id;
 	const char *name;
+<<<<<<< HEAD
 	struct shrinker shrinker;
 	void *priv;
 	struct list_head free_list;
 	size_t free_list_size;
+=======
+	void *priv;
+	struct list_head free_list;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct rt_mutex lock;
 	wait_queue_head_t waitqueue;
 	struct task_struct *task;
@@ -221,11 +242,14 @@ void ion_device_destroy(struct ion_device *dev);
  */
 void ion_device_add_heap(struct ion_device *dev, struct ion_heap *heap);
 
+<<<<<<< HEAD
 struct pages_mem {
 	struct page **pages;
 	void (*free_fn) (const void *);
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /**
  * some helpers for common operations on buffers using the sg_table
  * and vaddr fields
@@ -234,6 +258,7 @@ void *ion_heap_map_kernel(struct ion_heap *, struct ion_buffer *);
 void ion_heap_unmap_kernel(struct ion_heap *, struct ion_buffer *);
 int ion_heap_map_user(struct ion_heap *, struct ion_buffer *,
 			struct vm_area_struct *);
+<<<<<<< HEAD
 int ion_heap_pages_zero(struct page **pages, int num_pages,
 			bool should_invalidate);
 int ion_heap_buffer_zero(struct ion_buffer *buffer);
@@ -299,6 +324,9 @@ size_t ion_heap_freelist_drain_from_shrinker(struct ion_heap *heap,
  * @heap:		the heap
  */
 size_t ion_heap_freelist_size(struct ion_heap *heap);
+=======
+int ion_heap_buffer_zero(struct ion_buffer *buffer);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 
 /**
@@ -357,8 +385,11 @@ void ion_carveout_free(struct ion_heap *heap, ion_phys_addr_t addr,
  * @gfp_mask:		gfp_mask to use from alloc
  * @order:		order of pages in the pool
  * @list:		plist node for list of pools
+<<<<<<< HEAD
  * @should_invalidate:	whether or not the cache needs to be invalidated at
  *			page allocation time.
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * Allows you to keep a pool of pre allocated pages to use from your heap.
  * Keeping a pool of pages that is ready for dma, ie any cached mapping have
@@ -371,6 +402,7 @@ struct ion_page_pool {
 	struct list_head high_items;
 	struct list_head low_items;
 	struct mutex mutex;
+<<<<<<< HEAD
 	gfp_t gfp_mask;
 	unsigned int order;
 	struct plist_node list;
@@ -379,10 +411,21 @@ struct ion_page_pool {
 
 struct ion_page_pool *ion_page_pool_create(gfp_t gfp_mask, unsigned int order,
 	bool should_invalidate);
+=======
+	void *(*alloc)(struct ion_page_pool *pool);
+	void (*free)(struct ion_page_pool *pool, struct page *page);
+	gfp_t gfp_mask;
+	unsigned int order;
+	struct plist_node list;
+};
+
+struct ion_page_pool *ion_page_pool_create(gfp_t gfp_mask, unsigned int order);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void ion_page_pool_destroy(struct ion_page_pool *);
 void *ion_page_pool_alloc(struct ion_page_pool *);
 void ion_page_pool_free(struct ion_page_pool *, struct page *);
 
+<<<<<<< HEAD
 /** ion_page_pool_shrink - shrinks the size of the memory cached in the pool
  * @pool:		the pool
  * @gfp_mask:		the memory type to reclaim
@@ -401,4 +444,6 @@ struct ion_handle *ion_handle_get_by_id(struct ion_client *client,
 
 int ion_handle_put(struct ion_handle *handle);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif /* _ION_PRIV_H */

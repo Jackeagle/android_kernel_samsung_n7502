@@ -16,6 +16,47 @@
 #include "adreno_pm4types.h"
 #include "a2xx_reg.h"
 
+<<<<<<< HEAD
+=======
+/* Flags */
+
+#define CTXT_FLAGS_NOT_IN_USE		0x00000000
+#define CTXT_FLAGS_IN_USE		BIT(0)
+
+/* state shadow memory allocated */
+#define CTXT_FLAGS_STATE_SHADOW		BIT(1)
+
+/* gmem shadow memory allocated */
+#define CTXT_FLAGS_GMEM_SHADOW		BIT(2)
+/* gmem must be copied to shadow */
+#define CTXT_FLAGS_GMEM_SAVE		BIT(3)
+/* gmem can be restored from shadow */
+#define CTXT_FLAGS_GMEM_RESTORE		BIT(4)
+/* preamble packed in cmdbuffer for context switching */
+#define CTXT_FLAGS_PREAMBLE		BIT(5)
+/* shader must be copied to shadow */
+#define CTXT_FLAGS_SHADER_SAVE		BIT(6)
+/* shader can be restored from shadow */
+#define CTXT_FLAGS_SHADER_RESTORE	BIT(7)
+/* Context has caused a GPU hang */
+#define CTXT_FLAGS_GPU_HANG		BIT(8)
+/* Specifies there is no need to save GMEM */
+#define CTXT_FLAGS_NOGMEMALLOC          BIT(9)
+/* Trash state for context */
+#define CTXT_FLAGS_TRASHSTATE		BIT(10)
+/* per context timestamps enabled */
+#define CTXT_FLAGS_PER_CONTEXT_TS	BIT(11)
+/* Context has caused a GPU hang and fault tolerance successful */
+#define CTXT_FLAGS_GPU_HANG_FT	BIT(12)
+/* Context is being destroyed so dont save it */
+#define CTXT_FLAGS_BEING_DESTROYED	BIT(13)
+/* User mode generated timestamps enabled */
+#define CTXT_FLAGS_USER_GENERATED_TS    BIT(14)
+/* Context skip till EOF */
+#define CTXT_FLAGS_SKIP_EOF             BIT(15)
+/* Context no fault tolerance */
+#define CTXT_FLAGS_NO_FAULT_TOLERANCE  BIT(16)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 /* Symbolic table for the adreno draw context type */
 #define ADRENO_DRAWCTXT_TYPES \
@@ -31,6 +72,7 @@ struct adreno_context_type {
 	const char *str;
 };
 
+<<<<<<< HEAD
 #define ADRENO_CONTEXT_CMDQUEUE_SIZE 128
 
 #define ADRENO_CONTEXT_DEFAULT_PRIORITY 1
@@ -38,6 +80,8 @@ struct adreno_context_type {
 #define ADRENO_CONTEXT_STATE_ACTIVE 0
 #define ADRENO_CONTEXT_STATE_INVALID 1
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct kgsl_device;
 struct adreno_device;
 struct kgsl_device_private;
@@ -68,6 +112,7 @@ struct gmem_shadow_t {
 	struct kgsl_memdesc quad_vertices_restore;
 };
 
+<<<<<<< HEAD
 struct adreno_context;
 
 /**
@@ -131,20 +176,31 @@ extern const struct adreno_context_ops adreno_preamble_ctx_ops;
  * @queued: Number of commands queued in the cmdqueue
  * @ops: Context switch functions for this context.
  */
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct adreno_context {
 	struct kgsl_context base;
 	unsigned int ib_gpu_time_used;
 	unsigned int timestamp;
+<<<<<<< HEAD
 	unsigned int internal_timestamp;
 	int state;
 	unsigned long priv;
 	unsigned int type;
 	struct mutex mutex;
+=======
+	uint32_t flags;
+	unsigned int type;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct kgsl_memdesc gpustate;
 	unsigned int reg_restore[3];
 	unsigned int shader_save[3];
 	unsigned int shader_restore[3];
 
+<<<<<<< HEAD
+=======
+	/* Information of the GMEM shadow that is created in context create */
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct gmem_shadow_t context_gmem_shadow;
 
 	/* A2XX specific items */
@@ -165,6 +221,7 @@ struct adreno_context {
 	struct kgsl_memdesc constant_load_commands[3];
 	struct kgsl_memdesc cond_execs[4];
 	struct kgsl_memdesc hlsqcontrol_restore_commands[1];
+<<<<<<< HEAD
 
 	/* Dispatcher */
 	struct kgsl_cmdbatch *cmdqueue[ADRENO_CONTEXT_CMDQUEUE_SIZE];
@@ -205,10 +262,15 @@ enum adreno_context_priv {
 	ADRENO_CONTEXT_SKIP_EOF,
 	ADRENO_CONTEXT_FORCE_PREAMBLE,
 };
+=======
+};
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 struct kgsl_context *adreno_drawctxt_create(struct kgsl_device_private *,
 			uint32_t *flags);
 
+<<<<<<< HEAD
 int adreno_drawctxt_detach(struct kgsl_context *context);
 
 void adreno_drawctxt_destroy(struct kgsl_context *context);
@@ -217,12 +279,20 @@ void adreno_drawctxt_sched(struct kgsl_device *device,
 		struct kgsl_context *context);
 
 int adreno_drawctxt_switch(struct adreno_device *adreno_dev,
+=======
+void adreno_drawctxt_detach(struct kgsl_context *context);
+
+void adreno_drawctxt_destroy(struct kgsl_context *context);
+
+void adreno_drawctxt_switch(struct adreno_device *adreno_dev,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				struct adreno_context *drawctxt,
 				unsigned int flags);
 void adreno_drawctxt_set_bin_base_offset(struct kgsl_device *device,
 					struct kgsl_context *context,
 					unsigned int offset);
 
+<<<<<<< HEAD
 int adreno_drawctxt_wait(struct adreno_device *adreno_dev,
 		struct kgsl_context *context,
 		uint32_t timestamp, unsigned int timeout);
@@ -230,6 +300,8 @@ int adreno_drawctxt_wait(struct adreno_device *adreno_dev,
 void adreno_drawctxt_invalidate(struct kgsl_device *device,
 		struct kgsl_context *context);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* GPU context switch helper functions */
 
 void build_quad_vtxbuff(struct adreno_context *drawctxt,

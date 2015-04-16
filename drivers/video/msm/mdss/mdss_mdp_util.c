@@ -28,6 +28,10 @@
 #include "mdss_mdp.h"
 #include "mdss_mdp_formats.h"
 #include "mdss_debug.h"
+<<<<<<< HEAD
+=======
+#include "dlog.h"
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 enum {
 	MDP_INTR_VSYNC_INTF_0,
@@ -122,7 +126,10 @@ static inline void mdss_mdp_intr_done(int index)
 	if (fnc)
 		fnc(arg);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 irqreturn_t mdss_mdp_isr(int irq, void *ptr)
 {
 	struct mdss_data_type *mdata = ptr;
@@ -200,6 +207,7 @@ irqreturn_t mdss_mdp_isr(int irq, void *ptr)
 		mdss_misr_crc_collect(mdata, DISPLAY_MISR_HDMI);
 	}
 
+<<<<<<< HEAD
 	if (isr & MDSS_MDP_INTR_WB_0_DONE) {
 		mdss_mdp_intr_done(MDP_INTR_WB_0);
 		mdss_misr_crc_collect(mdata, DISPLAY_MISR_MDP);
@@ -214,6 +222,16 @@ irqreturn_t mdss_mdp_isr(int irq, void *ptr)
 		mdss_mdp_intr_done(MDP_INTR_WB_2);
 		mdss_misr_crc_collect(mdata, DISPLAY_MISR_MDP);
 	}
+=======
+	if (isr & MDSS_MDP_INTR_WB_0_DONE)
+		mdss_mdp_intr_done(MDP_INTR_WB_0);
+
+	if (isr & MDSS_MDP_INTR_WB_1_DONE)
+		mdss_mdp_intr_done(MDP_INTR_WB_1);
+
+	if (isr & MDSS_MDP_INTR_WB_2_DONE)
+		mdss_mdp_intr_done(MDP_INTR_WB_2);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 mdp_isr_done:
 	hist_isr = MDSS_MDP_REG_READ(MDSS_MDP_REG_HIST_INTR_STATUS);
@@ -598,7 +616,11 @@ int mdss_mdp_calc_phase_step(u32 src, u32 dst, u32 *out_phase)
 		return -EINVAL;
 
 	unit = 1 << PHASE_STEP_SHIFT;
+<<<<<<< HEAD
 	*out_phase = mult_frac(unit, src, dst);
+=======
+	*out_phase = mult_frac(src, unit, dst);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/* check if overflow is possible */
 	if (src > dst) {

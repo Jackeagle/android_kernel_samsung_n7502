@@ -374,12 +374,18 @@ static int sched_debug_show(struct seq_file *m, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SYSRQ_SCHED_DEBUG
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 void sysrq_sched_debug_show(void)
 {
 	sched_debug_show(NULL, NULL);
 }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static int sched_debug_open(struct inode *inode, struct file *filp)
 {

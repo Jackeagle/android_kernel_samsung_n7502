@@ -3905,7 +3905,11 @@ static int __init smux_init(void)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	log_ctx = ipc_log_context_create(1, "smux");
+=======
+	log_ctx = ipc_log_context_create(20, "smux");
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!log_ctx) {
 		SMUX_ERR("%s: unable to create log context\n", __func__);
 		disable_ipc_logging = 1;

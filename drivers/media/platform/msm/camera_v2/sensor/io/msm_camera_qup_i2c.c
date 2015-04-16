@@ -22,10 +22,13 @@
 #define S_I2C_DBG(fmt, args...) do { } while (0)
 #endif
 
+<<<<<<< HEAD
 #define I2C_COMPARE_MATCH 0
 #define I2C_COMPARE_MISMATCH 1
 #define I2C_POLL_MAX_ITERATION 20
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int32_t msm_camera_qup_i2c_rxdata(
 	struct msm_camera_i2c_client *dev_client, unsigned char *rxdata,
 	int data_length)
@@ -336,6 +339,7 @@ int32_t msm_camera_qup_i2c_write_table_w_microdelay(
 	}
 	return rc;
 }
+<<<<<<< HEAD
 
 static int32_t msm_camera_qup_i2c_compare(struct msm_camera_i2c_client *client,
 	uint32_t addr, uint16_t data,
@@ -543,3 +547,5 @@ int32_t msm_camera_qup_i2c_write_conf_tbl(
 	return rc;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60

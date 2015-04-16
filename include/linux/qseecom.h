@@ -127,7 +127,10 @@ struct qseecom_send_svc_cmd_req {
 
 enum qseecom_key_management_usage_type {
 	QSEOS_KM_USAGE_DISK_ENCRYPTION = 0x01,
+<<<<<<< HEAD
 	QSEOS_KM_USAGE_MAX
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct qseecom_create_key_req {
@@ -139,12 +142,15 @@ struct qseecom_wipe_key_req {
 	enum qseecom_key_management_usage_type usage;
 };
 
+<<<<<<< HEAD
 struct qseecom_update_key_userinfo_req {
 	unsigned char current_hash32[QSEECOM_HASH_SIZE];
 	unsigned char new_hash32[QSEECOM_HASH_SIZE];
 	enum qseecom_key_management_usage_type usage;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define SHA256_DIGEST_LENGTH	(256/8)
 /*
  * struct qseecom_save_partition_hash_req
@@ -170,6 +176,7 @@ enum qseecom_buffer_protection {
 	QSEOS_UNPROTECT_PROTECTED_BUFFER,
 };
 
+<<<<<<< HEAD
 enum qseecom_bandwidth_request_mode {
 	INACTIVE = 0,
 	LOW,
@@ -177,6 +184,8 @@ enum qseecom_bandwidth_request_mode {
 	HIGH,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /*
  * struct qseecom_send_modfd_resp - for send command ioctl request
  * @req_len - command buffer length
@@ -191,6 +200,10 @@ struct qseecom_send_modfd_listener_resp {
 	enum qseecom_buffer_protection protection_mode; /* in */
 };
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define QSEECOM_IOC_MAGIC    0x97
 
 
@@ -259,6 +272,7 @@ struct qseecom_send_modfd_listener_resp {
 
 #define QSEECOM_IOCTL_UNPROTECT_BUF \
 	_IOWR(QSEECOM_IOC_MAGIC, 22, int)
+<<<<<<< HEAD
 
 #define QSEECOM_IOCTL_SET_BUS_SCALING_REQ \
 	_IOWR(QSEECOM_IOC_MAGIC, 23, int)
@@ -266,4 +280,6 @@ struct qseecom_send_modfd_listener_resp {
 #define QSEECOM_IOCTL_UPDATE_KEY_USER_INFO_REQ \
 	_IOWR(QSEECOM_IOC_MAGIC, 24, struct qseecom_update_key_userinfo_req)
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif /* __QSEECOM_H_ */

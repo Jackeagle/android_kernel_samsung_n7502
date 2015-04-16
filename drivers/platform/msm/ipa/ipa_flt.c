@@ -802,11 +802,16 @@ int ipa_reset_flt(enum ipa_ip_type ip)
 	IPADBG("reset flt ip=%d\n", ip);
 	list_for_each_entry_safe(entry, next, &tbl->head_flt_rule_list, link) {
 		node = ipa_search(&ipa_ctx->flt_rule_hdl_tree, (u32)entry);
+<<<<<<< HEAD
 		if (node == NULL) {
 			WARN_ON(1);
 			mutex_unlock(&ipa_ctx->lock);
 			return -EFAULT;
 		}
+=======
+		if (node == NULL)
+			WARN_ON(1);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		if ((ip == IPA_IP_v4 &&
 		     entry->rule.attrib.attrib_mask == IPA_FLT_PROTOCOL &&
@@ -836,11 +841,16 @@ int ipa_reset_flt(enum ipa_ip_type ip)
 				link) {
 			node = ipa_search(&ipa_ctx->flt_rule_hdl_tree,
 					(u32)entry);
+<<<<<<< HEAD
 			if (node == NULL) {
 				WARN_ON(1);
 				mutex_unlock(&ipa_ctx->lock);
 				return -EFAULT;
 			}
+=======
+			if (node == NULL)
+				WARN_ON(1);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			list_del(&entry->link);
 			entry->tbl->rule_cnt--;
 			if (entry->rt_tbl)

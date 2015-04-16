@@ -450,11 +450,16 @@ int ipa_reset_hdr(void)
 			continue;
 
 		node = ipa_search(&ipa_ctx->hdr_hdl_tree, (u32) entry);
+<<<<<<< HEAD
 		if (node == NULL) {
 			WARN_ON(1);
 			mutex_unlock(&ipa_ctx->lock);
 			return -EFAULT;
 		}
+=======
+		if (node == NULL)
+			WARN_ON(1);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		list_del(&entry->link);
 		entry->cookie = 0;
 		kmem_cache_free(ipa_ctx->hdr_cache, entry);

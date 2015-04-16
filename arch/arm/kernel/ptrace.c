@@ -844,7 +844,11 @@ long arch_ptrace(struct task_struct *child, long request,
 #endif
 
 		case PTRACE_GET_THREAD_AREA:
+<<<<<<< HEAD
 			ret = put_user(task_thread_info(child)->tp_value[0],
+=======
+			ret = put_user(task_thread_info(child)->tp_value,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				       datap);
 			break;
 

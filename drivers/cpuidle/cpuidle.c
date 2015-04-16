@@ -23,7 +23,10 @@
 #include "cpuidle.h"
 
 DEFINE_PER_CPU(struct cpuidle_device *, cpuidle_devices);
+<<<<<<< HEAD
 DEFINE_PER_CPU(struct cpuidle_device, cpuidle_dev);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 DEFINE_MUTEX(cpuidle_lock);
 LIST_HEAD(cpuidle_detected_devices);
@@ -485,6 +488,7 @@ void cpuidle_unregister_device(struct cpuidle_device *dev)
 
 EXPORT_SYMBOL_GPL(cpuidle_unregister_device);
 
+<<<<<<< HEAD
 /*
  * cpuidle_unregister: unregister a driver and the devices. This function
  * can be used only if the driver has been previously registered through
@@ -556,6 +560,8 @@ int cpuidle_register(struct cpuidle_driver *drv,
 }
 EXPORT_SYMBOL_GPL(cpuidle_register);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #ifdef CONFIG_SMP
 
 static void smp_callback(void *v)

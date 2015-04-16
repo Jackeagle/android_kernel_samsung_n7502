@@ -15,16 +15,27 @@ msm_kgsl_core-y = \
 msm_kgsl_core-$(CONFIG_DEBUG_FS) += kgsl_debugfs.o
 msm_kgsl_core-$(CONFIG_MSM_KGSL_CFF_DUMP) += kgsl_cffdump.o
 msm_kgsl_core-$(CONFIG_MSM_KGSL_DRM) += kgsl_drm.o
+<<<<<<< HEAD
+=======
+msm_kgsl_core-$(CONFIG_MSM_SCM) += kgsl_pwrscale_trustzone.o
+msm_kgsl_core-$(CONFIG_MSM_SLEEP_STATS_DEVICE) += kgsl_pwrscale_idlestats.o
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 msm_kgsl_core-$(CONFIG_SYNC) += kgsl_sync.o
 
 msm_adreno-y += \
 	adreno_ringbuffer.o \
 	adreno_drawctxt.o \
+<<<<<<< HEAD
 	adreno_dispatch.o \
 	adreno_postmortem.o \
 	adreno_snapshot.o \
 	adreno_coresight.o \
 	adreno_trace.o \
+=======
+	adreno_postmortem.o \
+	adreno_snapshot.o \
+	adreno_coresight.o \
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	adreno_a2xx.o \
 	adreno_a2xx_trace.o \
 	adreno_a2xx_snapshot.o \

@@ -12,3 +12,7 @@ obj-y += common/ platform/ rc/ video/
 
 obj-$(CONFIG_VIDEO_DEV) += radio/
 obj-$(CONFIG_DVB_CORE)  += dvb/
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_TDMB)  += tdmb/
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60

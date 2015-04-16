@@ -44,6 +44,11 @@
 
 #include <asm/uaccess.h>
 
+<<<<<<< HEAD
+=======
+#include "../core/core.h"
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include "queue.h"
 
 MODULE_ALIAS("mmc:block");
@@ -198,6 +203,7 @@ static ssize_t power_ro_lock_show(struct device *dev,
 {
 	int ret;
 	struct mmc_blk_data *md = mmc_blk_get(dev_to_disk(dev));
+<<<<<<< HEAD
 	struct mmc_card *card;
 	int locked = 0;
 
@@ -205,6 +211,11 @@ static ssize_t power_ro_lock_show(struct device *dev,
 		return -EINVAL;
 
 	card = md->queue.card;
+=======
+	struct mmc_card *card = md->queue.card;
+	int locked = 0;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (card->ext_csd.boot_ro_lock & EXT_CSD_BOOT_WP_B_PERM_WP_EN)
 		locked = 2;
 	else if (card->ext_csd.boot_ro_lock & EXT_CSD_BOOT_WP_B_PWR_WP_EN)
@@ -230,8 +241,11 @@ static ssize_t power_ro_lock_store(struct device *dev,
 		return count;
 
 	md = mmc_blk_get(dev_to_disk(dev));
+<<<<<<< HEAD
 	if (!md)
 		return -EINVAL;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	card = md->queue.card;
 
 	mmc_rpm_hold(card->host, &card->dev);
@@ -271,9 +285,12 @@ static ssize_t force_ro_show(struct device *dev, struct device_attribute *attr,
 	int ret;
 	struct mmc_blk_data *md = mmc_blk_get(dev_to_disk(dev));
 
+<<<<<<< HEAD
 	if (!md)
 		return -EINVAL;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ret = snprintf(buf, PAGE_SIZE, "%d",
 		       get_disk_ro(dev_to_disk(dev)) ^
 		       md->read_only);
@@ -288,10 +305,13 @@ static ssize_t force_ro_store(struct device *dev, struct device_attribute *attr,
 	char *end;
 	struct mmc_blk_data *md = mmc_blk_get(dev_to_disk(dev));
 	unsigned long set = simple_strtoul(buf, &end, 0);
+<<<<<<< HEAD
 
 	if (!md)
 		return -EINVAL;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (end == buf) {
 		ret = -EINVAL;
 		goto out;
@@ -312,8 +332,11 @@ num_wr_reqs_to_start_packing_show(struct device *dev,
 	int num_wr_reqs_to_start_packing;
 	int ret;
 
+<<<<<<< HEAD
 	if (!md)
 		return -EINVAL;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	num_wr_reqs_to_start_packing = md->queue.num_wr_reqs_to_start_packing;
 
 	ret = snprintf(buf, PAGE_SIZE, "%d\n", num_wr_reqs_to_start_packing);
@@ -329,6 +352,7 @@ num_wr_reqs_to_start_packing_store(struct device *dev,
 {
 	int value;
 	struct mmc_blk_data *md = mmc_blk_get(dev_to_disk(dev));
+<<<<<<< HEAD
 	struct mmc_card *card;
 	int ret = count;
 
@@ -336,6 +360,11 @@ num_wr_reqs_to_start_packing_store(struct device *dev,
 		return -EINVAL;
 
 	card = md->queue.card;
+=======
+	struct mmc_card *card = md->queue.card;
+	int ret = count;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!card) {
 		ret = -EINVAL;
 		goto exit;
@@ -367,6 +396,7 @@ bkops_check_threshold_show(struct device *dev,
 				  struct device_attribute *attr, char *buf)
 {
 	struct mmc_blk_data *md = mmc_blk_get(dev_to_disk(dev));
+<<<<<<< HEAD
 	struct mmc_card *card;
 	int ret;
 
@@ -374,6 +404,11 @@ bkops_check_threshold_show(struct device *dev,
 		return -EINVAL;
 
 	card = md->queue.card;
+=======
+	struct mmc_card *card = md->queue.card;
+	int ret;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!card)
 		ret = -EINVAL;
 	else
@@ -391,6 +426,7 @@ bkops_check_threshold_store(struct device *dev,
 {
 	int value;
 	struct mmc_blk_data *md = mmc_blk_get(dev_to_disk(dev));
+<<<<<<< HEAD
 	struct mmc_card *card;
 	unsigned int card_size;
 	int ret = count;
@@ -399,6 +435,12 @@ bkops_check_threshold_store(struct device *dev,
 		return -EINVAL;
 
 	card = md->queue.card;
+=======
+	struct mmc_card *card = md->queue.card;
+	unsigned int card_size;
+	int ret = count;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!card) {
 		ret = -EINVAL;
 		goto exit;
@@ -436,8 +478,11 @@ no_pack_for_random_show(struct device *dev,
 	struct mmc_blk_data *md = mmc_blk_get(dev_to_disk(dev));
 	int ret;
 
+<<<<<<< HEAD
 	if (!md)
 		return -EINVAL;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	ret = snprintf(buf, PAGE_SIZE, "%d\n", md->queue.no_pack_for_random);
 
 	mmc_blk_put(md);
@@ -451,6 +496,7 @@ no_pack_for_random_store(struct device *dev,
 {
 	int value;
 	struct mmc_blk_data *md = mmc_blk_get(dev_to_disk(dev));
+<<<<<<< HEAD
 	struct mmc_card *card;
 	int ret = count;
 
@@ -458,6 +504,11 @@ no_pack_for_random_store(struct device *dev,
 		return -EINVAL;
 
 	card = md->queue.card;
+=======
+	struct mmc_card *card = md->queue.card;
+	int ret = count;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (!card) {
 		ret = -EINVAL;
 		goto exit;
@@ -610,6 +661,47 @@ static int ioctl_rpmb_card_status_poll(struct mmc_card *card, u32 *status,
 	return err;
 }
 
+<<<<<<< HEAD
+=======
+struct scatterlist *mmc_blk_get_sg(struct mmc_card *card,
+     unsigned char *buf, int *sg_len, int size)
+{
+	struct scatterlist *sg;
+	struct scatterlist *sl;
+	int total_sec_cnt, sec_cnt;
+	int max_seg_size, len;
+
+	total_sec_cnt = size;
+	max_seg_size = card->host->max_seg_size;
+	len = (size - 1 + max_seg_size) / max_seg_size;
+	sl = kmalloc(sizeof(struct scatterlist) * len, GFP_KERNEL);
+
+	if (!sl) {
+		return NULL;
+	}
+	sg = (struct scatterlist *)sl;
+	sg_init_table(sg, len);
+
+	while (total_sec_cnt) {
+		if (total_sec_cnt < max_seg_size)
+			sec_cnt = total_sec_cnt;
+		else
+			sec_cnt = max_seg_size;
+			sg_set_page(sg, virt_to_page(buf), sec_cnt, offset_in_page(buf));
+			buf = buf + sec_cnt;
+			total_sec_cnt = total_sec_cnt - sec_cnt;
+			if (total_sec_cnt == 0)
+				break;
+			sg = sg_next(sg);
+	}
+
+	if (sg)
+		sg_mark_end(sg);
+	*sg_len = len;
+	return sl;
+}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int mmc_blk_ioctl_cmd(struct block_device *bdev,
 	struct mmc_ioc_cmd __user *ic_ptr)
 {
@@ -619,7 +711,11 @@ static int mmc_blk_ioctl_cmd(struct block_device *bdev,
 	struct mmc_command cmd = {0};
 	struct mmc_data data = {0};
 	struct mmc_request mrq = {NULL};
+<<<<<<< HEAD
 	struct scatterlist sg;
+=======
+	struct scatterlist *sg = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int err;
 
 	/*
@@ -651,12 +747,22 @@ static int mmc_blk_ioctl_cmd(struct block_device *bdev,
 	cmd.flags = idata->ic.flags;
 
 	if (idata->buf_bytes) {
+<<<<<<< HEAD
 		data.sg = &sg;
 		data.sg_len = 1;
 		data.blksz = idata->ic.blksz;
 		data.blocks = idata->ic.blocks;
 
 		sg_init_one(data.sg, idata->buf, idata->buf_bytes);
+=======
+		int len;
+		data.blksz = idata->ic.blksz;
+		data.blocks = idata->ic.blocks;
+
+		sg = mmc_blk_get_sg(card, idata->buf, &len, idata->buf_bytes);
+		data.sg = sg;
+		data.sg_len = len;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		if (idata->ic.write_flag)
 			data.flags = MMC_DATA_WRITE;
@@ -742,6 +848,11 @@ cmd_rel_host:
 
 cmd_done:
 	mmc_blk_put(md);
+<<<<<<< HEAD
+=======
+	if (sg)
+		kfree(sg);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 blk_err:
 	kfree(idata->buf);
 	kfree(idata);
@@ -805,7 +916,11 @@ static int mmc_blk_ioctl_rpmb_cmd(struct block_device *bdev,
 	/* make sure this is a rpmb partition */
 	if ((!md) || (!(md->area_type & MMC_BLK_DATA_AREA_RPMB))) {
 		err = -EINVAL;
+<<<<<<< HEAD
 		return err;
+=======
+		goto cmd_done;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	idata = mmc_blk_ioctl_rpmb_copy_from_user(ic_ptr);
@@ -934,9 +1049,36 @@ cmd_done:
 static int mmc_blk_ioctl(struct block_device *bdev, fmode_t mode,
 	unsigned int cmd, unsigned long arg)
 {
+<<<<<<< HEAD
 	int ret = -EINVAL;
 	if (cmd == MMC_IOC_CMD)
 		ret = mmc_blk_ioctl_cmd(bdev, (struct mmc_ioc_cmd __user *)arg);
+=======
+	struct mmc_blk_data *md = bdev->bd_disk->private_data;
+	struct mmc_card *card = md->queue.card;
+	int ret = -EINVAL;
+
+	if (cmd == MMC_IOC_CMD)
+		ret = mmc_blk_ioctl_cmd(bdev, (struct mmc_ioc_cmd __user *)arg);
+	else if(cmd == MMC_IOC_CLOCK)
+	{
+		unsigned int clock = (unsigned int)arg;
+		if( clock < card->host->f_min )
+			clock = card->host->f_min;
+
+		mmc_set_clock(card->host, clock);
+		printk(KERN_DEBUG "MMC_IOC_CLOCK : %dhz\n", clock);
+		ret = 0;
+	}
+	else if(cmd == MMC_IOC_BUSWIDTH)
+	{
+		unsigned int width = (unsigned int)arg;
+		mmc_set_bus_width(card->host, width);
+		printk(KERN_DEBUG "MMC_IOC_BUSWIDTH : %d\n",width);
+		ret = 0;
+	}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (cmd == MMC_IOC_RPMB_CMD)
 		ret = mmc_blk_ioctl_rpmb_cmd(bdev,
 				(struct mmc_ioc_rpmb __user *)arg);
@@ -1756,6 +1898,10 @@ static void mmc_blk_rw_rq_prep(struct mmc_queue_req *mqrq,
 	struct request *req = mqrq->req;
 	struct mmc_blk_data *md = mq->data;
 	bool do_data_tag;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/*
 	 * Reliable writes are used to implement Forced Unit Access and
@@ -1769,6 +1915,11 @@ static void mmc_blk_rw_rq_prep(struct mmc_queue_req *mqrq,
 		(rq_data_dir(req) == WRITE) &&
 		(md->flags & MMC_BLK_REL_WR);
 
+<<<<<<< HEAD
+=======
+	spin_lock_irqsave(&card->host->mrq_lock, flags);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	memset(brq, 0, sizeof(struct mmc_blk_request));
 	brq->mrq.cmd = &brq->cmd;
 	brq->mrq.data = &brq->data;
@@ -1897,6 +2048,12 @@ static void mmc_blk_rw_rq_prep(struct mmc_queue_req *mqrq,
 
 	mqrq->mmc_active.mrq = &brq->mrq;
 	mqrq->mmc_active.cmd_flags = req->cmd_flags;
+<<<<<<< HEAD
+=======
+
+	spin_unlock_irqrestore(&card->host->mrq_lock, flags);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (mq->err_check_fn)
 		mqrq->mmc_active.err_check = mq->err_check_fn;
 	else
@@ -2703,8 +2860,12 @@ out:
 	 */
 	if ((!req && !(mq->flags & MMC_QUEUE_NEW_REQUEST)) ||
 			((mq->flags & MMC_QUEUE_URGENT_REQUEST) &&
+<<<<<<< HEAD
 			 !(mq->mqrq_cur->req->cmd_flags &
 				MMC_REQ_NOREINSERT_MASK))) {
+=======
+				!(mq->mqrq_cur->req->cmd_flags & REQ_URGENT))) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		if (mmc_card_need_bkops(card))
 			mmc_start_bkops(card, false);
 		/* release host only when there are no more requests */
@@ -2834,11 +2995,16 @@ static struct mmc_blk_data *mmc_blk_alloc_req(struct mmc_card *card,
  err_putdisk:
 	put_disk(md->disk);
  err_kfree:
+<<<<<<< HEAD
 	if (!subname)
 		__clear_bit(md->name_idx, name_use);
 	kfree(md);
  out:
 	__clear_bit(devidx, dev_use);
+=======
+	kfree(md);
+ out:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return ERR_PTR(ret);
 }
 
@@ -3299,3 +3465,7 @@ module_exit(mmc_blk_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Multimedia Card (MMC) block device driver");
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60

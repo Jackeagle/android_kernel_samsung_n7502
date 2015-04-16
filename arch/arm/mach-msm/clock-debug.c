@@ -23,7 +23,10 @@
 #include <linux/clkdev.h>
 #include <linux/uaccess.h>
 #include <linux/mutex.h>
+<<<<<<< HEAD
 #include <linux/io.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #include <mach/clk-provider.h>
 
@@ -33,7 +36,11 @@ static LIST_HEAD(clk_list);
 static DEFINE_SPINLOCK(clk_list_lock);
 
 static struct dentry *debugfs_base;
+<<<<<<< HEAD
 static u32 debug_suspend;
+=======
+static u32 debug_suspend = 1;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 struct clk_table {
 	struct list_head node;
@@ -413,6 +420,7 @@ static const struct file_operations clock_parent_fops = {
 	.write		= clock_parent_write,
 };
 
+<<<<<<< HEAD
 void clk_debug_print_hw(struct clk *clk, struct seq_file *f)
 {
 	void __iomem *base;
@@ -463,6 +471,8 @@ static const struct file_operations clock_print_hw_fops = {
 };
 
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int clock_debug_add(struct clk *clock)
 {
 	char temp[50], *ptr;
@@ -514,10 +524,13 @@ static int clock_debug_add(struct clk *clock)
 				&clock_parent_fops))
 			goto error;
 
+<<<<<<< HEAD
 	if (!debugfs_create_file("print", S_IRUGO, clk_dir, clock,
 				&clock_print_hw_fops))
 			goto error;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return 0;
 error:
 	debugfs_remove_recursive(clk_dir);
@@ -607,3 +620,8 @@ void clock_debug_print_enabled(void)
 
 	clock_debug_print_enabled_clocks(NULL);
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60

@@ -111,6 +111,7 @@ config UIO_PRUSS
 	  To compile this driver as a module, choose M here: the module
 	  will be called uio_pruss.
 
+<<<<<<< HEAD
 config UIO_MSM_SHAREDMEM
 	bool "MSM shared memory driver"
 	default n
@@ -118,4 +119,6 @@ config UIO_MSM_SHAREDMEM
 	  Provides the clients with their respective alloted shared memory
 	  addresses which are used as transport buffer.
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 endif

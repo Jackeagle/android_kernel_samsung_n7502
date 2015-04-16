@@ -381,7 +381,11 @@ static int ecm_qc_bam_setup(void)
 
 static int ecm_qc_bam_connect(struct f_ecm_qc *dev)
 {
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret = -1;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	u8 src_connection_idx, dst_connection_idx;
 	struct usb_composite_dev *cdev = dev->port.func.config->cdev;
 	struct usb_gadget *gadget = cdev->gadget;
@@ -423,6 +427,11 @@ static int ecm_qc_bam_disconnect(struct f_ecm_qc *dev)
 
 	bam_data_disconnect(&dev->bam_port, 0);
 
+<<<<<<< HEAD
+=======
+	ecm_ipa_cleanup(ipa_params.private);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return 0;
 }
 

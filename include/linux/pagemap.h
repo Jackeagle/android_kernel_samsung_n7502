@@ -205,6 +205,7 @@ extern struct page *__page_cache_alloc(gfp_t gfp);
 #else
 static inline struct page *__page_cache_alloc(gfp_t gfp)
 {
+<<<<<<< HEAD
 	struct page *page;
 
 	page = alloc_pages(gfp, 0);
@@ -215,6 +216,9 @@ static inline struct page *__page_cache_alloc(gfp_t gfp)
 	}
 
 	return page;
+=======
+	return alloc_pages(gfp, 0);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 #endif
 
@@ -295,11 +299,14 @@ static inline loff_t page_offset(struct page *page)
 	return ((loff_t)page->index) << PAGE_CACHE_SHIFT;
 }
 
+<<<<<<< HEAD
 static inline loff_t page_file_offset(struct page *page)
 {
 	return ((loff_t)page_file_index(page)) << PAGE_CACHE_SHIFT;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 extern pgoff_t linear_hugepage_index(struct vm_area_struct *vma,
 				     unsigned long address);
 

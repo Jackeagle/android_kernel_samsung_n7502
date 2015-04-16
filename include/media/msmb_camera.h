@@ -8,19 +8,31 @@
 #define MSM_CAM_V4L2_IOCTL_NOTIFY \
 	_IOW('V', BASE_VIDIOC_PRIVATE + 30, struct v4l2_event)
 
+<<<<<<< HEAD
 #define MSM_CAM_V4L2_IOCTL_NOTIFY_META \
+=======
+#define MSM_CAM_V4L2_IOCTL_NOTIFY_ERROR \
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	_IOW('V', BASE_VIDIOC_PRIVATE + 31, struct v4l2_event)
 
 #define MSM_CAM_V4L2_IOCTL_CMD_ACK \
 	_IOW('V', BASE_VIDIOC_PRIVATE + 32, struct v4l2_event)
 
+<<<<<<< HEAD
 #define MSM_CAM_V4L2_IOCTL_NOTIFY_ERROR \
+=======
+#define MSM_CAM_V4L2_IOCTL_NOTIFY_MODULE_STATUS \
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	_IOW('V', BASE_VIDIOC_PRIVATE + 33, struct v4l2_event)
 
 #define QCAMERA_DEVICE_GROUP_ID	1
 #define QCAMERA_VNODE_GROUP_ID	2
 #define MSM_CAMERA_NAME					"msm_camera"
 #define MSM_CONFIGURATION_NAME	"msm_config"
+<<<<<<< HEAD
+=======
+#define MSM_CAMERA_DUMMY_NAME   "msm_cam_dummy"
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define MSM_CAMERA_SUBDEV_CSIPHY       0
 #define MSM_CAMERA_SUBDEV_CSID         1
@@ -36,6 +48,7 @@
 #define MSM_CAMERA_SUBDEV_LED_FLASH    11
 #define MSM_CAMERA_SUBDEV_STROBE_FLASH 12
 #define MSM_CAMERA_SUBDEV_BUF_MNGR     13
+<<<<<<< HEAD
 
 #define MSM_MAX_CAMERA_SENSORS  5
 
@@ -46,6 +59,12 @@
  * configured in future*/
 #define MSM_CAMERA_MAX_STREAM_BUF 40
 
+=======
+#define MSM_CAMERA_SUBDEV_SENSOR_INIT  14
+
+#define MSM_MAX_CAMERA_SENSORS  5
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* featur base */
 #define MSM_CAMERA_FEATURE_BASE     0x00010000
 #define MSM_CAMERA_FEATURE_SHUTDOWN (MSM_CAMERA_FEATURE_BASE + 1)

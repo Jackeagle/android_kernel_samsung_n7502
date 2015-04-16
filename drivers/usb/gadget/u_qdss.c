@@ -14,7 +14,10 @@
 #include <linux/device.h>
 #include <linux/usb/msm_hsusb.h>
 #include <mach/usb_bam.h>
+<<<<<<< HEAD
 #include "gadget_chips.h"
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 struct  usb_qdss_bam_connect_info {
 	u32 usb_bam_pipe_idx;
@@ -89,11 +92,16 @@ static int set_qdss_data_connection(struct usb_gadget *gadget,
 			&bam_info.usb_bam_pipe_idx, &bam_info.peer_pipe_idx,
 			NULL, bam_info.data_fifo);
 
+<<<<<<< HEAD
 		if (gadget_is_dwc3(gadget))
 			msm_data_fifo_config(data_ep,
 					     bam_info.data_fifo->phys_base,
 					     bam_info.data_fifo->size,
 					     bam_info.usb_bam_pipe_idx);
+=======
+		msm_data_fifo_config(data_ep, bam_info.data_fifo->phys_base,
+			bam_info.data_fifo->size, bam_info.usb_bam_pipe_idx);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	} else {
 		kfree(bam_info.data_fifo);
 		res = usb_bam_disconnect_pipe(idx);

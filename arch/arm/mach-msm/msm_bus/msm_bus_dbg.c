@@ -628,19 +628,31 @@ static int __init msm_bus_debugfs_init(void)
 	}
 
 	clients = debugfs_create_dir("client-data", dir);
+<<<<<<< HEAD
 	if ((!dir) || IS_ERR(dir)) {
+=======
+	if ((!clients) || IS_ERR(clients)) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		MSM_BUS_ERR("Couldn't create clients\n");
 		goto err;
 	}
 
 	shell_client = debugfs_create_dir("shell-client", dir);
+<<<<<<< HEAD
 	if ((!dir) || IS_ERR(dir)) {
+=======
+	if ((!shell_client) || IS_ERR(shell_client)) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		MSM_BUS_ERR("Couldn't create clients\n");
 		goto err;
 	}
 
 	commit = debugfs_create_dir("commit-data", dir);
+<<<<<<< HEAD
 	if ((!dir) || IS_ERR(dir)) {
+=======
+	if ((!commit) || IS_ERR(commit)) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		MSM_BUS_ERR("Couldn't create commit\n");
 		goto err;
 	}

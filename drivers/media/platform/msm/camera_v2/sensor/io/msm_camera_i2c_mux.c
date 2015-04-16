@@ -146,22 +146,39 @@ static int __devinit i2c_mux_probe(struct platform_device *pdev)
 	if (!mux_device->rw_mem) {
 		pr_err("%s: no mem resource?\n", __func__);
 		rc = -ENODEV;
+<<<<<<< HEAD
 		goto i2c_mux_no_resource;
+=======
+		goto i2c_mux_no_resource1;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	mux_device->rw_io = request_mem_region(mux_device->rw_mem->start,
 		resource_size(mux_device->rw_mem), pdev->name);
 	if (!mux_device->rw_io) {
 		pr_err("%s: no valid mem region\n", __func__);
 		rc = -EBUSY;
+<<<<<<< HEAD
 		goto i2c_mux_no_resource;
 	}
 	mux_device->pdev = pdev;
 	return 0;
+=======
+		goto i2c_mux_no_resource1;
+	}
+	mux_device->pdev = pdev;
+	return 0;
+i2c_mux_no_resource1:
+	release_mem_region(mux_device->ctl_mem->start, resource_size(mux_device->ctl_mem));
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 i2c_mux_no_resource:
 	mutex_destroy(&mux_device->mutex);
 	kfree(mux_device);
+<<<<<<< HEAD
 	return 0;
+=======
+	return rc;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static struct platform_driver i2c_mux_driver = {

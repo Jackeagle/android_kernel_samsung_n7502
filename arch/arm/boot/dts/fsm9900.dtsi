@@ -85,9 +85,14 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
+<<<<<<< HEAD
 		qcom,ion-heap@25 {
 			reg = <25>;
 			qcom,ion-heap-type = "SYSTEM";
+=======
+		qcom,ion-heap@30 { /* SYSTEM HEAP */
+			reg = <30>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		};
 	};
 

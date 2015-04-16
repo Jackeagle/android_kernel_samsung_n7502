@@ -25,7 +25,10 @@ int msm_venc_s_fmt(void *instance, struct v4l2_format *f);
 int msm_venc_g_fmt(void *instance, struct v4l2_format *f);
 int msm_venc_s_ctrl(void *instance, struct v4l2_control *a);
 int msm_venc_g_ctrl(void *instance, struct v4l2_control *a);
+<<<<<<< HEAD
 int msm_venc_s_ext_ctrl(void *instance, struct v4l2_ext_controls *a);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int msm_venc_reqbufs(void *instance, struct v4l2_requestbuffers *b);
 int msm_venc_prepare_buf(struct msm_vidc_inst *inst, struct v4l2_buffer *b);
 int msm_venc_release_buf(struct msm_vidc_inst *inst, struct v4l2_buffer *b);

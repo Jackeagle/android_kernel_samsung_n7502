@@ -235,10 +235,17 @@ registration order.
 Get/put handle for a BIF slave:
 -------------------------------
 
+<<<<<<< HEAD
 int bif_slave_match_count(struct bif_ctrl *ctrl,
 			const struct bif_match_criteria *match_criteria);
 
 struct bif_slave *bif_slave_match_get(struct bif_ctrl *ctrl,
+=======
+int bif_slave_match_count(const struct bif_ctrl *ctrl,
+			const struct bif_match_criteria *match_criteria);
+
+struct bif_slave *bif_slave_match_get(const struct bif_ctrl *ctrl,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	unsigned int id, const struct bif_match_criteria *match_criteria);
 
 void bif_slave_put(struct bif_slave *slave);
@@ -293,6 +300,10 @@ int bif_ctrl_notifier_register(struct bif_ctrl *ctrl,
 int bif_ctrl_notifier_unregister(struct bif_ctrl *ctrl,
 				struct notifier_block *nb);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 Read or write BIF slave registers:
 ----------------------------------
 
@@ -301,6 +312,7 @@ int bif_slave_read(struct bif_slave *slave, u16 addr, u8 *buf, int len);
 int bif_slave_write(struct bif_slave *slave, u16 addr, u8 *buf, int len);
 
 
+<<<<<<< HEAD
 BIF slave non-volatile memory manipulation:
 -------------------------------------------
 
@@ -348,6 +360,8 @@ existing object data.  bif_object_delete() can be used to delete a object from
 the NVM object list and shift all of the objects after it in order to fill the
 deleted object's space.
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 Get or set the BIF bus state or period:
 ---------------------------------------
 
@@ -387,17 +401,24 @@ int bif_trigger_task(struct bif_slave *slave, unsigned int task);
 
 int bif_task_is_busy(struct bif_slave *slave, unsigned int task);
 
+<<<<<<< HEAD
 int bif_enable_auto_task(struct bif_slave *slave, unsigned int task);
 
 int bif_disable_auto_task(struct bif_slave *slave, unsigned int task);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 A consumer can request a slave interrupt and specify a notifier to call when the
 interrupt is triggered.  Once the interrupt is requested the consumer will need
 to call bif_trigger_task() in order to start the task associated with the
 interrupt (both are identified by the same index).  Polling for task completion
+<<<<<<< HEAD
 is also supported via the bif_task_is_busy() function.  Auto task triggered can
 be enabled and disabled for a given task using bif_enable_auto_task() and
 bif_disable_auto_task() respectively.
+=======
+is also supported via the bif_task_is_busy() function.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 Raw BIF bus transactions:
 -------------------------

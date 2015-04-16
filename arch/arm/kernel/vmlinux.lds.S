@@ -151,6 +151,7 @@ SECTIONS
 #endif
 	__init_begin = .;
 #endif
+<<<<<<< HEAD
 	/*
 	 * The vectors and stubs are relocatable code, and the
 	 * only thing that matters is their relative offsets
@@ -168,6 +169,8 @@ SECTIONS
 	}
 	. = __stubs_start + SIZEOF(.stubs);
 	__stubs_end = .;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	INIT_TEXT_SECTION(8)
 	.exit.text : {

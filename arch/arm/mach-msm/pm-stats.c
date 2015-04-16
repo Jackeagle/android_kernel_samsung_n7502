@@ -36,6 +36,7 @@ struct msm_pm_cpu_time_stats {
 	struct msm_pm_time_stats stats[MSM_PM_STAT_COUNT];
 };
 
+<<<<<<< HEAD
 static struct msm_pm_time_stats suspend_stats;
 
 static DEFINE_SPINLOCK(msm_pm_stats_lock);
@@ -62,12 +63,45 @@ static void update_stats(struct msm_pm_time_stats *stats, int64_t t)
 			(CONFIG_MSM_IDLE_STATS_BUCKET_COUNT - 1)))
 		i = DIV_ROUND_UP(fls((uint32_t)bt),
 			CONFIG_MSM_IDLE_STATS_BUCKET_SHIFT);
+=======
+static DEFINE_SPINLOCK(msm_pm_stats_lock);
+static DEFINE_PER_CPU_SHARED_ALIGNED(
+	struct msm_pm_cpu_time_stats, msm_pm_stats);
+
+/*
+ * Add the given time data to the statistics collection.
+ */
+void msm_pm_add_stat(enum msm_pm_time_stats_id id, int64_t t)
+{
+	unsigned long flags;
+	struct msm_pm_time_stats *stats;
+	int64_t bt;
+	int i;
+
+	spin_lock_irqsave(&msm_pm_stats_lock, flags);
+	stats = __get_cpu_var(msm_pm_stats).stats;
+
+	if (!stats[id].enabled)
+		goto add_bail;
+
+	stats[id].total_time += t;
+	stats[id].count++;
+
+	bt = t;
+	do_div(bt, stats[id].first_bucket_time);
+
+	if (bt < 1ULL << (CONFIG_MSM_IDLE_STATS_BUCKET_SHIFT *
+				(CONFIG_MSM_IDLE_STATS_BUCKET_COUNT - 1)))
+		i = DIV_ROUND_UP(fls((uint32_t)bt),
+					CONFIG_MSM_IDLE_STATS_BUCKET_SHIFT);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	else
 		i = CONFIG_MSM_IDLE_STATS_BUCKET_COUNT - 1;
 
 	if (i >= CONFIG_MSM_IDLE_STATS_BUCKET_COUNT)
 		i = CONFIG_MSM_IDLE_STATS_BUCKET_COUNT - 1;
 
+<<<<<<< HEAD
 	stats->bucket[i]++;
 
 	if (t < stats->min_time[i] || !stats->max_time[i])
@@ -94,10 +128,20 @@ void msm_pm_add_stat(enum msm_pm_time_stats_id id, int64_t t)
 		stats = &stats[id];
 	}
 	update_stats(stats, t);
+=======
+	stats[id].bucket[i]++;
+
+	if (t < stats[id].min_time[i] || !stats[id].max_time[i])
+		stats[id].min_time[i] = t;
+	if (t > stats[id].max_time[i])
+		stats[id].max_time[i] = t;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 add_bail:
 	spin_unlock_irqrestore(&msm_pm_stats_lock, flags);
 }
 
+<<<<<<< HEAD
 static void stats_show(struct seq_file *m,
 		struct msm_pm_time_stats *stats,
 		int cpu, int suspend)
@@ -162,6 +206,27 @@ static int msm_pm_stats_show(struct seq_file *m, void *v)
 	for_each_possible_cpu(cpu) {
 		struct msm_pm_time_stats *stats;
 
+=======
+/*
+ * Write out the power management statistics.
+ */
+
+static int msm_pm_stats_show(struct seq_file *m, void *v)
+{
+	int cpu;
+	int bucket_count = CONFIG_MSM_IDLE_STATS_BUCKET_COUNT - 1;
+	int bucket_shift = CONFIG_MSM_IDLE_STATS_BUCKET_SHIFT;
+
+	for_each_possible_cpu(cpu) {
+		unsigned long flags;
+		struct msm_pm_time_stats *stats;
+		int i, id;
+		int64_t bucket_time;
+		int64_t s;
+		uint32_t ns;
+
+		spin_lock_irqsave(&msm_pm_stats_lock, flags);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		stats = per_cpu(msm_pm_stats, cpu).stats;
 
 		for (id = 0; id < MSM_PM_STAT_COUNT; id++) {
@@ -169,6 +234,7 @@ static int msm_pm_stats_show(struct seq_file *m, void *v)
 			if (!stats[id].enabled)
 				continue;
 
+<<<<<<< HEAD
 			if (id == MSM_PM_STAT_SUSPEND)
 				continue;
 
@@ -177,6 +243,40 @@ static int msm_pm_stats_show(struct seq_file *m, void *v)
 	}
 	stats_show(m, &suspend_stats, cpu, true);
 	spin_unlock_irqrestore(&msm_pm_stats_lock, flags);
+=======
+			s = stats[id].total_time;
+			ns = do_div(s, NSEC_PER_SEC);
+			seq_printf(m,
+				"[cpu %u] %s:\n"
+				"  count: %7d\n"
+				"  total_time: %lld.%09u\n",
+				cpu, stats[id].name,
+				stats[id].count,
+				s, ns);
+
+			bucket_time = stats[id].first_bucket_time;
+			for (i = 0; i < bucket_count; i++) {
+				s = bucket_time;
+				ns = do_div(s, NSEC_PER_SEC);
+				seq_printf(m,
+					"   <%6lld.%09u: %7d (%lld-%lld)\n",
+					s, ns, stats[id].bucket[i],
+					stats[id].min_time[i],
+					stats[id].max_time[i]);
+
+				bucket_time <<= bucket_shift;
+			}
+
+			seq_printf(m, "  >=%6lld.%09u: %7d (%lld-%lld)\n",
+				s, ns, stats[id].bucket[i],
+				stats[id].min_time[i],
+				stats[id].max_time[i]);
+		}
+
+		spin_unlock_irqrestore(&msm_pm_stats_lock, flags);
+	}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return 0;
 }
 
@@ -295,6 +395,17 @@ void msm_pm_add_stats(enum msm_pm_time_stats_id *enable_stats, int size)
 			first_bucket_time =
 			CONFIG_MSM_IDLE_STATS_FIRST_BUCKET;
 
+<<<<<<< HEAD
+=======
+		stats[MSM_PM_STAT_SUSPEND].name = "suspend";
+		stats[MSM_PM_STAT_SUSPEND].first_bucket_time =
+			CONFIG_MSM_SUSPEND_STATS_FIRST_BUCKET;
+
+		stats[MSM_PM_STAT_FAILED_SUSPEND].name = "failed-suspend";
+		stats[MSM_PM_STAT_FAILED_SUSPEND].first_bucket_time =
+			CONFIG_MSM_IDLE_STATS_FIRST_BUCKET;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		stats[MSM_PM_STAT_NOT_IDLE].name = "not-idle";
 		stats[MSM_PM_STAT_NOT_IDLE].first_bucket_time =
 			CONFIG_MSM_IDLE_STATS_FIRST_BUCKET;
@@ -303,9 +414,12 @@ void msm_pm_add_stats(enum msm_pm_time_stats_id *enable_stats, int size)
 			stats[enable_stats[i]].enabled = true;
 
 	}
+<<<<<<< HEAD
 	suspend_stats.name = "system_suspend";
 	suspend_stats.first_bucket_time =
 		CONFIG_MSM_SUSPEND_STATS_FIRST_BUCKET;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	d_entry = proc_create_data("msm_pm_stats", S_IRUGO | S_IWUSR | S_IWGRP,
 			NULL, &msm_pm_stats_fops, NULL);

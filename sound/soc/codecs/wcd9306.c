@@ -42,8 +42,11 @@
 #define TAPAN_HPH_PA_SETTLE_COMP_ON 3000
 #define TAPAN_HPH_PA_SETTLE_COMP_OFF 13000
 
+<<<<<<< HEAD
 #define DAPM_MICBIAS2_EXTERNAL_STANDALONE "MIC BIAS2 External Standalone"
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define TAPAN_VDD_CX_OPTIMAL_UA 10000
 #define TAPAN_VDD_CX_SLEEP_UA 2000
 
@@ -99,6 +102,11 @@ MODULE_PARM_DESC(spkr_drv_wrnd,
 #define TAPAN_SLIM_IRQ_UNDERFLOW (1 << 1)
 #define TAPAN_SLIM_IRQ_PORT_CLOSED (1 << 2)
 
+<<<<<<< HEAD
+=======
+#define TAPAN_IRQ_MBHC_JACK_SWITCH 21
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 enum tapan_codec_type {
 	WCD9306,
 	WCD9302,
@@ -283,8 +291,11 @@ struct tapan_priv {
 	s32 dmic_1_2_clk_cnt;
 	s32 dmic_3_4_clk_cnt;
 	s32 dmic_5_6_clk_cnt;
+<<<<<<< HEAD
 	s32 ldo_h_users;
 	s32 micb_2_users;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	u32 anc_slot;
 	bool anc_func;
@@ -316,6 +327,13 @@ struct tapan_priv {
 	/* class h specific data */
 	struct wcd9xxx_clsh_cdc_data clsh_d;
 
+<<<<<<< HEAD
+=======
+	int ldo_h_count;
+	int (*mclk_cb_fn) (struct snd_soc_codec*, int, bool);
+	int micb_2_ref_cnt;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* pointers to regulators required for chargepump */
 	struct regulator *cp_regulators[CP_REG_MAX];
 
@@ -1839,7 +1857,10 @@ static int tapan_codec_enable_adc(struct snd_soc_dapm_widget *w,
 	struct snd_kcontrol *kcontrol, int event)
 {
 	struct snd_soc_codec *codec = w->codec;
+<<<<<<< HEAD
 	struct tapan_priv *tapan = snd_soc_codec_get_drvdata(codec);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	u16 adc_reg;
 	u8 init_bit_shift;
 
@@ -1867,9 +1888,12 @@ static int tapan_codec_enable_adc(struct snd_soc_dapm_widget *w,
 
 	switch (event) {
 	case SND_SOC_DAPM_PRE_PMU:
+<<<<<<< HEAD
 		if (w->reg == TAPAN_A_TX_3_EN)
 			wcd9xxx_resmgr_notifier_call(&tapan->resmgr,
 						WCD9XXX_EVENT_PRE_TX_3_ON);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		snd_soc_update_bits(codec, adc_reg, 1 << init_bit_shift,
 				1 << init_bit_shift);
 		break;
@@ -1878,11 +1902,14 @@ static int tapan_codec_enable_adc(struct snd_soc_dapm_widget *w,
 		snd_soc_update_bits(codec, adc_reg, 1 << init_bit_shift, 0x00);
 
 		break;
+<<<<<<< HEAD
 	case SND_SOC_DAPM_POST_PMD:
 		if (w->reg == TAPAN_A_TX_3_EN)
 			wcd9xxx_resmgr_notifier_call(&tapan->resmgr,
 						WCD9XXX_EVENT_POST_TX_3_OFF);
 		break;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	return 0;
 }
@@ -2156,37 +2183,63 @@ static int tapan_codec_enable_micbias(struct snd_soc_dapm_widget *w,
 {
 	struct snd_soc_codec *codec = w->codec;
 	struct tapan_priv *tapan = snd_soc_codec_get_drvdata(codec);
+<<<<<<< HEAD
 	u16 micb_int_reg = 0, micb_ctl_reg = 0;
+=======
+	u16 micb_int_reg, micb_ctl_reg;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	u8 cfilt_sel_val = 0;
 	char *internal1_text = "Internal1";
 	char *internal2_text = "Internal2";
 	char *internal3_text = "Internal3";
 	enum wcd9xxx_notify_event e_post_off, e_pre_on, e_post_on;
 
+<<<<<<< HEAD
 	pr_debug("%s: w->name %s event %d\n", __func__, w->name, event);
 	if (strnstr(w->name, "MIC BIAS1", sizeof("MIC BIAS1"))) {
+=======
+	dev_dbg(codec->dev, "%s %d, shift = %d\n", __func__, event, w->shift);
+	switch (w->shift) {
+	case 1:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		micb_ctl_reg = TAPAN_A_MICB_1_CTL;
 		micb_int_reg = TAPAN_A_MICB_1_INT_RBIAS;
 		cfilt_sel_val = tapan->resmgr.pdata->micbias.bias1_cfilt_sel;
 		e_pre_on = WCD9XXX_EVENT_PRE_MICBIAS_1_ON;
 		e_post_on = WCD9XXX_EVENT_POST_MICBIAS_1_ON;
 		e_post_off = WCD9XXX_EVENT_POST_MICBIAS_1_OFF;
+<<<<<<< HEAD
 	} else if (strnstr(w->name, "MIC BIAS2", sizeof("MIC BIAS2"))) {
+=======
+		break;
+	case 2:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		micb_ctl_reg = TAPAN_A_MICB_2_CTL;
 		micb_int_reg = TAPAN_A_MICB_2_INT_RBIAS;
 		cfilt_sel_val = tapan->resmgr.pdata->micbias.bias2_cfilt_sel;
 		e_pre_on = WCD9XXX_EVENT_PRE_MICBIAS_2_ON;
 		e_post_on = WCD9XXX_EVENT_POST_MICBIAS_2_ON;
 		e_post_off = WCD9XXX_EVENT_POST_MICBIAS_2_OFF;
+<<<<<<< HEAD
 	} else if (strnstr(w->name, "MIC BIAS3", sizeof("MIC BIAS3"))) {
+=======
+		break;
+	case 3:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		micb_ctl_reg = TAPAN_A_MICB_3_CTL;
 		micb_int_reg = TAPAN_A_MICB_3_INT_RBIAS;
 		cfilt_sel_val = tapan->resmgr.pdata->micbias.bias3_cfilt_sel;
 		e_pre_on = WCD9XXX_EVENT_PRE_MICBIAS_3_ON;
 		e_post_on = WCD9XXX_EVENT_POST_MICBIAS_3_ON;
 		e_post_off = WCD9XXX_EVENT_POST_MICBIAS_3_OFF;
+<<<<<<< HEAD
 	} else {
 		pr_err("%s: Error, invalid micbias %s\n", __func__, w->name);
+=======
+		break;
+	default:
+		pr_err("%s: Error, invalid micbias register\n", __func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return -EINVAL;
 	}
 
@@ -2205,6 +2258,7 @@ static int tapan_codec_enable_micbias(struct snd_soc_dapm_widget *w,
 		else if (strnstr(w->name, internal3_text, 30))
 			snd_soc_update_bits(codec, micb_int_reg, 0x3, 0x3);
 
+<<<<<<< HEAD
 		if (micb_ctl_reg == TAPAN_A_MICB_2_CTL) {
 			if (++tapan->micb_2_users == 1)
 				wcd9xxx_resmgr_add_cond_update_bits(
@@ -2222,10 +2276,27 @@ static int tapan_codec_enable_micbias(struct snd_soc_dapm_widget *w,
 		break;
 	case SND_SOC_DAPM_POST_PMU:
 		usleep_range(20000, 20000);
+=======
+		break;
+	case SND_SOC_DAPM_POST_PMU:
+		if (w->shift ==2) {
+			if (++tapan->micb_2_ref_cnt == 1) {
+				snd_soc_update_bits(codec, micb_ctl_reg, 0x80, 0x80);
+				usleep_range(20000, 20000);
+			} else {
+				dev_dbg(codec->dev, "MIC BIAS2 already enabled, ref_count = %d",
+						tapan->micb_2_ref_cnt);
+			}
+		} else {
+			snd_soc_update_bits(codec, micb_ctl_reg, 0x80, 0x80);
+			usleep_range(20000, 20000);
+		}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/* Let MBHC module know so micbias is on */
 		wcd9xxx_resmgr_notifier_call(&tapan->resmgr, e_post_on);
 		break;
 	case SND_SOC_DAPM_POST_PMD:
+<<<<<<< HEAD
 		if (micb_ctl_reg == TAPAN_A_MICB_2_CTL) {
 			if (--tapan->micb_2_users == 0)
 				wcd9xxx_resmgr_rm_cond_update_bits(
@@ -2242,6 +2313,19 @@ static int tapan_codec_enable_micbias(struct snd_soc_dapm_widget *w,
 			snd_soc_update_bits(codec, micb_ctl_reg, 1 << w->shift,
 					    0);
 
+=======
+		if (w->shift ==2) {
+			if (--tapan->micb_2_ref_cnt <= 0) {
+				snd_soc_update_bits(codec, micb_ctl_reg, 0x80, 0x00);
+				tapan->micb_2_ref_cnt = 0;
+				dev_dbg(codec->dev, "MIC BIAS2 disabled\n");
+			} else {
+				dev_dbg(codec->dev, "micbias2 is still needed, do not turn off\n");
+			}
+		} else {
+				snd_soc_update_bits(codec, micb_ctl_reg, 0x80, 0x00);
+		}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/* Let MBHC module know so micbias switch to be off */
 		wcd9xxx_resmgr_notifier_call(&tapan->resmgr, e_post_off);
 
@@ -2260,6 +2344,7 @@ static int tapan_codec_enable_micbias(struct snd_soc_dapm_widget *w,
 	return 0;
 }
 
+<<<<<<< HEAD
 /* called under codec_resource_lock acquisition */
 static int tapan_enable_mbhc_micbias(struct snd_soc_codec *codec, bool enable)
 {
@@ -2277,6 +2362,8 @@ static int tapan_enable_mbhc_micbias(struct snd_soc_codec *codec, bool enable)
 	return rc;
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static void tx_hpf_corner_freq_callback(struct work_struct *work)
 {
 	struct delayed_work *hpf_delayed_work;
@@ -2491,6 +2578,7 @@ static int tapan_codec_enable_interpolator(struct snd_soc_dapm_widget *w,
 	return 0;
 }
 
+<<<<<<< HEAD
 /* called under codec_resource_lock acquisition */
 static int __tapan_codec_enable_ldo_h(struct snd_soc_dapm_widget *w,
 				      struct snd_kcontrol *kcontrol, int event)
@@ -2551,6 +2639,109 @@ static int tapan_codec_enable_ldo_h(struct snd_soc_dapm_widget *w,
 	int rc;
 	rc = __tapan_codec_enable_ldo_h(w, kcontrol, event);
 	return rc;
+=======
+void tapan_register_mclk_cb(struct snd_soc_codec *codec,
+	int (*mclk_cb_fn) (struct snd_soc_codec*, int, bool))
+{
+	struct tapan_priv *tapan = snd_soc_codec_get_drvdata(codec);
+	tapan->mclk_cb_fn = mclk_cb_fn;
+}
+
+static void tapan_enable_ldo_h(struct snd_soc_codec *codec, u32 enable)
+{
+	struct tapan_priv *tapan = snd_soc_codec_get_drvdata(codec);
+
+	if (enable) {
+		if (++tapan->ldo_h_count == 1)
+			snd_soc_update_bits(codec, TAPAN_A_LDO_H_MODE_1,
+				0x80, 0x80);
+	} else {
+		if (--tapan->ldo_h_count <= 0) {
+			snd_soc_update_bits(codec, TAPAN_A_LDO_H_MODE_1,
+				0x80, 0x00);
+			tapan->ldo_h_count = 0;
+		}
+	}
+}
+static int tapan_codec_enable_micbias_power(struct snd_soc_dapm_widget *w,
+		struct snd_kcontrol *kcontrol,
+		int event)
+{
+	struct snd_soc_codec *codec = w->codec;
+	struct tapan_priv *tapan = snd_soc_codec_get_drvdata(codec);
+
+	pr_debug("%s %d\n", __func__, event);
+
+	if (!tapan->mclk_cb_fn) {
+		pr_err("%s: Callback to enable mclk is not registered\n",
+			   __func__);
+		return -EINVAL;
+	}
+
+	switch (event) {
+	case SND_SOC_DAPM_PRE_PMU:
+		tapan->mclk_cb_fn(codec, 1, true);
+		WCD9XXX_BCL_LOCK(&tapan->resmgr);
+		wcd9xxx_resmgr_get_bandgap(&tapan->resmgr,
+					   WCD9XXX_BANDGAP_AUDIO_MODE);
+		WCD9XXX_BCL_UNLOCK(&tapan->resmgr);
+		tapan_enable_ldo_h(codec, 1);
+		tapan_codec_enable_micbias(w, kcontrol, event);
+		break;
+	case SND_SOC_DAPM_POST_PMU:
+		tapan_codec_enable_micbias(w, kcontrol, event);
+		tapan->mclk_cb_fn(codec, 0, true);
+		break;
+	case SND_SOC_DAPM_POST_PMD:
+		tapan_codec_enable_micbias(w, kcontrol, event);
+		tapan_enable_ldo_h(codec, 0);
+		WCD9XXX_BCL_LOCK(&tapan->resmgr);
+		wcd9xxx_resmgr_put_bandgap(&tapan->resmgr,
+					   WCD9XXX_BANDGAP_AUDIO_MODE);
+		WCD9XXX_BCL_UNLOCK(&tapan->resmgr);
+		break;
+	}
+	return 0;
+}
+
+/*
+int tapan_enable_micbias2(struct snd_soc_codec *codec,
+		bool enable)
+{
+	int ret = 0;
+
+	if (enable) {
+		ret = snd_soc_dapm_force_enable_pin(&codec->dapm,
+			"MIC BIAS2 Power External");
+		snd_soc_dapm_sync(&codec->dapm);
+		pr_debug("%s: Turning on MICBIAS2 ret=%d\n", __func__, ret);
+	} else {
+		ret = snd_soc_dapm_disable_pin(&codec->dapm,
+			"MIC BIAS2 Power External");
+		snd_soc_dapm_sync(&codec->dapm);
+		pr_debug("%s: Turning off MICBIAS2 ret=%d\n", __func__, ret);
+	}
+
+	return ret;
+}
+*/
+
+static int tapan_codec_enable_ldo_h(struct snd_soc_dapm_widget *w,
+	struct snd_kcontrol *kcontrol, int event)
+{
+	struct snd_soc_codec *codec = w->codec;
+	switch (event) {
+	case SND_SOC_DAPM_POST_PMU:
+		tapan_enable_ldo_h(codec, 1);
+		usleep_range(1000, 1000);
+		break;
+	case SND_SOC_DAPM_POST_PMD:
+		tapan_enable_ldo_h(codec, 0);
+		usleep_range(1000, 1000);
+		break;
+	}
+	return 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int tapan_codec_enable_rx_bias(struct snd_soc_dapm_widget *w,
@@ -2589,6 +2780,10 @@ static int tapan_hphl_dac_event(struct snd_soc_dapm_widget *w,
 						 WCD9XXX_CLSH_STATE_HPHL,
 						 WCD9XXX_CLSH_REQ_ENABLE,
 						 WCD9XXX_CLSH_EVENT_PRE_DAC);
+<<<<<<< HEAD
+=======
+		wcd9xxx_clsh_imped_config(codec, 0);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		break;
 	case SND_SOC_DAPM_POST_PMD:
 		snd_soc_update_bits(codec, TAPAN_A_CDC_CLK_RDAC_CLK_EN_CTL,
@@ -2847,6 +3042,15 @@ static const struct snd_soc_dapm_route wcd9306_map[] = {
 	{"RX4 MIX1 INP2", "IIR1", "IIR1"},
 	{"RX4 MIX2 INP1", "IIR1", "IIR1"},
 	{"RX4 MIX2 INP2", "IIR1", "IIR1"},
+<<<<<<< HEAD
+=======
+	{"RX4 MIX1 INP3", "RX1", "SLIM RX1"},
+	{"RX4 MIX1 INP3", "RX2", "SLIM RX2"},
+	{"RX4 MIX1 INP3", "RX3", "SLIM RX3"},
+	{"RX4 MIX1 INP3", "RX5", "SLIM RX5"},
+	{"RX4 MIX1 INP3", "RX4", "SLIM RX4"},
+	{"RX4 MIX1 INP3", "IIR1", "IIR1"},
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	{"DEC1 MUX", "DMIC3", "DMIC3"},
 	{"DEC1 MUX", "DMIC4", "DMIC4"},
@@ -2962,7 +3166,11 @@ static const struct snd_soc_dapm_route audio_map[] = {
 
 	{"DAC1", "Switch", "CLASS_H_DSM MUX"},
 	{"HPHL DAC", "Switch", "CLASS_H_DSM MUX"},
+<<<<<<< HEAD
 	{"HPHR DAC", NULL, "RDAC3 MUX"},
+=======
+	{"HPHR DAC", NULL, "RX2 CHAIN"},
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	{"LINEOUT1", NULL, "LINEOUT1 PA"},
 	{"LINEOUT2", NULL, "LINEOUT2 PA"},
@@ -2973,14 +3181,21 @@ static const struct snd_soc_dapm_route audio_map[] = {
 	{"LINEOUT2 PA", NULL, "LINEOUT2_PA_MIXER"},
 	{"LINEOUT2_PA_MIXER", NULL, "LINEOUT2 DAC"},
 
+<<<<<<< HEAD
+=======
+	{"LINEOUT1 DAC", NULL, "RX3 MIX1"},
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	{"RDAC5 MUX", "DEM3_INV", "RX3 MIX1"},
 	{"LINEOUT2 DAC", NULL, "RDAC5 MUX"},
 
+<<<<<<< HEAD
 	{"RDAC4 MUX", "DEM3", "RX3 MIX1"},
 	{"RDAC4 MUX", "DEM2", "RX2 CHAIN"},
 	{"LINEOUT1 DAC", NULL, "RDAC4 MUX"},
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	{"SPK PA", NULL, "SPK DAC"},
 	{"SPK DAC", NULL, "VDD_SPKDRV"},
 
@@ -2993,7 +3208,11 @@ static const struct snd_soc_dapm_route audio_map[] = {
 	{"LINEOUT1 DAC", NULL, "CDC_CP_VDD"},
 	{"LINEOUT2 DAC", NULL, "CDC_CP_VDD"},
 
+<<<<<<< HEAD
 	{"RDAC3 MUX", "DEM2", "RX2 CHAIN"},
+=======
+	{"RDAC3 MUX", "DEM2", "RX2 MIX1"},
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	{"RDAC3 MUX", "DEM1", "RX1 CHAIN"},
 
 	{"RX1 MIX1", NULL, "RX1 MIX1 INP1"},
@@ -3123,12 +3342,21 @@ static const struct snd_soc_dapm_route audio_map[] = {
 	{"MIC BIAS2 Internal2", NULL, "LDO_H"},
 	{"MIC BIAS2 Internal3", NULL, "LDO_H"},
 	{"MIC BIAS2 External", NULL, "LDO_H"},
+<<<<<<< HEAD
 	{DAPM_MICBIAS2_EXTERNAL_STANDALONE, NULL, "LDO_H Standalone"},
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 static const struct snd_soc_dapm_route wcd9302_map[] = {
 	{"SPK DAC", "Switch", "RX3 MIX1"},
 
+<<<<<<< HEAD
+=======
+	{"RDAC4 MUX", "DEM3", "RX3 MIX1"},
+	{"RDAC4 MUX", "DEM2", "RX2 CHAIN"},
+	{"LINEOUT1 DAC", NULL, "RDAC4 MUX"},
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	{"RDAC5 MUX", "DEM4", "RX3 MIX1"},
 	{"RDAC5 MUX", "DEM3_INV", "RDAC4 MUX"},
@@ -3270,6 +3498,7 @@ static void tapan_shutdown(struct snd_pcm_substream *substream,
 		struct snd_soc_dai *dai)
 {
 	struct wcd9xxx *tapan_core = dev_get_drvdata(dai->codec->dev->parent);
+<<<<<<< HEAD
 	struct tapan_priv *tapan = snd_soc_codec_get_drvdata(dai->codec);
 	u32 active = 0;
 
@@ -3291,6 +3520,15 @@ static void tapan_shutdown(struct snd_pcm_substream *substream,
 		pm_runtime_mark_last_busy(tapan_core->dev->parent);
 		pm_runtime_put(tapan_core->dev->parent);
 		dev_dbg(dai->codec->dev, "%s: unvote requested", __func__);
+=======
+	dev_dbg(dai->codec->dev, "%s(): substream = %s  stream = %d\n",
+		 __func__, substream->name, substream->stream);
+	if ((tapan_core != NULL) &&
+	    (tapan_core->dev != NULL) &&
+	    (tapan_core->dev->parent != NULL)) {
+		pm_runtime_mark_last_busy(tapan_core->dev->parent);
+		pm_runtime_put(tapan_core->dev->parent);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 }
 
@@ -4050,6 +4288,7 @@ static int tapan_codec_enable_slimrx(struct snd_soc_dapm_widget *w,
 			dev_dbg(codec->dev, "%s: Disconnect RX port, ret = %d\n",
 				 __func__, ret);
 		}
+<<<<<<< HEAD
 		if ((core != NULL) &&
 		    (core->dev != NULL) &&
 		    (core->dev->parent != NULL)) {
@@ -4057,6 +4296,8 @@ static int tapan_codec_enable_slimrx(struct snd_soc_dapm_widget *w,
 			pm_runtime_put(core->dev->parent);
 			dev_dbg(codec->dev, "%s: unvote requested", __func__);
 		}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		break;
 	}
 	return ret;
@@ -4104,6 +4345,7 @@ static int tapan_codec_enable_slimtx(struct snd_soc_dapm_widget *w,
 			dev_dbg(codec->dev, "%s: Disconnect RX port, ret = %d\n",
 				 __func__, ret);
 		}
+<<<<<<< HEAD
 		if ((core != NULL) &&
 		    (core->dev != NULL) &&
 		    (core->dev->parent != NULL)) {
@@ -4111,6 +4353,8 @@ static int tapan_codec_enable_slimtx(struct snd_soc_dapm_widget *w,
 			pm_runtime_put(core->dev->parent);
 			dev_dbg(codec->dev, "%s: unvote requested", __func__);
 		}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		break;
 	}
 	return ret;
@@ -4340,6 +4584,7 @@ static const struct snd_soc_dapm_widget tapan_9306_dapm_widgets[] = {
 		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
 	SND_SOC_DAPM_MUX("ANC1 FB MUX", SND_SOC_NOPM, 0, 0, &anc1_fb_mux),
 
+<<<<<<< HEAD
 	SND_SOC_DAPM_MICBIAS_E("MIC BIAS3 External", SND_SOC_NOPM, 7, 0,
 		tapan_codec_enable_micbias, SND_SOC_DAPM_PRE_PMU |
 		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
@@ -4347,6 +4592,15 @@ static const struct snd_soc_dapm_widget tapan_9306_dapm_widgets[] = {
 		tapan_codec_enable_micbias, SND_SOC_DAPM_PRE_PMU |
 		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
 	SND_SOC_DAPM_MICBIAS_E("MIC BIAS3 Internal2", SND_SOC_NOPM, 7, 0,
+=======
+	SND_SOC_DAPM_MICBIAS_E("MIC BIAS3 External", SND_SOC_NOPM, 3, 0,
+		tapan_codec_enable_micbias, SND_SOC_DAPM_PRE_PMU |
+		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
+	SND_SOC_DAPM_MICBIAS_E("MIC BIAS3 Internal1", SND_SOC_NOPM, 3, 0,
+		tapan_codec_enable_micbias, SND_SOC_DAPM_PRE_PMU |
+		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
+	SND_SOC_DAPM_MICBIAS_E("MIC BIAS3 Internal2", SND_SOC_NOPM, 3, 0,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		tapan_codec_enable_micbias, SND_SOC_DAPM_PRE_PMU |
 		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
 
@@ -4569,6 +4823,7 @@ static const struct snd_soc_dapm_widget tapan_common_dapm_widgets[] = {
 		SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU |
 		SND_SOC_DAPM_PRE_PMD | SND_SOC_DAPM_POST_PMD),
 
+<<<<<<< HEAD
 	SND_SOC_DAPM_SUPPLY("LDO_H", SND_SOC_NOPM, 7, 0,
 		tapan_codec_enable_ldo_h,
 		SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMD),
@@ -4593,6 +4848,29 @@ static const struct snd_soc_dapm_widget tapan_common_dapm_widgets[] = {
 		tapan_codec_enable_micbias, SND_SOC_DAPM_PRE_PMU |
 		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
 
+=======
+	SND_SOC_DAPM_SUPPLY("LDO_H", SND_SOC_NOPM, 0, 0,
+		tapan_codec_enable_ldo_h, SND_SOC_DAPM_POST_PMU |
+		SND_SOC_DAPM_POST_PMD),
+
+	SND_SOC_DAPM_INPUT("AMIC1"),
+	SND_SOC_DAPM_MICBIAS_E("MIC BIAS1 External", SND_SOC_NOPM, 1, 0,
+		tapan_codec_enable_micbias, SND_SOC_DAPM_PRE_PMU |
+		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
+	SND_SOC_DAPM_MICBIAS_E("MIC BIAS1 Internal1", SND_SOC_NOPM, 1, 0,
+		tapan_codec_enable_micbias, SND_SOC_DAPM_PRE_PMU |
+		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
+	SND_SOC_DAPM_MICBIAS_E("MIC BIAS1 Internal2", SND_SOC_NOPM, 1, 0,
+		tapan_codec_enable_micbias, SND_SOC_DAPM_PRE_PMU |
+		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
+
+	SND_SOC_DAPM_MICBIAS_E("MIC BIAS2 Power External",
+		SND_SOC_NOPM, 2, 0,
+		tapan_codec_enable_micbias_power,
+		SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU |
+		SND_SOC_DAPM_POST_PMD),
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	SND_SOC_DAPM_ADC_E("ADC1", NULL, TAPAN_A_TX_1_EN, 7, 0,
 		tapan_codec_enable_adc, SND_SOC_DAPM_PRE_PMU |
 		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
@@ -4611,6 +4889,7 @@ static const struct snd_soc_dapm_widget tapan_common_dapm_widgets[] = {
 		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
 
 	SND_SOC_DAPM_INPUT("AMIC2"),
+<<<<<<< HEAD
 	SND_SOC_DAPM_MICBIAS_E("MIC BIAS2 External", SND_SOC_NOPM, 7, 0,
 		tapan_codec_enable_micbias, SND_SOC_DAPM_PRE_PMU |
 		SND_SOC_DAPM_POST_PMU |	SND_SOC_DAPM_POST_PMD),
@@ -4629,6 +4908,21 @@ static const struct snd_soc_dapm_widget tapan_common_dapm_widgets[] = {
 			       SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU |
 			       SND_SOC_DAPM_POST_PMD),
 
+=======
+	SND_SOC_DAPM_MICBIAS_E("MIC BIAS2 External", SND_SOC_NOPM, 2, 0,
+		tapan_codec_enable_micbias, SND_SOC_DAPM_PRE_PMU |
+		SND_SOC_DAPM_POST_PMU |	SND_SOC_DAPM_POST_PMD),
+	SND_SOC_DAPM_MICBIAS_E("MIC BIAS2 Internal1", SND_SOC_NOPM, 2, 0,
+		tapan_codec_enable_micbias, SND_SOC_DAPM_PRE_PMU |
+		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
+	SND_SOC_DAPM_MICBIAS_E("MIC BIAS2 Internal2", SND_SOC_NOPM, 2, 0,
+		tapan_codec_enable_micbias, SND_SOC_DAPM_PRE_PMU |
+		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
+	SND_SOC_DAPM_MICBIAS_E("MIC BIAS2 Internal3", SND_SOC_NOPM, 2, 0,
+		tapan_codec_enable_micbias, SND_SOC_DAPM_PRE_PMU |
+		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	SND_SOC_DAPM_AIF_OUT_E("AIF1 CAP", "AIF1 Capture", 0, SND_SOC_NOPM,
 		AIF1_CAP, 0, tapan_codec_enable_slimtx,
 		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
@@ -4752,6 +5046,7 @@ static int tapan_handle_pdata(struct tapan_priv *tapan)
 	struct snd_soc_codec *codec = tapan->codec;
 	struct wcd9xxx_pdata *pdata = tapan->resmgr.pdata;
 	int k1, k2, k3, rc = 0;
+<<<<<<< HEAD
 	u8 txfe_bypass = pdata->amic_settings.txfe_enable;
 	u8 txfe_buff = pdata->amic_settings.txfe_buff;
 	u8 flag = pdata->amic_settings.use_pdata;
@@ -4760,6 +5055,13 @@ static int tapan_handle_pdata(struct tapan_priv *tapan)
 	u8 dmic_sample_rate_value = 0;
 	u8 dmic_b1_ctl_value = 0;
 	u8 anc_ctl_value = 0;
+=======
+	u8 txfe_bypass = 0;
+	u8 txfe_buff = 0;
+	u8 flag = 0;
+	u8 i = 0, j = 0;
+	u8 val_txfe = 0, value = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (!pdata) {
 		dev_err(codec->dev, "%s: NULL pdata\n", __func__);
@@ -4767,6 +5069,13 @@ static int tapan_handle_pdata(struct tapan_priv *tapan)
 		goto done;
 	}
 
+<<<<<<< HEAD
+=======
+	txfe_bypass = pdata->amic_settings.txfe_enable;
+	txfe_buff = pdata->amic_settings.txfe_buff;
+	flag = pdata->amic_settings.use_pdata;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* Make sure settings are correct */
 	if ((pdata->micbias.ldoh_v > WCD9XXX_LDOH_3P0_V) ||
 	    (pdata->micbias.bias1_cfilt_sel > WCD9XXX_CFILT3_SEL) ||
@@ -4853,6 +5162,7 @@ static int tapan_handle_pdata(struct tapan_priv *tapan)
 		 0x00 : 0x10);
 	snd_soc_update_bits(codec, TAPAN_A_MICB_3_CTL, 0x10, value);
 
+<<<<<<< HEAD
 	/* Set the DMIC sample rate */
 	if (pdata->mclk_rate == TAPAN_MCLK_CLK_9P6MHZ) {
 		switch (pdata->dmic_sample_rate) {
@@ -4925,6 +5235,8 @@ static int tapan_handle_pdata(struct tapan_priv *tapan)
 	snd_soc_update_bits(codec, TAPAN_A_CDC_ANC1_B2_CTL,
 		0x1, anc_ctl_value);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 done:
 	return rc;
 }
@@ -4983,7 +5295,11 @@ static const struct tapan_reg_mask_val tapan_reg_defaults[] = {
 	/*Reduce EAR DAC bias to 70% */
 	TAPAN_REG_VAL(TAPAN_A_RX_EAR_BIAS_PA, 0x76),
 	/* Reduce LINE DAC bias to 70% */
+<<<<<<< HEAD
 	TAPAN_REG_VAL(TAPAN_A_RX_LINE_BIAS_PA, 0x78),
+=======
+	TAPAN_REG_VAL(TAPAN_A_RX_LINE_BIAS_PA, 0x7A),
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/*
 	 * There is a diode to pull down the micbias while doing
@@ -5118,6 +5434,18 @@ static const struct tapan_reg_mask_val tapan_codec_reg_init_val[] = {
 	{TAPAN_A_CDC_TX3_MUX_CTL, 0x8, 0x0},
 	{TAPAN_A_CDC_TX4_MUX_CTL, 0x8, 0x0},
 
+<<<<<<< HEAD
+=======
+	/* config Decimator for DMIC CLK_MODE_1(3.2Mhz@9.6Mhz mclk) */
+	{TAPAN_A_CDC_TX1_DMIC_CTL, 0x7, 0x1},
+	{TAPAN_A_CDC_TX2_DMIC_CTL, 0x7, 0x1},
+	{TAPAN_A_CDC_TX3_DMIC_CTL, 0x7, 0x1},
+	{TAPAN_A_CDC_TX4_DMIC_CTL, 0x7, 0x1},
+
+	/* config DMIC clk to CLK_MODE_1 (3.2Mhz@9.6Mhz mclk) */
+	{TAPAN_A_CDC_CLK_DMIC_B1_CTL, 0xEE, 0x22},
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* Compander zone selection */
 	{TAPAN_A_CDC_COMP0_B4_CTL, 0x3F, 0x37},
 	{TAPAN_A_CDC_COMP1_B4_CTL, 0x3F, 0x37},
@@ -5243,6 +5571,14 @@ static void tapan_codec_specific_cal_setup(struct snd_soc_codec *codec,
 	snd_soc_update_bits(codec, WCD9XXX_A_TX_7_MBHC_EN, 0xE0, 0xE0);
 }
 
+<<<<<<< HEAD
+=======
+static int tapan_get_jack_detect_irq(struct snd_soc_codec *codec)
+{
+	return TAPAN_IRQ_MBHC_JACK_SWITCH;
+}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static struct wcd9xxx_cfilt_mode tapan_codec_switch_cfilt_mode(
 				 struct wcd9xxx_mbhc *mbhc,
 				 bool fast)
@@ -5268,6 +5604,17 @@ static void tapan_select_cfilt(struct snd_soc_codec *codec,
 	snd_soc_update_bits(codec, mbhc->mbhc_bias_regs.ctl_reg, 0x60, 0x00);
 }
 
+<<<<<<< HEAD
+=======
+static void tapan_free_irq(struct wcd9xxx_mbhc *mbhc)
+{
+	struct wcd9xxx *wcd9xxx = mbhc->codec->control_data;
+	struct wcd9xxx_core_resource *core_res =
+			&wcd9xxx->core_res;
+	wcd9xxx_free_irq(core_res, WCD9306_IRQ_MBHC_JACK_SWITCH, mbhc);
+}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 enum wcd9xxx_cdc_type tapan_get_cdc_type(void)
 {
 	return WCD9XXX_CDC_TYPE_TAPAN;
@@ -5526,8 +5873,15 @@ static const struct wcd9xxx_mbhc_cb mbhc_cb = {
 	.enable_mux_bias_block = tapan_enable_mux_bias_block,
 	.cfilt_fast_mode = tapan_put_cfilt_fast_mode,
 	.codec_specific_cal = tapan_codec_specific_cal_setup,
+<<<<<<< HEAD
 	.switch_cfilt_mode = tapan_codec_switch_cfilt_mode,
 	.select_cfilt = tapan_select_cfilt,
+=======
+	.jack_detect_irq = tapan_get_jack_detect_irq,
+	.switch_cfilt_mode = tapan_codec_switch_cfilt_mode,
+	.select_cfilt = tapan_select_cfilt,
+	.free_irq = tapan_free_irq,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.get_cdc_type = tapan_get_cdc_type,
 	.setup_zdet = tapan_setup_zdet,
 	.compute_impedance = tapan_compute_impedance,
@@ -5568,6 +5922,7 @@ static int tapan_device_down(struct wcd9xxx *wcd9xxx)
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct wcd9xxx_mbhc_intr cdc_intr_ids = {
 	.poll_plug_rem = WCD9XXX_IRQ_MBHC_REMOVAL,
 	.shortavg_complete = WCD9XXX_IRQ_MBHC_SHORT_TERM,
@@ -5580,6 +5935,8 @@ static const struct wcd9xxx_mbhc_intr cdc_intr_ids = {
 	.hs_jack_switch = WCD9306_IRQ_MBHC_JACK_SWITCH,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int tapan_post_reset_cb(struct wcd9xxx *wcd9xxx)
 {
 	int ret = 0;
@@ -5619,21 +5976,41 @@ static int tapan_post_reset_cb(struct wcd9xxx *wcd9xxx)
 
 	wcd9xxx_resmgr_post_ssr(&tapan->resmgr);
 
+<<<<<<< HEAD
 	wcd9xxx_mbhc_deinit(&tapan->mbhc);
 
+=======
+#ifndef CONFIG_ARCH_MSM8226 // Comment Disable MBHC	
+
+	wcd9xxx_mbhc_deinit(&tapan->mbhc);
+
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (TAPAN_IS_1_0(wcd9xxx->version))
 		rco_clk_rate = TAPAN_MCLK_CLK_12P288MHZ;
 	else
 		rco_clk_rate = TAPAN_MCLK_CLK_9P6MHZ;
 
+<<<<<<< HEAD
 	ret = wcd9xxx_mbhc_init(&tapan->mbhc, &tapan->resmgr, codec,
 				tapan_enable_mbhc_micbias,
 				&mbhc_cb, &cdc_intr_ids, rco_clk_rate,
+=======
+#ifndef CONFIG_ARCH_MSM8226 // Comment Disable MBHC
+
+	ret = wcd9xxx_mbhc_init(&tapan->mbhc, &tapan->resmgr, codec, NULL,
+				&mbhc_cb, rco_clk_rate,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				TAPAN_CDC_ZDET_SUPPORTED);
 	if (ret)
 		pr_err("%s: mbhc init failed %d\n", __func__, ret);
 	else
 		wcd9xxx_mbhc_start(&tapan->mbhc, tapan->mbhc.mbhc_cfg);
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	tapan_cleanup_irqs(tapan);
 	ret = tapan_setup_irqs(tapan);
@@ -5768,6 +6145,20 @@ static bool tapan_check_wcd9306(struct device *cdc_dev, bool sensed)
 	return ret;
 };
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_EXT_EARMIC_BIAS
+bool codec_probe_done = false;
+
+bool is_codec_probe_done(void)
+{
+	return codec_probe_done;
+}
+#endif
+
+EXPORT_SYMBOL(is_codec_probe_done);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int tapan_codec_probe(struct snd_soc_codec *codec)
 {
 	struct wcd9xxx *control;
@@ -5802,13 +6193,21 @@ static int tapan_codec_probe(struct snd_soc_codec *codec)
 
 	snd_soc_codec_set_drvdata(codec, tapan);
 
+<<<<<<< HEAD
+=======
+	tapan->ldo_h_count = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* codec resmgr module init */
 	wcd9xxx = codec->control_data;
 	core_res = &wcd9xxx->core_res;
 	pdata = dev_get_platdata(codec->dev->parent);
 	ret = wcd9xxx_resmgr_init(&tapan->resmgr, codec, core_res, pdata,
+<<<<<<< HEAD
 				  &pdata->micbias, &tapan_reg_address,
 				  WCD9XXX_CDC_TYPE_TAPAN);
+=======
+				  &tapan_reg_address, WCD9XXX_CDC_TYPE_TAPAN);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (ret) {
 		pr_err("%s: wcd9xxx init failed %d\n", __func__, ret);
 		return ret;
@@ -5834,15 +6233,28 @@ static int tapan_codec_probe(struct snd_soc_codec *codec)
 	else
 		rco_clk_rate = TAPAN_MCLK_CLK_9P6MHZ;
 
+<<<<<<< HEAD
 	ret = wcd9xxx_mbhc_init(&tapan->mbhc, &tapan->resmgr, codec,
 				tapan_enable_mbhc_micbias,
 				&mbhc_cb, &cdc_intr_ids, rco_clk_rate,
+=======
+	tapan->micb_2_ref_cnt = 0;
+
+#ifndef CONFIG_ARCH_MSM8226 //balaji.k : Comment Disable MBHC
+
+	ret = wcd9xxx_mbhc_init(&tapan->mbhc, &tapan->resmgr, codec, NULL,
+				&mbhc_cb, rco_clk_rate,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 				TAPAN_CDC_ZDET_SUPPORTED);
 
 	if (ret) {
 		pr_err("%s: mbhc init failed %d\n", __func__, ret);
 		return ret;
 	}
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	tapan->codec = codec;
 	for (i = 0; i < COMPANDER_MAX; i++) {
@@ -5853,8 +6265,11 @@ static int tapan_codec_probe(struct snd_soc_codec *codec)
 	tapan->aux_pga_cnt = 0;
 	tapan->aux_l_gain = 0x1F;
 	tapan->aux_r_gain = 0x1F;
+<<<<<<< HEAD
 	tapan->ldo_h_users = 0;
 	tapan->micb_2_users = 0;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	tapan_update_reg_defaults(codec);
 	tapan_update_reg_mclk_rate(wcd9xxx);
 	tapan_codec_init_reg(codec);
@@ -5934,6 +6349,13 @@ static int tapan_codec_probe(struct snd_soc_codec *codec)
 	if (ret)
 		tapan_cleanup_irqs(tapan);
 
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_EXT_EARMIC_BIAS
+	codec_probe_done = true;
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return ret;
 
 err_pdata:
@@ -5958,8 +6380,15 @@ static int tapan_codec_remove(struct snd_soc_codec *codec)
 
 	tapan_cleanup_irqs(tapan);
 
+<<<<<<< HEAD
 	/* cleanup MBHC */
 	wcd9xxx_mbhc_deinit(&tapan->mbhc);
+=======
+#ifndef CONFIG_ARCH_MSM8226 //Kuldeep Comment Disable MBHC
+	/* cleanup MBHC */
+	wcd9xxx_mbhc_deinit(&tapan->mbhc);
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* cleanup resmgr */
 	wcd9xxx_resmgr_deinit(&tapan->resmgr);
 

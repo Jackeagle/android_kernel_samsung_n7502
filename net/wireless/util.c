@@ -641,8 +641,12 @@ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
 EXPORT_SYMBOL(ieee80211_amsdu_to_8023s);
 
 /* Given a data frame determine the 802.1p/1d tag to use. */
+<<<<<<< HEAD
 unsigned int cfg80211_classify8021d(struct sk_buff *skb,
 				    struct cfg80211_qos_map *qos_map)
+=======
+unsigned int cfg80211_classify8021d(struct sk_buff *skb)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	unsigned int dscp;
 
@@ -665,6 +669,7 @@ unsigned int cfg80211_classify8021d(struct sk_buff *skb,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (qos_map) {
 		unsigned int i, tmp_dscp = dscp >> 2;
 
@@ -680,6 +685,8 @@ unsigned int cfg80211_classify8021d(struct sk_buff *skb,
 		}
 	}
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return dscp >> 5;
 }
 EXPORT_SYMBOL(cfg80211_classify8021d);
@@ -833,9 +840,12 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
 
 		dev->ieee80211_ptr->use_4addr = false;
 		dev->ieee80211_ptr->mesh_id_up_len = 0;
+<<<<<<< HEAD
 		if (rdev->ops->set_qos_map) {
 			rdev->ops->set_qos_map(&rdev->wiphy, dev, NULL);
 		}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		switch (otype) {
 		case NL80211_IFTYPE_ADHOC:

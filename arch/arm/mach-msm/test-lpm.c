@@ -121,6 +121,12 @@ static void lpm_populate_name(struct lpm_level_stat *stat,
 	case MSM_PM_SLEEP_MODE_WAIT_FOR_INTERRUPT:
 		strlcat(nm, "WFI ", BUF_SIZE);
 		break;
+<<<<<<< HEAD
+=======
+	case MSM_PM_SLEEP_MODE_RAMP_DOWN_AND_WAIT_FOR_INTERRUPT:
+		strlcat(nm, "WFI voltage Rampdown ", BUF_SIZE);
+		break;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	case MSM_PM_SLEEP_MODE_RETENTION:
 		strlcat(nm, "Retention ", BUF_SIZE);
 		break;
@@ -130,6 +136,12 @@ static void lpm_populate_name(struct lpm_level_stat *stat,
 	case MSM_PM_SLEEP_MODE_POWER_COLLAPSE:
 		strlcat(nm, "Idle Power collapse ", BUF_SIZE);
 		break;
+<<<<<<< HEAD
+=======
+	case MSM_PM_SLEEP_MODE_POWER_COLLAPSE_SUSPEND:
+		strlcat(nm, "Suspend Power collapse ", BUF_SIZE);
+		break;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	default:
 		strlcat(nm, "Invalid Mode ", BUF_SIZE);
 		break;

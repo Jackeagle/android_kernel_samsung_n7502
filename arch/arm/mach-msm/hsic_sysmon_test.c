@@ -63,6 +63,7 @@ static ssize_t sysmon_test_write(struct file *file, const char __user *ubuf,
 	if (!dev)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	/* Add check for user buf count greater than RD_BUF_SIZE */
 	if (count > RD_BUF_SIZE)
 		count = RD_BUF_SIZE;
@@ -70,6 +71,11 @@ static ssize_t sysmon_test_write(struct file *file, const char __user *ubuf,
 	if (copy_from_user(dev->buf, ubuf, count)) {
 		pr_err("error copying for writing");
 		return -EFAULT;
+=======
+	if (copy_from_user(dev->buf, ubuf, count)) {
+		pr_err("error copying for writing");
+		return 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	ret = hsic_sysmon_write(id, dev->buf, count, 1000);

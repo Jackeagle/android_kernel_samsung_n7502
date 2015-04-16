@@ -37,9 +37,12 @@ Parent node optional properties:
 - qcom,maxinput-usb-ma:			Maximum input current USB.
 - qcom,maxinput-dc-ma:			Maximum input current DC.
 - qcom,vbatdet-delta-mv:		Battery charging resume delta.
+<<<<<<< HEAD
 - qcom,vbatweak-mv:			Weak battery voltage threshold in mV, above which
 					fast charging can start. The supported voltage range is
 					from 2100mV to 3600mV with a step size of 100mV.
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 - qcom,charging-disabled:		Set this property to disable charging
 					by default. This can then be overriden
 					writing the the module parameter
@@ -91,6 +94,7 @@ Parent node optional properties:
 					necessary software workarounds.
 - qcom,ovp-monitor-en			The ovp is enabled on hw by default. If this flag is
 					set, the charger ovp status is monitored in software.
+<<<<<<< HEAD
 - qcom,ext-ovp-present			Indicates if an external OVP exists which reduces the
 					overall input resistance of the charge path.
 - qcom,ibat-calibration-enabled		Indicates if ibat calibration is enabled. This is
@@ -104,6 +108,8 @@ Parent node optional properties:
 					an external sensor resistor instead of the default
 					RDS of the batfet.
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 Sub node required structure:
 - A qcom,chg node must be a child of an SPMI node that has specified
 	the spmi-dev-container property. Each subnode reflects
@@ -197,10 +203,17 @@ Sub node optional properties:
 			 - regulator-max-microvolt:	Maximum boost voltage setting.
 			 - regulator-name:	A string used as a descriptive name
 						for the boost regulator.
+<<<<<<< HEAD
 
 			qcom,batfet:
 			 - regulator-name:	A string used as a descriptive name
 						for the batfet regulator.
+=======
+			qcom,batfet:
+			 - regulator-name:	A string used as a descriptive name
+			 for the batfet regulator.
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 Example:
 	pm8941-chg {
 		spmi-dev-container;
@@ -217,7 +230,10 @@ Example:
 		qcom,ibatmax-ma = <1500>;
 		qcom,ibatterm-ma = <200>;
 		qcom,ibatsafe-ma = <1500>;
+<<<<<<< HEAD
 		qcom,vbatweak-mv = <3200>;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,thermal-mitigation = <1500 700 600 325>;
 		qcom,cool-bat-degc = <10>;
 		qcom,cool-bat-mv = <4100>;

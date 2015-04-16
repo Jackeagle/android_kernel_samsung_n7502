@@ -21,7 +21,11 @@
 #include <linux/io.h>
 
 #include <mach/msm_ipc_logging.h>
+<<<<<<< HEAD
 #include <smd_private.h>
+=======
+#include "smd_private.h"
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define MODULE_NAME "msm_smd"
 #define IPC_LOG(level, x...) do { \

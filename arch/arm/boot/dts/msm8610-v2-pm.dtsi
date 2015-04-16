@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2013-2014 The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013 The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -56,10 +60,17 @@
 		qcom,saw2-spm-dly= <0x3c102800>;
 		qcom,saw2-spm-ctl = <0x8>;
 		qcom,saw2-spm-cmd-wfi = [60 03 60 0b 0f];
+<<<<<<< HEAD
 		qcom,saw2-spm-cmd-spc = [20 10 80 30 90 5b 60 03 60 3b 76 76
 				0b 94 5b 80 10 26 30 0f];
 		qcom,saw2-spm-cmd-pc = [20 10 80 30 90 5b 60 03 60 3b 76 76
 				0b 94 5b 80 10 26 30 0f];
+=======
+		qcom,saw2-spm-cmd-spc = [00 20 10 80 30 90 5b 60 03 60 3b 76 76
+				0b 94 5b 80 10 06 26 30 0f];
+		qcom,saw2-spm-cmd-pc = [00 20 10 80 30 90 5b 60 03 60 3b 76 76
+				0b 94 5b 80 10 06 26 30 0f];
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 
 	qcom,spm@f90b9000 {
@@ -101,6 +112,7 @@
 		qcom,saw2-spm-cmd-pc = [00 32 b0 10 e0 d0 6b c0 42 f0
 				11 07 01 b0 50 4e 02 02 c0 d0 12 e0 6b 02 32
 				50 f0 0f]; /*APCS_PMIC_OFF_L2RAM_OFF*/
+<<<<<<< HEAD
 		qcom,saw2-spm-cmd-pc-no-rpm = [00 32 b0 10 e0 d0 6b c0 42 f0
 				11 03 01 b0 50 4e 02 02 c0 d0 12 e0 6b 02 32
 				50 f0 0f]; /*APCS_PMIC_OFF_L2RAM_OFF*/
@@ -108,11 +120,18 @@
 	};
 
 	lpm_levels: qcom,lpm-levels {
+=======
+		qcom,L2-spm-is-apcs-master;
+	};
+
+	qcom,lpm-levels {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		compatible = "qcom,lpm-levels";
 		qcom,default-l2-state = "l2_cache_active";
 		#address-cells = <1>;
 		#size-cells = <0>;
 
+<<<<<<< HEAD
 		qcm,cpu-modes {
 			compatible = "qcom,cpu-modes";
 
@@ -175,6 +194,46 @@
 				qcom,min-cpu-mode= "pc";
 				qcom,sync-cpus;
 			};
+=======
+		qcom,lpm-level@0 {
+			reg = <0x0>;
+			qcom,mode = "wfi";
+			qcom,l2 = "l2_cache_active";
+			qcom,latency-us = <1>;
+			qcom,ss-power = <784>;
+			qcom,energy-overhead = <190000>;
+			qcom,time-overhead = <100>;
+		};
+
+		qcom,lpm-level@1 {
+			reg = <0x1>;
+			qcom,mode = "standalone_pc";
+			qcom,l2 = "l2_cache_active";
+			qcom,latency-us = <3000>;
+			qcom,ss-power = <725>;
+			qcom,energy-overhead = <99500>;
+			qcom,time-overhead = <3130>;
+		};
+
+		qcom,lpm-level@2 {
+			reg = <0x2>;
+			qcom,mode = "pc";
+			qcom,l2 = "l2_cache_gdhs";
+			qcom,latency-us = <20000>;
+			qcom,ss-power = <138>;
+			qcom,energy-overhead = <1208400>;
+			qcom,time-overhead = <9200>;
+		};
+
+		qcom,lpm-level@3 {
+			reg = <0x3>;
+			qcom,mode = "pc";
+			qcom,l2 = "l2_cache_pc";
+			qcom,latency-us = <30000>;
+			qcom,ss-power = <110>;
+			qcom,energy-overhead = <1250300>;
+			qcom,time-overhead = <9500>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		};
 	};
 
@@ -198,17 +257,21 @@
 			<62 222>, /* ee0_krait_hlos_spmi_periph_irq */
 			<2 216>, /* tsens_upper_lower_int */
 			<41 63>,  /* dino_gen_purpose_irq35 */
+<<<<<<< HEAD
 			<0xff 18>,  /* APC_qgicQTmrSecPhysIrptReq */
 			<0xff 19>,  /* APC_qgicQTmrNonSecPhysIrptReq */
 			<0xff 35>,  /* WDT_barkInt */
 			<0xff 40>,  /* qtmr_phy_irq[0] */
 			<0xff 47>,  /* rbif_irq[0] */
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			<0xff 56>,  /* q6_wdog_expired_irq */
 			<0xff 57>,  /* mss_to_apps_irq(0) */
 			<0xff 58>,  /* mss_to_apps_irq(1) */
 			<0xff 59>,  /* mss_to_apps_irq(2) */
 			<0xff 60>,  /* mss_to_apps_irq(3) */
 			<0xff 61>,  /* mss_a2_bam_irq */
+<<<<<<< HEAD
 			<0xff 65>,  /* o_gc_sys_irq[0] */
 			<0xff 74>,  /* venus0_mmu_cirpt[1] */
 			<0xff 75>,  /* venus0_mmu_cirpt[0] */
@@ -224,14 +287,26 @@
 			<0xff 161>, /* lpass_irq_out_spare[4] */
 			<0xff 162>, /* lpass_irq_out_spare[5]*/
 			<0xff 170>, /* sdc1_pwr_cmd_irq */
+=======
+			<0xff 63>,  /* wcd9xxx_irq */
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			<0xff 173>, /* o_wcss_apss_smd_hi */
 			<0xff 174>, /* o_wcss_apss_smd_med */
 			<0xff 175>, /* o_wcss_apss_smd_low */
 			<0xff 176>, /* o_wcss_apss_smsm_irq */
 			<0xff 177>, /* o_wcss_apss_wlan_data_xfer_done */
 			<0xff 178>, /* o_wcss_apss_wlan_rx_data_avail */
+<<<<<<< HEAD
 			<0xff 179>, /* o_wcss_apss_asic_intr */
 			<0xff 181>, /* o_wcss_apss_wdog_bite_and_reset_rdy */
+=======
+			<0xff 179>, /* o_wcss_apss_asic_intr
+			<0xff 181>, /* o_wcss_apss_wdog_bite_and_reset_rdy */
+			<0xff 161>, /* lpass_irq_out_spare[4] /
+			<0xff 162>, /* lpass_irq_out_spare[5]*/
+			<0xff 234>, /* lpass_irq_out_spare[6]*/
+			<0xff 235>, /* lpass_irq_out_spare[7]*/
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			<0xff 188>, /* lpass_irq_out_apcs(0) */
 			<0xff 189>, /* lpass_irq_out_apcs(1) */
 			<0xff 190>, /* lpass_irq_out_apcs(2) */
@@ -246,6 +321,7 @@
 			<0xff 205>, /* rpm_ipc(25) */
 			<0xff 206>, /* rpm_ipc(26) */
 			<0xff 207>, /* rpm_ipc(27) */
+<<<<<<< HEAD
 			<0xff 234>, /* lpass_irq_out_spare[6]*/
 			<0xff 235>, /* lpass_irq_out_spare[7]*/
 			<0xff 240>, /* summary_irq_kpss */
@@ -256,6 +332,14 @@
 			<0xff 270>, /* blsp1_bam_irq[0] */
 			<0xff 275>, /* rpm_ipc(30) */
 			<0xff 276>; /* rpm_ipc(31) */
+=======
+			<0xff 258>, /* rpm_ipc(28) */
+			<0xff 259>, /* rpm_ipc(29) */
+			<0xff 275>, /* rpm_ipc(30) */
+			<0xff 276>, /* rpm_ipc(31) */
+			<0xff 269>, /* rpm_wdog_expired_irq */
+			<0xff 240>; /* summary_irq_kpss */
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		qcom,gpio-parent = <&msmgpio>;
 		qcom,gpio-map = <3  1>,
@@ -304,7 +388,10 @@
 		qcom,pc-mode = "tz_l2_int";
 		qcom,use-sync-timer;
 		qcom,pc-resets-timer;
+<<<<<<< HEAD
 		qcom,lpm-levels = <&lpm_levels>;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 
 	qcom,cpu-sleep-status@f9088008{

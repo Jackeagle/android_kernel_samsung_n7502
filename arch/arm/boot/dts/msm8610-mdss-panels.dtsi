@@ -15,4 +15,7 @@
 /include/ "dsi-panel-nt35590-720p-video.dtsi"
 /include/ "dsi-panel-otm8018b-fwvga-video.dtsi"
 /include/ "dsi-panel-hx8379a-wvga-video.dtsi"
+<<<<<<< HEAD
 /include/ "dsi-panel-hx8389b-qhd-video.dtsi"
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60

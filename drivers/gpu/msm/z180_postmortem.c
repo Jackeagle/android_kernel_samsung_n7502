@@ -58,8 +58,11 @@ static void z180_dump_regs(struct kgsl_device *device)
 	unsigned int i;
 	unsigned int reg_val;
 
+<<<<<<< HEAD
 	z180_idle(device);
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	KGSL_LOG_DUMP(device, "Z180 Register Dump\n");
 	for (i = 0; i < ARRAY_SIZE(regs_to_dump); i++) {
 		kgsl_regread(device,

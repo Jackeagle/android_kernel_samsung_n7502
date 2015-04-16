@@ -516,6 +516,11 @@ msmsdcc_request_end(struct msmsdcc_host *host, struct mmc_request *mrq)
 
 	if (mrq->data)
 		mrq->data->bytes_xfered = host->curr.data_xfered;
+<<<<<<< HEAD
+=======
+	if (mrq->cmd->error == -ETIMEDOUT)
+		mdelay(5);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	msmsdcc_reset_dpsm(host);
 
@@ -6473,7 +6478,11 @@ static void msmsdcc_remove_debugfs(struct msmsdcc_host *host)
 	host->debugfs_host_dir = NULL;
 }
 #else
+<<<<<<< HEAD
 static void msmsdcc_remove_debugfs(struct msmsdcc_host *host) {}
+=======
+static void msmsdcc_remove_debugfs(msmsdcc_host *host) {}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #endif
 
 static int msmsdcc_remove(struct platform_device *pdev)
@@ -6680,7 +6689,11 @@ static inline void msmsdcc_ungate_clock(struct msmsdcc_host *host)
 }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_FS
+=======
+#if CONFIG_DEBUG_FS
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static void msmsdcc_print_pm_stats(struct msmsdcc_host *host, ktime_t start,
 				   const char *func, int err)
 {
@@ -6962,7 +6975,11 @@ static const struct dev_pm_ops msmsdcc_dev_pm_ops = {
 
 static const struct of_device_id msmsdcc_dt_match[] = {
 	{.compatible = "qcom,msm-sdcc"},
+<<<<<<< HEAD
 	{ /* sentinel */ }
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 MODULE_DEVICE_TABLE(of, msmsdcc_dt_match);
 

@@ -13,8 +13,11 @@ obj-$(CONFIG_CORESIGHT_REPLICATOR) += coresight-replicator.o
 obj-$(CONFIG_CORESIGHT_STM) += coresight-stm.o
 obj-$(CONFIG_CORESIGHT_HWEVENT) += coresight-hwevent.o
 obj-$(CONFIG_CORESIGHT_ETM) += coresight-etm.o coresight-etm-cp14.o
+<<<<<<< HEAD
 obj-$(CONFIG_CORESIGHT_AUDIO_ETM) += coresight-audio-etm.o
 obj-$(CONFIG_CORESIGHT_MODEM_ETM) += coresight-modem-etm.o
 obj-$(CONFIG_CORESIGHT_WCN_ETM) += coresight-wcn-etm.o
 obj-$(CONFIG_CORESIGHT_RPM_ETM) += coresight-rpm-etm.o
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 obj-$(CONFIG_CORESIGHT_EVENT) += coresight-event.o

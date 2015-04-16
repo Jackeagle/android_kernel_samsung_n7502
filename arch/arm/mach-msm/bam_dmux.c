@@ -55,6 +55,13 @@
 #define MAX_POLLING_SLEEP (6050)
 #define MIN_POLLING_SLEEP (950)
 
+<<<<<<< HEAD
+=======
+#ifdef BAM_DMUX_FD
+static unsigned int wakelock_timeout;
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int msm_bam_dmux_debug_enable;
 module_param_named(debug_enable, msm_bam_dmux_debug_enable,
 		   int, S_IRUGO | S_IWUSR | S_IWGRP);
@@ -223,10 +230,16 @@ static void notify_all(int event, unsigned long data);
 static void bam_mux_write_done(struct work_struct *work);
 static void handle_bam_mux_cmd(struct work_struct *work);
 static void rx_timer_work_func(struct work_struct *work);
+<<<<<<< HEAD
 static void queue_rx_work_func(struct work_struct *work);
 
 static DECLARE_WORK(rx_timer_work, rx_timer_work_func);
 static DECLARE_WORK(queue_rx_work, queue_rx_work_func);
+=======
+
+static DECLARE_WORK(rx_timer_work, rx_timer_work_func);
+static struct delayed_work queue_rx_work;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static struct workqueue_struct *bam_mux_rx_workqueue;
 static struct workqueue_struct *bam_mux_tx_workqueue;
@@ -391,7 +404,11 @@ static inline void verify_tx_queue_is_empty(const char *func)
 	spin_unlock_irqrestore(&bam_tx_pool_spinlock, flags);
 }
 
+<<<<<<< HEAD
 static void __queue_rx(gfp_t alloc_flags)
+=======
+static void queue_rx(void)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	void *ptr;
 	struct rx_pkt_info *info;
@@ -406,23 +423,41 @@ static void __queue_rx(gfp_t alloc_flags)
 		if (in_global_reset)
 			goto fail;
 
+<<<<<<< HEAD
 		info = kmalloc(sizeof(struct rx_pkt_info), alloc_flags);
 		if (!info) {
 			DMUX_LOG_KERR(
 			"%s: unable to alloc rx_pkt_info w/ flags %x, will retry later\n",
 								__func__,
 								alloc_flags);
+=======
+		info = kmalloc(sizeof(struct rx_pkt_info),
+						GFP_NOWAIT | __GFP_NOWARN);
+		if (!info) {
+			DMUX_LOG_KERR(
+			"%s: unable to alloc rx_pkt_info, will retry later\n",
+								__func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			goto fail;
 		}
 
 		INIT_WORK(&info->work, handle_bam_mux_cmd);
 
+<<<<<<< HEAD
 		info->skb = __dev_alloc_skb(BUFFER_SIZE, alloc_flags);
 		if (info->skb == NULL) {
 			DMUX_LOG_KERR(
 				"%s: unable to alloc skb w/ flags %x, will retry later\n",
 								__func__,
 								alloc_flags);
+=======
+		info->skb = __dev_alloc_skb(BUFFER_SIZE,
+						GFP_NOWAIT | __GFP_NOWARN);
+		if (info->skb == NULL) {
+			DMUX_LOG_KERR(
+				"%s: unable to alloc skb, will retry later\n",
+								__func__);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			goto fail_info;
 		}
 		ptr = skb_put(info->skb, BUFFER_SIZE);
@@ -464,6 +499,7 @@ fail_info:
 	kfree(info);
 
 fail:
+<<<<<<< HEAD
 	if (!in_global_reset) {
 		DMUX_LOG_KERR("%s: rescheduling\n", __func__);
 		schedule_work(&queue_rx_work);
@@ -488,6 +524,17 @@ static void queue_rx_work_func(struct work_struct *work)
 	 * delay.
 	 */
 	__queue_rx(GFP_KERNEL);
+=======
+	if (rx_len_cached == 0 && !in_global_reset) {
+		DMUX_LOG_KERR("%s: rescheduling\n", __func__);
+		schedule_delayed_work(&queue_rx_work, msecs_to_jiffies(100));
+	}
+}
+
+static void queue_rx_work_func(struct work_struct *work)
+{
+	queue_rx();
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static void bam_mux_process_data(struct sk_buff *rx_skb)
@@ -1944,8 +1991,17 @@ static void release_wakelock(void)
 	BAM_DMUX_LOG("%s: ref count = %d\n", __func__,
 						wakelock_reference_count);
 	--wakelock_reference_count;
+<<<<<<< HEAD
 	if (wakelock_reference_count == 0)
 		wake_unlock(&bam_wakelock);
+=======
+	if (wakelock_reference_count == 0) {
+		wake_unlock(&bam_wakelock);
+#ifdef BAM_DMUX_FD
+		wake_lock_timeout(&bam_wakelock, wakelock_timeout * HZ);
+#endif
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	spin_unlock_irqrestore(&wakelock_reference_lock, flags);
 }
 
@@ -2448,6 +2504,10 @@ static int bam_dmux_probe(struct platform_device *pdev)
 	init_completion(&shutdown_completion);
 	complete_all(&shutdown_completion);
 	INIT_DELAYED_WORK(&ul_timeout_work, ul_timeout);
+<<<<<<< HEAD
+=======
+	INIT_DELAYED_WORK(&queue_rx_work, queue_rx_work_func);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	wake_lock_init(&bam_wakelock, WAKE_LOCK_SUSPEND, "bam_dmux_wakelock");
 
 	rc = smsm_state_cb_register(SMSM_MODEM_STATE, SMSM_A2_POWER_CONTROL,
@@ -2496,6 +2556,41 @@ static struct platform_driver bam_dmux_driver = {
 	},
 };
 
+<<<<<<< HEAD
+=======
+#ifdef BAM_DMUX_FD
+struct device *bamDmux_pkt_dev;
+
+static ssize_t show_waketime(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	if (!bamDmux_pkt_dev)
+		return 0;
+
+	return snprintf(buf, sizeof(buf), "%u\n", wakelock_timeout);
+}
+
+static ssize_t store_waketime(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t count)
+{
+	int r;
+	unsigned long msec;
+	if (!bamDmux_pkt_dev)
+		return count;
+
+	r = kstrtoul(buf, 10, &msec);
+
+	if (r)
+		return count;
+
+	wakelock_timeout = (msec/1000);
+	return count;
+}
+
+static DEVICE_ATTR(waketime, 0664, show_waketime, store_waketime);
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static int __init bam_dmux_init(void)
 {
 #ifdef CONFIG_DEBUG_FS
@@ -2509,6 +2604,21 @@ static int __init bam_dmux_init(void)
 	}
 #endif
 
+<<<<<<< HEAD
+=======
+#ifdef BAM_DMUX_FD
+	wakelock_timeout = 0;
+	bamDmux_pkt_dev = device_create(sec_class, NULL, 0, NULL, "bamdmux");
+	if (IS_ERR(bamDmux_pkt_dev))
+		pr_err("%s: Failed to create device(bamDmux_pkt_dev)!\n",
+			__func__);
+
+	if (device_create_file(bamDmux_pkt_dev, &dev_attr_waketime) < 0)
+		pr_err("%s: Failed to create device file(%s)!\n",
+			__func__, dev_attr_waketime.attr.name);
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	bam_ipc_log_txt = ipc_log_context_create(BAM_IPC_LOG_PAGES, "bam_dmux");
 	if (!bam_ipc_log_txt) {
 		pr_err("%s : unable to create IPC Logging Context", __func__);

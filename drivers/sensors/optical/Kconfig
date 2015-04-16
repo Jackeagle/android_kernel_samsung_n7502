@@ -1,0 +1,29 @@
+config PROXIMITY_SENSOR
+	tristate "proximity_sensor"
+	default n
+config SENSORS_CM36653
+	depends on I2C && GENERIC_GPIO
+	tristate "Capella CM3663 ambient light and proximity sensor"
+	default n
+	help
+	  This option enables proximity & light sensors using CM3663 driver.
+config OPTICAL_TAOS_TMD2672X
+	tristate "OPTICAL_TAOS_TMD2672X"
+	default n
+config OPTICAL_TAOS
+	tristate "OPTICAL_TAOS_TMD2772S9"
+	default n
+
+config SENSORS_CM36651
+	depends on I2C && GENERIC_GPIO
+	tristate "Capella CM3663 ambient light and proximity sensor"
+	default n
+	help
+	  This option enables proximity & light sensors using CM3663 driver.
+
+config SENSORS_TMD27723
+	depends on I2C
+	tristate "TMD27723 driver"
+	default n
+	help
+	   This option enables proximity & light sensors using TMD27723 driver.

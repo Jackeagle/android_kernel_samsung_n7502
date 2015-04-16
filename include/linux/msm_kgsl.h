@@ -20,11 +20,15 @@
 #define KGSL_CONTEXT_TRASH_STATE	0x00000020
 #define KGSL_CONTEXT_PER_CONTEXT_TS	0x00000040
 #define KGSL_CONTEXT_USER_GENERATED_TS	0x00000080
+<<<<<<< HEAD
 #define KGSL_CONTEXT_END_OF_FRAME	0x00000100
 
 #define KGSL_CONTEXT_NO_FAULT_TOLERANCE 0x00000200
 #define KGSL_CONTEXT_SYNC               0x00000400
 #define KGSL_CONTEXT_PWR_CONSTRAINT     0x00000800
+=======
+#define KGSL_CONTEXT_NO_FAULT_TOLERANCE 0x00000200
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* bits [12:15] are reserved for future use */
 #define KGSL_CONTEXT_TYPE_MASK          0x01F00000
 #define KGSL_CONTEXT_TYPE_SHIFT         20
@@ -198,7 +202,10 @@ enum kgsl_property_type {
 	KGSL_PROP_VERSION         = 0x00000008,
 	KGSL_PROP_GPU_RESET_STAT  = 0x00000009,
 	KGSL_PROP_PWRCTRL         = 0x0000000E,
+<<<<<<< HEAD
 	KGSL_PROP_PWR_CONSTRAINT  = 0x00000012,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 struct kgsl_shadowprop {
@@ -288,7 +295,11 @@ struct kgsl_device_waittimestamp_ctxtid {
 #define IOCTL_KGSL_DEVICE_WAITTIMESTAMP_CTXTID \
 	_IOW(KGSL_IOC_TYPE, 0x7, struct kgsl_device_waittimestamp_ctxtid)
 
+<<<<<<< HEAD
 /* DEPRECATED: issue indirect commands to the GPU.
+=======
+/* issue indirect commands to the GPU.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  * drawctxt_id must have been created with IOCTL_KGSL_DRAWCTXT_CREATE
  * ibaddr and sizedwords must specify a subset of a buffer created
  * with IOCTL_KGSL_SHAREDMEM_FROM_PMEM
@@ -296,9 +307,12 @@ struct kgsl_device_waittimestamp_ctxtid {
  * timestamp is a returned counter value which can be passed to
  * other ioctls to determine when the commands have been executed by
  * the GPU.
+<<<<<<< HEAD
  *
  * This fucntion is deprecated - consider using IOCTL_KGSL_SUBMIT_COMMANDS
  * instead
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  */
 struct kgsl_ringbuffer_issueibcmds {
 	unsigned int drawctxt_id;
@@ -813,6 +827,7 @@ struct kgsl_gpumem_sync_cache_bulk {
 #define IOCTL_KGSL_GPUMEM_SYNC_CACHE_BULK \
 	_IOWR(KGSL_IOC_TYPE, 0x3C, struct kgsl_gpumem_sync_cache_bulk)
 
+<<<<<<< HEAD
 /*
  * struct kgsl_cmd_syncpoint_timestamp
  * @context_id: ID of a KGSL context
@@ -912,6 +927,8 @@ struct kgsl_device_constraint_pwrlevel {
 	unsigned int level;
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #ifdef __KERNEL__
 #ifdef CONFIG_MSM_KGSL_DRM
 int kgsl_gem_obj_addr(int drm_fd, int handle, unsigned long *start,

@@ -39,6 +39,10 @@ config SND_SOC_ALL_CODECS
 	select SND_SOC_LM4857 if I2C
 	select SND_SOC_MAX98088 if I2C
 	select SND_SOC_MAX98095 if I2C
+<<<<<<< HEAD
+=======
+	select SND_SOC_MAX98504 if I2C	
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	select SND_SOC_MAX9850 if I2C
 	select SND_SOC_MAX9877 if I2C
 	select SND_SOC_PCM3008
@@ -222,6 +226,15 @@ config SND_SOC_MAX98088
 config SND_SOC_MAX98095
        tristate
 
+<<<<<<< HEAD
+=======
+config SND_SOC_MAX98504
+	bool "Support MAX98504"
+	depends on I2C
+	help
+	MAX98504 driver
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 config SND_SOC_MAX9850
 	tristate
 

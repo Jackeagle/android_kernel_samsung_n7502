@@ -505,9 +505,13 @@ bool msm_mpm_irqs_detectable(bool from_idle)
 	return msm_mpm_interrupts_detectable(MSM_MPM_GIC_IRQ_DOMAIN,
 			from_idle);
 }
+<<<<<<< HEAD
 
 void msm_mpm_enter_sleep(uint32_t sclk_count, bool from_idle,
 		const struct cpumask *cpumask)
+=======
+void msm_mpm_enter_sleep(uint32_t sclk_count, bool from_idle)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 {
 	cycle_t wakeup = (u64)sclk_count * ARCH_TIMER_HZ;
 
@@ -524,13 +528,19 @@ void msm_mpm_enter_sleep(uint32_t sclk_count, bool from_idle,
 	}
 
 	msm_mpm_set(wakeup, !from_idle);
+<<<<<<< HEAD
 	irq_set_affinity(msm_mpm_dev_data.mpm_ipc_irq, cpumask);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 void msm_mpm_exit_sleep(bool from_idle)
 {
 	unsigned long pending;
+<<<<<<< HEAD
 	uint32_t *enabled_intr;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int i;
 	int k;
 
@@ -539,6 +549,7 @@ void msm_mpm_exit_sleep(bool from_idle)
 		return;
 	}
 
+<<<<<<< HEAD
 	enabled_intr = from_idle ? msm_mpm_enabled_irq :
 						msm_mpm_wake_irq;
 
@@ -549,6 +560,14 @@ void msm_mpm_exit_sleep(bool from_idle)
 		if (MSM_MPM_DEBUG_PENDING_IRQ & msm_mpm_debug_mask)
 			pr_info("%s: enabled_intr pending.%d: 0x%08x 0x%08lx\n",
 				__func__, i, enabled_intr[i], pending);
+=======
+	for (i = 0; i < MSM_MPM_REG_WIDTH; i++) {
+		pending = msm_mpm_read(MSM_MPM_REG_STATUS, i);
+
+		if (MSM_MPM_DEBUG_PENDING_IRQ & msm_mpm_debug_mask)
+			pr_info("%s: pending.%d: 0x%08lx", __func__,
+					i, pending);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		k = find_first_bit(&pending, 32);
 		while (k < 32) {
@@ -678,8 +697,12 @@ static int __devinit msm_mpm_dev_probe(struct platform_device *pdev)
 		return -ENXIO;
 	}
 	ret = devm_request_irq(&pdev->dev, dev->mpm_ipc_irq, msm_mpm_irq,
+<<<<<<< HEAD
 			IRQF_TRIGGER_RISING | IRQF_NO_SUSPEND, pdev->name,
 			msm_mpm_irq);
+=======
+			IRQF_TRIGGER_RISING, pdev->name, msm_mpm_irq);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (ret) {
 		pr_info("%s(): request_irq failed errno: %d\n", __func__, ret);

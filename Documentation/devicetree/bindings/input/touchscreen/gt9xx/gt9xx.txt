@@ -7,7 +7,11 @@ Required properties:
  - interrupt-parent	: Parent of interrupt.
  - interrupts		: Configuration of touch panel controller interrupt
 				GPIO.
+<<<<<<< HEAD
  - goodix,product-id	: Product identification of the controller.
+=======
+ - goodix,family-id	: Family identification of the controller.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  - interrupt-gpios	: Interrupt gpio which is to provide interrupts to
 				host, same as "interrupts" node.
  - reset-gpios		: Reset gpio to control the reset of chip.
@@ -30,6 +34,7 @@ Optional properties:
 				min y, max x and max y values.
  - goodix,i2c-pull-up	: To specify pull up is required.
  - goodix,no-force-update	: To specify force update is allowed.
+<<<<<<< HEAD
  - goodix,enable-power-off	: Power off touchscreen during suspend.
  - goodix,button-map	: Button map of key codes. The number of key codes
 				depend on panel.
@@ -52,6 +57,14 @@ Optional properties:
  - goodix,cfg-data5	: Touch screen controller config data group 5. Ask vendor
 				to provide that.
  - goodix,fw-name	: Touch screen controller firmware file name.
+=======
+ - goodix,button-map	: Button map of key codes. The number of key codes
+				depend on panel.
+ - goodix,cfg-data	: Touchpanel controller configuration data, ask vendor
+				to provide that. Default configuration will be
+				used if this property is not present.
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 Example:
 i2c@f9927000 {
 		goodix@5d {
@@ -65,6 +78,7 @@ i2c@f9927000 {
 			goodix,panel-coords = <0 0 720 1200>;
 			goodix,display-coords = <0 0 720 1080>;
 			goodix,button-map= <158 102 139>;
+<<<<<<< HEAD
 			goodix,product-id = "915";
 			goodix,cfg-data0 = [
 				41 D0 02 00 05 0A 05 01 01 08
@@ -87,5 +101,28 @@ i2c@f9927000 {
 				FF FF FF FF FF FF FF 22 22 22
 				22 22 22 FF 07 01];
 			goodix,fw_name = "gtp_fw.bin";
+=======
+			goodix,family-id = <0x0>;
+			goodix,cfg-data = [
+		41 D0 02 00 05 0A 05 01 01 08
+		12 58 50 41 03 05 00 00 00 00
+		00 00 00 00 00 00 00 8C 2E 0E
+		28 24 73 13 00 00 00 83 03 1D
+		40 02 00 00 00 03 64 32 00 00
+		00 1A 38 94 C0 02 00 00 00 04
+		9E 1C 00 8D 20 00 7A 26 00 6D
+		2C 00 60 34 00 60 10 38 68 00
+		F0 50 35 FF FF 27 00 00 00 00
+		00 01 1B 14 0C 14 00 00 01 00
+		00 00 00 00 00 00 00 00 00 00
+		00 00 02 04 06 08 0A 0C 0E 10
+		12 14 16 18 1A 1C FF FF FF FF
+		FF FF FF FF FF FF FF FF FF FF
+		FF FF 00 02 04 06 08 0A 0C 0F
+		10 12 13 14 16 18 1C 1D 1E 1F
+		20 21 22 24 26 28 29 2A FF FF
+		FF FF FF FF FF FF FF 22 22 22
+		22 22 22 FF 07 01];
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		};
 };

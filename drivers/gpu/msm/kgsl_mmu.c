@@ -123,12 +123,19 @@ kgsl_get_pagetable(unsigned long name)
 
 	spin_lock_irqsave(&kgsl_driver.ptlock, flags);
 	list_for_each_entry(pt, &kgsl_driver.pagetable_list, list) {
+<<<<<<< HEAD
 		if (kref_get_unless_zero(&pt->refcount)) {
 			if (pt->name == name) {
 				ret = pt;
 				break;
 			}
 			kref_put(&pt->refcount, kgsl_destroy_pagetable);
+=======
+		if (pt->name == name) {
+			ret = pt;
+			kref_get(&ret->refcount);
+			break;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 	}
 
@@ -139,12 +146,20 @@ kgsl_get_pagetable(unsigned long name)
 static struct kgsl_pagetable *
 _get_pt_from_kobj(struct kobject *kobj)
 {
+<<<<<<< HEAD
 	unsigned int ptname;
+=======
+	unsigned long ptname;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (!kobj)
 		return NULL;
 
+<<<<<<< HEAD
 	if (kstrtou32(kobj->name, 0, &ptname))
+=======
+	if (sscanf(kobj->name, "%ld", &ptname) != 1)
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		return NULL;
 
 	return kgsl_get_pagetable(ptname);
@@ -325,6 +340,7 @@ kgsl_mmu_get_ptname_from_ptbase(struct kgsl_mmu *mmu, phys_addr_t pt_base)
 		return KGSL_MMU_GLOBAL_PT;
 	spin_lock(&kgsl_driver.ptlock);
 	list_for_each_entry(pt, &kgsl_driver.pagetable_list, list) {
+<<<<<<< HEAD
 		if (kref_get_unless_zero(&pt->refcount)) {
 			if (mmu->mmu_ops->mmu_pt_equal(mmu, pt, pt_base)) {
 				ptid = (int) pt->name;
@@ -332,6 +348,11 @@ kgsl_mmu_get_ptname_from_ptbase(struct kgsl_mmu *mmu, phys_addr_t pt_base)
 				break;
 			}
 			kref_put(&pt->refcount, kgsl_destroy_pagetable);
+=======
+		if (mmu->mmu_ops->mmu_pt_equal(mmu, pt, pt_base)) {
+			ptid = (int) pt->name;
+			break;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 	}
 	spin_unlock(&kgsl_driver.ptlock);
@@ -351,6 +372,7 @@ kgsl_mmu_log_fault_addr(struct kgsl_mmu *mmu, phys_addr_t pt_base,
 		return 0;
 	spin_lock(&kgsl_driver.ptlock);
 	list_for_each_entry(pt, &kgsl_driver.pagetable_list, list) {
+<<<<<<< HEAD
 		if (kref_get_unless_zero(&pt->refcount)) {
 			if (mmu->mmu_ops->mmu_pt_equal(mmu, pt, pt_base)) {
 				if ((addr & ~(PAGE_SIZE-1)) == pt->fault_addr) {
@@ -368,6 +390,18 @@ kgsl_mmu_log_fault_addr(struct kgsl_mmu *mmu, phys_addr_t pt_base,
 				}
 			}
 			kref_put(&pt->refcount, kgsl_destroy_pagetable);
+=======
+		if (mmu->mmu_ops->mmu_pt_equal(mmu, pt, pt_base)) {
+			if ((addr & ~(PAGE_SIZE-1)) == pt->fault_addr) {
+				ret = 1;
+				break;
+			} else {
+				pt->fault_addr = (addr & ~(PAGE_SIZE-1));
+				ret = 0;
+				break;
+			}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 	}
 	spin_unlock(&kgsl_driver.ptlock);
@@ -385,10 +419,13 @@ int kgsl_mmu_init(struct kgsl_device *device)
 	status = kgsl_allocate_contiguous(&mmu->setstate_memory, PAGE_SIZE);
 	if (status)
 		return status;
+<<<<<<< HEAD
 
 	/* Mark the setstate memory as read only */
 	mmu->setstate_memory.flags |= KGSL_MEMFLAGS_GPUREADONLY;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	kgsl_sharedmem_set(device, &mmu->setstate_memory, 0, 0,
 				mmu->setstate_memory.size);
 
@@ -583,7 +620,11 @@ void kgsl_mmu_putpagetable(struct kgsl_pagetable *pagetable)
 }
 EXPORT_SYMBOL(kgsl_mmu_putpagetable);
 
+<<<<<<< HEAD
 int kgsl_setstate(struct kgsl_mmu *mmu, unsigned int context_id,
+=======
+void kgsl_setstate(struct kgsl_mmu *mmu, unsigned int context_id,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			uint32_t flags)
 {
 	struct kgsl_device *device = mmu->device;
@@ -591,6 +632,7 @@ int kgsl_setstate(struct kgsl_mmu *mmu, unsigned int context_id,
 
 	if (!(flags & (KGSL_MMUFLAGS_TLBFLUSH | KGSL_MMUFLAGS_PTUPDATE))
 		&& !adreno_is_a2xx(adreno_dev))
+<<<<<<< HEAD
 		return 0;
 
 	if (KGSL_MMU_TYPE_NONE == kgsl_mmu_type)
@@ -601,6 +643,16 @@ int kgsl_setstate(struct kgsl_mmu *mmu, unsigned int context_id,
 		return mmu->mmu_ops->mmu_device_setstate(mmu, flags);
 
 	return 0;
+=======
+		return;
+
+	if (KGSL_MMU_TYPE_NONE == kgsl_mmu_type)
+		return;
+	else if (device->ftbl->setstate)
+		device->ftbl->setstate(device, context_id, flags);
+	else if (mmu->mmu_ops->mmu_device_setstate)
+		mmu->mmu_ops->mmu_device_setstate(mmu, flags);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 EXPORT_SYMBOL(kgsl_setstate);
 
@@ -609,6 +661,10 @@ void kgsl_mh_start(struct kgsl_device *device)
 	struct kgsl_mh *mh = &device->mh;
 	/* force mmu off to for now*/
 	kgsl_regwrite(device, MH_MMU_CONFIG, 0);
+<<<<<<< HEAD
+=======
+	kgsl_idle(device);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	/* define physical memory range accessible by the core */
 	kgsl_regwrite(device, MH_MMU_MPU_BASE, mh->mpu_base);

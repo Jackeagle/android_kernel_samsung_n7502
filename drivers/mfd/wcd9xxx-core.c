@@ -32,7 +32,11 @@
 
 #define WCD9XXX_REGISTER_START_OFFSET 0x800
 #define WCD9XXX_SLIM_RW_MAX_TRIES 3
+<<<<<<< HEAD
 #define SLIMBUS_PRESENT_TIMEOUT 100
+=======
+#define SLIMBUS_PRESENT_TIMEOUT 200
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 #define MAX_WCD9XXX_DEVICE	4
 #define CODEC_DT_MAX_PROP_SIZE   40
@@ -403,6 +407,22 @@ static int wcd9xxx_reset(struct wcd9xxx *wcd9xxx)
 		}
 	}
 	if (wcd9xxx->reset_gpio) {
+<<<<<<< HEAD
+=======
+		ret = gpio_tlmm_config
+			(GPIO_CFG(wcd9xxx->reset_gpio,
+			0, GPIO_CFG_OUTPUT, GPIO_CFG_NO_PULL,
+			GPIO_CFG_8MA), GPIO_CFG_ENABLE);
+		if (ret) {
+			pr_err("%s: Failed to gpio_tlmm_config %d\n", __func__,
+				wcd9xxx->reset_gpio);
+			wcd9xxx->reset_gpio = 0;
+			return ret;
+		}
+		
+		gpio_direction_output(wcd9xxx->reset_gpio, 1);
+		msleep(20);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		gpio_direction_output(wcd9xxx->reset_gpio, 0);
 		msleep(20);
 		gpio_direction_output(wcd9xxx->reset_gpio, 1);
@@ -544,10 +564,15 @@ static const struct intr_data intr_tbl_v2[] = {
 	{WCD9XXX_IRQ_PA2_STARTUP, false},
 	{WCD9XXX_IRQ_PA3_STARTUP, false},
 	{WCD9XXX_IRQ_PA4_STARTUP, false},
+<<<<<<< HEAD
 	{WCD9306_IRQ_HPH_PA_OCPR_FAULT, false},
 	{WCD9XXX_IRQ_PA5_STARTUP, false},
 	{WCD9XXX_IRQ_MICBIAS1_PRECHARGE, false},
 	{WCD9306_IRQ_HPH_PA_OCPL_FAULT, false},
+=======
+	{WCD9XXX_IRQ_PA5_STARTUP, false},
+	{WCD9XXX_IRQ_MICBIAS1_PRECHARGE, false},
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	{WCD9XXX_IRQ_MICBIAS2_PRECHARGE, false},
 	{WCD9XXX_IRQ_MICBIAS3_PRECHARGE, false},
 	{WCD9XXX_IRQ_HPH_PA_OCPL_FAULT, false},
@@ -1453,6 +1478,7 @@ static struct wcd9xxx_pdata *wcd9xxx_populate_dt_pdata(struct device *dev)
 		dev_err(dev, "Looking up %s property in node %s failed",
 			"qcom,cdc-dmic-sample-rate",
 			dev->of_node->full_name);
+<<<<<<< HEAD
 		dmic_sample_rate = WCD9XXX_DMIC_SAMPLE_RATE_UNDEFINED;
 	}
 	if (pdata->mclk_rate == WCD9XXX_MCLK_CLK_9P6HZ) {
@@ -1460,16 +1486,33 @@ static struct wcd9xxx_pdata *wcd9xxx_populate_dt_pdata(struct device *dev)
 		    (dmic_sample_rate != WCD9XXX_DMIC_SAMPLE_RATE_3P2MHZ) &&
 		    (dmic_sample_rate != WCD9XXX_DMIC_SAMPLE_RATE_4P8MHZ) &&
 		    (dmic_sample_rate != WCD9XXX_DMIC_SAMPLE_RATE_UNDEFINED)) {
+=======
+		dmic_sample_rate = TAIKO_DMIC_SAMPLE_RATE_UNDEFINED;
+	}
+	if (pdata->mclk_rate == TAIKO_MCLK_CLK_9P6HZ) {
+		if ((dmic_sample_rate != TAIKO_DMIC_SAMPLE_RATE_2P4MHZ) &&
+		    (dmic_sample_rate != TAIKO_DMIC_SAMPLE_RATE_3P2MHZ) &&
+		    (dmic_sample_rate != TAIKO_DMIC_SAMPLE_RATE_4P8MHZ) &&
+		    (dmic_sample_rate != TAIKO_DMIC_SAMPLE_RATE_UNDEFINED)) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			dev_err(dev, "Invalid dmic rate %d for mclk %d\n",
 				dmic_sample_rate, pdata->mclk_rate);
 			ret = -EINVAL;
 			goto err;
 		}
+<<<<<<< HEAD
 	} else if (pdata->mclk_rate == WCD9XXX_MCLK_CLK_12P288MHZ) {
 		if ((dmic_sample_rate != WCD9XXX_DMIC_SAMPLE_RATE_3P072MHZ) &&
 		    (dmic_sample_rate != WCD9XXX_DMIC_SAMPLE_RATE_4P096MHZ) &&
 		    (dmic_sample_rate != WCD9XXX_DMIC_SAMPLE_RATE_6P144MHZ) &&
 		    (dmic_sample_rate != WCD9XXX_DMIC_SAMPLE_RATE_UNDEFINED)) {
+=======
+	} else if (pdata->mclk_rate == TAIKO_MCLK_CLK_12P288MHZ) {
+		if ((dmic_sample_rate != TAIKO_DMIC_SAMPLE_RATE_3P072MHZ) &&
+		    (dmic_sample_rate != TAIKO_DMIC_SAMPLE_RATE_4P096MHZ) &&
+		    (dmic_sample_rate != TAIKO_DMIC_SAMPLE_RATE_6P144MHZ) &&
+		    (dmic_sample_rate != TAIKO_DMIC_SAMPLE_RATE_UNDEFINED)) {
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			dev_err(dev, "Invalid dmic rate %d for mclk %d\n",
 				dmic_sample_rate, pdata->mclk_rate);
 			ret = -EINVAL;

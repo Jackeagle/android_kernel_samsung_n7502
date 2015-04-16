@@ -19,16 +19,22 @@
 
 #include <linux/usb/composite.h>
 
+<<<<<<< HEAD
 #define MAX_STREAMING_FUNCS 3
 #define FUNC_NAME_LEN 10
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 struct android_usb_platform_data {
 	int (*update_pid_and_serial_num)(uint32_t, const char *);
 	u32 swfi_latency;
 	u8 usb_core_id;
 	bool cdrom;
 	bool internal_ums;
+<<<<<<< HEAD
 	char streaming_func[MAX_STREAMING_FUNCS][FUNC_NAME_LEN];
 	int  streaming_func_count;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 };
 
 #ifndef CONFIG_TARGET_CORE

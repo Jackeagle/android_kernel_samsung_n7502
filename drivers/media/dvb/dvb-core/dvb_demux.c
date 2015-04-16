@@ -3118,7 +3118,11 @@ static int dvbdmx_disconnect_frontend(struct dmx_demux *demux)
 	struct dvb_demux *dvbdemux = (struct dvb_demux *)demux;
 
 	mutex_lock(&dvbdemux->mutex);
+<<<<<<< HEAD
 	dvbdemux->sw_filter_abort = 0;
+=======
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	demux->frontend = NULL;
 	mutex_unlock(&dvbdemux->mutex);
 	return 0;
@@ -3203,7 +3207,10 @@ int dvb_dmx_init(struct dvb_demux *dvbdemux)
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	dvbdemux->sw_filter_abort = 0;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	dvbdemux->total_process_time = 0;
 	dvbdemux->total_crc_time = 0;
 	snprintf(dvbdemux->alias,

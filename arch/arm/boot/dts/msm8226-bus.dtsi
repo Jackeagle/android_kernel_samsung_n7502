@@ -78,7 +78,11 @@
 		mas-vfe {
 			cell-id = <29>;
 			label = "mas-vfe";
+<<<<<<< HEAD
 			qcom,masterp = <7>;
+=======
+			qcom,masterp = <0x7>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			qcom,tier = <2>;
 			qcom,hw-sel = "NoC";
 			qcom,perm-mode = "Bypass";

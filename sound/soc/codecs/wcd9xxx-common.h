@@ -37,6 +37,7 @@
 #define	WCD9XXX_CLSH_STATE_LO (0x01 << 3)
 #define NUM_CLSH_STATES ((0x01 << 4) - 1)
 
+<<<<<<< HEAD
 #define WCD9XXX_DMIC_SAMPLE_RATE_DIV_2    0x0
 #define WCD9XXX_DMIC_SAMPLE_RATE_DIV_3    0x1
 #define WCD9XXX_DMIC_SAMPLE_RATE_DIV_4    0x2
@@ -52,6 +53,8 @@
 #define WCD9XXX_ANC_DMIC_X2_ON    0x1
 #define WCD9XXX_ANC_DMIC_X2_OFF   0x0
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* Derived State: Bits 1 and 2 should be set for Headphone stereo */
 #define WCD9XXX_CLSH_STATE_HPH_ST (WCD9XXX_CLSH_STATE_HPHL | \
 						WCD9XXX_CLSH_STATE_HPHR)
@@ -63,20 +66,26 @@ struct wcd9xxx_reg_mask_val {
 	u8	val;
 };
 
+<<<<<<< HEAD
 enum ncp_fclk_level {
 	NCP_FCLK_LEVEL_8,
 	NCP_FCLK_LEVEL_5,
 	NCP_FCLK_LEVEL_MAX,
 };
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 /* Class H data that the codec driver will maintain */
 struct wcd9xxx_clsh_cdc_data {
 	u8 state;
 	int buck_mv;
 	bool is_dynamic_vdd_cp;
+<<<<<<< HEAD
 	int clsh_users;
 	int buck_users;
 	int ncp_users[NCP_FCLK_LEVEL_MAX];
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct wcd9xxx_resmgr *resmgr;
 };
 

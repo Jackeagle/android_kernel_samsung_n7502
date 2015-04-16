@@ -482,17 +482,28 @@ err_free_gpummu:
 	return NULL;
 }
 
+<<<<<<< HEAD
 static int kgsl_gpummu_default_setstate(struct kgsl_mmu *mmu,
+=======
+static void kgsl_gpummu_default_setstate(struct kgsl_mmu *mmu,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					uint32_t flags)
 {
 	struct kgsl_gpummu_pt *gpummu_pt;
 	if (!kgsl_mmu_enabled())
+<<<<<<< HEAD
 		return 0;
 
 	if (flags & KGSL_MMUFLAGS_PTUPDATE) {
 		int ret = kgsl_idle(mmu->device);
 		if (ret)
 			return ret;
+=======
+		return;
+
+	if (flags & KGSL_MMUFLAGS_PTUPDATE) {
+		kgsl_idle(mmu->device);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		gpummu_pt = mmu->hwpagetable->priv;
 		kgsl_regwrite(mmu->device, MH_MMU_PT_BASE,
 			gpummu_pt->base.gpuaddr);
@@ -502,6 +513,7 @@ static int kgsl_gpummu_default_setstate(struct kgsl_mmu *mmu,
 		/* Invalidate all and tc */
 		kgsl_regwrite(mmu->device, MH_MMU_INVALIDATE,  0x00000003);
 	}
+<<<<<<< HEAD
 
 	return 0;
 }
@@ -512,6 +524,14 @@ static int kgsl_gpummu_setstate(struct kgsl_mmu *mmu,
 {
 	int ret = 0;
 
+=======
+}
+
+static void kgsl_gpummu_setstate(struct kgsl_mmu *mmu,
+				struct kgsl_pagetable *pagetable,
+				unsigned int context_id)
+{
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (mmu->flags & KGSL_FLAGS_STARTED) {
 		/* page table not current, then setup mmu to use new
 		 *  specified page table
@@ -524,6 +544,7 @@ static int kgsl_gpummu_setstate(struct kgsl_mmu *mmu,
 			kgsl_mmu_pt_get_flags(pagetable, mmu->device->id);
 
 			/* call device specific set page table */
+<<<<<<< HEAD
 			ret = kgsl_setstate(mmu, context_id,
 				KGSL_MMUFLAGS_TLBFLUSH |
 				KGSL_MMUFLAGS_PTUPDATE);
@@ -531,6 +552,12 @@ static int kgsl_gpummu_setstate(struct kgsl_mmu *mmu,
 	}
 
 	return ret;
+=======
+			kgsl_setstate(mmu, context_id, KGSL_MMUFLAGS_TLBFLUSH |
+				KGSL_MMUFLAGS_PTUPDATE);
+		}
+	}
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int kgsl_gpummu_init(struct kgsl_mmu *mmu)
@@ -572,7 +599,10 @@ static int kgsl_gpummu_start(struct kgsl_mmu *mmu)
 
 	struct kgsl_device *device = mmu->device;
 	struct kgsl_gpummu_pt *gpummu_pt;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	if (mmu->flags & KGSL_FLAGS_STARTED)
 		return 0;
@@ -584,6 +614,12 @@ static int kgsl_gpummu_start(struct kgsl_mmu *mmu)
 	/* setup MMU and sub-client behavior */
 	kgsl_regwrite(device, MH_MMU_CONFIG, mmu->config);
 
+<<<<<<< HEAD
+=======
+	/* idle device */
+	kgsl_idle(device);
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* enable axi interrupts */
 	kgsl_regwrite(device, MH_INTERRUPT_MASK,
 			GSL_MMU_INT_MASK | MH_INTERRUPT_MASK__MMU_PAGE_FAULT);
@@ -614,12 +650,19 @@ static int kgsl_gpummu_start(struct kgsl_mmu *mmu)
 	kgsl_regwrite(mmu->device, MH_MMU_VA_RANGE,
 		      (KGSL_PAGETABLE_BASE |
 		      (CONFIG_MSM_KGSL_PAGE_TABLE_SIZE >> 16)));
+<<<<<<< HEAD
 
 	ret = kgsl_setstate(mmu, KGSL_MEMSTORE_GLOBAL, KGSL_MMUFLAGS_TLBFLUSH);
 	if (!ret)
 		mmu->flags |= KGSL_FLAGS_STARTED;
 
 	return ret;
+=======
+	kgsl_setstate(mmu, KGSL_MEMSTORE_GLOBAL, KGSL_MMUFLAGS_TLBFLUSH);
+	mmu->flags |= KGSL_FLAGS_STARTED;
+
+	return 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int

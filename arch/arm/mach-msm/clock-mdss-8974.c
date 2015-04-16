@@ -37,9 +37,12 @@
 #define DSI_PHY_PHYS		0xFD922A00
 #define DSI_PHY_SIZE		0x000000D4
 
+<<<<<<< HEAD
 #define EDP_PHY_PHYS		0xFD923A00
 #define EDP_PHY_SIZE		0x000000D4
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define HDMI_PHY_PHYS		0xFD922500
 #define HDMI_PHY_SIZE		0x0000007C
 
@@ -151,13 +154,19 @@
 
 #define PLL_POLL_MAX_READS	10
 #define PLL_POLL_TIMEOUT_US	50
+<<<<<<< HEAD
 #define SEQ_M_MAX_COUNTER	7
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static long vco_cached_rate;
 static unsigned char *mdss_dsi_base;
 static unsigned char *gdsc_base;
 static struct clk *mdss_ahb_clk;
+<<<<<<< HEAD
 static unsigned char *mdss_edp_base;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 static void __iomem *hdmi_phy_base;
 static void __iomem *hdmi_phy_pll_base;
@@ -172,6 +181,7 @@ static int mdss_gdsc_enabled(void)
 		(!(readl_relaxed(gdsc_base) & BIT(0)));
 }
 
+<<<<<<< HEAD
 /* Auto PLL calibaration */
 static int mdss_ahb_clk_enable(int enable)
 {
@@ -237,6 +247,25 @@ static int hdmi_vco_enable(struct clk *c)
 		return rc;
 	}
 
+=======
+void hdmi_pll_disable(void)
+{
+	clk_enable(mdss_ahb_clk);
+	REG_W(0x0, hdmi_phy_pll_base + HDMI_UNI_PLL_GLB_CFG);
+	udelay(5);
+	REG_W(0x0, hdmi_phy_base + HDMI_PHY_GLB_CFG);
+	clk_disable(mdss_ahb_clk);
+
+	hdmi_pll_on = 0;
+} /* hdmi_pll_disable */
+
+int hdmi_pll_enable(void)
+{
+	u32 status;
+	u32 max_reads, timeout_us;
+
+	clk_enable(mdss_ahb_clk);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* Global Enable */
 	REG_W(0x81, hdmi_phy_base + HDMI_PHY_GLB_CFG);
 	/* Power up power gen */
@@ -261,7 +290,11 @@ static int hdmi_vco_enable(struct clk *c)
 		status, ((status & BIT(0)) == 1), max_reads, timeout_us)) {
 		pr_err("%s: hdmi phy pll status=%x failed to Lock\n",
 		       __func__, status);
+<<<<<<< HEAD
 		hdmi_vco_disable(c);
+=======
+		hdmi_pll_disable();
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		clk_disable(mdss_ahb_clk);
 		return -EINVAL;
 	}
@@ -275,7 +308,11 @@ static int hdmi_vco_enable(struct clk *c)
 		status, ((status & BIT(0)) == 1), max_reads, timeout_us)) {
 		pr_err("%s: hdmi phy status=%x failed to Lock\n",
 		       __func__, status);
+<<<<<<< HEAD
 		hdmi_vco_disable(c);
+=======
+		hdmi_pll_disable();
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		clk_disable(mdss_ahb_clk);
 		return -EINVAL;
 	}
@@ -285,6 +322,7 @@ static int hdmi_vco_enable(struct clk *c)
 	hdmi_pll_on = 1;
 
 	return 0;
+<<<<<<< HEAD
 } /* hdmi_vco_enable */
 
 static inline struct hdmi_pll_vco_clk *to_hdmi_vco_clk(struct clk *clk)
@@ -452,6 +490,27 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		break;
 
 	case 756000000:
+=======
+} /* hdmi_pll_enable */
+
+int hdmi_pll_set_rate(unsigned long rate)
+{
+	unsigned int set_power_dwn = 0;
+
+	if (hdmi_pll_on) {
+		hdmi_pll_disable();
+		set_power_dwn = 1;
+	}
+
+	clk_enable(mdss_ahb_clk);
+	pr_debug("%s: rate=%ld\n", __func__, rate);
+	switch (rate) {
+	case 0:
+		/* This case is needed for suspend/resume. */
+	break;
+
+	case 25200000:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/* 640x480p60 */
 		REG_W(0x81, hdmi_phy_base + HDMI_PHY_GLB_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_GLB_CFG);
@@ -468,6 +527,10 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		REG_W(0x10, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG0);
 		REG_W(0x1A, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG1);
 		REG_W(0x05, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG2);
+<<<<<<< HEAD
+=======
+		REG_W(0x03, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV1_CFG);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV2_CFG);
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV3_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG2);
@@ -495,7 +558,11 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		udelay(200);
 	break;
 
+<<<<<<< HEAD
 	case 810000000:
+=======
+	case 27000000:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/* 576p50/576i50 case */
 		REG_W(0x81, hdmi_phy_base + HDMI_PHY_GLB_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_GLB_CFG);
@@ -512,6 +579,10 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		REG_W(0x10, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG0);
 		REG_W(0X1A, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG1);
 		REG_W(0x05, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG2);
+<<<<<<< HEAD
+=======
+		REG_W(0x03, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV1_CFG);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV2_CFG);
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV3_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG2);
@@ -539,7 +610,11 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		udelay(200);
 	break;
 
+<<<<<<< HEAD
 	case 810900000:
+=======
+	case 27030000:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/* 480p60/480i60 case */
 		REG_W(0x81, hdmi_phy_base + HDMI_PHY_GLB_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_GLB_CFG);
@@ -556,6 +631,10 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		REG_W(0x10, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG0);
 		REG_W(0x1A, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG1);
 		REG_W(0x05, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG2);
+<<<<<<< HEAD
+=======
+		REG_W(0x03, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV1_CFG);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV2_CFG);
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV3_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG2);
@@ -582,7 +661,11 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		REG_W(0x05, hdmi_phy_base + HDMI_PHY_TXCAL_CFG3);
 		udelay(200);
 	break;
+<<<<<<< HEAD
 	case 650000000:
+=======
+	case 65000000:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x81, hdmi_phy_base + HDMI_PHY_GLB_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_GLB_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_REFCLK_CFG);
@@ -598,6 +681,10 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		REG_W(0x10, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG0);
 		REG_W(0x1A, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG1);
 		REG_W(0x05, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG2);
+<<<<<<< HEAD
+=======
+		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV1_CFG);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV2_CFG);
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV3_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG2);
@@ -624,7 +711,11 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		REG_W(0x05, hdmi_phy_base + HDMI_PHY_TXCAL_CFG3);
 		udelay(200);
 	break;
+<<<<<<< HEAD
 	case 742500000:
+=======
+	case 74250000:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/*
 		 * 720p60/720p50/1080i60/1080i50
 		 * 1080p24/1080p30/1080p25 case
@@ -644,6 +735,10 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		REG_W(0x10, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG0);
 		REG_W(0x1A, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG1);
 		REG_W(0x05, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG2);
+<<<<<<< HEAD
+=======
+		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV1_CFG);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV2_CFG);
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV3_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG2);
@@ -671,7 +766,11 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		udelay(200);
 	break;
 
+<<<<<<< HEAD
 	case 1080000000:
+=======
+	case 108000000:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x81, hdmi_phy_base + HDMI_PHY_GLB_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_GLB_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_REFCLK_CFG);
@@ -687,6 +786,10 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		REG_W(0x10, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG0);
 		REG_W(0x1A, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG1);
 		REG_W(0x05, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG2);
+<<<<<<< HEAD
+=======
+		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV1_CFG);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV2_CFG);
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV3_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG2);
@@ -714,7 +817,11 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		udelay(200);
 	break;
 
+<<<<<<< HEAD
 	case 1342500000:
+=======
+	case 148500000:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x81, hdmi_phy_base + HDMI_PHY_GLB_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_GLB_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_REFCLK_CFG);
@@ -722,20 +829,106 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		REG_W(0x0E, hdmi_phy_pll_base + HDMI_UNI_PLL_LPFR_CFG);
 		REG_W(0x20, hdmi_phy_pll_base + HDMI_UNI_PLL_LPFC1_CFG);
 		REG_W(0x0D, hdmi_phy_pll_base + HDMI_UNI_PLL_LPFC2_CFG);
+<<<<<<< HEAD
 		REG_W(0x36, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG0);
 		REG_W(0x61, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG1);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG2);
 		REG_W(0xF6, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG3);
+=======
+		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG0);
+		REG_W(0x52, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG1);
+		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG2);
+		REG_W(0x56, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG3);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG4);
 		REG_W(0x10, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG0);
 		REG_W(0x1A, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG1);
 		REG_W(0x05, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG2);
+<<<<<<< HEAD
+=======
+		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV1_CFG);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV2_CFG);
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV3_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG2);
 		REG_W(0x60, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG8);
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG9);
+<<<<<<< HEAD
 		REG_W(0x3E, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG10);
+		REG_W(0x05, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG11);
+=======
+		REG_W(0xE6, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG10);
+		REG_W(0x02, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG11);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
+		REG_W(0x1F, hdmi_phy_base + HDMI_PHY_PD_CTRL0);
+		udelay(50);
+
+		REG_W(0x0F, hdmi_phy_pll_base + HDMI_UNI_PLL_GLB_CFG);
+		REG_W(0x00, hdmi_phy_base + HDMI_PHY_PD_CTRL1);
+		REG_W(0x10, hdmi_phy_base + HDMI_PHY_ANA_CFG2);
+		REG_W(0xDB, hdmi_phy_base + HDMI_PHY_ANA_CFG0);
+		REG_W(0x43, hdmi_phy_base + HDMI_PHY_ANA_CFG1);
+<<<<<<< HEAD
+		REG_W(0x05, hdmi_phy_base + HDMI_PHY_ANA_CFG2);
+=======
+		REG_W(0x02, hdmi_phy_base + HDMI_PHY_ANA_CFG2);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
+		REG_W(0x00, hdmi_phy_base + HDMI_PHY_ANA_CFG3);
+		REG_W(0x04, hdmi_phy_pll_base + HDMI_UNI_PLL_VREG_CFG);
+		REG_W(0xD0, hdmi_phy_base + HDMI_PHY_DCC_CFG0);
+		REG_W(0x1A, hdmi_phy_base + HDMI_PHY_DCC_CFG1);
+		REG_W(0x00, hdmi_phy_base + HDMI_PHY_TXCAL_CFG0);
+		REG_W(0x00, hdmi_phy_base + HDMI_PHY_TXCAL_CFG1);
+<<<<<<< HEAD
+		REG_W(0x11, hdmi_phy_base + HDMI_PHY_TXCAL_CFG2);
+=======
+		REG_W(0x02, hdmi_phy_base + HDMI_PHY_TXCAL_CFG2);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
+		REG_W(0x05, hdmi_phy_base + HDMI_PHY_TXCAL_CFG3);
+		udelay(200);
+	break;
+
+<<<<<<< HEAD
+	case 1485000000:
+=======
+	case 268500000:
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
+		REG_W(0x81, hdmi_phy_base + HDMI_PHY_GLB_CFG);
+		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_GLB_CFG);
+		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_REFCLK_CFG);
+		REG_W(0x19, hdmi_phy_pll_base + HDMI_UNI_PLL_VCOLPF_CFG);
+		REG_W(0x0E, hdmi_phy_pll_base + HDMI_UNI_PLL_LPFR_CFG);
+		REG_W(0x20, hdmi_phy_pll_base + HDMI_UNI_PLL_LPFC1_CFG);
+		REG_W(0x0D, hdmi_phy_pll_base + HDMI_UNI_PLL_LPFC2_CFG);
+<<<<<<< HEAD
+		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG0);
+		REG_W(0x65, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG1);
+		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG2);
+		REG_W(0xAC, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG3);
+=======
+		REG_W(0x36, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG0);
+		REG_W(0x61, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG1);
+		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG2);
+		REG_W(0xF6, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG3);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
+		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_SDM_CFG4);
+		REG_W(0x10, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG0);
+		REG_W(0x1A, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG1);
+		REG_W(0x05, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG2);
+<<<<<<< HEAD
+=======
+		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV1_CFG);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
+		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV2_CFG);
+		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV3_CFG);
+		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG2);
+		REG_W(0x60, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG8);
+		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG9);
+<<<<<<< HEAD
+		REG_W(0xCD, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG10);
+=======
+		REG_W(0x3E, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG10);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x05, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG11);
 		REG_W(0x1F, hdmi_phy_base + HDMI_PHY_PD_CTRL0);
 		udelay(50);
@@ -745,19 +938,36 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		REG_W(0x10, hdmi_phy_base + HDMI_PHY_ANA_CFG2);
 		REG_W(0xDB, hdmi_phy_base + HDMI_PHY_ANA_CFG0);
 		REG_W(0x43, hdmi_phy_base + HDMI_PHY_ANA_CFG1);
+<<<<<<< HEAD
+		REG_W(0x06, hdmi_phy_base + HDMI_PHY_ANA_CFG2);
+		REG_W(0x03, hdmi_phy_base + HDMI_PHY_ANA_CFG3);
+=======
 		REG_W(0x05, hdmi_phy_base + HDMI_PHY_ANA_CFG2);
 		REG_W(0x00, hdmi_phy_base + HDMI_PHY_ANA_CFG3);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x04, hdmi_phy_pll_base + HDMI_UNI_PLL_VREG_CFG);
 		REG_W(0xD0, hdmi_phy_base + HDMI_PHY_DCC_CFG0);
 		REG_W(0x1A, hdmi_phy_base + HDMI_PHY_DCC_CFG1);
 		REG_W(0x00, hdmi_phy_base + HDMI_PHY_TXCAL_CFG0);
 		REG_W(0x00, hdmi_phy_base + HDMI_PHY_TXCAL_CFG1);
+<<<<<<< HEAD
+		REG_W(0x02, hdmi_phy_base + HDMI_PHY_TXCAL_CFG2);
+=======
 		REG_W(0x11, hdmi_phy_base + HDMI_PHY_TXCAL_CFG2);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x05, hdmi_phy_base + HDMI_PHY_TXCAL_CFG3);
 		udelay(200);
 	break;
 
-	case 1485000000:
+<<<<<<< HEAD
+	default:
+		pr_debug("%s: Use pll settings calculator for rate=%ld\n",
+			__func__, rate);
+
+		REG_W(0x81, hdmi_phy_base + HDMI_PHY_GLB_CFG);
+		hdmi_phy_pll_calculator(rate);
+=======
+	case 297000000:
 		REG_W(0x81, hdmi_phy_base + HDMI_PHY_GLB_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_GLB_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_REFCLK_CFG);
@@ -773,6 +983,7 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		REG_W(0x10, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG0);
 		REG_W(0x1A, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG1);
 		REG_W(0x05, hdmi_phy_pll_base + HDMI_UNI_PLL_LKDET_CFG2);
+		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV1_CFG);
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV2_CFG);
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_POSTDIV3_CFG);
 		REG_W(0x01, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG2);
@@ -780,6 +991,7 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		REG_W(0x00, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG9);
 		REG_W(0xCD, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG10);
 		REG_W(0x05, hdmi_phy_pll_base + HDMI_UNI_PLL_CAL_CFG11);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x1F, hdmi_phy_base + HDMI_PHY_PD_CTRL0);
 		udelay(50);
 
@@ -788,32 +1000,7 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 		REG_W(0x10, hdmi_phy_base + HDMI_PHY_ANA_CFG2);
 		REG_W(0xDB, hdmi_phy_base + HDMI_PHY_ANA_CFG0);
 		REG_W(0x43, hdmi_phy_base + HDMI_PHY_ANA_CFG1);
-		REG_W(0x06, hdmi_phy_base + HDMI_PHY_ANA_CFG2);
-		REG_W(0x03, hdmi_phy_base + HDMI_PHY_ANA_CFG3);
-		REG_W(0x04, hdmi_phy_pll_base + HDMI_UNI_PLL_VREG_CFG);
-		REG_W(0xD0, hdmi_phy_base + HDMI_PHY_DCC_CFG0);
-		REG_W(0x1A, hdmi_phy_base + HDMI_PHY_DCC_CFG1);
-		REG_W(0x00, hdmi_phy_base + HDMI_PHY_TXCAL_CFG0);
-		REG_W(0x00, hdmi_phy_base + HDMI_PHY_TXCAL_CFG1);
-		REG_W(0x02, hdmi_phy_base + HDMI_PHY_TXCAL_CFG2);
-		REG_W(0x05, hdmi_phy_base + HDMI_PHY_TXCAL_CFG3);
-		udelay(200);
-	break;
-
-	default:
-		pr_debug("%s: Use pll settings calculator for rate=%ld\n",
-			__func__, rate);
-
-		REG_W(0x81, hdmi_phy_base + HDMI_PHY_GLB_CFG);
-		hdmi_phy_pll_calculator(rate);
-		REG_W(0x1F, hdmi_phy_base + HDMI_PHY_PD_CTRL0);
-		udelay(50);
-
-		REG_W(0x0F, hdmi_phy_pll_base + HDMI_UNI_PLL_GLB_CFG);
-		REG_W(0x00, hdmi_phy_base + HDMI_PHY_PD_CTRL1);
-		REG_W(0x10, hdmi_phy_base + HDMI_PHY_ANA_CFG2);
-		REG_W(0xDB, hdmi_phy_base + HDMI_PHY_ANA_CFG0);
-		REG_W(0x43, hdmi_phy_base + HDMI_PHY_ANA_CFG1);
+<<<<<<< HEAD
 
 		if (rate < 825000000) {
 			REG_W(0x01, hdmi_phy_base + HDMI_PHY_ANA_CFG2);
@@ -826,11 +1013,16 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 			REG_W(0x03, hdmi_phy_base + HDMI_PHY_ANA_CFG3);
 		}
 
+=======
+		REG_W(0x06, hdmi_phy_base + HDMI_PHY_ANA_CFG2);
+		REG_W(0x03, hdmi_phy_base + HDMI_PHY_ANA_CFG3);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		REG_W(0x04, hdmi_phy_pll_base + HDMI_UNI_PLL_VREG_CFG);
 		REG_W(0xD0, hdmi_phy_base + HDMI_PHY_DCC_CFG0);
 		REG_W(0x1A, hdmi_phy_base + HDMI_PHY_DCC_CFG1);
 		REG_W(0x00, hdmi_phy_base + HDMI_PHY_TXCAL_CFG0);
 		REG_W(0x00, hdmi_phy_base + HDMI_PHY_TXCAL_CFG1);
+<<<<<<< HEAD
 
 		if (rate < 825000000)
 			REG_W(0x01, hdmi_phy_base + HDMI_PHY_TXCAL_CFG2);
@@ -847,11 +1039,21 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 
 		REG_W(0x00, hdmi_phy_base + HDMI_PHY_BIST_CFG1);
 		REG_W(0x00, hdmi_phy_base + HDMI_PHY_BIST_CFG0);
+=======
+		REG_W(0x02, hdmi_phy_base + HDMI_PHY_TXCAL_CFG2);
+		REG_W(0x05, hdmi_phy_base + HDMI_PHY_TXCAL_CFG3);
+		udelay(200);
+	break;
+
+	default:
+		pr_err("%s: not supported rate=%ld\n", __func__, rate);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	/* Make sure writes complete before disabling iface clock */
 	mb();
 
+<<<<<<< HEAD
 	mdss_ahb_clk_enable(0);
 
 	if (set_power_dwn)
@@ -859,10 +1061,39 @@ static int hdmi_vco_set_rate(struct clk *c, unsigned long rate)
 
 	vco->rate = rate;
 	vco->rate_set = true;
+=======
+	clk_disable(mdss_ahb_clk);
+
+	if (set_power_dwn)
+		hdmi_pll_enable();
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	return 0;
 } /* hdmi_pll_set_rate */
 
+<<<<<<< HEAD
+=======
+/* Auto PLL calibaration */
+int mdss_ahb_clk_enable(int enable)
+{
+	int rc = 0;
+
+	/* todo: Ideally, we should enable/disable GDSC whenever we are
+	 * attempting to enable/disable MDSS AHB clock.
+	 * For now, just return error if  GDSC is not enabled.
+	 */
+	if (!mdss_gdsc_enabled())
+		return -EPERM;
+
+	if (enable)
+		rc = clk_prepare_enable(mdss_ahb_clk);
+	else
+		clk_disable_unprepare(mdss_ahb_clk);
+
+	return rc;
+}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 int set_byte_mux_sel(struct mux_clk *clk, int sel)
 {
 	pr_debug("%s: byte mux set to %s mode\n", __func__,
@@ -904,7 +1135,11 @@ int div_prepare(struct clk *c)
 {
 	struct div_clk *div = to_div_clk(c);
 	/* Restore the divider's value */
+<<<<<<< HEAD
 	return div->ops->set_div(div, div->data.div);
+=======
+	return div->ops->set_div(div, div->div);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 int mux_prepare(struct clk *c)
@@ -1035,12 +1270,21 @@ static int analog_get_div(struct div_clk *clk)
 static void dsi_pll_toggle_lock_detect(void)
 {
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_LKDET_CFG2,
+<<<<<<< HEAD
 		0x0d);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_LKDET_CFG2,
 		0x0c);
 	udelay(1);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_LKDET_CFG2,
 		0x0d);
+=======
+		0x05);
+	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_LKDET_CFG2,
+		0x04);
+	udelay(1);
+	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_LKDET_CFG2,
+		0x05);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int dsi_pll_lock_status(void)
@@ -1077,9 +1321,15 @@ static void dsi_pll_software_reset(void)
 	 * reset bit off and back on.
 	 */
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_TEST_CFG, 0x01);
+<<<<<<< HEAD
 	udelay(1);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_TEST_CFG, 0x00);
 	udelay(1);
+=======
+	udelay(1000);
+	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_TEST_CFG, 0x00);
+	udelay(1000);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 }
 
 static int dsi_pll_enable_seq_m(void)
@@ -1094,12 +1344,16 @@ static int dsi_pll_enable_seq_m(void)
 	 * the updates to take effect. These delays are necessary for the
 	 * PLL to successfully lock
 	 */
+<<<<<<< HEAD
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_CAL_CFG1, 0x34);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x01);
 	udelay(200);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x05);
 	udelay(200);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x0f);
+<<<<<<< HEAD
 	udelay(600);
 
 	pll_locked = dsi_pll_toggle_lock_detect_and_check_status();
@@ -1113,6 +1367,21 @@ static int dsi_pll_enable_seq_m(void)
 		DSS_REG_W(mdss_dsi_base,
 			DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x0f);
 		udelay(600);
+=======
+	udelay(1000);
+
+	pll_locked = dsi_pll_toggle_lock_detect_and_check_status();
+	for (i = 0; (i < 4) && !pll_locked; i++) {
+		DSS_REG_W(mdss_dsi_base,
+			DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x07);
+		if (i != 0)
+			DSS_REG_W(mdss_dsi_base,
+				DSI_0_PHY_PLL_UNIPHY_PLL_CAL_CFG1, 0x34);
+		udelay(1);
+		DSS_REG_W(mdss_dsi_base,
+			DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x0f);
+		udelay(1000);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		pll_locked = dsi_pll_toggle_lock_detect_and_check_status();
 	}
 
@@ -1136,8 +1405,11 @@ static int dsi_pll_enable_seq_d(void)
 	 * the updates to take effect. These delays are necessary for the
 	 * PLL to successfully lock
 	 */
+<<<<<<< HEAD
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_PWRGEN_CFG, 0x00);
 	udelay(50);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x01);
 	udelay(200);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x05);
@@ -1149,7 +1421,11 @@ static int dsi_pll_enable_seq_d(void)
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x07);
 	udelay(200);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x0f);
+<<<<<<< HEAD
 	udelay(600);
+=======
+	udelay(1000);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	pll_locked = dsi_pll_toggle_lock_detect_and_check_status();
 	pr_debug("%s: PLL status = %s\n", __func__,
@@ -1169,8 +1445,11 @@ static int dsi_pll_enable_seq_f1(void)
 	 * the updates to take effect. These delays are necessary for the
 	 * PLL to successfully lock
 	 */
+<<<<<<< HEAD
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_PWRGEN_CFG, 0x00);
 	udelay(50);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x01);
 	udelay(200);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x05);
@@ -1180,7 +1459,11 @@ static int dsi_pll_enable_seq_f1(void)
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x0d);
 	udelay(200);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x0f);
+<<<<<<< HEAD
 	udelay(600);
+=======
+	udelay(1000);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	pll_locked = dsi_pll_toggle_lock_detect_and_check_status();
 	pr_debug("%s: PLL status = %s\n", __func__,
@@ -1200,14 +1483,21 @@ static int dsi_pll_enable_seq_c(void)
 	 * the updates to take effect. These delays are necessary for the
 	 * PLL to successfully lock
 	 */
+<<<<<<< HEAD
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_PWRGEN_CFG, 0x00);
 	udelay(50);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x01);
 	udelay(200);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x05);
 	udelay(200);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x0f);
+<<<<<<< HEAD
 	udelay(600);
+=======
+	udelay(1000);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	pll_locked = dsi_pll_toggle_lock_detect_and_check_status();
 	pr_debug("%s: PLL status = %s\n", __func__,
@@ -1227,8 +1517,11 @@ static int dsi_pll_enable_seq_e(void)
 	 * the updates to take effect. These delays are necessary for the
 	 * PLL to successfully lock
 	 */
+<<<<<<< HEAD
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_PWRGEN_CFG, 0x00);
 	udelay(50);
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x01);
 	udelay(200);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x05);
@@ -1236,7 +1529,11 @@ static int dsi_pll_enable_seq_e(void)
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x0d);
 	udelay(1);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x0f);
+<<<<<<< HEAD
 	udelay(600);
+=======
+	udelay(1000);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	pll_locked = dsi_pll_toggle_lock_detect_and_check_status();
 	pr_debug("%s: PLL status = %s\n", __func__,
@@ -1257,6 +1554,7 @@ static int dsi_pll_enable_seq_8974(void)
 	 * Add necessary delays recommeded by hardware.
 	 */
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x01);
+<<<<<<< HEAD
 	udelay(1);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x05);
 	udelay(200);
@@ -1273,6 +1571,24 @@ static int dsi_pll_enable_seq_8974(void)
 		udelay(100);
 		DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_LKDET_CFG2,
 			0x0d);
+=======
+	udelay(1000);
+	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x05);
+	udelay(1000);
+	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x07);
+	udelay(1000);
+	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x0f);
+	udelay(1000);
+
+	for (i = 0; i < 3; i++) {
+		/* DSI Uniphy lock detect setting */
+		DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_LKDET_CFG2,
+			0x04);
+		udelay(100);
+		DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_LKDET_CFG2,
+			0x05);
+		udelay(500);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		/* poll for PLL ready status */
 		max_reads = 5;
 		timeout_us = 100;
@@ -1295,6 +1611,7 @@ static int dsi_pll_enable_seq_8974(void)
 		 * Add necessary delays recommeded by hardware.
 		 */
 		DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x1);
+<<<<<<< HEAD
 		udelay(1);
 		DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x5);
 		udelay(200);
@@ -1306,6 +1623,19 @@ static int dsi_pll_enable_seq_8974(void)
 		udelay(500);
 		DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0xf);
 		udelay(500);
+=======
+		udelay(1000);
+		DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x5);
+		udelay(1000);
+		DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x7);
+		udelay(1000);
+		DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x5);
+		udelay(1000);
+		DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0x7);
+		udelay(1000);
+		DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_GLB_CFG, 0xf);
+		udelay(2000);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	}
 
@@ -1469,7 +1799,11 @@ static int vco_set_rate(struct clk *c, unsigned long rate)
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_CHGPUMP_CFG, 0x02);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_CAL_CFG3, 0x2b);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_CAL_CFG4, 0x66);
+<<<<<<< HEAD
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_LKDET_CFG2, 0x0d);
+=======
+	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_LKDET_CFG2, 0x05);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_SDM_CFG1,
 		(u32)(sdm_cfg1 & 0xff));
@@ -1480,7 +1814,11 @@ static int vco_set_rate(struct clk *c, unsigned long rate)
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_SDM_CFG4, 0x00);
 
 	/* Add hardware recommended delay for correct PLL configuration */
+<<<<<<< HEAD
 	udelay(1);
+=======
+	udelay(1000);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_REFCLK_CFG,
 		(u32)refclk_cfg);
@@ -1488,7 +1826,11 @@ static int vco_set_rate(struct clk *c, unsigned long rate)
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_VCOLPF_CFG, 0x71);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_SDM_CFG0,
 		(u32)sdm_cfg0);
+<<<<<<< HEAD
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_CAL_CFG0, 0x12);
+=======
+	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_CAL_CFG0, 0x0a);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_CAL_CFG6, 0x30);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_CAL_CFG7, 0x00);
 	DSS_REG_W(mdss_dsi_base, DSI_0_PHY_PLL_UNIPHY_PLL_CAL_CFG8, 0x60);
@@ -1650,6 +1992,7 @@ struct dsi_pll_vco_clk dsi_vco_clk_8226 = {
 	.ref_clk_rate = 19200000,
 	.min_rate = 350000000,
 	.max_rate = 750000000,
+<<<<<<< HEAD
 	.pll_en_seq_cnt = 7,
 	.pll_enable_seqs[0] = dsi_pll_enable_seq_m,
 	.pll_enable_seqs[1] = dsi_pll_enable_seq_m,
@@ -1658,6 +2001,15 @@ struct dsi_pll_vco_clk dsi_vco_clk_8226 = {
 	.pll_enable_seqs[4] = dsi_pll_enable_seq_f1,
 	.pll_enable_seqs[5] = dsi_pll_enable_seq_c,
 	.pll_enable_seqs[6] = dsi_pll_enable_seq_e,
+=======
+	.pll_en_seq_cnt = 6,
+	.pll_enable_seqs[0] = dsi_pll_enable_seq_m,
+	.pll_enable_seqs[1] = dsi_pll_enable_seq_d,
+	.pll_enable_seqs[2] = dsi_pll_enable_seq_d,
+	.pll_enable_seqs[3] = dsi_pll_enable_seq_f1,
+	.pll_enable_seqs[4] = dsi_pll_enable_seq_c,
+	.pll_enable_seqs[5] = dsi_pll_enable_seq_e,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.lpfr_lut_size = 10,
 	.lpfr_lut = (struct lpfr_cfg[]){
 		{479500000, 8},
@@ -1679,10 +2031,15 @@ struct dsi_pll_vco_clk dsi_vco_clk_8226 = {
 };
 
 struct div_clk analog_postdiv_clk_8226 = {
+<<<<<<< HEAD
 	.data = {
 		.max_div = 255,
 		.min_div = 1,
 	},
+=======
+	.max_div = 255,
+	.min_div = 1,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.ops = &analog_postdiv_ops,
 	.c = {
 		.parent = &dsi_vco_clk_8226.c,
@@ -1695,11 +2052,15 @@ struct div_clk analog_postdiv_clk_8226 = {
 
 struct div_clk indirect_path_div2_clk_8226 = {
 	.ops = &fixed_2div_ops,
+<<<<<<< HEAD
 	.data = {
 		.div = 2,
 		.min_div = 2,
 		.max_div = 2,
 	},
+=======
+	.div = 2,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.c = {
 		.parent = &analog_postdiv_clk_8226.c,
 		.dbg_name = "indirect_path_div2_clk",
@@ -1710,10 +2071,15 @@ struct div_clk indirect_path_div2_clk_8226 = {
 };
 
 struct div_clk pixel_clk_src_8226 = {
+<<<<<<< HEAD
 	.data = {
 		.max_div = 255,
 		.min_div = 1,
 	},
+=======
+	.max_div = 255,
+	.min_div = 1,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.ops = &digital_postdiv_ops,
 	.c = {
 		.parent = &dsi_vco_clk_8226.c,
@@ -1741,10 +2107,15 @@ struct mux_clk byte_mux_8226 = {
 
 struct div_clk byte_clk_src_8226 = {
 	.ops = &fixed_4div_ops,
+<<<<<<< HEAD
 	.data = {
 		.min_div = 4,
 		.max_div = 4,
 	},
+=======
+	.min_div = 4,
+	.max_div = 4,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.c = {
 		.parent = &byte_mux_8226.c,
 		.dbg_name = "byte_clk_src",
@@ -1782,10 +2153,15 @@ struct dsi_pll_vco_clk dsi_vco_clk_8974 = {
 };
 
 struct div_clk analog_postdiv_clk_8974 = {
+<<<<<<< HEAD
 	.data = {
 		.max_div = 255,
 		.min_div = 1,
 	},
+=======
+	.max_div = 255,
+	.min_div = 1,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.ops = &analog_postdiv_ops,
 	.c = {
 		.parent = &dsi_vco_clk_8974.c,
@@ -1798,11 +2174,15 @@ struct div_clk analog_postdiv_clk_8974 = {
 
 struct div_clk indirect_path_div2_clk_8974 = {
 	.ops = &fixed_2div_ops,
+<<<<<<< HEAD
 	.data = {
 		.div = 2,
 		.min_div = 2,
 		.max_div = 2,
 	},
+=======
+	.div = 2,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.c = {
 		.parent = &analog_postdiv_clk_8974.c,
 		.dbg_name = "indirect_path_div2_clk",
@@ -1813,10 +2193,15 @@ struct div_clk indirect_path_div2_clk_8974 = {
 };
 
 struct div_clk pixel_clk_src_8974 = {
+<<<<<<< HEAD
 	.data = {
 		.max_div = 255,
 		.min_div = 1,
 	},
+=======
+	.max_div = 255,
+	.min_div = 1,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.ops = &digital_postdiv_ops,
 	.c = {
 		.parent = &dsi_vco_clk_8974.c,
@@ -1844,10 +2229,15 @@ struct mux_clk byte_mux_8974 = {
 
 struct div_clk byte_clk_src_8974 = {
 	.ops = &fixed_4div_ops,
+<<<<<<< HEAD
 	.data = {
 		.min_div = 4,
 		.max_div = 4,
 	},
+=======
+	.min_div = 4,
+	.max_div = 4,
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	.c = {
 		.parent = &byte_mux_8974.c,
 		.dbg_name = "byte_clk_src",
@@ -1856,6 +2246,7 @@ struct div_clk byte_clk_src_8974 = {
 	},
 };
 
+<<<<<<< HEAD
 static inline struct edp_pll_vco_clk *to_edp_vco_clk(struct clk *clk)
 {
 	return container_of(clk, struct edp_pll_vco_clk, c);
@@ -2642,3 +3033,40 @@ void __init mdss_clk_ctrl_pre_init(struct clk *ahb_clk)
 	hdmi_mux_ops = clk_ops_gen_mux;
 	hdmi_mux_ops.prepare = hdmi_mux_prepare;
 }
+=======
+void __init mdss_clk_ctrl_pre_init(struct clk *ahb_clk)
+{
+	BUG_ON(ahb_clk == NULL);
+
+	gdsc_base = ioremap(GDSC_PHYS, GDSC_SIZE);
+	if (!gdsc_base)
+		pr_err("%s: unable to remap gdsc base", __func__);
+
+	mdss_dsi_base = ioremap(DSI_PHY_PHYS, DSI_PHY_SIZE);
+	if (!mdss_dsi_base)
+		pr_err("%s: unable to remap dsi base", __func__);
+
+	mdss_ahb_clk = ahb_clk;
+
+	hdmi_phy_base = ioremap(HDMI_PHY_PHYS, HDMI_PHY_SIZE);
+	if (!hdmi_phy_base)
+		pr_err("%s: unable to ioremap hdmi phy base", __func__);
+
+	hdmi_phy_pll_base = ioremap(HDMI_PHY_PLL_PHYS, HDMI_PHY_PLL_SIZE);
+	if (!hdmi_phy_pll_base)
+		pr_err("%s: unable to ioremap hdmi phy pll base", __func__);
+
+	pixel_clk_src_ops = clk_ops_slave_div;
+	pixel_clk_src_ops.prepare = div_prepare;
+
+	byte_clk_src_ops = clk_ops_div;
+	byte_clk_src_ops.prepare = div_prepare;
+
+	analog_potsdiv_clk_ops = clk_ops_div;
+	analog_potsdiv_clk_ops.prepare = div_prepare;
+
+	byte_mux_clk_ops = clk_ops_gen_mux;
+	byte_mux_clk_ops.prepare = mux_prepare;
+}
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60

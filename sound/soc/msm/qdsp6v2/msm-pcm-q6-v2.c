@@ -25,7 +25,10 @@
 #include <sound/pcm.h>
 #include <sound/initval.h>
 #include <sound/control.h>
+<<<<<<< HEAD
 #include <sound/q6audio-v2.h>
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #include <asm/dma.h>
 #include <linux/dma-mapping.h>
 #include <linux/msm_audio_ion.h>
@@ -110,6 +113,7 @@ static struct snd_pcm_hw_constraint_list constraints_sample_rates = {
 	.mask = 0,
 };
 
+<<<<<<< HEAD
 static void msm_pcm_route_event_handler(enum msm_pcm_routing_event event,
 					void *priv_data)
 {
@@ -129,6 +133,8 @@ static void msm_pcm_route_event_handler(enum msm_pcm_routing_event event,
 	}
 }
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 static void event_handler(uint32_t opcode,
 		uint32_t token, uint32_t *payload, void *priv)
 {
@@ -171,6 +177,7 @@ static void event_handler(uint32_t opcode,
 		pr_debug("token = 0x%08x\n", token);
 		in_frame_info[token][0] = payload[4];
 		in_frame_info[token][1] = payload[5];
+<<<<<<< HEAD
 		/* assume data size = 0 during flushing */
 		if (in_frame_info[token][0]) {
 			prtd->pcm_irq_pos += in_frame_info[token][0];
@@ -197,6 +204,20 @@ static void event_handler(uint32_t opcode,
 				wake_up(&the_locks.read_wait);
 			}
 		}
+=======
+		prtd->pcm_irq_pos +=  prtd->pcm_count;
+		pr_debug("pcm_irq_pos=%d\n", prtd->pcm_irq_pos);
+		if (atomic_read(&prtd->start))
+			snd_pcm_period_elapsed(substream);
+		if (atomic_read(&prtd->in_count) <= prtd->periods)
+			atomic_inc(&prtd->in_count);
+		wake_up(&the_locks.read_wait);
+		if (prtd->mmap_flag
+			&& q6asm_is_cpu_buf_avail_nolock(OUT,
+				prtd->audio_client,
+				&size, &idx))
+			q6asm_read_nolock(prtd->audio_client);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		break;
 	}
 	case APR_BASIC_RSP_RESULT: {
@@ -430,6 +451,7 @@ static int msm_pcm_open(struct snd_pcm_substream *substream)
 									ret);
 		}
 	}
+<<<<<<< HEAD
 	ret = snd_pcm_hw_constraint_step(runtime, 0,
 		SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 32);
 	if (ret < 0) {
@@ -442,6 +464,8 @@ static int msm_pcm_open(struct snd_pcm_substream *substream)
 		pr_err("constraint for buffer bytes step ret = %d\n",
 								ret);
 	}
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	prtd->dsp_cnt = 0;
 	prtd->set_channel_map = false;
@@ -481,7 +505,14 @@ static int msm_pcm_playback_copy(struct snd_pcm_substream *substream, int a,
 
 	data = q6asm_is_cpu_buf_avail(IN, prtd->audio_client, &size, &idx);
 	if (size < fbytes) {
+<<<<<<< HEAD
 		fbytes = size;
+=======
+		pr_err("%s: size mismatch error size %d fbytes %d\n",
+		__func__ , size , fbytes);
+		ret = -EFAULT;
+		goto fail;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 	bufptr = data;
 	if (bufptr) {
@@ -715,7 +746,10 @@ static int msm_pcm_hw_params(struct snd_pcm_substream *substream,
 	int dir, ret;
 	struct msm_plat_data *pdata;
 	uint16_t bits_per_sample = 16;
+<<<<<<< HEAD
 	struct msm_pcm_routing_evt event;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	pdata = (struct msm_plat_data *)
 				dev_get_drvdata(soc_prtd->platform->dev);
@@ -772,12 +806,18 @@ static int msm_pcm_hw_params(struct snd_pcm_substream *substream,
 		pr_debug("%s: session ID %d\n",
 				__func__, prtd->audio_client->session);
 		prtd->session_id = prtd->audio_client->session;
+<<<<<<< HEAD
 		event.event_func = msm_pcm_route_event_handler;
 		event.priv_data = (void *) prtd;
 		msm_pcm_routing_reg_phy_stream_v2(soc_prtd->dai_link->be_id,
 				prtd->audio_client->perf_mode,
 				prtd->session_id, substream->stream,
 				event);
+=======
+		msm_pcm_routing_reg_phy_stream(soc_prtd->dai_link->be_id,
+				prtd->audio_client->perf_mode,
+				prtd->session_id, substream->stream);
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	}
 
 	ret = q6asm_audio_client_buf_alloc_contiguous(dir,
@@ -918,12 +958,20 @@ static __devinit int msm_pcm_probe(struct platform_device *pdev)
 	int rc;
 	int id;
 	struct msm_plat_data *pdata;
+<<<<<<< HEAD
 	const char *latency_level;
 
 	rc = of_property_read_u32(pdev->dev.of_node,
 				"qti,msm-pcm-dsp-id", &id);
 	if (rc) {
 		dev_err(&pdev->dev, "%s: qti,msm-pcm-dsp-id missing in DT node\n",
+=======
+
+	rc = of_property_read_u32(pdev->dev.of_node,
+				"qcom,msm-pcm-dsp-id", &id);
+	if (rc) {
+		dev_err(&pdev->dev, "%s: qcom,msm-pcm-dsp-id missing in DT node\n",
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 					__func__);
 		return rc;
 	}
@@ -935,6 +983,7 @@ static __devinit int msm_pcm_probe(struct platform_device *pdev)
 	}
 
 	if (of_property_read_bool(pdev->dev.of_node,
+<<<<<<< HEAD
 				"qti,msm-pcm-low-latency")) {
 
 		pdata->perf_mode = LOW_LATENCY_PCM_MODE;
@@ -946,6 +995,12 @@ static __devinit int msm_pcm_probe(struct platform_device *pdev)
 		}
 	} else
 		pdata->perf_mode = LEGACY_PCM_MODE;
+=======
+				"qcom,msm-pcm-low-latency"))
+		pdata->perf_mode = 1;
+	else
+		pdata->perf_mode = 0;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	dev_set_drvdata(&pdev->dev, pdata);
 
@@ -967,7 +1022,11 @@ static int msm_pcm_remove(struct platform_device *pdev)
 	return 0;
 }
 static const struct of_device_id msm_pcm_dt_match[] = {
+<<<<<<< HEAD
 	{.compatible = "qti,msm-pcm-dsp"},
+=======
+	{.compatible = "qcom,msm-pcm-dsp"},
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	{}
 };
 MODULE_DEVICE_TABLE(of, msm_pcm_dt_match);

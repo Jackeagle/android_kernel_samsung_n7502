@@ -100,7 +100,10 @@
 /include/ "msm8974-mdss.dtsi"
 /include/ "msm8974-smp2p.dtsi"
 /include/ "msm8974-bus.dtsi"
+<<<<<<< HEAD
 /include/ "msm-rdbg.dtsi"
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 &soc {
 	#address-cells = <1>;
@@ -284,6 +287,7 @@
 				<87 512 60000 960000>;
 	};
 
+<<<<<<< HEAD
 	rmtfs_sharedmem {
 		compatible = "qcom,sharedmem-uio";
 		reg = <0x0fd80000 0x00180000>;
@@ -302,6 +306,8 @@
 		reg-names = "rfsa_mdm";
 	};
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	sdcc1: qcom,sdcc@f9824000 {
 		cell-index = <1>; /* SDC1 eMMC slot */
 		compatible = "qcom,msm-sdcc";
@@ -619,7 +625,11 @@
 		#size-cells = <0>;
 		reg-names = "spi_physical", "spi_bam_physical";
 		reg = <0xf9966000 0x1000>,
+<<<<<<< HEAD
 		      <0xf9944000 0x19000>;
+=======
+		      <0xf9944000 0x15000>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		interrupt-names = "spi_irq", "spi_bam_irq";
 		interrupts = <0 104 0>, <0 239 0>;
 		spi-max-frequency = <19200000>;
@@ -760,6 +770,7 @@
 	sound {
 		compatible = "qcom,msm8974-audio-taiko";
 		qcom,model = "msm8974-taiko-snd-card";
+<<<<<<< HEAD
 		reg = <0xfe02b000 0x4>,
 		      <0xfe02c000 0x4>,
 		      <0xfe02d000 0x4>,
@@ -768,6 +779,8 @@
 			    "lpaif_sec_mode_muxsel",
 			    "lpaif_tert_mode_muxsel",
 			    "lpaif_quat_mode_muxsel";
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		qcom,audio-routing =
 			"RX_BIAS", "MCLK",
@@ -831,7 +844,11 @@
 		interrupts = <0 105 0>;
 		interrupt-names = "qup_err_intr";
 		qcom,i2c-bus-freq = <100000>;
+<<<<<<< HEAD
 		qcom,i2c-src-freq = <19200000>;
+=======
+		qcom,i2c-src-freq = <50000000>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,master-id = <84>;
 	};
 
@@ -874,7 +891,11 @@
 		#size-cells = <0>;
 		reg-names = "spi_physical", "spi_bam_physical";
 		reg = <0xf9923000 0x1000>,
+<<<<<<< HEAD
 		      <0xf9904000 0x19000>;
+=======
+		      <0xf9904000 0xf000>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		interrupt-names = "spi_irq", "spi_bam_irq";
 		interrupts = <0 95 0>, <0 238 0>;
 		spi-max-frequency = <19200000>;
@@ -892,6 +913,7 @@
 		qcom,master-id = <86>;
 	};
 
+<<<<<<< HEAD
 	qcom,clock-krait@f9016000 {
 		compatible = "qcom,clock-krait-8974";
 		reg = <0xf9016000 0x20>,
@@ -1557,6 +1579,27 @@
 			< 1958400 1728000 7102 >,
 			< 2265600 1728000 7102 >,
 			< 2457600 1728000 7102 >;
+=======
+	qcom,acpuclk@f9000000 {
+		compatible = "qcom,acpuclk-8974";
+		krait0-supply = <&krait0_vreg>;
+		krait1-supply = <&krait1_vreg>;
+		krait2-supply = <&krait2_vreg>;
+		krait3-supply = <&krait3_vreg>;
+		krait0_mem-supply = <&pm8841_s1_ao>;
+		krait1_mem-supply = <&pm8841_s1_ao>;
+		krait2_mem-supply = <&pm8841_s1_ao>;
+		krait3_mem-supply = <&pm8841_s1_ao>;
+		krait0_dig-supply = <&pm8841_s2_corner_ao>;
+		krait1_dig-supply = <&pm8841_s2_corner_ao>;
+		krait2_dig-supply = <&pm8841_s2_corner_ao>;
+		krait3_dig-supply = <&pm8841_s2_corner_ao>;
+		krait0_hfpll-supply = <&pm8941_l12_ao>;
+		krait1_hfpll-supply = <&pm8941_l12_ao>;
+		krait2_hfpll-supply = <&pm8941_l12_ao>;
+		krait3_hfpll-supply = <&pm8941_l12_ao>;
+		l2_hfpll-supply = <&pm8941_l12_ao>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 
 	usb3: qcom,ssusb@f9200000 {
@@ -1587,7 +1630,11 @@
 		qcom,misc-ref = <&pm8941_misc>;
 		dwc_usb3-adc_tm = <&pm8941_adc_tm>;
 		qcom,dwc-usb3-msm-tx-fifo-size = <29696>;
+<<<<<<< HEAD
 		qcom,dwc-usb3-msm-qdss-tx-fifo-size = <8192>;
+=======
+		qcom,dwc-usb3-msm-qdss-tx-fifo-size = <16384>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 		qcom,msm-bus,name = "usb3";
 		qcom,msm-bus,num-cases = <2>;
@@ -1651,6 +1698,7 @@
 		compatible = "qcom,msm-audio-ion";
 	};
 
+<<<<<<< HEAD
 	qti,msm-pcm {
 		compatible = "qti,msm-pcm-dsp";
 		qti,msm-pcm-dsp-id = <0>;
@@ -1661,6 +1709,17 @@
 		qti,msm-pcm-dsp-id = <1>;
 		qti,msm-pcm-low-latency;
 		qti,latency-level = "regular";
+=======
+	qcom,msm-pcm {
+		compatible = "qcom,msm-pcm-dsp";
+		qcom,msm-pcm-dsp-id = <0>;
+	};
+
+	qcom,msm-pcm-low-latency {
+		compatible = "qcom,msm-pcm-dsp";
+		qcom,msm-pcm-dsp-id = <1>;
+		qcom,msm-pcm-low-latency;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 
 	qcom,msm-pcm-routing {
@@ -1675,10 +1734,13 @@
 		compatible = "qcom,msm-compr-dsp";
 	};
 
+<<<<<<< HEAD
 	qcom,msm-compress-dsp {
 		compatible = "qcom,msm-compress-dsp";
 	};
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	qcom,msm-voip-dsp {
 		compatible = "qcom,msm-voip-dsp";
 	};
@@ -1708,10 +1770,13 @@
 		compatible = "qcom,msm-lsm-client";
 	};
 
+<<<<<<< HEAD
 	qti,msm-pcm-loopback {
 		compatible = "qti,msm-pcm-loopback";
 	};
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	qcom,msm-dai-q6 {
 		compatible = "qcom,msm-dai-q6";
 		qcom,msm-dai-q6-sb-0-rx {
@@ -1823,11 +1888,14 @@
 			compatible = "qcom,msm-dai-q6-dev";
 			qcom,msm-dai-q6-dev-id = <32773>;
 		};
+<<<<<<< HEAD
 
 		qcom,msm-dai-q6-incall-music-2-rx {
 			compatible = "qcom,msm-dai-q6-dev";
 			qcom,msm-dai-q6-dev-id = <32770>;
 		};
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 
 	qcom,msm-pri-auxpcm {
@@ -2008,8 +2076,13 @@
 		qcom,msm-bus,num-cases = <2>;
 		qcom,msm-bus,num-paths = <1>;
 		qcom,msm-bus,vectors-KBps =
+<<<<<<< HEAD
 				<88 618 0 0>,
 				<88 618 0 800>;
+=======
+				<1 618 0 0>,
+				<1 618 0 800>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
         };
 
 	qseecom: qcom,qseecom@7b00000 {
@@ -2019,15 +2092,24 @@
 		qcom,disk-encrypt-pipe-pair = <2>;
 		qcom,hlos-ce-hw-instance = <1>;
 		qcom,qsee-ce-hw-instance = <0>;
+<<<<<<< HEAD
 		qcom,support-bus-scaling;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,msm-bus,name = "qseecom-noc";
 		qcom,msm-bus,num-cases = <4>;
 		qcom,msm-bus,num-paths = <1>;
 		qcom,msm-bus,vectors-KBps =
 				<55 512 0 0>,
+<<<<<<< HEAD
 				<55 512 0 0>,
 				<55 512 120000 1200000>,
 				<55 512 393600 3936000>;
+=======
+				<55 512 3936000 393600>,
+				<55 512 3936000 393600>,
+				<55 512 3936000 393600>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	};
 
 	qcom,wdt@f9017000 {
@@ -2172,7 +2254,11 @@
 			qcom,src-bam-pipe-index = <0>;
 			qcom,dst-bam-physical-address = <0xf9304000>;
 			qcom,dst-bam-pipe-index = <2>;
+<<<<<<< HEAD
 			qcom,data-fifo-offset = <0xf0000>;
+=======
+			qcom,data-fifo-offset = <0xf2000>;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			qcom,data-fifo-size = <0x1800>;
 			qcom,descriptor-fifo-offset = <0xf4000>;
 			qcom,descriptor-fifo-size = <0x1400>;
@@ -2212,10 +2298,13 @@
 		qcom,hotplug-temp-hysteresis = <20>;
 		qcom,cpu-sensors = "tsens_tz_sensor5", "tsens_tz_sensor6",
 				"tsens_tz_sensor7", "tsens_tz_sensor8";
+<<<<<<< HEAD
 		qcom,freq-mitigation-temp = <110>;
 		qcom,freq-mitigation-temp-hysteresis = <20>;
 		qcom,freq-mitigation-value = <960000>;
 		qcom,freq-mitigation-control-mask = <0x01>;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		qcom,vdd-restriction-temp = <5>;
 		qcom,vdd-restriction-temp-hysteresis = <10>;
 		qcom,pmic-sw-mode-temp = <85>;

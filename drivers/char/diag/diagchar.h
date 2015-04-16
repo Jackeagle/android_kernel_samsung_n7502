@@ -82,6 +82,7 @@
  * And there are MSG_MASK_TBL_CNT rows.
  */
 #define MSG_MASK_SIZE		((MAX_SSID_PER_RANGE+3) * 4 * MSG_MASK_TBL_CNT)
+<<<<<<< HEAD
 #define MAX_EQUIP_ID		16
 #define MAX_ITEMS_PER_EQUIP_ID	512
 #define LOG_MASK_ITEM_SIZE	(5 + MAX_ITEMS_PER_EQUIP_ID)
@@ -90,6 +91,13 @@
 #define USER_SPACE_DATA 8192
 #define PKT_SIZE 4096
 
+=======
+#define LOG_MASK_SIZE 8000
+#define EVENT_MASK_SIZE 1000
+#define USER_SPACE_DATA 8192
+#define PKT_SIZE 4096
+#define MAX_EQUIP_ID 15
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #define DIAG_CTRL_MSG_LOG_MASK	9
 #define DIAG_CTRL_MSG_EVENT_MASK	10
 #define DIAG_CTRL_MSG_F3_MASK	11
@@ -301,7 +309,11 @@ struct diagchar_dev {
 	/* Whether or not the peripheral supports STM */
 	int peripheral_supports_stm[NUM_SMD_CONTROL_CHANNELS];
 	/* DCI related variables */
+<<<<<<< HEAD
 	struct list_head dci_req_list;
+=======
+	struct dci_pkt_req_tracking_tbl *req_tracking_tbl;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct diag_dci_client_tbl *dci_client_tbl;
 	int dci_tag;
 	int dci_client_id;
@@ -337,14 +349,20 @@ struct diagchar_dev {
 	struct diag_ctrl_log_mask *log_mask;
 	struct diag_ctrl_msg_mask *msg_mask;
 	struct diag_ctrl_feature_mask *feature_mask;
+<<<<<<< HEAD
 	struct mutex log_mask_mutex;
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	/* State for diag forwarding */
 	struct diag_smd_info smd_data[NUM_SMD_DATA_CHANNELS];
 	struct diag_smd_info smd_cntl[NUM_SMD_CONTROL_CHANNELS];
 	struct diag_smd_info smd_dci[NUM_SMD_DCI_CHANNELS];
 	struct diag_smd_info smd_cmd[NUM_SMD_CMD_CHANNELS];
 	struct diag_smd_info smd_dci_cmd[NUM_SMD_DCI_CMD_CHANNELS];
+<<<<<<< HEAD
 	int rcvd_feature_mask[NUM_SMD_CONTROL_CHANNELS];
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	int separate_cmdrsp[NUM_SMD_CONTROL_CHANNELS];
 	unsigned char *usb_buf_out;
 	unsigned char *apps_rsp_buf;
@@ -385,6 +403,10 @@ struct diagchar_dev {
 	uint8_t msg_status;
 	uint8_t *log_masks;
 	uint8_t log_status;
+<<<<<<< HEAD
+=======
+	int log_masks_length;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	uint8_t *event_masks;
 	uint8_t event_status;
 	uint8_t log_on_demand_support;
@@ -398,6 +420,11 @@ struct diagchar_dev {
 	int logging_process_id;
 	struct task_struct *socket_process;
 	struct task_struct *callback_process;
+<<<<<<< HEAD
+=======
+	/* pid for diag_mdlog(CP silent log app) */
+	struct pid *silent_log_pid;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 #ifdef CONFIG_DIAG_SDIO_PIPE
 	unsigned char *buf_in_sdio;
 	unsigned char *usb_buf_mdm_out;

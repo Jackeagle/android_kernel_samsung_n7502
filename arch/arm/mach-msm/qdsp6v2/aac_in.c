@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (c) 2010-2013, The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2010-2012, The Linux Foundation. All rights reserved.
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -58,6 +62,7 @@ static long aac_in_ioctl(struct file *file,
 			break;
 		}
 
+<<<<<<< HEAD
 		if (audio->opened) {
 			rc = audio_in_buf_alloc(audio);
 			if (rc < 0) {
@@ -85,6 +90,13 @@ static long aac_in_ioctl(struct file *file,
 				}
 			}
 		audio->stopped = 0;
+=======
+		rc = audio_in_buf_alloc(audio);
+		if (rc < 0) {
+			pr_err("%s:session id %d: buffer allocation failed\n",
+				__func__, audio->ac->session);
+			break;
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		}
 
 		pr_debug("%s:sbr_ps_flag = %d, sbr_flag = %d\n", __func__,
@@ -147,7 +159,10 @@ static long aac_in_ioctl(struct file *file,
 	case AUDIO_GET_AAC_ENC_CONFIG: {
 		struct msm_audio_aac_enc_config cfg;
 		struct msm_audio_aac_enc_config *enc_cfg;
+<<<<<<< HEAD
 		memset(&cfg, 0, sizeof(cfg));
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 		enc_cfg = audio->enc_cfg;
 		if (enc_cfg->channels == CH_MODE_MONO)
 			cfg.channels = 1;

@@ -105,9 +105,12 @@ enum wcd9xxx_notify_event {
 
 	WCD9XXX_EVENT_POST_RESUME,
 
+<<<<<<< HEAD
 	WCD9XXX_EVENT_PRE_TX_3_ON,
 	WCD9XXX_EVENT_POST_TX_3_OFF,
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	WCD9XXX_EVENT_LAST,
 };
 
@@ -140,8 +143,11 @@ struct wcd9xxx_resmgr {
 
 	struct wcd9xxx_pdata *pdata;
 
+<<<<<<< HEAD
 	struct wcd9xxx_micbias_setting *micbias_pdata;
 
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	struct blocking_notifier_head notifier;
 	/* Notifier needs mbhc pointer with resmgr */
 	struct wcd9xxx_mbhc *mbhc;
@@ -167,7 +173,10 @@ int wcd9xxx_resmgr_init(struct wcd9xxx_resmgr *resmgr,
 			struct snd_soc_codec *codec,
 			struct wcd9xxx_core_resource *core_res,
 			struct wcd9xxx_pdata *pdata,
+<<<<<<< HEAD
 			struct wcd9xxx_micbias_setting *micbias_pdata,
+=======
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 			struct wcd9xxx_reg_address *reg_addr,
 			enum wcd9xxx_cdc_type cdc_type);
 void wcd9xxx_resmgr_deinit(struct wcd9xxx_resmgr *resmgr);

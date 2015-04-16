@@ -29,6 +29,14 @@
 
 #include "power.h"
 
+<<<<<<< HEAD
+=======
+bool sleep_enter;
+#ifdef CONFIG_SEC_GPIO_DVS
+#include <linux/secgpio_dvs.h>
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 const char *const pm_states[PM_SUSPEND_MAX] = {
 #ifdef CONFIG_EARLYSUSPEND
 	[PM_SUSPEND_ON]		= "on",
@@ -140,6 +148,27 @@ static int suspend_enter(suspend_state_t state, bool *wakeup)
 {
 	int error;
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SEC_GPIO_DVS
+	/************************ Caution !!! ****************************/
+	/* This function must be located in appropriate SLEEP position
+     * in accordance with the specification of each BB vendor.
+     */
+	/************************ Caution !!! ****************************/
+	gpio_dvs_check_sleepgpio();
+#ifdef SECGPIO_SLEEP_DEBUGGING
+	/************************ Caution !!! ****************************/
+	/* This func. must be located in an appropriate position for GPIO SLEEP debugging
+     * in accordance with the specification of each BB vendor, and 
+     * the func. must be called after calling the function "gpio_dvs_check_sleepgpio"
+     */
+	/************************ Caution !!! ****************************/
+	gpio_dvs_set_sleepgpio();
+#endif
+#endif
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	if (suspend_ops->prepare) {
 		error = suspend_ops->prepare();
 		if (error)
@@ -177,6 +206,18 @@ static int suspend_enter(suspend_state_t state, bool *wakeup)
 		}
 		syscore_resume();
 	}
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_SEC_GPIO_DVS) && defined(SECGPIO_SLEEP_DEBUGGING)
+	/************************ Caution !!! ****************************/
+	/* This function must be located in an appropriate position
+	 * to undo gpio SLEEP debugging setting when DUT wakes up.
+	 * It should be implemented in accordance with the specification of each BB vendor.
+	 */
+	/************************ Caution !!! ****************************/
+	gpio_dvs_undo_sleepgpio();
+#endif
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 
 	arch_suspend_enable_irqs();
 	BUG_ON(irqs_disabled());
@@ -331,6 +372,12 @@ int pm_suspend(suspend_state_t state)
 		return -EINVAL;
 
 	pm_suspend_marker("entry");
+<<<<<<< HEAD
+=======
+
+	sleep_enter = 1;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	error = enter_state(state);
 	if (error) {
 		suspend_stats.fail++;
@@ -339,6 +386,12 @@ int pm_suspend(suspend_state_t state)
 		suspend_stats.success++;
 	}
 	pm_suspend_marker("exit");
+<<<<<<< HEAD
+=======
+
+	sleep_enter = 0;
+
+>>>>>>> 6b2fd9dc8e02232511eb141dbdead145fe1cea60
 	return error;
 }
 EXPORT_SYMBOL(pm_suspend);
